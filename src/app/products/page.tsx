@@ -5,9 +5,9 @@ import { useSession, signOut } from "next-auth/react";
 export default function DashboardPage() {
   const { data: session, status } = useSession();
 
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
+//   if (status === "loading") {
+//     return <p>Loading...</p>;
+//   }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
