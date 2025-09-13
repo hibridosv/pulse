@@ -39,13 +39,13 @@ const handler = NextAuth({
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.accessToken = user.accessToken
       }
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       session.accessToken = token.accessToken
       return session
     },
@@ -53,6 +53,9 @@ const handler = NextAuth({
       console.log("Redirecting to:", url, "from base URL:", baseUrl);
       return url.startsWith(baseUrl) ? url : baseUrl;
     }
+  },
+  pages: {
+    signIn: '/',
   }
 })
 

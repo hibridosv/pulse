@@ -15,10 +15,6 @@ export default function Home() {
     return <p>Cargando...</p>;
   }
 
-  if (status === "authenticated") {
-    router.push("/dashboard");
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("handleSubmit triggered"); // Added log
@@ -41,33 +37,60 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-2xl font-bold mb-4">Iniciar Sesión</h1>
-        <form onSubmit={handleSubmit} className="w-full max-w-sm">
-          {error && <p className="text-red-500 mb-4">{error}</p>}
-          <div className="mb-4">
-            <input
-              type="text"
-              placeholder="Usuario"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 bg-cover bg-center" style={{ backgroundImage: 'url("https://plus.unsplash.com/premium_photo-1664298145390-fa6018ad4093?q=80&w=1386&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' }}>
+      <div className="absolute inset-0 bg-black opacity-60"></div> {/* Overlay oscuro */}
+      <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-extrabold text-gray-900">Bienvenido de nuevo</h1>
+          <p className="mt-2 text-sm text-gray-600">Inicia sesión en tu cuenta</p>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong className="font-bold">Error: </strong>
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Usuario
+            </label>
+            <div className="mt-1">
+              <input
+                id="username"
+                name="username"
+                type="text"
+                autoComplete="username"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
+                placeholder="Tu nombre de usuario o email"
+              />
+            </div>
           </div>
-          <div className="mb-6">
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            />
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Contraseña
+            </label>
+            <div className="mt-1">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
+                placeholder="Tu contraseña"
+              />
+            </div>
           </div>
-          <div className="flex items-center justify-between">
+          <div>
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Iniciar Sesión
             </button>

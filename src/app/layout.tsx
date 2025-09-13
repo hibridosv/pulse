@@ -13,10 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body className="overflow-x-visible">
         <Providers>
-          <main className="container mx-auto p-4">{children}</main>
+          <main className="container mx-auto">{children}</main>
         </Providers>
       </body>
     </html>
