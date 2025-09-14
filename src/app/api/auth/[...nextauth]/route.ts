@@ -12,7 +12,7 @@ const handler = NextAuth({
       },
       async authorize(credentials, req) {
         console.log("Attempting to authorize...");
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}oauth/token`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}oauth2`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -25,15 +25,15 @@ const handler = NextAuth({
             password: credentials?.password,
           }),
         })
-        console.log("Backend response status:", res.status);
+        // console.log("Backend response status:", res.status);
         const user = await res.json()
-        console.log("Backend response body:", user);
+        // console.log("Backend response body:", user);
 
         if (res.ok && user) {
           console.log("Authorization successful.");
           return { ...user, accessToken: user.access_token }
         }
-        console.log("Authorization failed.");
+        // console.log("Authorization failed.");
         return null
       }
     })

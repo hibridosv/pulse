@@ -1,8 +1,11 @@
 'use client';
 
+import axios from "axios";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BiSave } from "react-icons/bi";
+import { LuLoader } from "react-icons/lu";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -10,6 +13,8 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   if (status === "loading") {
     return <p>Cargando...</p>;
@@ -17,24 +22,31 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("handleSubmit triggered"); // Added log
-    setError(null);
-    console.log("Attempting sign in...");
-    const result = await signIn('credentials', {
-      username,
-      password,
-      redirect: false,
-    });
-
-    console.log("Sign in result:", result);
-
-    if (result?.error) {
-      setError(result.error);
-    } else if (result?.ok) {
-      console.log("Sign in successful, redirecting to /dashboard");
-      router.push("/dashboard");
+    let usernameNew = username.includes("@") ? username : username + "@hibridosv.com";
+    try {
+      setUsername(usernameNew);
+      setLoading(true);
+      setError(null);
+      setMessage("Iniciando sesión...");
+      const result = await signIn('credentials', {
+        username: usernameNew,
+        password,
+        redirect: false,
+      });
+      if (result?.error) {
+        setError(result.error);
+      } else if (result?.ok) {
+        setMessage("Redireccionando a /dashboard...");
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Error during sign in:", error);
+    } finally {
+      setLoading(false);
+      setMessage(null);
     }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 bg-cover bg-center" style={{ backgroundImage: 'url("https://plus.unsplash.com/premium_photo-1664298145390-fa6018ad4093?q=80&w=1386&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' }}>
@@ -91,9 +103,10 @@ export default function Home() {
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
+            > { loading ? <LuLoader className="mr-2 animate-spin " size={18}/> : <BiSave className="mr-2" size={18}/> }
               Iniciar Sesión
             </button>
+            <div className="text-center text-sm text-gray-500">{message}</div>
           </div>
         </form>
       </div>
