@@ -4,6 +4,7 @@ import { signOut } from "next-auth/react";
 import { IoClose } from "react-icons/io5";
 import { FaChevronDown, FaSignOutAlt } from "react-icons/fa";
 import { useThemeStore } from "@/stores/themeStore";
+import Image from "next/image";
 
 // --- Data Structure ---
 interface MenuItem {
@@ -102,14 +103,22 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="fixed left-0 top-0 h-full w-64 bg-background-soft shadow-lg z-50 transform transition-transform duration-300 ease-in-out flex flex-col"
+        className={`fixed left-0 top-0 h-full w-64 bg-background-soft shadow-lg z-50 transform transition-all duration-500 ease-in-out flex flex-col ${isOpen ? 'opacity-100' : 'opacity-0'}`}
         onClick={(e) => e.stopPropagation()}
         style={{ transform: isOpen ? "translateX(0)" : "translateX(-100%)" }}
       >
         {/* Header */}
-        <div className="p-4 flex justify-between items-center border-b border-white/10 flex-shrink-0 bg-background-main">
-          <h2 className="text-lg font-semibold text-text-main">Menú</h2>
-          <button onClick={onClose} className="text-text-main/70 hover:text-text-main">
+        <div className="relative p-4 border-b border-white/10 flex-shrink-0 bg-background-main">
+          <div className="w-full h-10">
+            <Image
+              src="/img/logo_hibrido_s.png"
+              alt="Logo Hibrido SV"
+              fill
+              style={{ objectFit: 'contain' }}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
+          <button onClick={onClose} className="absolute top-2 right-2 z-10 text-text-main/70 hover:text-text-main">
             <IoClose size={24} />
           </button>
         </div>

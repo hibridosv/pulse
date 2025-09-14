@@ -13,7 +13,7 @@ export const Navbar = () => {
    console.log(user, client);
   return (
     <>
-      <nav className="bg-background-main p-4 text-text-main shadow-md">
+      <nav className="bg-background-main p-2 text-text-main shadow-md">
         <div className="container mx-auto flex justify-between items-center">
           {/* Lado Izquierdo: Botón de Menú y Título */}
           <div className="flex items-center gap-4">
@@ -21,9 +21,9 @@ export const Navbar = () => {
               onClick={() => setIsDrawerOpen(true)}
               className="text-text-main hover:text-primary"
             >
-              <HiMenu size={28} />
+              <HiMenu size={32} />
             </button>
-            <Link href="/dashboard" className="text-xl font-bold text-primary">
+            <Link href="/dashboard" className="text-xl font-bold text-white">
               Pulse
             </Link>
           </div>

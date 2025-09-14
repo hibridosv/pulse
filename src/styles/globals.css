@@ -34,12 +34,12 @@ body {
 
 /* 1. Definimos las variables de color para el tema por defecto (indigo) */
 :root {
-  --color-primary: 59 130 246; /* blue-500 */
-  --color-secondary: 99 102 241; /* indigo-500 */
-  --color-accent: 234 179 8; /* yellow-500 */
+  --color-primary: 36 58 81; /* #243A51 */
+  --color-secondary: 52 73 94; /* slightly lighter blue-gray */
+  --color-accent: 251 191 36; /* amber-400 */
   --color-text: 243 244 246; /* gray-100 */
-  --color-background: 17 24 39; /* gray-900 */
-  --color-background-soft: 31 41 55; /* gray-800 */
+  --color-background: 20 32 45; /* darker blue-gray */
+  --color-background-soft: 30 48 67; /* medium dark blue-gray */
 }
 
 /* 2. Definimos las variables para el tema verde */
@@ -54,10 +54,10 @@ body {
 
 /* 3. (Opcional) Puedes definir un tema indigo explícito si quieres ser consistente */
 [data-theme='indigo'] {
-  --color-primary: 59 130 246; /* blue-500 */
-  --color-secondary: 99 102 241; /* indigo-500 */
-  --color-accent: 234 179 8; /* yellow-500 */
+  --color-primary: 36 58 81; /* #243A51 */
+  --color-secondary: 52 73 94; /* slightly lighter blue-gray */
+  --color-accent: 251 191 36; /* amber-400 */
   --color-text: 243 244 246; /* gray-100 */
-  --color-background: 17 24 39; /* gray-900 */
-  --color-background-soft: 31 41 55; /* gray-800 */
+  --color-background: 20 32 45; /* darker blue-gray */
+  --color-background-soft: 30 48 67; /* medium dark blue-gray */
 }
