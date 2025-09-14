@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import { signOut } from "next-auth/react";
 import { IoClose } from "react-icons/io5";
 import { FaChevronDown, FaSignOutAlt } from "react-icons/fa";
+import { useThemeStore } from "@/stores/themeStore";
 
 // --- Data Structure ---
 interface MenuItem {
@@ -93,6 +94,7 @@ interface DrawerProps {
 
 const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
+  const { theme, setTheme } = useThemeStore();
 
   return (
     <div
@@ -131,6 +133,21 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
               )
             )}
           </ul>
+        </div>
+
+        <div className="flex justify-center items-center p-2 gap-4">
+            <button
+              onClick={() => setTheme('indigo')}
+              className={`px-3 py-1 rounded text-sm ${theme === 'indigo' ? 'bg-primary text-white' : 'bg-secondary'}`}
+            >
+              Indigo
+            </button>
+            <button
+              onClick={() => setTheme('green')}
+              className={`px-3 py-1 rounded text-sm ${theme === 'green' ? 'bg-primary text-white' : 'bg-secondary'}`}
+            >
+              Green
+            </button>
         </div>
 
         {/* Footer (Logout) */}

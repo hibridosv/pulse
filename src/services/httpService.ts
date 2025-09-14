@@ -19,7 +19,7 @@ httpService.interceptors.request.use(
 
     // Si la sesión tiene una URL, úsala como baseURL para esta petición
     if (session?.url) {
-      config.baseURL = `${session.url}/api`;
+      config.baseURL = `${session.url}/api/v2`;
     }
 
     if (session?.accessToken) {

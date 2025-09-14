@@ -7,25 +7,11 @@ import useConfigStore from "@/stores/configStore";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
-  const { clearConfig, configurations, system, payMethods, permission, user, invoiceExist, isInvoiceExpires, role, cashdrawer, client, tenant } = useConfigStore();
-
-  useConfigLogic();
-
+  const { clearConfig } = useConfigStore();
+  useConfigLogic(); // carga todas las configuraciones necesarias
   if (status === "loading") {
     return <LoadingPage />;
   }
-
-  console.log("configurations ", configurations);
-  console.log("system ", system);
-  console.log("payMethods ", payMethods);
-  console.log("permission ", permission);
-  console.log("user ", user);
-  console.log("invoiceExist ", invoiceExist);
-  console.log("isInvoiceExpires ", isInvoiceExpires);
-  console.log("role ", role);
-  console.log("cashdrawer ", cashdrawer);
-  console.log('Client', client);
-  console.log('Tenant', tenant);
 
   return (
     <div className="flex flex-col items-center justify-center py-2">

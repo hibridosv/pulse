@@ -2,15 +2,15 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useThemeStore } from '@/stores/themeStore';
 import { HiMenu } from 'react-icons/hi';
 import { IoHome } from 'react-icons/io5';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
+import useConfigStore from '@/stores/configStore';
 
 export const Navbar = () => {
-  const { theme, setTheme } = useThemeStore();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
-
+  const { user, client } = useConfigStore();
+   console.log(user, client);
   return (
     <>
       <nav className="bg-background-main p-4 text-text-main shadow-md">
@@ -28,21 +28,10 @@ export const Navbar = () => {
             </Link>
           </div>
 
-          {/* Centro: Controles para cambiar el tema */}
-          <div className="flex items-center gap-4">
-            <span className="hidden sm:inline">Theme:</span>
-            <button
-              onClick={() => setTheme('indigo')}
-              className={`px-3 py-1 rounded text-sm ${theme === 'indigo' ? 'bg-primary text-white' : 'bg-secondary'}`}
-            >
-              Indigo
-            </button>
-            <button
-              onClick={() => setTheme('green')}
-              className={`px-3 py-1 rounded text-sm ${theme === 'green' ? 'bg-primary text-white' : 'bg-secondary'}`}
-            >
-              Green
-            </button>
+          <div className="flex items-center gap-4 font-semibold">
+            <div>{ client.nombre_comercial }</div>
+            <div>|</div>
+            <div>{ user.name }</div>
           </div>
 
           {/* Lado Derecho (puedes añadir más cosas aquí) */}

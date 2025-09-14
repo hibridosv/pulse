@@ -3,10 +3,11 @@
 import axios from "axios";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { LuLoader } from "react-icons/lu";
 import { LoadingPage } from "@/components/LoadingPage";
+import useConfigStore from "@/stores/configStore";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -16,6 +17,14 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { clearConfig, isLoaded } = useConfigStore();
+  
+  useEffect(() => {
+    if (isLoaded){
+      clearConfig();
+    }
+  }, [isLoaded, clearConfig]);
+  
 
   if (status === "loading") {
     return <LoadingPage />;

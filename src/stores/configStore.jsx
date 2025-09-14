@@ -1,11 +1,12 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { getServices } from '@/services/services';
 
 const useConfigStore = create(
   persist(
     (set) => ({
       configurations: [],
+      activeConfig: [],
 
       system: [],
       payMethods: [],
@@ -27,9 +28,8 @@ const useConfigStore = create(
       loadConfig: async () => {
         set({ loading: true });
         try {
-          const response = await getServices('configuration/initial');
-          let data = response.data;
-          console.log(data);
+          const response = await getServices('config/initial');
+          let data = response.data.data;
           set({ configurations: data.configurations });
           set({ system: data.system });
           set({ payMethods: data.payMethods });
@@ -48,6 +48,12 @@ const useConfigStore = create(
           set({ loading: false });
         }
       },
+
+
+      setActiveConfig: (activeConfig) => {
+        set({ activeConfig });
+      },
+
 
       clearConfig: () => {
         set({ 
@@ -69,10 +75,11 @@ const useConfigStore = create(
     }),
     {
       name: 'config-storage', // unique name
-      getStorage: () => localStorage, // (optional) by default, 'localStorage' is used
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
     }
   )
 );
+
 
 
 
