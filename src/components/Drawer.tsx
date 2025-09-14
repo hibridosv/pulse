@@ -1,23 +1,28 @@
 'use client';
-import { FC, useState } from "react";
+import { FC, ReactElement, useState } from "react";
 import { signOut } from "next-auth/react";
 import { IoClose } from "react-icons/io5";
-import { FaChevronDown, FaSignOutAlt } from "react-icons/fa";
+import { FaCashRegister, FaChevronDown, FaFileInvoice, FaSignOutAlt, FaTools } from "react-icons/fa";
 import { useThemeStore } from "@/stores/themeStore";
 import Image from "next/image";
+import { BiFingerprint, BiHelpCircle, BiHistory, BiLinkAlt, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
+import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
+import { GrConfigure } from "react-icons/gr";
 
 // --- Data Structure ---
 interface MenuItem {
   label: string;
   href?: string;
+  icon?: ReactElement;
   children?: MenuItem[];
 }
 
 // Expanded menu items to test scrolling
 const menuItems: MenuItem[] = [
-  { label: "Dashboard", href: "/dashboard" },
+  { label: "Panel Principal", href: "/dashboard", icon: <BiFingerprint className="mt-1 mr-2" /> },
+  { label: "Control de cajas", href: "/dashboard", icon: <FaCashRegister className="mt-1 mr-2" /> },
   {
-    label: "Productos",
+    label: "Inventario", icon: <MdInventory className="mt-1 mr-2" />,
     children: [
       { label: "Ver Productos", href: "/products" },
       { label: "Añadir Producto", href: "/products/new" },
@@ -25,30 +30,78 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Cuenta",
+    label: "Efectivo", icon: <BiMoney className="mt-1 mr-2" />,
     children: [
       { label: "Perfil", href: "/account/profile" },
       { label: "Facturación", href: "/account/billing" },
       { label: "Seguridad", href: "/account/security" },
     ],
   },
-  { label: "Pedidos", href: "/orders" },
-  { label: "Clientes", href: "/customers" },
-  { label: "Analíticas", href: "/analytics" },
-  { label: "Marketing", href: "/marketing" },
   {
-    label: "Configuración",
+    label: "Cuentas", icon: <BiMoneyWithdraw className="mt-1 mr-2" />,
+    children: [
+      { label: "Perfil", href: "/account/profile" },
+      { label: "Facturación", href: "/account/billing" },
+      { label: "Seguridad", href: "/account/security" },
+    ],
+  },
+  {
+    label: "Directorio", icon: <BiUserPin className="mt-1 mr-2" />,
+    children: [
+      { label: "Perfil", href: "/account/profile" },
+      { label: "Facturación", href: "/account/billing" },
+      { label: "Seguridad", href: "/account/security" },
+    ],
+  },
+  {
+    label: "Historiales", icon: <BiHistory className="mt-1 mr-2" />,
+    children: [
+      { label: "Perfil", href: "/account/profile" },
+      { label: "Facturación", href: "/account/billing" },
+      { label: "Seguridad", href: "/account/security" },
+    ],
+  },
+  {
+    label: "Herramientas", icon: <FaTools className="mt-1 mr-2" />,
+    children: [
+      { label: "Perfil", href: "/account/profile" },
+      { label: "Facturación", href: "/account/billing" },
+      { label: "Seguridad", href: "/account/security" },
+    ],
+  },
+  {
+    label: "Reportes", icon: <MdReport className="mt-1 mr-2" />,
+    children: [
+      { label: "Perfil", href: "/account/profile" },
+      { label: "Facturación", href: "/account/billing" },
+      { label: "Seguridad", href: "/account/security" },
+    ],
+  },
+  {
+    label: "Facturación", icon: <FaFileInvoice className="mt-1 mr-2" />,
+    children: [
+      { label: "Perfil", href: "/account/profile" },
+      { label: "Facturación", href: "/account/billing" },
+      { label: "Seguridad", href: "/account/security" },
+    ],
+  },
+  {
+    label: "Transferencias", icon: <MdTransferWithinAStation className="mt-1 mr-2" />,
+    children: [
+      { label: "Perfil", href: "/account/profile" },
+      { label: "Facturación", href: "/account/billing" },
+      { label: "Seguridad", href: "/account/security" },
+    ],
+  },
+  {
+    label: "Configuraciones", icon: <GrConfigure className="mt-1 mr-2" />,
     children: [
       { label: "General", href: "/settings/general" },
       { label: "Usuarios", href: "/settings/users" },
       { label: "Integraciones", href: "/settings/integrations" },
     ],
   },
-  { label: "Ayuda", href: "/help" },
-  { label: "Enviar Feedback", href: "/feedback" },
-  { label: "Protegido", href: "/protected" },
-  { label: "Otro Item", href: "/another" },
-  { label: "Y Otro Más", href: "/yet-another" },
+  { label: "Ayuda", href: "/help", icon: <BiHelpCircle className="mt-1 mr-2" /> },
 ];
 
 // --- SubMenu Component ---
@@ -62,7 +115,7 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
         onClick={handleToggle}
         className="w-full flex justify-between items-center p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main"
       >
-        <span>{item.label}</span>
+        <span className="flex">{item.icon}{item.label}</span>
         <FaChevronDown
           className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
           size={14}
@@ -134,8 +187,9 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
                   <a
                     href={item.href}
                     onClick={onClose}
-                    className="block p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main"
+                    className="block p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main flex"
                   >
+                   {item.icon}
                     {item.label}
                   </a>
                 </li>
