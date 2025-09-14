@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useThemeStore } from '@/stores/themeStore';
 import { HiMenu } from 'react-icons/hi';
+import { IoHome } from 'react-icons/io5';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
 
 export const Navbar = () => {
@@ -46,7 +47,9 @@ export const Navbar = () => {
 
           {/* Lado Derecho (puedes añadir más cosas aquí) */}
           <div>
-            {/* Icono de Home o similar si lo necesitas */}
+            <Link href="/dashboard" className="text-text-main hover:text-primary">
+              <IoHome size={26} />
+            </Link>
           </div>
         </div>
       </nav>

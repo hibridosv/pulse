@@ -31,7 +31,7 @@ const handler = NextAuth({
 
         if (res.ok && user) {
           console.log("Authorization successful.");
-          return { ...user, accessToken: user.access_token }
+          return { ...user, accessToken: user.access_token, refreshToken: user.refresh_token, expiresAt: user.expires_at, url: user.url }
         }
         // console.log("Authorization failed.");
         return null
@@ -41,12 +41,18 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }: any) {
       if (user) {
-        token.accessToken = user.accessToken
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+        token.expiresAt = user.expiresAt;
+        token.url = user.url;
       }
       return token
     },
     async session({ session, token }: any) {
-      session.accessToken = token.accessToken
+      session.accessToken = token.accessToken;
+      session.refreshToken = token.refreshToken;
+      session.expiresAt = token.expiresAt;
+      session.url = token.url;
       return session
     },
     async redirect({ url, baseUrl }) {

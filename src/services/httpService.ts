@@ -1,17 +1,12 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/react';
 
-// url de la API
-const NEXT_API_BASE_URL = process.env.NEXT_PUBLIC_APP_URL;
 // Define una interfaz que extiende la configuración de Axios para incluir nuestra propiedad personalizada
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-// url de autenticación (se mantiene por si acaso, aunque no se usará para el refresh token)
-
 const httpService = axios.create({
-  baseURL: NEXT_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -20,6 +15,13 @@ const httpService = axios.create({
 httpService.interceptors.request.use(
   async (config) => {
     const session = await getSession();
+    // console.log('Session:', session);
+
+    // Si la sesión tiene una URL, úsala como baseURL para esta petición
+    if (session?.url) {
+      config.baseURL = `${session.url}/api`;
+    }
+
     if (session?.accessToken) {
       config.headers.Authorization = `Bearer ${session.accessToken}`;
     }
