@@ -152,16 +152,16 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+      className="fixed inset-0 bg-black bg-opacity-60 z-40 transition-opacity"
       onClick={onClose}
     >
       <div
-        className={`fixed left-0 top-0 h-full w-64 shadow-lg z-50 transform transition-all duration-500 ease-in-out flex flex-col relative ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+        className={`left-0 top-0 h-full w-64 shadow-lg z-50 transform transition-all duration-500 ease-in-out flex flex-col relative bg-[url('/img/sidenav.jpg')] bg-cover bg-center ${isOpen ? 'opacity-100' : 'opacity-0'}`}
         onClick={(e) => e.stopPropagation()}
         style={{ transform: isOpen ? "translateX(0)" : "translateX(-100%)" }}
       >
         {/* Overlay para la opacidad */}
-        <div className="absolute inset-0 bg-background-soft z-0 opacity-90"></div>
+        <div className="absolute inset-0 bg-background-soft/70 z-0"></div>
 
         {/* Header */}
         <div className="relative p-4 border-b border-white/10 flex-shrink-0 bg-background-main z-10">
@@ -179,10 +179,8 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Menu List (Scrollable) */}
-        <div className="flex-grow overflow-y-auto z-10 custom-scrollbar relative bg-[url('/img/sidenav.jpg')] bg-cover bg-center">
-          {/* Overlay para la opacidad del cuerpo */}
-          <div className="absolute inset-0 bg-background-soft z-0 opacity-90"></div>
+        {/* Menu List (Scrollable)*/}
+        <div className="flex-grow overflow-y-auto z-10 custom-scrollbar relative">
           <ul className="p-4 relative z-10">
             {menuItems.map((item, index) =>
               item.children ? (
