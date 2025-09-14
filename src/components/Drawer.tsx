@@ -156,12 +156,15 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className={`fixed left-0 top-0 h-full w-64 bg-background-soft shadow-lg z-50 transform transition-all duration-500 ease-in-out flex flex-col ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+        className={`fixed left-0 top-0 h-full w-64 shadow-lg z-50 transform transition-all duration-500 ease-in-out flex flex-col relative ${isOpen ? 'opacity-100' : 'opacity-0'}`}
         onClick={(e) => e.stopPropagation()}
         style={{ transform: isOpen ? "translateX(0)" : "translateX(-100%)" }}
       >
+        {/* Overlay para la opacidad */}
+        <div className="absolute inset-0 bg-background-soft z-0 opacity-90"></div>
+
         {/* Header */}
-        <div className="relative p-4 border-b border-white/10 flex-shrink-0 bg-background-main">
+        <div className="relative p-4 border-b border-white/10 flex-shrink-0 bg-background-main z-10">
           <div className="w-full h-10">
             <Image
               src="/img/logo_hibrido_s.png"
@@ -177,8 +180,10 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Menu List (Scrollable) */}
-        <div className="flex-grow overflow-y-auto">
-          <ul className="p-4">
+        <div className="flex-grow overflow-y-auto z-10 custom-scrollbar relative bg-[url('/img/sidenav.jpg')] bg-cover bg-center">
+          {/* Overlay para la opacidad del cuerpo */}
+          <div className="absolute inset-0 bg-background-soft z-0 opacity-90"></div>
+          <ul className="p-4 relative z-10">
             {menuItems.map((item, index) =>
               item.children ? (
                 <SubMenu key={index} item={item} onClose={onClose} />
@@ -198,7 +203,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
           </ul>
         </div>
 
-        <div className="flex justify-center items-center p-2 gap-4">
+        <div className="flex justify-center items-center p-2 gap-4 z-10 bg-background-main">
             <button
               onClick={() => setTheme('indigo')}
               className={`px-3 py-1 rounded text-sm ${theme === 'indigo' ? 'bg-primary text-white' : 'bg-secondary'}`}
@@ -214,7 +219,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer (Logout) */}
-        <div className="p-2 border-t bg-white border-slate-400 flex-shrink-0 font-semibold">
+        <div className="p-2 border-t border-white/10 flex-shrink-0 font-semibold z-10 bg-background-main">
           <button
             onClick={() => signOut()}
             className="w-full flex items-center justify-center p-2 rounded text-red-500 hover:bg-red-200"

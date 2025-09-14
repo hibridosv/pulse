@@ -61,3 +61,24 @@ body {
   --color-background: 20 32 45; /* darker blue-gray */
   --color-background-soft: 30 48 67; /* medium dark blue-gray */
 }
+
+/* Custom Scrollbar Styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Adjust as needed, or 0px to hide */
+  background-color: transparent; /* Make track transparent */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2); /* Light thumb on dark background */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent; /* thumb color track color */
+}
