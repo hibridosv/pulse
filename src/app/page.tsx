@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { LuLoader } from "react-icons/lu";
+import { LoadingPage } from "@/components/LoadingPage";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -17,7 +18,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   if (status === "loading") {
-    return <p>Cargando...</p>;
+    return <LoadingPage />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

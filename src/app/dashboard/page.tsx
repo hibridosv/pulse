@@ -1,12 +1,13 @@
 'use client';
 
 import { useSession, signOut } from "next-auth/react";
+import { LoadingPage } from "@/components/LoadingPage";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return <LoadingPage />;
   }
 
   return (
