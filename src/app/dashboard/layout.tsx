@@ -1,11 +1,11 @@
 
 'use client'
 
-import Navbar from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mx-auto px-1 my-auto ">
+    <div className="mx-auto my-auto ">
       <div>
         <Navbar />
       </div>

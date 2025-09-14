@@ -31,3 +31,33 @@ body {
     text-wrap: balance;
   }
 }
+
+/* 1. Definimos las variables de color para el tema por defecto (indigo) */
+:root {
+  --color-primary: 59 130 246; /* blue-500 */
+  --color-secondary: 99 102 241; /* indigo-500 */
+  --color-accent: 234 179 8; /* yellow-500 */
+  --color-text: 243 244 246; /* gray-100 */
+  --color-background: 17 24 39; /* gray-900 */
+  --color-background-soft: 31 41 55; /* gray-800 */
+}
+
+/* 2. Definimos las variables para el tema verde */
+[data-theme='green'] {
+  --color-primary: 34 197 94; /* green-500 */
+  --color-secondary: 22 163 74; /* green-600 */
+  --color-accent: 249 115 22; /* orange-500 */
+  --color-text: 243 244 246; /* gray-100 */
+  --color-background: 20 32 25; /* dark green-ish */
+  --color-background-soft: 21 38 32; /* custom dark green-gray */
+}
+
+/* 3. (Opcional) Puedes definir un tema indigo explícito si quieres ser consistente */
+[data-theme='indigo'] {
+  --color-primary: 59 130 246; /* blue-500 */
+  --color-secondary: 99 102 241; /* indigo-500 */
+  --color-accent: 234 179 8; /* yellow-500 */
+  --color-text: 243 244 246; /* gray-100 */
+  --color-background: 17 24 39; /* gray-900 */
+  --color-background-soft: 31 41 55; /* gray-800 */
+}

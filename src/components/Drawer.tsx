@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { FC, useState } from "react";
 import { signOut } from "next-auth/react";
 import { IoClose } from "react-icons/io5";
@@ -58,7 +58,7 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
     <li className="mb-2">
       <button
         onClick={handleToggle}
-        className="w-full flex justify-between items-center p-2 rounded text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+        className="w-full flex justify-between items-center p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main"
       >
         <span>{item.label}</span>
         <FaChevronDown
@@ -73,7 +73,7 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
               <a
                 href={child.href}
                 onClick={onClose}
-                className="block p-2 rounded text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+                className="block p-2 rounded text-text-main/70 hover:bg-white/5 hover:text-text-main"
               >
                 {child.label}
               </a>
@@ -100,14 +100,14 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out flex flex-col"
+        className="fixed left-0 top-0 h-full w-64 bg-background-soft shadow-lg z-50 transform transition-transform duration-300 ease-in-out flex flex-col"
         onClick={(e) => e.stopPropagation()}
         style={{ transform: isOpen ? "translateX(0)" : "translateX(-100%)" }}
       >
         {/* Header */}
-        <div className="p-4 flex justify-between items-center border-b flex-shrink-0">
-          <h2 className="text-lg font-semibold text-gray-800">Menú</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-800">
+        <div className="p-4 flex justify-between items-center border-b border-white/10 flex-shrink-0 bg-background-main">
+          <h2 className="text-lg font-semibold text-text-main">Menú</h2>
+          <button onClick={onClose} className="text-text-main/70 hover:text-text-main">
             <IoClose size={24} />
           </button>
         </div>
@@ -123,7 +123,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
                   <a
                     href={item.href}
                     onClick={onClose}
-                    className="block p-2 rounded text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    className="block p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main"
                   >
                     {item.label}
                   </a>
@@ -134,10 +134,10 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer (Logout) */}
-        <div className="p-4 border-t flex-shrink-0">
+        <div className="p-2 border-t bg-white border-slate-400 flex-shrink-0 font-semibold">
           <button
             onClick={() => signOut()}
-            className="w-full flex items-center justify-center p-2 rounded text-red-500 hover:bg-red-50"
+            className="w-full flex items-center justify-center p-2 rounded text-red-500 hover:bg-red-200"
           >
             <FaSignOutAlt className="mr-2" />
             <span>Cerrar Sesión</span>
