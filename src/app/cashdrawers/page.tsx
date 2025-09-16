@@ -53,7 +53,7 @@ export default function Page() {
             <div key={cash.id} className="md:mx-6 mx-2 shadow-2xl shadow-slate-900 rounded-t-full clickeable" 
             onClick={()=>handleSelect(cash)}>
               <Image
-                  src={ cash.status == 1 ? "/img/cashdrawer.png" : cashDrawerActive?.id == cash.id ? "/img/cashdrawer.png" : "/img/cashdrawer_block.png"}
+                  src={ cash.status == 1 ? "/img/cashdrawer.png" : cashDrawerActive?.id == cash.id ? "/img/cashdrawer_active.png" : "/img/cashdrawer_block.png"}
                   alt="CashDrawer"  width={168} height={168} priority={false} />
                 <div className="flex justify-center uppercase font-bold text-lg text-cyan-600">{ cash.name }</div>
                 <div className="flex justify-center text-sm text-blue-600 mb-2">

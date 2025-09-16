@@ -24,6 +24,7 @@ const useConfigStore = create(
       isLoaded: false,
       loading: false,
       error: null,
+      url: null,
 
       loadConfig: async () => {
         set({ loading: true });
@@ -54,6 +55,9 @@ const useConfigStore = create(
         set({ activeConfig });
       },
 
+      setUrl: (url) => {
+        set({ url });
+      },
 
       clearConfig: () => {
         set({ 
@@ -69,6 +73,7 @@ const useConfigStore = create(
           client: [],
           tenant: [],
           isLoaded: false,
+          url: null,
          });
       },
 

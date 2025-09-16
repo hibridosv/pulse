@@ -1,3 +1,4 @@
+import { formatDateAsNumber } from "./date-formats";
 
 export const getCountryProperty = (country: number): { name: string, subname: string, currency: string, currencyName: string, document: string , taxes: number, taxesName: string} => {
   switch (country) {
@@ -13,4 +14,11 @@ export const numberToMoney = (number: number, systemInformation = null as any): 
     let num = number ? number : 0;
     let symbol =  systemInformation ? getCountryProperty(parseInt(systemInformation?.system?.country)).currency : '$';
     return `${symbol}${num.toFixed(2)}`
+}
+
+
+export const dateToNumberValidate = () =>{
+  const fecha = new Date();
+  const hoy = fecha.toISOString();
+  return formatDateAsNumber(hoy)
 }

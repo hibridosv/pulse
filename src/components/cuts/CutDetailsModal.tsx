@@ -5,6 +5,7 @@ import useConfigStore from "@/stores/configStore";
 import Modal from "../modal/Modal";
 import { formatDate, formatTime } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
+import { ButtonDownload } from "../button/button-download";
 
 
 export interface CutDetailsModalProps {
@@ -35,7 +36,6 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
 
           {/* Header Section */}
           <div className="text-center mb-3">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Corte de Caja</h2>
             <p className="text-lg text-gray-700">Cajero: <span className="font-semibold">{record?.employee?.name}</span></p>
             <p className="text-lg text-gray-700 uppercase mb-2">Caja: <span className="font-semibold">{record?.cashdrawer?.name}</span></p>
             <div className="flex justify-center">
@@ -48,14 +48,14 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
           </div>
 
           {/* Key Metrics Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-            <div className="bg-gray-50 rounded-lg shadow-sm p-4 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+            <div className="bg-gray-50 rounded-lg shadow-sm p-2 text-center">
               <div className="text-gray-600 text-sm mb-1">Efectivo Apertura</div>
               <div className="font-bold text-2xl text-gray-900">
                 { numberToMoney(record?.inicial_cash ? record?.inicial_cash : 0, system) }
               </div>
             </div>
-            <div className="bg-gray-50 rounded-lg shadow-sm p-4 text-center">
+            <div className="bg-gray-50 rounded-lg shadow-sm p-2 text-center">
               <div className="text-gray-600 text-sm mb-1">Efectivo Cierre</div>
               <div className="font-bold text-2xl text-gray-900">
                 { numberToMoney(record?.final_cash ? record?.final_cash : 0, system) }
@@ -121,7 +121,7 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
           </div>
 
           {/* Summary Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
             <div className="bg-gray-50 rounded-lg shadow-sm p-4 text-center">
               <div className="text-gray-600 text-sm mb-1">Efectivo en Caja</div>
               <div className="font-bold text-2xl text-gray-900">
@@ -139,7 +139,7 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        {/* <ButtonDownload href={`/download/pdf/cut/${record.id}`}><FaDownload  size={24}/></ButtonDownload> */}
+        <ButtonDownload href={`download/pdf/cut/${record.id}`}><FaDownload  size={24}/></ButtonDownload>
         <Button onClick={onClose} preset={Preset.close} disabled={false} />
       </Modal.Footer>
     </Modal>

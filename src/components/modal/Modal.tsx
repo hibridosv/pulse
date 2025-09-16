@@ -50,7 +50,7 @@ const Modal: FC<ModalProps> & {
       onClick={closeOnOverlayClick ? onClose : undefined} // Conditional onClick
     >
       <div
-        className={`relative w-full ${maxWidthClass} p-6 bg-white rounded-lg shadow-lg`}
+        className={`relative flex flex-col w-full ${maxWidthClass} max-h-[90vh] p-6 bg-white rounded-lg shadow-lg`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -63,7 +63,7 @@ const Modal: FC<ModalProps> & {
 };
 
 const ModalHeader: FC<ModalHeaderProps> = ({ title, onClose, hideCloseButton }) => (
-  <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-200 ">
+  <div className="flex-shrink-0 flex items-center justify-between pb-3 mb-4 border-b border-gray-200 ">
     <h3 className="text-xl font-semibold text-gray-900 uppercase">
       {title}
     </h3>
@@ -81,11 +81,11 @@ const ModalHeader: FC<ModalHeaderProps> = ({ title, onClose, hideCloseButton }) 
 );
 
 const ModalBody: FC<ModalSubComponentProps> = ({ children }) => (
-  <div className="mb-4">{children}</div>
+  <div className="overflow-y-auto">{children}</div>
 );
 
 const ModalFooter: FC<ModalSubComponentProps> = ({ children }) => (
-  <div className="flex justify-end gap-4 pt-4 mt-4 border-t border-gray-200 ">
+  <div className="flex-shrink-0 flex justify-end gap-4 pt-4 mt-4 border-t border-gray-200 ">
     {children}
   </div>
 );
