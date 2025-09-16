@@ -29,13 +29,13 @@ export default function DashboardPage() {
                 <PrincipalInfo  />
               </div>
               <div className="col-span-4">
-                <div className='m-4 border-2 flex justify-center font-light text-sm '>VENTAS DE LA SEMANA</div>
-                <div className='w-full px-4'>
+                <ViewTitle text='VENTAS DE LA SEMANA' />
+                <div className='w-full h-96 px-4'>
                   <CharBarWeek />
                 </div>
               </div>
             </div>
-            <div className='border-t-2 border-teal-500 m-4'>
+            <div className='border-t-2 border-teal-500 m-4 h-80'>
                 <CharBarDay />
             </div>
           </div>
