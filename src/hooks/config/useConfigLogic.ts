@@ -11,8 +11,8 @@ export function useConfigLogic() {
       loadConfig()
     }
     if (configurations && !activeConfig) {
-      setActiveConfig(extractActiveFeature(configurations))
-      console.log("Se renderizo")
+      let extracted = extractActiveFeature(configurations)
+      setActiveConfig(extracted)
     }
   }, [isLoaded, loadConfig, setActiveConfig, configurations, activeConfig])
 

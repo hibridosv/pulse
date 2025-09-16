@@ -20,85 +20,117 @@ interface MenuItem {
 // Expanded menu items to test scrolling
 const menuItems: MenuItem[] = [
   { label: "Panel Principal", href: "/dashboard", icon: <BiFingerprint className="mt-1 mr-2" /> },
-  { label: "Control de cajas", href: "/dashboard", icon: <FaCashRegister className="mt-1 mr-2" /> },
+  { label: "Control de cajas", href: "/cashdrawers", icon: <FaCashRegister className="mt-1 mr-2" /> },
   {
     label: "Inventario", icon: <MdInventory className="mt-1 mr-2" />,
     children: [
       { label: "Ver Productos", href: "/products" },
-      { label: "Añadir Producto", href: "/products/new" },
-      { label: "Categorías", href: "/products/categories" },
+      { label: "Registrar Producto", href: "/products/new" },
+      { label: "Editar Producto", href: "/products/categories" },
+      { label: "Agregar Productos", href: "/products/categories" },
+      { label: "Descontar Productos", href: "/products/categories" },
+      { label: "Productos Relacionados", href: "/products/categories" },
+      { label: "Bajas Existencias", href: "/products/categories" },
+      { label: "Proximos Vencimientos", href: "/products/categories" },
+      { label: "Kardex", href: "/products/categories" },
     ],
   },
   {
     label: "Efectivo", icon: <BiMoney className="mt-1 mr-2" />,
     children: [
-      { label: "Perfil", href: "/account/profile" },
-      { label: "Facturación", href: "/account/billing" },
-      { label: "Seguridad", href: "/account/security" },
+      { label: "Registro de Gastos", href: "/account/profile" },
+      { label: "Remesas de Efectivo", href: "/account/billing" },
+      { label: "Cuentas Bancarias", href: "/account/security" },
+      { label: "Flujo de Efectivo", href: "/account/security" },
+      { label: "Historial de Transferencias", href: "/account/security" },
     ],
   },
   {
     label: "Cuentas", icon: <BiMoneyWithdraw className="mt-1 mr-2" />,
     children: [
-      { label: "Perfil", href: "/account/profile" },
-      { label: "Facturación", href: "/account/billing" },
-      { label: "Seguridad", href: "/account/security" },
+      { label: "Cuentas por cobrar", href: "/account/profile" },
+      { label: "Cuentas por Pagar", href: "/account/billing" },
     ],
   },
   {
     label: "Directorio", icon: <BiUserPin className="mt-1 mr-2" />,
     children: [
-      { label: "Perfil", href: "/account/profile" },
-      { label: "Facturación", href: "/account/billing" },
-      { label: "Seguridad", href: "/account/security" },
+      { label: "Contactos", href: "/account/profile" },
+      { label: "Clientes", href: "/account/billing" },
+      { label: "Repartidores", href: "/account/security" },
+      { label: "Proveedores", href: "/account/security" },
+      { label: "Referidos", href: "/account/security" },
     ],
   },
   {
     label: "Historiales", icon: <BiHistory className="mt-1 mr-2" />,
     children: [
-      { label: "Perfil", href: "/account/profile" },
-      { label: "Facturación", href: "/account/billing" },
-      { label: "Seguridad", href: "/account/security" },
+      { label: "Ventas", href: "/account/profile" },
+      { label: "Gastos", href: "/account/billing" },
+      { label: "Remesas", href: "/account/security" },
+      { label: "Corted de Caja", href: "/account/security" },
+      { label: "Ventas con descuento", href: "/account/security" },
+      { label: "Listado de Ventas", href: "/account/security" },
+      { label: "Ventas por Usuario", href: "/account/security" },
+      { label: "Ventas por Cliente", href: "/account/security" },
+      { label: "Ventas por Producto", href: "/account/security" },
+      { label: "Ordenes Eliminadas", href: "/account/security" },
+      { label: "Listado de costos", href: "/account/security" },
+      { label: "Notas de Envio", href: "/account/security" },
+      { label: "Abonos Recibidos", href: "/account/security" },
+      { label: "Comisiones Pagadas", href: "/account/security" },
     ],
   },
   {
     label: "Herramientas", icon: <FaTools className="mt-1 mr-2" />,
     children: [
-      { label: "Perfil", href: "/account/profile" },
-      { label: "Facturación", href: "/account/billing" },
-      { label: "Seguridad", href: "/account/security" },
+      { label: "Cotizaciones", href: "/account/profile" },
+      { label: "Detalle de Comisiones", href: "/account/profile" },
+      { label: "Puntos de Oro", href: "/account/billing" },
+      { label: "Ajustar Inventario", href: "/account/security" },
     ],
   },
   {
     label: "Reportes", icon: <MdReport className="mt-1 mr-2" />,
     children: [
-      { label: "Perfil", href: "/account/profile" },
-      { label: "Facturación", href: "/account/billing" },
-      { label: "Seguridad", href: "/account/security" },
+      { label: "Detalle de Ventas", href: "/account/profile" },
+      { label: "Detalle de Gastos", href: "/account/billing" },
+      { label: "Productos Ingresados", href: "/account/security" },
+      { label: "Productos por lote", href: "/account/security" },
+      { label: "Productos Averiados", href: "/account/security" },
+      { label: "Anexos de IVA y descargas", href: "/account/security" },
     ],
   },
   {
     label: "Facturación", icon: <FaFileInvoice className="mt-1 mr-2" />,
     children: [
-      { label: "Perfil", href: "/account/profile" },
-      { label: "Facturación", href: "/account/billing" },
-      { label: "Seguridad", href: "/account/security" },
+      { label: "Documentos Emitidos", href: "/account/profile" },
+      { label: "Correlativo de Documentos", href: "/account/billing" },
+      { label: "Documentos Electrónicos", href: "/account/billing" },
+      { label: "Documentos Rechazados", href: "/account/billing" },
+      { label: "Notas de Remisión", href: "/account/billing" },
+      { label: "Buscar Documentos", href: "/account/billing" },
+
     ],
   },
   {
     label: "Transferencias", icon: <MdTransferWithinAStation className="mt-1 mr-2" />,
     children: [
-      { label: "Perfil", href: "/account/profile" },
-      { label: "Facturación", href: "/account/billing" },
-      { label: "Seguridad", href: "/account/security" },
+      { label: "Crear Transferencia", href: "/account/profile" },
+      { label: "Aceptar Transferencia", href: "/account/billing" },
+      { label: "Solicitar Transferencia", href: "/account/security" },
+      { label: "Listado de Transferencias", href: "/account/security" },
     ],
   },
   {
     label: "Configuraciones", icon: <GrConfigure className="mt-1 mr-2" />,
     children: [
-      { label: "General", href: "/settings/general" },
-      { label: "Usuarios", href: "/settings/users" },
-      { label: "Integraciones", href: "/settings/integrations" },
+      { label: "Principal", href: "/settings/general" },
+      { label: "Productos", href: "/settings/general" },
+      { label: "Usuarios", href: "/settings/general" },
+      { label: "Permisos de Usuario", href: "/settings/users" },
+      { label: "Sucursales", href: "/settings/integrations" },
+      { label: "Pagos", href: "/settings/integrations" },
     ],
   },
   { label: "Ayuda", href: "/help", icon: <BiHelpCircle className="mt-1 mr-2" /> },
@@ -124,11 +156,11 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
       {isOpen && (
         <ul className="pl-4 pt-2">
           {item.children?.map((child, index) => (
-            <li key={index} className="mb-2">
+            <li key={index} className="mb-1">
               <a
                 href={child.href}
                 onClick={onClose}
-                className="block p-2 rounded text-text-main/70 hover:bg-white/5 hover:text-text-main"
+                className="block p-1 rounded text-text-main/70 hover:bg-white/5 hover:text-text-main"
               >
                 {child.label}
               </a>
@@ -190,7 +222,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
                   <a
                     href={item.href}
                     onClick={onClose}
-                    className="block p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main flex"
+                    className="p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main flex"
                   >
                    {item.icon}
                     {item.label}

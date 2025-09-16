@@ -83,3 +83,32 @@ body {
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent; /* thumb color track color */
 }
 
+
+
+.clickeable {
+  @apply cursor-pointer active:relative active:top-1
+}
+.input {
+  @apply bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
+}
+.input-disabled {
+  @apply appearance-none block w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 rounded-md
+}
+.input-label {
+  @apply truncate block text-gray-700 text-sm font-bold
+}
+
+
+
+.status-success {
+  @apply text-lime-500 font-bold
+}
+.status-danger {
+  @apply text-red-500 font-bold
+}
+.status-info {
+  @apply text-sky-500 font-bold
+}
+.status-warning {
+  @apply text-orange-400 font-bold
+}

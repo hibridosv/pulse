@@ -9,8 +9,8 @@ import useConfigStore from '@/stores/configStore';
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
-  const { user, client } = useConfigStore();
-   console.log(user, client);
+  const { user, client, permission } = useConfigStore();
+   console.log(permission);
   return (
     <>
       <nav className="bg-background-main p-2 text-text-main shadow-md">
