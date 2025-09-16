@@ -3,25 +3,41 @@
 import { useSession, signOut } from "next-auth/react";
 import { LoadingPage } from "@/components/LoadingPage";
 import { useConfigLogic } from "@/hooks/config/useConfigLogic";
-import useConfigStore from "@/stores/configStore";
+import { ViewTitle } from "@/components/ViewTitle";
+import { PrincipalInfo } from "@/components/dashboard/PrincipalInfo";
+import { CharBarWeek } from "@/components/dashboard/CharBarWeek";
+import { CharBarDay } from "@/components/dashboard/CharBarDay";
+import { useDashBoardLogic } from "@/hooks/useDashBoardLogic";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
-  const { clearConfig } = useConfigStore();
   useConfigLogic(); // carga todas las configuraciones necesarias
+  useDashBoardLogic();
   if (status === "loading") {
     return <LoadingPage />;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center py-2">
-      <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="mt-4 text-lg">Welcome to your dashboard.</p>
-        <button onClick={() => clearConfig()} className="mt-6 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-          Clear Config
-        </button>
-      </div>
-    </div>
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
+              <div className="col-span-6 border-r md:border-sky-600">
+                <div className="flex justify-between">
+                  <ViewTitle text='PANEL PRINCIPAL' />
+                  
+                </div>
+
+                <PrincipalInfo  />
+              </div>
+              <div className="col-span-4">
+                <div className='m-4 border-2 flex justify-center font-light text-sm '>VENTAS DE LA SEMANA</div>
+                <div className='w-full px-4'>
+                  <CharBarWeek />
+                </div>
+              </div>
+            </div>
+            <div className='border-t-2 border-teal-500 m-4'>
+                <CharBarDay />
+            </div>
+          </div>
   );
 }
