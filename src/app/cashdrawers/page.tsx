@@ -9,6 +9,7 @@ import Image from "next/image";
 import useConfigStore from "@/stores/configStore";
 // import { CashdrawerOpenModal } from "@/components/cashdrawer/CashDrawerOpenModal";
 import useModalStore from "@/stores/modalStorage";
+import { CashdrawerOpenModal } from "@/components/cashdrawer/CashDrawerOpenModal";
 
 export default function Page() {
   const { status } = useSession();
@@ -51,7 +52,7 @@ export default function Page() {
         </div>
 
     </div> 
-    {/* <CashdrawerOpenModal isShow={modals['cashDrawerOpen']} onClose={() => closeModal('cashDrawerOpen')} drawer={cashDrawerActive}  /> */}
+    <CashdrawerOpenModal isShow={modals['cashDrawerOpen']} onClose={() => closeModal('cashDrawerOpen')} drawer={cashDrawerActive}  />
 </div>
   );
 }

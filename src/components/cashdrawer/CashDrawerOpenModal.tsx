@@ -1,43 +1,45 @@
-// "use client";
-// import { useContext, useState } from "react";
-// import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
-// import toast, { Toaster } from 'react-hot-toast';
-// import { useForm } from "react-hook-form";
+import { Close } from "@/styles/svg";
+import { Button, Preset } from "../button/button";
+
+export interface CashdrawerOpenModalProps {
+  onClose: () => void;
+  isShow?: boolean;
+  drawer: string;
+}
+
+export function CashdrawerOpenModal(props: CashdrawerOpenModalProps) {
+    const { onClose, isShow, drawer } = props;
+
+    console.log(isShow);
 
 
-// export interface CashdrawerOpenModalProps {
-//   onClose: () => void;
-//   isShow?: boolean;
-//   drawer: string;
-// }
+  if (!isShow) return null; // Only render if isShow is true
 
-// export function CashdrawerOpenModal(props: CashdrawerOpenModalProps) {
-//     const { onClose, isShow, drawer } = props;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose} >
+      <div className="relative w-full max-w-md p-6 bg-white rounded-lg shadow-lg" onClick={(e) => e.stopPropagation()} >
+        {/* Modal Header */}
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-200 ">
+          <h3 className="text-xl font-semibold text-gray-900 ">
+            Apertura de caja
+          </h3>
+          <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" onClick={onClose} >
+            { Close }
+            <span className="sr-only">Close modal</span>
+          </button>
+        </div>
+
+        {/* Modal Body */}
+        <div className="mx-4">
 
 
-//   return (
-//       <Modal show={true} >
-//         <ModalHeader>Terms of Service</ModalHeader>
-//         <ModalBody>
-//           <div className="space-y-6">
-//             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-//               With less than a month to go before the European Union enacts new consumer privacy laws for its citizens,
-//               companies around the world are updating their terms of service agreements to comply.
-//             </p>
-//             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-//               The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant
-//               to ensure a common set of data rights in the European Union. It requires organizations to notify users as
-//               soon as possible of high-risk data breaches that could personally affect them.
-//             </p>
-//           </div>
-//         </ModalBody>
-//         <ModalFooter>
-//           <Button>I accept</Button>
-//           <Button color="alternative">
-//             Decline
-//           </Button>
-//         </ModalFooter>
-//       </Modal>
-//   );
+        </div>
+        {/* Modal Footer */}
+        <div className="flex justify-end gap-4 pt-4 mt-4 border-t border-gray-200 ">
+          <Button onClick={onClose} preset={Preset.close} disabled={false} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
-// }
