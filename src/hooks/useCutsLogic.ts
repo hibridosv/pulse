@@ -2,11 +2,11 @@
 import useCutStore from '@/stores/cutStore'
 import { useEffect } from 'react'
 
-export function useCutsLogic(url: string, currentPage: any) {
+export function useCutsLogic(url: string, currentPage: any, showAll: boolean) {
   const { loadCuts } = useCutStore()
 
   useEffect(() => {
       loadCuts(url)
-  }, [loadCuts, currentPage])
+  }, [loadCuts, currentPage, showAll])
 
 }

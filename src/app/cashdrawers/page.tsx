@@ -19,21 +19,23 @@ import { usePagination } from "@/hooks/usePagination";
 import { Pagination } from "@/components/Pagination";
 import { CashDrawer } from "@/interfaces/cashdrawers";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { FaUser, FaUsers } from "react-icons/fa";
 
 export default function Page() {
   const { status } = useSession();
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   useCashDrawersLogic()
-  useCutsLogic(`cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10${currentPage}`, currentPage);
   const { cashDrawers } = useCashDrawerStore();
   const { cuts, loading } = useCutStore();
-  const { cashdrawer: cashDrawerActive } = useConfigStore();
+  const { cashdrawer: cashDrawerActive, user } = useConfigStore();
   const { modals, openModal, closeModal } = useModalStore();
   const [selectDrawer, setSelectDrawer] = useState<CashDrawer>();
+  const [showAll, setShowAll] = useState(false);
+  useCutsLogic(`cuts?included=employee,cashdrawer${!showAll && `&filterWhere[employee_id]==${user?.id}`}&sort=-updated_at&perPage=10${currentPage}`, currentPage, showAll);
 
-  // if (status === "loading") {
-  //   return <LoadingPage />;
-  // }
+  if (status === "loading") {
+    return <LoadingPage />;
+  }
 
   const handleSelect = (select: CashDrawer) => {
     if ((cashDrawerActive && cashDrawerActive?.id == select.id) || (!cashDrawerActive && select.status == 1)) {
@@ -68,6 +70,9 @@ export default function Page() {
     <div className="col-span-5">
         <div className="flex justify-between">
           <ViewTitle text="Sus ultimos cortes" />
+          <div onClick={()=>setShowAll(!showAll)} className="text-right">
+            { showAll ? <FaUsers size={32} className="m-4 text-2xl text-sky-900 clickeable" /> : <FaUser size={32} className="m-4 text-2xl text-red-900 clickeable" /> }
+          </div>
         </div>
         { loading ? <SkeletonTable columns={4} rows={10} /> : <ShowCutsTable records={cuts?.data} /> }
         <Pagination records={cuts} handlePageNumber={handlePageNumber } />

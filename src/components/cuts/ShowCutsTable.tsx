@@ -38,7 +38,7 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
   ));
 
   return (
-    <div className="mx-4 my-8">
+    <div className="m-4">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
         <table className="w-full text-sm text-left text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-200">
