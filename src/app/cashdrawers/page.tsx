@@ -7,22 +7,42 @@ import { useCashDrawersLogic } from "@/hooks/useCashDrawersLogic";
 import useCashDrawerStore from "@/stores/cashdrawersStore";
 import Image from "next/image";
 import useConfigStore from "@/stores/configStore";
-// import { CashdrawerOpenModal } from "@/components/cashdrawer/CashDrawerOpenModal";
 import useModalStore from "@/stores/modalStorage";
-import { CashdrawerOpenModal } from "@/components/cashdrawer/CashDrawerOpenModal";
+import { CashdrawerModal } from "@/components/cashdrawer/CashDrawerModal";
+import { ToasterMessage } from "@/components/toaster-message";
+import { useState } from "react";
+import { CashdrawerDetails } from "@/components/cashdrawer/CashDrawerDetails";
+import { useCutsLogic } from "@/hooks/useCutsLogic";
+import useCutStore from "@/stores/cutStore";
+import { ShowCutsTable } from "@/components/cuts/ShowCutsTable";
+import { usePagination } from "@/hooks/usePagination";
+import { Pagination } from "@/components/Pagination";
+import { CashDrawer } from "@/interfaces/cashdrawers";
 
 export default function Page() {
   const { status } = useSession();
+  const {currentPage, handlePageNumber} = usePagination("&page=1");
   useCashDrawersLogic()
+  useCutsLogic(`cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10${currentPage}`, currentPage);
   const { cashDrawers } = useCashDrawerStore();
+  const { cuts } = useCutStore();
   const { cashdrawer: cashDrawerActive } = useConfigStore();
   const { modals, openModal, closeModal } = useModalStore();
-
-  console.log("Cash drawers", cashDrawers);
+  const [selectDrawer, setSelectDrawer] = useState<CashDrawer>();
+ console.log("Cuts: ", cuts)
+ console.log("currentPage: ", currentPage)
 
   // if (status === "loading") {
   //   return <LoadingPage />;
   // }
+
+  const handleSelect = (select: CashDrawer) => {
+    if ((cashDrawerActive && cashDrawerActive?.id == select.id) || (!cashDrawerActive && select.status == 1)) {
+      setSelectDrawer(select);
+      openModal('cashDrawerOpen');
+    }
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-5 border-r md:border-primary">
@@ -32,7 +52,7 @@ export default function Page() {
         {
           cashDrawers?.data && cashDrawers?.data.map((cash: any) => (
             <div key={cash.id} className="md:mx-6 mx-2 shadow-2xl shadow-slate-900 rounded-t-full clickeable" 
-            onClick={()=>openModal('cashDrawerOpen')}>
+            onClick={()=>handleSelect(cash)}>
               <Image
                   src={ cash.status == 1 ? "/img/cashdrawer.png" : cashDrawerActive?.id == cash.id ? "/img/cashdrawer.png" : "/img/cashdrawer_block.png"}
                   alt="CashDrawer"  width={168} height={168} priority={false} />
@@ -50,9 +70,14 @@ export default function Page() {
         <div className="flex justify-between">
           <ViewTitle text="Sus ultimos cortes" />
         </div>
-
+        <ShowCutsTable records={cuts?.data} />
+        <Pagination records={cuts} handlePageNumber={handlePageNumber } />
     </div> 
-    <CashdrawerOpenModal isShow={modals['cashDrawerOpen']} onClose={() => closeModal('cashDrawerOpen')} drawer={cashDrawerActive}  />
+    {selectDrawer && (
+      <CashdrawerModal isShow={modals['cashDrawerOpen']} onClose={() => closeModal('cashDrawerOpen')} drawer={selectDrawer}  />
+    )}
+    <CashdrawerDetails isShow={modals['cashDrawerDetails']} onClose={() => closeModal('cashDrawerDetails')}  />
+    <ToasterMessage />
 </div>
   );
 }

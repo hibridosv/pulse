@@ -6,8 +6,8 @@ interface ModalProps {
   show: boolean;
   onClose: () => void;
   children: ReactNode;
-  size?: "sm" | "md" | "lg" | "xl";
-  closeOnOverlayClick?: boolean; // New prop
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "xl2" | "xl3" | "xl4" | "xl5" | "xl6" | "xl7" | "full";
+  closeOnOverlayClick?: boolean; 
   headerTitle: string; // New prop for header title
   hideCloseButton?: boolean; // Moved from ModalHeaderProps
 }
@@ -30,10 +30,18 @@ const Modal: FC<ModalProps> & {
   if (!show) return null;
 
   const maxWidthClass = {
+    xs: "max-w-xs",
     sm: "max-w-sm",
     md: "max-w-md",
     lg: "max-w-lg",
     xl: "max-w-xl",
+    xl2: "max-w-2xl",
+    xl3: "max-w-3xl",
+    xl4: "max-w-4xl",
+    xl5: "max-w-5xl",
+    xl6: "max-w-6xl",
+    xl7: "max-w-7xl",
+    full: "max-w-full",
   }[size];
 
   return (
@@ -56,7 +64,7 @@ const Modal: FC<ModalProps> & {
 
 const ModalHeader: FC<ModalHeaderProps> = ({ title, onClose, hideCloseButton }) => (
   <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-200 ">
-    <h3 className="text-xl font-semibold text-gray-900 ">
+    <h3 className="text-xl font-semibold text-gray-900 uppercase">
       {title}
     </h3>
     {!hideCloseButton && (

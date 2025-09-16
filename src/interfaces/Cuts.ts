@@ -1,0 +1,42 @@
+import { CashDrawer } from "./cashdrawers";
+import { Employee } from "./employee";
+
+export interface Cut {
+    id:                          string;
+    opening:                     Date;
+    close?:                       Date;
+    inicial_cash?:                number;
+    final_cash?:                  number;
+    orders?:                      number;
+    sales_cash?:                  number;
+    sales_no_cash?:               number;
+    sales_total?:                 number;
+    sales_total_discount?:        number;
+    sales_cash_retention?:        number;
+    sales_no_cash_retention?:     number;
+    sales_total_retention?:       number;
+    bills_cash?:                  number;
+    bills_no_cash?:               number;
+    bills_total?:                 number;
+    remittances?:                 number;
+    payments_payable_cash?:       number;
+    payments_payable_no_cash?:    number;
+    payments_payable_total?:      number;
+    payments_receivable_cash?:    number;
+    payments_receivable_no_cash?: number;
+    payments_receivable_total?:   number;
+    tips_cash?:                   number;
+    tips_no_cash?:                number;
+    tips_total?:                  number;
+    cash_incomes?:                number;
+    cash_expenses?:               number;
+    cash_diference?:              number;
+    cashdrawers_id:              string;
+    employee_id:                 string;
+    status:                      number;
+    deleted_at?:                 number;
+    created_at:                  Date;
+    updated_at:                  Date;
+    employee?:                    Employee;
+    cashdrawer?:                  CashDrawer;
+}
