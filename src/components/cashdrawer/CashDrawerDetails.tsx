@@ -20,38 +20,55 @@ export function CashdrawerDetails(props: CashdrawerDetailsProps) {
 
 
   return (
-    <Modal show={isShow} onClose={onClose} size="xl4" headerTitle="Detalles del corte" closeOnOverlayClick={false} hideCloseButton={true}>
+    <Modal show={isShow} onClose={onClose} size="xl" headerTitle="Detalles del corte" closeOnOverlayClick={false} hideCloseButton={true}>
       <Modal.Body>
-        <div className="grid grid-cols-1 md:grid-cols-6 pb-10">
-                <div className="col-span-3 border-2 border-slate-600 shadow-lg shadow-sky-500 rounded-md m-2">
-                  <div className="m-2 text-center">Efectivo Apertura</div>
-                  <div className="m-2 text-center font-bold text-3xl">{ numberToMoney(cut?.inicial_cash ? cut?.inicial_cash : 0, system) }</div>
-                </div>
-                <div className="col-span-3 border-2 border-slate-600 shadow-lg shadow-sky-500 rounded-md m-2">
-                  <div className="m-2 text-center">Efectivo Cierre</div>
-                  <div className="m-2 text-center font-bold text-3xl">{ numberToMoney(cut?.final_cash ? cut?.final_cash : 0, system) }</div>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-6"> {/* Added gap and mb */}
+          {/* Card 1: Efectivo Apertura */}
+          <div className="col-span-3 bg-white rounded-lg shadow-md p-4 flex flex-col items-center justify-center"> {/* Professional styling */}
+            <div className="text-gray-600 text-sm mb-1">Efectivo Apertura</div>
+            <div className="font-bold text-3xl text-gray-900">
+              { numberToMoney(cut?.inicial_cash ? cut?.inicial_cash : 0, system) }
             </div>
+          </div>
+          {/* Card 2: Efectivo Cierre */}
+          <div className="col-span-3 bg-white rounded-lg shadow-md p-4 flex flex-col items-center justify-center"> {/* Professional styling */}
+            <div className="text-gray-600 text-sm mb-1">Efectivo Cierre</div>
+            <div className="font-bold text-3xl text-gray-900">
+              { numberToMoney(cut?.final_cash ? cut?.final_cash : 0, system) }
+            </div>
+          </div>
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-9 pb-10">
-                <div className="col-span-3 border-2 border-slate-600 shadow-lg shadow-orange-500 rounded-md m-2">
-                  <div className="m-2 text-center">Salidas</div>
-                  <div className="m-2 text-center font-bold text-3xl">{ numberToMoney(cut?.cash_expenses ? cut?.cash_expenses : 0, system) }</div>
-                </div>
-                <div className="col-span-3 border-2 border-slate-600 shadow-lg shadow-lime-500 rounded-md m-2">
-                  <div className="m-2 text-center">Entradas</div>
-                  <div className="m-2 text-center font-bold text-3xl">{ numberToMoney(cut?.cash_incomes ? cut?.cash_incomes : 0, system) }</div>
-                </div>
-                <div className="col-span-3 border-2 border-slate-600 shadow-lg shadow-fuchsia-500 rounded-md m-2">
-                  <div className="m-2 text-center">Diferencia</div>
-                  <div className="m-2 text-center font-bold text-3xl">{ numberToMoney(cut?.cash_diference ? cut?.cash_diference : 0, system) }</div>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-9 gap-4 mb-6"> {/* Added gap and mb */}
+          {/* Card 3: Salidas */}
+          <div className="col-span-3 bg-white rounded-lg shadow-md p-4 flex flex-col items-center justify-center"> {/* Professional styling */}
+            <div className="text-gray-600 text-sm mb-1">Salidas</div>
+            <div className="font-bold text-3xl text-red-600"> {/* Emphasize negative */}
+              { numberToMoney(cut?.cash_expenses ? cut?.cash_expenses : 0, system) }
             </div>
+          </div>
+          {/* Card 4: Entradas */}
+          <div className="col-span-3 bg-white rounded-lg shadow-md p-4 flex flex-col items-center justify-center"> {/* Professional styling */}
+            <div className="text-gray-600 text-sm mb-1">Entradas</div>
+            <div className="font-bold text-3xl text-green-600"> {/* Emphasize positive */}
+              { numberToMoney(cut?.cash_incomes ? cut?.cash_incomes : 0, system) }
+            </div>
+          </div>
+          {/* Card 5: Diferencia */}
+          <div className="col-span-3 bg-white rounded-lg shadow-md p-4 flex flex-col items-center justify-center"> {/* Professional styling */}
+            <div className="text-gray-600 text-sm mb-1">Diferencia</div>
+            <div className={`font-bold text-3xl ${cut && cut.cash_diference < 0 ? 'text-red-600' : 'text-blue-600'}`}> {/* Conditional color */}
+              { numberToMoney(cut?.cash_diference ? cut?.cash_diference : 0, system) }
+            </div>
+          </div>
+        </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.accept} disabled={false} />
+        <Button onClick={onClose} preset={Preset.close} disabled={false} />
       </Modal.Footer>
     </Modal>
   );
 }
+
+
 

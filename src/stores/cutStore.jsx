@@ -1,6 +1,8 @@
 import { create } from 'zustand';
-import { getServices } from '@/services/services';
+import { deleteService, getServices } from '@/services/services';
 import useToastMessageStore from './toastMessageStore';
+import useCashDrawerStore from './cashdrawersStore';
+import useConfigStore from './configStore';
 
 
 
@@ -9,6 +11,7 @@ const useCutStore = create((set) => ({
   cut: [],
   error: [],
   loading: false,
+  deleting: false,
   loadCuts: async (url) => {
     set({ loading: true });
     try {
@@ -33,6 +36,20 @@ const useCutStore = create((set) => ({
     }
   },
 
+    deleteCut: async (url) => {
+    set({ deleting: true });
+    try {
+      const response = await deleteService(url); 
+      await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10');
+      await useCashDrawerStore.getState().loadCashDrawers();
+      await useConfigStore.getState().loadConfig();
+      useToastMessageStore.getState().setMessage(response);
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ deleting: false });
+    }
+  },
 
 
 }));

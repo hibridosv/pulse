@@ -1,101 +1,149 @@
 "use client";
-import { Modal } from "flowbite-react";
 import { Button, Preset } from "../button/button";
-import { formatDate, formatTime } from "@/utils/date-formats";
-import { numberToMoney } from "@/utils/functions";
-import { ButtonDownload } from "../button/button-download";
 import { FaDownload } from "react-icons/fa";
-import { ConfigContext } from "@/contexts/config-context";
-import { useContext } from "react";
+import useConfigStore from "@/stores/configStore";
+import Modal from "../modal/Modal";
+import { formatDate, formatTime } from "@/lib/date-formats";
+import { numberToMoney } from "@/lib/utils";
 
 
 export interface CutDetailsModalProps {
   onClose: () => void;
-  isShow?: boolean;
+  isShow: boolean;
   record?: any;
 }
 
 export function CutDetailsModal(props: CutDetailsModalProps) {
     const { onClose, isShow, record } = props;
-    const { systemInformation } = useContext(ConfigContext);
+    const { system } = useConfigStore();
 
-    const setStatus =(status: number)=>{
+
+    const setStatus =(status: number)=> {
       switch (status) {
-        case 0: return "Eliminado";
-        case 1: return "Abierto";
-        case 2: return "Cerrado";
+        case 0: return <span className="px-2 py-1 rounded-full bg-red-100 text-red-800 text-xs font-medium">Eliminado</span>;
+        case 1: return <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">Abierto</span>;
+        case 2: return <span className="px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium">Cerrado</span>;
+        default: return <span className="px-2 py-1 rounded-full bg-gray-100 text-gray-800 text-xs font-medium">Desconocido</span>;
       }
     }
 
 
   return (
-    <Modal size="xl" show={isShow} position="center" onClose={onClose}>
-      {/* <Modal.Header>DETALLES DEL CORTE</Modal.Header> */}
+    <Modal show={isShow} onClose={onClose} size="lg" headerTitle="Detalles del corte" closeOnOverlayClick={false} hideCloseButton={false}>
       <Modal.Body>
-        <div className="mx-4">
-          <div>
-              <div className=" font-semibold text-xl text-center">Cajero {record?.employee?.name}</div>
-              <div className=" font-semibold text-xl text-center uppercase">{record?.cashdrawer?.name}</div>
-              <div className="mt-2 rounded-md border-2 border-lime-600 font-semibold text-xl text-center text-lime-600 uppercase">
-                { setStatus(record?.status) }
-                </div>
-              <div className="flex justify-between text-sm">
-                <div>Apertura: { formatDate(record?.opening)} | {formatTime(record?.opening)}</div>
-                <div>Cierre: { formatDate(record?.close)} | {formatTime(record?.close)}</div>
+        <div className="p-4 space-y-6"> {/* Main padding and spacing */}
+
+          {/* Header Section */}
+          <div className="text-center mb-3">
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">Corte de Caja</h2>
+            <p className="text-lg text-gray-700">Cajero: <span className="font-semibold">{record?.employee?.name}</span></p>
+            <p className="text-lg text-gray-700 uppercase mb-2">Caja: <span className="font-semibold">{record?.cashdrawer?.name}</span></p>
+            <div className="flex justify-center">
+              { setStatus(record?.status) }
+            </div>
+            <div className="flex justify-between text-sm text-gray-500 mt-4">
+              <span>Apertura: { formatDate(record?.opening)} | {formatTime(record?.opening)}</span>
+              <span>Cierre: { formatDate(record?.close)} | {formatTime(record?.close)}</span>
+            </div>
+          </div>
+
+          {/* Key Metrics Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+            <div className="bg-gray-50 rounded-lg shadow-sm p-4 text-center">
+              <div className="text-gray-600 text-sm mb-1">Efectivo Apertura</div>
+              <div className="font-bold text-2xl text-gray-900">
+                { numberToMoney(record?.inicial_cash ? record?.inicial_cash : 0, system) }
               </div>
-          </div>
-          <div className="flex justify-between mt-3 rounded-md border-2 border-cyan-600 font-semibold text-xl text-center text-cyan-600 uppercase">
-            <span className="mx-3">Efectivo inicial</span><span className="mx-3">{ numberToMoney(record?.inicial_cash ? record?.inicial_cash : 0, systemInformation)}</span>
-          </div>
-          <div className=" border-2 shadow-lg mt-2 rounded-lg">
-            <div className="mx-3 flex justify-between py-1 border-b-2 border-cyan-500">
-              <span>Ventas Efectivo</span><span>{ numberToMoney(record?.sales_cash ? record?.sales_cash : 0, systemInformation) }</span>
             </div>
-            <div className="mx-3 flex justify-between  border-y-2 border-cyan-500">
-              <span>Total ventas</span><span>{ numberToMoney(record?.sales_total ? record?.sales_total : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-y-2 border-cyan-500">
-              <span>Gastos Efectivo</span><span>{ numberToMoney(record?.bills_cash ? record?.bills_cash : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-y-2 border-cyan-500">
-              <span>Total Gastos</span><span>{ numberToMoney(record?.bills_total ? record?.bills_total : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-y-2 border-cyan-500">
-              <span>Remesas</span><span>{ numberToMoney(record?.remittances ? record?.remittances : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-y-2 border-cyan-500">
-              <span>Cuentas por pagar Efectivo</span><span>{ numberToMoney(record?.payments_payable_cash ? record?.payments_payable_cash : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-t-2 border-cyan-500">
-              <span>Total Cuentas por pagar </span><span>{ numberToMoney(record?.payments_payable_total ? record?.payments_payable_total : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-y-2 border-cyan-500">
-              <span>Cuentas por cobrar Efectivo</span><span>{ numberToMoney(record?.payments_receivable_cash ? record?.payments_receivable_cash : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-t-2 border-cyan-500">
-              <span>Total Cuentas por cobrar </span><span>{ numberToMoney(record?.payments_receivable_total ? record?.payments_receivable_total : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-y-2 border-cyan-500">
-              <span>Retenciones Efectivo</span><span>{ numberToMoney(record?.sales_cash_retention ? record?.sales_cash_retention : 0, systemInformation) }</span>
-            </div>
-            <div className="mx-3 flex justify-between  border-t-2 border-cyan-500">
-              <span>Total Retenciones </span><span>{ numberToMoney(record?.sales_total_retention ? record?.sales_total_retention : 0, systemInformation) }</span>
+            <div className="bg-gray-50 rounded-lg shadow-sm p-4 text-center">
+              <div className="text-gray-600 text-sm mb-1">Efectivo Cierre</div>
+              <div className="font-bold text-2xl text-gray-900">
+                { numberToMoney(record?.final_cash ? record?.final_cash : 0, system) }
+              </div>
             </div>
           </div>
-          <div className="flex justify-between mt-3 rounded-md border-2 border-cyan-600 font-semibold text-xl text-center text-cyan-600 uppercase">
-            <span className="mx-3">Efectivo de cierre</span><span className="mx-3">{ numberToMoney(record?.final_cash ? record?.final_cash : 0, systemInformation)}</span>
+
+          {/* Detailed Metrics Section */}
+          <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Detalles Financieros</h3>
+            <div className="space-y-2">
+              {/* Sales */}
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Ventas Efectivo:</span>
+                <span className="font-medium">{ numberToMoney(record?.sales_cash ? record?.sales_cash : 0, system) }</span>
+              </div>
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Total ventas:</span>
+                <span className="font-medium">{ numberToMoney(record?.sales_total ? record?.sales_total : 0, system) }</span>
+              </div>
+              {/* Expenses */}
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Gastos Efectivo:</span>
+                <span className="font-medium">{ numberToMoney(record?.bills_cash ? record?.bills_cash : 0, system) }</span>
+              </div>
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Total Gastos:</span>
+                <span className="font-medium">{ numberToMoney(record?.bills_total ? record?.bills_total : 0, system) }</span>
+              </div>
+              {/* Remittances */}
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Remesas:</span>
+                <span className="font-medium">{ numberToMoney(record?.remittances ? record?.remittances : 0, system) }</span>
+              </div>
+              {/* Payments Payable */}
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Cuentas por pagar Efectivo:</span>
+                <span className="font-medium">{ numberToMoney(record?.payments_payable_cash ? record?.payments_payable_cash : 0, system) }</span>
+              </div>
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Total Cuentas por pagar:</span>
+                <span className="font-medium">{ numberToMoney(record?.payments_payable_total ? record?.payments_payable_total : 0, system) }</span>
+              </div>
+              {/* Payments Receivable */}
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Cuentas por cobrar Efectivo:</span>
+                <span className="font-medium">{ numberToMoney(record?.payments_receivable_cash ? record?.payments_receivable_cash : 0, system) }</span>
+              </div>
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Total Cuentas por cobrar:</span>
+                <span className="font-medium">{ numberToMoney(record?.payments_receivable_total ? record?.payments_receivable_total : 0, system) }</span>
+              </div>
+              {/* Retentions */}
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Retenciones Efectivo:</span>
+                <span className="font-medium">{ numberToMoney(record?.sales_cash_retention ? record?.sales_cash_retention : 0, system) }</span>
+              </div>
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Total Retenciones:</span>
+                <span className="font-medium">{ numberToMoney(record?.sales_total_retention ? record?.sales_total_retention : 0, system) }</span>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-between mt-3 rounded-md border-2 border-red-600 font-semibold text-xl text-center text-red-600 uppercase">
-            <span className="mx-3">Efectivo Diferencia</span><span className="mx-3">{ numberToMoney(record?.cash_diference ? record?.cash_diference : 0, systemInformation)}</span>
+
+          {/* Summary Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div className="bg-gray-50 rounded-lg shadow-sm p-4 text-center">
+              <div className="text-gray-600 text-sm mb-1">Efectivo en Caja</div>
+              <div className="font-bold text-2xl text-gray-900">
+                { numberToMoney(record?.final_cash ? record?.final_cash : 0, system) }
+              </div>
+            </div>
+            <div className="bg-gray-50 rounded-lg shadow-sm p-4 text-center">
+              <div className="text-gray-600 text-sm mb-1">Diferencia</div>
+              <div className={`font-bold text-2xl ${record && record.cash_diference < 0 ? 'text-red-600' : 'text-blue-600'}`}>
+                { numberToMoney(record?.cash_diference ? record?.cash_diference : 0, system) }
+              </div>
+            </div>
           </div>
+
         </div>
       </Modal.Body>
-      <Modal.Footer className="flex justify-end gap-4">
-        {/* <Button onClick={()=>{}} preset={Preset.accept} /> */}
-        <ButtonDownload href={`/download/pdf/cut/${record.id}`}><FaDownload  size={24}/></ButtonDownload>
-        <Button onClick={onClose} preset={Preset.close} />
+      <Modal.Footer>
+        {/* <ButtonDownload href={`/download/pdf/cut/${record.id}`}><FaDownload  size={24}/></ButtonDownload> */}
+        <Button onClick={onClose} preset={Preset.close} disabled={false} />
       </Modal.Footer>
     </Modal>
   );
 
 }
+

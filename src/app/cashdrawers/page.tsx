@@ -18,6 +18,7 @@ import { ShowCutsTable } from "@/components/cuts/ShowCutsTable";
 import { usePagination } from "@/hooks/usePagination";
 import { Pagination } from "@/components/Pagination";
 import { CashDrawer } from "@/interfaces/cashdrawers";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
 
 export default function Page() {
   const { status } = useSession();
@@ -25,12 +26,10 @@ export default function Page() {
   useCashDrawersLogic()
   useCutsLogic(`cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10${currentPage}`, currentPage);
   const { cashDrawers } = useCashDrawerStore();
-  const { cuts } = useCutStore();
+  const { cuts, loading } = useCutStore();
   const { cashdrawer: cashDrawerActive } = useConfigStore();
   const { modals, openModal, closeModal } = useModalStore();
   const [selectDrawer, setSelectDrawer] = useState<CashDrawer>();
- console.log("Cuts: ", cuts)
- console.log("currentPage: ", currentPage)
 
   // if (status === "loading") {
   //   return <LoadingPage />;
@@ -70,7 +69,7 @@ export default function Page() {
         <div className="flex justify-between">
           <ViewTitle text="Sus ultimos cortes" />
         </div>
-        <ShowCutsTable records={cuts?.data} />
+        { loading ? <SkeletonTable columns={4} rows={10} /> : <ShowCutsTable records={cuts?.data} /> }
         <Pagination records={cuts} handlePageNumber={handlePageNumber } />
     </div> 
     {selectDrawer && (

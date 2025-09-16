@@ -3,6 +3,7 @@ import { getServices, createService, updateService, deleteService } from '@/serv
 import useToastMessageStore from './toastMessageStore';
 import useModalStore from './modalStorage';
 import useConfigStore from './configStore';
+import useCutStore from './cutStore';
 
 
 const useCashDrawerStore = create((set) => ({
@@ -27,6 +28,7 @@ const useCashDrawerStore = create((set) => ({
       const response = await updateService(url, data);
       await useCashDrawerStore.getState().loadCashDrawers();
       await useConfigStore.getState().loadConfig();
+      await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10');
       useToastMessageStore.getState().setMessage(response);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -35,14 +37,15 @@ const useCashDrawerStore = create((set) => ({
       useModalStore.getState().closeModal('cashDrawerOpen');
     }
   },
-
-
-    closeCashDrawer: async (url, data) => {
+  
+  
+  closeCashDrawer: async (url, data) => {
     try {
       set({ loading: true });
       const response = await updateService(url, data);
       await useCashDrawerStore.getState().loadCashDrawers();
       await useConfigStore.getState().loadConfig();
+      await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10');
       useToastMessageStore.getState().setMessage(response);
       useModalStore.getState().openModal('cashDrawerDetails');
     } catch (error) {
