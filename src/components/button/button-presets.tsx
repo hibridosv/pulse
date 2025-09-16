@@ -15,6 +15,7 @@ const BASE = "py-2 px-4 flex justify-center items-center text-white transition e
 
 export const textPresets = {
   primary: null,
+  secondary: null,
   danger: null,
 
   close: "Cerrar",
@@ -38,7 +39,8 @@ export const textPresets = {
 
 
 export const stylePresets = {
-    primary: `${BASE} bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200`,
+    primary: `${BASE} bg-primary hover:bg-gray-700`,
+    secondary: `${BASE} bg-green-600 hover:bg-green-700`,
     danger: `${BASE} bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200`,
   
     close: `${BASE} bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200`,
@@ -62,6 +64,7 @@ export const stylePresets = {
 
 export const iconPresets = {
     primary: "",
+    secondary: "",
     danger: "",
   
     close: <AiOutlineClose className="mr-3" />,

@@ -3,6 +3,7 @@ import { textPresets, iconPresets, stylePresets } from './button-presets';
 
 export enum Preset {
     primary = "primary",
+    secondary = "secondary",
     danger = "danger",
     close = "close",
     cancel = "cancel",
