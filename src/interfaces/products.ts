@@ -30,10 +30,10 @@ export interface Product {
     measure?:            number;
     extra?:              string;
     is_restaurant:      number;
-    status:             string;
+    status:             number;
     created_at:         Date;
     updated_at:         Date;
-    prices?:             Price[];
+    prices:             Price[];
     category?:           Category;
     quantity_unit?:      QuantityUnit;
     provider?:           Contact;

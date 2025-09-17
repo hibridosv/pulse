@@ -1,4 +1,8 @@
-import { formatDateAsDMY, formatTime } from "@/lib/date-formats";
+'use client';
+
+import { useCallback } from 'react';
+import { useGetResourceLogic } from "@/hooks/useGetResouceLogic";
+import useProductStore from "@/stores/productStore";
 import useConfigStore from "@/stores/configStore";
 import { numberToMoney } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
@@ -15,68 +19,76 @@ export interface ShowProductsTableProps {
 export function ShowProductsTable(props: ShowProductsTableProps) {
   const { records, setSorBy, sortBy } = props;
   const { system } = useConfigStore();
-  const { modals, openModal, closeModal } = useModalStore();
+  const { openModal } = useModalStore();
 
-  if (!records || records.length == 0) {
+  if (!records || records.length === 0) {
     return null;
   }
 
-    const productTypeIcon = (type: number)=>{
+  const productTypeIcon = (type: number) => {
     switch (type) {
-      case 2: return <span className="mr-2"><MdOutlineHomeRepairService size={12} color="blue" /></span>
-      case 3: return <span className="mr-2"><FaLayerGroup size={10} color="green" /></span> 
+      case 2: return <span title="Servicio" className="mr-2 text-info"><MdOutlineHomeRepairService size={14} /></span>;
+      case 3: return <span title="Relacionado" className="mr-2 text-success"><FaLayerGroup size={12} /></span>;
+      default: return null;
     }
-  }
-    const sortBySelected = (sort: string) => {
-        if (setSorBy) {
-            if (sortBy.slice(0, 1) != "-") {
-                sort = "-" + sort;
-            }
-        setSorBy(sort);
-        }
-    }
+  };
 
-  const listItems = records && records.map((product: any, key: any) => (
-    <tr key={key} className={`border-b hover:bg-gray-100 ${product.status == 0 && "bg-red-100"}`}>
-      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() => openModal('cutDetails')}>
+  const sortBySelected = (sort: string) => {
+    if (setSorBy) {
+      if (sortBy.slice(0, 1) !== "-") {
+        sort = "-" + sort;
+      }
+      setSorBy(sort);
+    }
+  };
+
+  const listItems = records.map((product: Product) => (
+    <tr 
+      key={product.id} 
+      className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable font-medium text-primary hover:underline" onClick={() => openModal('cutDetails')}>
         {product.cod}
       </td>
       <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() => openModal('cutDetails')}>
-        {productTypeIcon(product.product_type)}
-        <span>
-            {product.description}
-        </span>
+        <div className="flex items-center">
+          {productTypeIcon(product.product_type)}
+          <span>{product.description}</span>
+        </div>
       </td>
-      <td className="px-3 py-2 text-center" onClick={() => openModal('cutDetails')}>
+      <td className="px-3 py-2 text-right whitespace-nowrap font-medium" onClick={() => openModal('cutDetails')}>
         {product.prices[0] ? numberToMoney(product.prices[0].price, system) : numberToMoney(0, system)}
       </td>
-      <td className="px-3 py-2 text-center">{product.quantity}</td>
-      <td className="px-3 py-2 text-center">{product?.category?.name ?? "Sin categoría"}</td>
-      <td className="px-3 py-2 text-center">{product?.location?.name ?? "Sin ubicación"}</td>
-      <td className="px-3 py-2 text-center">{product.minimum_stock}</td>
+      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold ${product.quantity <= product.minimum_stock ? 'text-danger' : ''}`}>
+        {product.quantity}
+      </td>
+      <td className="px-3 py-2 text-center whitespace-nowrap">{product?.category?.name ?? "--"}</td>
+      <td className="px-3 py-2 text-center whitespace-nowrap">{product?.location?.name ?? "--"}</td>
+      <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{product.minimum_stock}</td>
       <td className="px-3 py-2 text-center">
-        {/* <DeleteCutButton cut={record} isInitial={firstRecord.id == record?.id && record.status == 2} /> */}
+        {/* Acciones como botones de Editar/Eliminar irían aquí */}
       </td>
     </tr>
   ));
 
   return (
     <div className="m-4">
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
-        <table className="w-full text-sm text-left text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-200">
+      <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
+        <table className="w-full text-sm text-left">
+          <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
             <tr>
-              <th scope="col" className="px-6 py-3 clickeable" onClick={()=>sortBySelected("cod")}>Cod</th>
-              <th scope="col" className="px-6 py-3 clickeable" onClick={()=>sortBySelected("description")}>Producto</th>
-              <th scope="col" className="px-6 py-3">Precio</th>
-              <th scope="col" className="px-6 py-3 clickeable" onClick={()=>sortBySelected("quantity")}>Cantidad</th>
-              <th scope="col" className="px-6 py-3 clickeable" onClick={()=>sortBySelected("category_id")}>Categoria</th>
-              <th scope="col" className="px-6 py-3 clickeable" onClick={()=>sortBySelected("location_id")}>Ubicación</th>
-              <th scope="col" className="px-6 py-3">Minimo</th>
-              <th scope="col" className="px-6 py-3">Acciones</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0" onClick={() => sortBySelected("cod")}>Cod</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0" onClick={() => sortBySelected("description")}>Producto</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider text-right border-r border-bg-subtle last:border-r-0">Precio</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0" onClick={() => sortBySelected("quantity")}>Cantidad</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0" onClick={() => sortBySelected("category_id")}>Categoria</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0" onClick={() => sortBySelected("location_id")}>Ubicación</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Minimo</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody>{listItems}</tbody>
+          <tbody className="divide-y divide-bg-subtle/50">
+            {listItems}
+          </tbody>
         </table>
       </div>
     </div>

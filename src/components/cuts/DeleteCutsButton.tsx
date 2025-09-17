@@ -15,7 +15,7 @@ export function DeleteCutButton(props: DeleteCutButtonProps) {
   const { deleting, deleteCut } = useCutStore();
   const { modals, openModal, closeModal } = useModalStore();
 
-  return (<>
+  return (<div className="flex items-center">
     <Button preset={isInitial ? Preset.smallClose : Preset.smallCloseDisable} onClick={()=>openModal('delCut')} disabled={!isInitial || deleting} noText />
     <DeleteModal
         isShow={modals['delCut']}
@@ -23,5 +23,5 @@ export function DeleteCutButton(props: DeleteCutButtonProps) {
         onDelete={() =>deleteCut(`cuts/${cut.id}`)}
         onClose={() => closeModal('delCut')}
       />
-  </>);
+  </div>);
 }
