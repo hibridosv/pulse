@@ -22,7 +22,6 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
         <div className="p-4 space-y-6"> {/* Main padding and spacing */}
 
 
-
         </div>
       </Modal.Body>
       <Modal.Footer>

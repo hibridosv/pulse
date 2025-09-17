@@ -6,7 +6,10 @@ import useModalStore from "@/stores/modalStorage";
 import { Product } from "@/interfaces/products";
 import { productTypeIcon, sortBySelected } from './utils';
 import useSelectedElementStore from "@/stores/selectedElementStorage";
-import { DropDown } from "../button/DropDown";
+import { DropdownItem } from "@/components/dropDown/DropdownItem";
+import { DropdownDivider } from "@/components/dropDown/DropdownDivider";
+import { FiSettings } from "react-icons/fi";
+import { Dropdown } from "../dropDown/Dropdown";
 
 export interface ShowProductsTableProps {
   records: Product[];
@@ -26,33 +29,6 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
   if (!records || records.length === 0) {
     return null;
   }
-
-// const actionOptions = [
-//        { label: 'Guardar Cambios', onClick: () => alert('¡Cambios guardados!') },
-//        { label: 'Eliminar Elemento', onClick: () => confirm('¿Estás seguro de eliminar?') &&
-//       console.log('Elemento eliminado') },
-//        { label: 'Abrir Modal', onClick: () => console.log('Modal abierto') },
-//      ];
-   
-// const linkOptions = [
-//         { label: 'Ir a Google', href: 'https://www.google.com', target: '_blank' }, 
-//         { label: 'Ir a Dashboard', href: '/dashboard' },
-//         { label: 'Ver Productos', href: '/products' },
-//       ];
-   
-const mixedOptions = [
-        { label: 'Ver Perfil', href: '/profile' }, 
-        { label: 'Cerrar Sesión', onClick: () => alert('Cerrando sesión...') }, 
-        { label: 'Descargar Reporte', href: '/reports/download', onClick: () => console.log(
-      'Iniciando descarga...') }, 
-        { label: 'Contactar Soporte', href: 'mailto:support@example.com' },
-      ];
-   
-    // const dropdownOptions = [
-    //               { label: 'Editar', onClick: () => alert('Editar') },
-    //               { label: 'Eliminar', onClick: () => alert('Eliminar') },
-    //               { label: 'Ver Detalles', onClick: () => alert('Ver Detalles') },
-    //               ];
 
   const listItems = records.map((product: Product) => (
     <tr 
@@ -79,8 +55,13 @@ const mixedOptions = [
       { isBrand && 
       <td className="px-3 py-2 text-center whitespace-nowrap">{product?.brand?.name ?? "--"}</td> }
       <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{product.minimum_stock}</td>
-      <td className="px-1 py-1 text-center">
-        <DropDown options={mixedOptions} />
+      <td className="px-3 py-2 text-center">
+        <Dropdown label={<FiSettings size={18} /> }>
+          <DropdownItem onClick={() => { setElement(product); openModal('editProduct'); }}>Editar</DropdownItem>
+          <DropdownItem onClick={() => { setElement(product); openModal('deleteProduct'); }}>Eliminar</DropdownItem>
+          <DropdownDivider />
+          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Ver Detalles</DropdownItem>
+        </Dropdown>
       </td>
     </tr>
   ));

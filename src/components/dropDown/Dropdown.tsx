@@ -1,29 +1,23 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback, FC } from 'react';
-import ReactDOM from 'react-dom'; // Importar ReactDOM para Portals
-import { FiMoreVertical } from 'react-icons/fi';
+import ReactDOM from 'react-dom';
+import { FiChevronDown } from 'react-icons/fi'; // Cambiado a FiChevronDown para un botón de dropdown
+import { DropdownContext } from './dropdownContext';
 
-interface DropdownOption {
-  label: string;
-  onClick?: () => void; // Ahora opcional
-  href?: string; // Nueva propiedad para enlaces
+interface DropdownProps {
+  label: React.ReactNode; // Texto para el botón que abre el dropdown
+  children: React.ReactNode; // Los DropdownItems y DropdownDividers
 }
 
-interface DropDownProps {
-  options: DropdownOption[];
-  buttonContent?: React.ReactNode; // Contenido opcional para el botón
-}
-
-export const DropDown: FC<DropDownProps> = ({ options, buttonContent }) => {
+export const Dropdown: FC<DropdownProps> = ({ label, children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null); // Ref para el contenedor del dropdown
+  const dropdownRef = useRef<HTMLDivElement>(null); // Ref para el menú dropdown
   const buttonRef = useRef<HTMLButtonElement>(null); // Ref para el botón que activa el dropdown
   const [position, setPosition] = useState({
     top: 0,
     left: 0,
     width: 0,
-    openUpwards: false,
   });
 
   // Calcula la posición del dropdown
@@ -31,21 +25,18 @@ export const DropDown: FC<DropDownProps> = ({ options, buttonContent }) => {
     if (buttonRef.current && dropdownRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       const dropdownWidth = dropdownRef.current.offsetWidth; // Ancho real del menú
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
       const dropdownHeight = dropdownRef.current.offsetHeight; // Altura real del menú
 
-      let newTop = rect.top + window.scrollY - dropdownHeight; // Forzar posición arriba
+      let newTop = rect.top + window.scrollY - dropdownHeight; // Posición exacta arriba del botón
       let newLeft = rect.right + window.scrollX - dropdownWidth; // Posición a la izquierda
-      let openUpwards = true; // Forzar hacia arriba
 
       setPosition({
         top: newTop,
         left: newLeft,
         width: rect.width, 
-        openUpwards: openUpwards,
       });
     }
-  }, [isOpen]); // Recalcular cuando se abre/cierra
+  }, [isOpen]);
 
   // Cierra el dropdown al hacer clic fuera
   useEffect(() => {
@@ -73,16 +64,6 @@ export const DropDown: FC<DropDownProps> = ({ options, buttonContent }) => {
     };
   }, [isOpen, calculatePosition]);
 
-  const handleOptionClick = (option: DropdownOption) => {
-    if (option.onClick) {
-      option.onClick();
-    }
-    // Si es un link, la navegación se maneja por el navegador, no cerramos aquí
-    if (!option.href) {
-      setIsOpen(false); 
-    }
-  };
-
   // Contenido del menú dropdown
   const menuContent = (
     <div
@@ -92,41 +73,14 @@ export const DropDown: FC<DropDownProps> = ({ options, buttonContent }) => {
         position: 'absolute',
         top: position.top,
         left: position.left,
-        minWidth: position.width,
+        minWidth: position.width, // Asegura que el menú no sea más estrecho que el botón
       }}
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="options-menu"
     >
       <div className="py-1">
-        {options.map((option, index) => {
-          const commonClasses = "block w-full text-left px-4 py-2 text-sm text-text-base hover:bg-bg-subtle cursor-pointer";
-          
-          if (option.href) {
-            return (
-              <a
-                key={index}
-                href={option.href}
-                onClick={() => handleOptionClick(option)} // Para cerrar si no es un link
-                className={commonClasses}
-                role="menuitem"
-              >
-                {option.label}
-              </a>
-            );
-          } else {
-            return (
-              <button
-                key={index}
-                onClick={() => handleOptionClick(option)}
-                className={commonClasses}
-                role="menuitem"
-              >
-                {option.label}
-              </button>
-            );
-          }
-        })}
+        {children}
       </div>
     </div>
   );
@@ -137,14 +91,18 @@ export const DropDown: FC<DropDownProps> = ({ options, buttonContent }) => {
         ref={buttonRef}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-bg-content text-text-base p-1 rounded-md shadow-sm border border-bg-subtle hover:bg-bg-subtle focus:outline-none focus:ring-2 focus:ring-primary/50"
+        className="bg-bg-content text-text-base p-1 rounded-md shadow-sm border border-bg-subtle hover:bg-bg-subtle focus:outline-none focus:ring-2 focus:ring-primary/50 flex items-center gap-2"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        {buttonContent || <FiMoreVertical size={20} />}
+        {label} <FiChevronDown size={16} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
-      {isOpen && ReactDOM.createPortal(menuContent, document.body)}
+      {isOpen && ReactDOM.createPortal(
+        <DropdownContext.Provider value={{ setIsOpen }}>
+          {menuContent}
+        </DropdownContext.Provider>
+      , document.body)}
     </div>
   );
 };
