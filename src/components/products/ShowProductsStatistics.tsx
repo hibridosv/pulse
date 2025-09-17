@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import { useGetResourceLogic } from "@/hooks/useGetResouceLogic";
+import { useGetResourceLogic } from "@/hooks/request/useGetResouceLogic";
 import useProductStore from "@/stores/productStore";
 
 // --- Componente Skeleton con Estilos de Tema ---
@@ -51,7 +51,7 @@ export function ShowProductsStatistics() {
   ];
 
   return (
-    <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle/50 p-4">
+    <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle/50 p-4 mt-2">
       <div className="pb-4 border-b border-bg-subtle">
         <h3 className="text-base font-semibold text-text-base uppercase">Estadísticas</h3>
       </div>
