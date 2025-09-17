@@ -52,7 +52,7 @@ export function ShowProductsStatistics() {
   return (
     <div className="m-5 bg-white rounded-lg shadow-md">
       <div className="p-4 border-b">
-        <h3 className="text-lg font-semibold text-gray-800">Estadísticas de Productos</h3>
+        <h3 className="text-base font-semibold text-gray-800 uppercase">Estadísticas de Productos</h3>
       </div>
       <div className="p-4 space-y-4">
         {statsList.map((stat) => (

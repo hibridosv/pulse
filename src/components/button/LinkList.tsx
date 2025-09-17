@@ -1,5 +1,8 @@
+'use client';
+
 import { dateToNumberValidate } from "@/lib/utils";
 import { md5 } from "js-md5";
+import { FiChevronRight } from "react-icons/fi"; // Usando una librería de iconos consistente
 
 export interface LinkUrls {
   name: string;
@@ -14,25 +17,37 @@ export interface LinksListProps {
 }
 
 export function LinksList(props: LinksListProps) {
-  const {  links, text = "DESCARGAS EXCEL", separator = '&' } = props;
+  const { links, text = "Descargas", separator = '&' } = props;
 
-  if (links?.length === 0) return <></>
+  if (!links || links.length === 0) {
+    return null;
+  }
+
   return (
-    <div className='mt-4 border-t border-teal-700'>
-        <div className="uppercase flex justify-center font-bold">{text}</div>
-            {links && links.map((item: LinkUrls, index: any) => {
-              if (item.name && item.link) {
-                return (<a key={index} target="_blank" href={`${item.link}${separator}code=${md5(dateToNumberValidate())}`}>
-                    <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer">
-                        {item.name}
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </li>
-                </a>)
-              }
-            })}
+    <div className='my-5 bg-white rounded-lg shadow-md'>
+      <div className="p-4 border-b">
+        <h3 className="text-base font-semibold text-gray-800">{text}</h3>
+      </div>
+      <ul className="divide-y divide-gray-200">
+        {links.map((item) => {
+          if (item.name && item.link) {
+            return (
+              <li key={item.name} className="clickeable">
+                <a
+                  href={`${item.link}${separator}code=${md5(dateToNumberValidate())}`}
+                  target="_blank"
+                  rel="noopener noreferrer" // Buena práctica para target="_blank"
+                  className="p-4 flex justify-between items-center hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <span className="text-sm font-medium text-gray-700">{item.name}</span>
+                  <FiChevronRight className="w-5 h-5 text-gray-400" />
+                </a>
+              </li>
+            );
+          }
+          return null;
+        })}
+      </ul>
     </div>
   );
 }
