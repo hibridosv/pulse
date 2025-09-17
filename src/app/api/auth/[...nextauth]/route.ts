@@ -11,7 +11,7 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        console.log("Attempting to authorize...");
+        // console.log("Attempting to authorize...");
         const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}oauth2`, {
           method: 'POST',
           headers: {
@@ -30,7 +30,7 @@ const handler = NextAuth({
         // console.log("Backend response body:", user);
 
         if (res.ok && user) {
-          console.log("Authorization successful.");
+          // console.log("Authorization successful.");
           return { ...user, accessToken: user.access_token, refreshToken: user.refresh_token, expiresAt: user.expires_at, url: user.url }
         }
         // console.log("Authorization failed.");
@@ -56,7 +56,7 @@ const handler = NextAuth({
       return session
     },
     async redirect({ url, baseUrl }) {
-      console.log("Redirecting to:", url, "from base URL:", baseUrl);
+      // console.log("Redirecting to:", url, "from base URL:", baseUrl);
       return url.startsWith(baseUrl) ? url : baseUrl;
     }
   },

@@ -2,10 +2,10 @@
 
 import { dateToNumberValidate } from '@/lib/utils';
 import { md5 } from 'js-md5';
-import useConfigStore from '@/stores/configStore';
+import { useSession } from 'next-auth/react';
 
 export interface ButtonDownloadProps {
-  href?: string;
+  href: string;
   children: any;
   titleText?: string;
   autoclass?: boolean;
@@ -13,9 +13,8 @@ export interface ButtonDownloadProps {
 }
 
 export function ButtonDownload({ href, children, titleText = "Descargar", autoclass = true, divider = "?" }: ButtonDownloadProps) {
-  const { url } = useConfigStore();
-
-  const remoteUrl = url; 
+  const { data: session } = useSession();
+  const remoteUrl = session?.url; 
 
   if (!href || !remoteUrl) return null;
 

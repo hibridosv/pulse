@@ -1,5 +1,5 @@
 import { CashDrawer } from "./cashdrawers";
-import { Employee } from "./employee";
+import { User } from "./user";
 
 export interface Cut {
     id:                          string;
@@ -37,6 +37,6 @@ export interface Cut {
     deleted_at?:                 number;
     created_at:                  Date;
     updated_at:                  Date;
-    employee?:                    Employee;
+    employee?:                    User;
     cashdrawer?:                  CashDrawer;
 }

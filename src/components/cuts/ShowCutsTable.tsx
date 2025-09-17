@@ -31,7 +31,7 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
       <td className={`px-3 py-2 whitespace-nowrap font-bold clickeable ${record?.cash_diference > 0 ? 'text-blue-600' : record?.cash_diference < 0 ? 'text-red-600' : 'text-gray-900'}`} onClick={() => openModal('cutDetails')}>
         {numberToMoney(record?.cash_diference ?? 0, system)}
       </td>
-      <td className="px-3 py-2 whitespace-nowrap text-right">
+      <td className="px-3 py-2 whitespace-nowrap text-center">
         <DeleteCutButton cut={record} isInitial={firstRecord.id == record?.id && record.status == 2} />
       </td>
     </tr>

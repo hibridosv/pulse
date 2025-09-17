@@ -1,4 +1,4 @@
-import { Employee } from "./employee";
+import { User } from "./user";
 
 export interface CashDrawer {
     id:          string;
@@ -8,5 +8,5 @@ export interface CashDrawer {
     status:      number;
     created_at:  Date;
     updated_at:  Date;
-    employee?:    Employee;
+    employee?:    User;
 }

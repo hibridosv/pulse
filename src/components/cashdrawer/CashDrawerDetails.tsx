@@ -16,8 +16,6 @@ export function CashdrawerDetails(props: CashdrawerDetailsProps) {
     const { system } = useConfigStore();
     useCutLogic(`cuts/last?included=employee,cashdrawer`);
     const { cut } = useCutStore();
-    console.log("Cut: ", cut);
-
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl" headerTitle="Detalles del corte" closeOnOverlayClick={false} hideCloseButton={true}>

@@ -1,0 +1,42 @@
+import { Brand } from "./brand";
+import { Category } from "./category";
+import { Contact } from "./contact";
+import { Location } from "./location";
+import { Price } from "./price";
+import { QuantityUnit } from "./quantity_unit";
+
+export interface Product {
+    id:                 string;
+    cod:                string;
+    description:        string;
+    quantity:           number;
+    unit_cost:          number;
+    category_id:        string;
+    quantity_unit_id:   string;
+    provider_id:        string;
+    brand_id:           string;
+    location_id:        string;
+    information?:        string;
+    tags?:               string;
+    minimum_stock:      number;
+    saved:              number;
+    expires:            number;
+    product_type:       number;
+    prescription?:       number;
+    ecommerce:          number;
+    default_discount?:   number;
+    default_commission?: number;
+    taxes:              number;
+    measure?:            number;
+    extra?:              string;
+    is_restaurant:      number;
+    status:             string;
+    created_at:         Date;
+    updated_at:         Date;
+    prices?:             Price[];
+    category?:           Category;
+    quantity_unit?:      QuantityUnit;
+    provider?:           Contact;
+    brand?:              Brand;
+    location?:           Location;
+}

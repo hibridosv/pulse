@@ -30,7 +30,7 @@ export default function Page() {
   const { cashdrawer: cashDrawerActive, user } = useConfigStore();
   const { modals, openModal, closeModal } = useModalStore();
   const [selectDrawer, setSelectDrawer] = useState<CashDrawer>();
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(true);
   useCutsLogic(`cuts?included=employee,cashdrawer${!showAll && `&filterWhere[employee_id]==${user?.id}`}&sort=-updated_at&perPage=10${currentPage}`, currentPage, showAll);
 
   if (status === "loading") {
@@ -43,7 +43,7 @@ export default function Page() {
       openModal('cashDrawerOpen');
     }
   }
-
+ console.log(cuts);
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-5 border-r md:border-primary">

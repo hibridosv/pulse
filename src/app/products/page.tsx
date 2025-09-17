@@ -1,23 +1,46 @@
 'use client';
 
-import { useSession, signOut } from "next-auth/react";
+import { Pagination } from "@/components/Pagination";
+import { ShowProductsTable } from "@/components/products/ShowProductsTable";
+import { SearchInput } from "@/components/Search";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { ViewTitle } from "@/components/ViewTitle";
+import { usePagination } from "@/hooks/usePagination";
+import { useProductLogic } from "@/hooks/useProductsLogic";
+import { useSearchTerm } from "@/hooks/useSearchTerm";
+import useProductStore from "@/stores/productStore";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
+  const {currentPage, handlePageNumber} = usePagination("&page=1");
+  const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
+  const [sortBy, setSortBy] = useState("-cod");
+  const { products, loading } = useProductStore()
+  useProductLogic(currentPage, searchTerm, sortBy);
 
 //   if (status === "loading") {
 //     return <p>Loading...</p>;
 //   }
 
+console.log("products", products)
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="mt-4 text-lg">Welcome to your dashboard.</p>
-        <button onClick={() => signOut()} className="mt-6 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-          Sign out
-        </button>
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
+    <div className="col-span-7 border-r md:border-primary">
+        <ViewTitle text="Productos" />
+        { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTable records={products?.data} setSorBy={setSortBy} sortBy={sortBy} /> }
+        <Pagination records={products} handlePageNumber={handlePageNumber } />
     </div>
+    <div className="col-span-3">
+        <div className="flex justify-between">
+          <ViewTitle text="Buscar Producto" />
+        </div>
+        <div className="mt-2 p-2">
+          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto" />
+        </div>
+    </div> 
+</div>
   );
 }
