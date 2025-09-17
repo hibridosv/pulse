@@ -22,3 +22,8 @@ export const dateToNumberValidate = () =>{
   const hoy = fecha.toISOString();
   return formatDateAsNumber(hoy)
 }
+
+export const permissionExists = (permissions: any, permission: string) => {
+  if(!permissions) return false; 
+  return permissions.some((perm: any) => perm.name === permission);
+};
