@@ -5,10 +5,12 @@ import { useEffect, useState } from 'react'
 export function useProductLogic(currentPage: any, searchTerm: string, sortBy: string) {
   const { loadProducts } = useProductStore()
   const [searchTermNew, setSearchTermNew] = useState("");
+  const [sortByNew, setSortByNew] = useState("");
 
   useEffect(() => {
-        if (searchTerm != searchTermNew) {
+        if (searchTerm != searchTermNew || sortBy != sortByNew) {
           setSearchTermNew(searchTerm);
+          setSortByNew(sortBy);
           loadProducts(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1${searchTerm}`)
         } else {
            loadProducts(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15${currentPage}${searchTerm}`)
