@@ -12,6 +12,7 @@ export enum Preset {
     add = "add",
     send = "send",
     saving = "saving",
+    link = "link",
     smallClose = "smallClose",
     smallCloseDisable = "smallCloseDisable",
     smallPlus = "smallPlus",

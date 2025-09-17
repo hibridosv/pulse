@@ -9,7 +9,11 @@ import useSelectedElementStore from "@/stores/selectedElementStorage";
 import { DropdownItem } from "@/components/dropDown/DropdownItem";
 import { DropdownDivider } from "@/components/dropDown/DropdownDivider";
 import { FiSettings } from "react-icons/fi";
-import { Dropdown } from "../dropDown/Dropdown";
+import { Dropdown } from "@/components/dropDown/Dropdown";
+import { NothingHere } from "@/components/NothingHere";
+import { DeleteModal } from "../DeleteModal";
+import useProductStore from "@/stores/productStore";
+import { BiLoader } from "react-icons/bi";
 
 export interface ShowProductsTableProps {
   records: Product[];
@@ -20,14 +24,15 @@ export interface ShowProductsTableProps {
 export function ShowProductsTable(props: ShowProductsTableProps) {
   const { records, setSortBy, sortBy } = props;
   const { system, activeConfig } = useConfigStore();
-  const { openModal } = useModalStore();
-  const { setElement } = useSelectedElementStore();
+  const { openModal, closeModal, modals } = useModalStore();
+  const { setElement, elementSelected } = useSelectedElementStore();
   const isLocation = activeConfig?.includes("product-brand");
   const isBrand = activeConfig?.includes("product-locations");
+  const { deleteProduct, deleting } = useProductStore();
 
 
   if (!records || records.length === 0) {
-    return null;
+    return <NothingHere />;
   }
 
   const listItems = records.map((product: Product) => (
@@ -56,14 +61,14 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
       <td className="px-3 py-2 text-center whitespace-nowrap">{product?.brand?.name ?? "--"}</td> }
       <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{product.minimum_stock}</td>
       <td className="px-3 py-2 text-center">
-        <Dropdown label={<FiSettings size={18} /> }>
+        { deleting ? <BiLoader className="animate-spin" /> : <Dropdown label={<FiSettings size={18} /> }>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Actualizar Precios</DropdownItem>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Editar</DropdownItem>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Kardex</DropdownItem>
           <DropdownDivider />
           <DropdownItem onClick={() => { setElement(product); openModal('deleteProduct'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
-        </Dropdown>
+        </Dropdown> }
       </td>
     </tr>
   ));
@@ -92,6 +97,12 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
           </tbody>
         </table>
       </div>
+      <DeleteModal
+        isShow={elementSelected?.id && modals['deleteProduct']}
+        text={`¿Estas seguro de eliminar el producto ${elementSelected?.description}?`}
+        onDelete={() =>{ deleteProduct(`products/${elementSelected?.id}`, elementSelected?.id); closeModal('deleteProduct'); }}
+        onClose={() => closeModal('deleteProduct')}
+      />
     </div>
   );
 }
