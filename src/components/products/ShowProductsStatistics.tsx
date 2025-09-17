@@ -4,18 +4,18 @@ import { useCallback } from 'react';
 import { useGetResourceLogic } from "@/hooks/useGetResouceLogic";
 import useProductStore from "@/stores/productStore";
 
-// Componente para el esqueleto de carga
+// --- Componente Skeleton con Estilos de Tema ---
 function StatisticsSkeleton() {
   return (
-    <div className="m-5 bg-white rounded-lg shadow-md animate-pulse">
-      <div className="p-4 border-b">
-        <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+    <div className="bg-bg-content rounded-lg shadow-md animate-pulse p-4">
+      <div className="pb-4 border-b border-bg-subtle">
+        <div className="h-5 bg-bg-subtle rounded w-1/2"></div>
       </div>
-      <div className="p-4 space-y-4">
+      <div className="pt-4 space-y-4">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="flex justify-between items-center">
-            <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-            <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+            <div className="h-4 bg-bg-subtle rounded w-1/3"></div>
+            <div className="h-6 bg-bg-subtle rounded w-1/4"></div>
           </div>
         ))}
       </div>
@@ -23,11 +23,12 @@ function StatisticsSkeleton() {
   );
 }
 
+// --- Componente Principal ---
 export function ShowProductsStatistics() {
   const { statistics, loadStatistics, loadingStat } = useProductStore();
 
   const loadStats = useCallback(() => {
-    if (!statistics || statistics.length === 0) {
+    if (!statistics || Object.keys(statistics).length === 0) {
         loadStatistics('products/statistics');
     }
   }, [loadStatistics, statistics]); 
@@ -38,7 +39,7 @@ export function ShowProductsStatistics() {
     return <StatisticsSkeleton />;
   }
 
-  if (!statistics || statistics.length === 0) {
+  if (!statistics || Object.keys(statistics).length === 0) {
     return null;
   }
 
@@ -50,15 +51,15 @@ export function ShowProductsStatistics() {
   ];
 
   return (
-    <div className="m-5 bg-white rounded-lg shadow-md">
-      <div className="p-4 border-b">
-        <h3 className="text-base font-semibold text-gray-800 uppercase">Estadísticas de Productos</h3>
+    <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle/50 p-4">
+      <div className="pb-4 border-b border-bg-subtle">
+        <h3 className="text-base font-semibold text-text-base uppercase">Estadísticas</h3>
       </div>
-      <div className="p-4 space-y-4">
+      <div className="pt-4 space-y-3">
         {statsList.map((stat) => (
-          <div key={stat.label} className="flex justify-between items-center">
-            <p className="text-sm text-gray-600">{stat.label}</p>
-            <p className="text-base font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded-md">{stat.value}</p>
+          <div key={stat.label} className="flex justify-between items-center text-sm">
+            <p className="text-text-muted font-semibold">{stat.label}</p>
+            <p className="font-bold text-text-base bg-bg-subtle/60 px-2 py-0.5 rounded-md">{stat.value}</p>
           </div>
         ))}
       </div>
