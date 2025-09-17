@@ -5,7 +5,7 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 
 
 export function useGetRequest() {
-  const [responseData, setResponseData] = useState(null);
+  const [responseData, setResponseData] = useState(null) as any;
   const [loading, setLoading] = useState(false);
   const { setMessage, setError: setErrorMessage } = useToastMessageStore();
 
