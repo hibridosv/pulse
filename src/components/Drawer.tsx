@@ -145,7 +145,7 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
     <li className="mb-2">
       <button
         onClick={handleToggle}
-        className="w-full flex justify-between items-center p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main"
+        className="w-full flex justify-between items-center p-2 rounded text-text-inverted/90 hover:bg-white/10 hover:text-text-inverted"
       >
         <span className="flex">{item.icon}{item.label}</span>
         <FaChevronDown
@@ -160,7 +160,7 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
               <a
                 href={child.href}
                 onClick={onClose}
-                className="block p-1 rounded text-text-main/70 hover:bg-white/5 hover:text-text-main"
+                className="block p-1 rounded text-text-inverted/70 hover:bg-white/10 hover:text-text-inverted"
               >
                 {child.label}
               </a>
@@ -192,11 +192,11 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         onClick={(e) => e.stopPropagation()}
         style={{ transform: isOpen ? "translateX(0)" : "translateX(-100%)" }}
       >
-        {/* Overlay para la opacidad */}
-        <div className="absolute inset-0 bg-background-soft/70 z-0"></div>
+        {/* Overlay para la opacidad del fondo */}
+        <div className="absolute inset-0 bg-primary/80 z-0"></div>
 
         {/* Header */}
-        <div className="relative p-4 border-b border-white/10 flex-shrink-0 bg-background-main z-10">
+        <div className="relative p-4 border-b border-white/10 flex-shrink-0 bg-primary/95 z-10">
           <div className="w-full h-10">
             <Image
               src="/img/logo_hibrido_s.png"
@@ -206,7 +206,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
-          <button onClick={onClose} className="absolute top-2 right-2 z-10 text-text-main/70 hover:text-text-main">
+          <button onClick={onClose} className="absolute top-2 right-2 z-10 text-text-inverted/70 hover:text-text-inverted">
             <IoClose size={24} />
           </button>
         </div>
@@ -222,7 +222,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
                   <a
                     href={item.href}
                     onClick={onClose}
-                    className="p-2 rounded text-text-main/90 hover:bg-white/5 hover:text-text-main flex"
+                    className="p-2 rounded text-text-inverted/90 hover:bg-white/10 hover:text-text-inverted flex"
                   >
                    {item.icon}
                     {item.label}
@@ -233,26 +233,38 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
           </ul>
         </div>
 
-        <div className="flex justify-center items-center p-2 gap-4 z-10 bg-background-main">
+        <div className="flex justify-center items-center p-2 gap-3 z-10 bg-primary/95">
             <button
-              onClick={() => setTheme('indigo')}
-              className={`px-3 py-1 rounded text-sm ${theme === 'indigo' ? 'bg-primary text-white' : 'bg-secondary'}`}
-            >
-              Indigo
-            </button>
+              title="MDB"
+              onClick={() => setTheme('mdb')}
+              className={`w-6 h-6 rounded-full transition-all ${theme === 'mdb' ? 'ring-2 ring-offset-2 ring-offset-primary ring-white' : ''}`}
+              style={{ backgroundColor: '#243A51' }}
+            />
             <button
+              title="Azul"
+              onClick={() => setTheme('blue')}
+              className={`w-6 h-6 rounded-full transition-all ${theme === 'blue' ? 'ring-2 ring-offset-2 ring-offset-primary ring-white' : ''}`}
+              style={{ backgroundColor: '#162B69' }}
+            />
+            <button
+              title="Verde"
               onClick={() => setTheme('green')}
-              className={`px-3 py-1 rounded text-sm ${theme === 'green' ? 'bg-primary text-white' : 'bg-secondary'}`}
-            >
-              Green
-            </button>
+              className={`w-6 h-6 rounded-full transition-all ${theme === 'green' ? 'ring-2 ring-offset-2 ring-offset-primary ring-white' : ''}`}
+              style={{ backgroundColor: '#0C381F' }}
+            />
+            <button
+              title="Navy"
+              onClick={() => setTheme('navy')}
+              className={`w-6 h-6 rounded-full transition-all ${theme === 'navy' ? 'ring-2 ring-offset-2 ring-offset-primary ring-white' : ''}`}
+              style={{ backgroundColor: '#223E5A' }}
+            />
         </div>
 
         {/* Footer (Logout) */}
-        <div className="p-2 border-t border-white/10 flex-shrink-0 font-semibold z-10 bg-background-main">
+        <div className="p-2 border-t border-white/10 flex-shrink-0 font-semibold z-10 bg-primary/95">
           <button
             onClick={() => signOut()}
-            className="w-full flex items-center justify-center p-2 rounded text-red-500 hover:bg-red-200"
+            className="w-full flex items-center justify-center p-2 rounded text-danger hover:bg-danger/20"
           >
             <FaSignOutAlt className="mr-2" />
             <span>Cerrar Sesión</span>

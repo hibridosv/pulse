@@ -3,8 +3,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 type ThemeState = {
-  theme: 'mdb' | 'green';
-  setTheme: (theme: 'mdb' | 'green') => void;
+  theme: 'mdb' | 'green' | 'blue' | 'navy';
+  setTheme: (theme: 'mdb' | 'green' | 'blue' | 'navy') => void;
 };
 
 export const useThemeStore = create<ThemeState>()(

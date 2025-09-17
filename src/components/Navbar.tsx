@@ -13,17 +13,17 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-background-main p-2 text-text-main shadow-md">
+      <nav className="bg-primary p-2 text-text-inverted shadow-md">
         <div className="container mx-auto flex justify-between items-center">
           {/* Lado Izquierdo: Botón de Menú y Título */}
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsDrawerOpen(true)}
-              className="text-text-main hover:text-primary"
+              className="text-text-inverted hover:text-secondary"
             >
               <HiMenu size={32} />
             </button>
-            <Link href="/dashboard" className="text-xl font-bold text-white">
+            <Link href="/dashboard" className="text-xl font-bold text-text-inverted">
               Pulse
             </Link>
           </div>
@@ -36,7 +36,7 @@ export const Navbar = () => {
 
           {/* Lado Derecho (puedes añadir más cosas aquí) */}
           <div>
-            <Link href="/dashboard" className="text-text-main hover:text-primary">
+            <Link href="/dashboard" className="text-text-inverted hover:text-secondary">
               <IoHome size={26} />
             </Link>
           </div>

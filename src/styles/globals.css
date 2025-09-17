@@ -2,64 +2,102 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 255, 255, 255;
+/*
+  Definición de variables de color para los temas de la aplicación.
+  Todos los temas son claros. El tema `mdb` es el predeterminado.
+*/
+
+/* Tema MDB Light (por defecto) */
+:root,
+[data-theme='mdb'] {
+  --color-primary: 36 58 81;      /* #243A51 */
+  --color-secondary: 82 109 130;   /* Muted version of primary */
+  --color-accent: 99 102 241;     /* indigo-500 */
+
+  --color-text-base: 17 24 39;      /* gray-900 */
+  --color-text-muted: 55 65 81;       /* gray-700 */
+  --color-text-inverted: 255 255 255; /* white */
+
+  --color-bg-base: 249 250 251;     /* gray-50 */
+  --color-bg-content: 255 255 255;   /* white */
+  --color-bg-subtle: 229 231 235;     /* gray-200 */
+
+  --color-success: 21 128 61;      /* green-700 */
+  --color-danger: 185 28 28;       /* red-700 */
+  --color-warning: 202 138 4;       /* yellow-600 */
+  --color-info: 30 64 175;        /* blue-800 */
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
+/* Tema Blue Light */
+[data-theme='blue'] {
+  --color-primary: 22 43 105;     /* custom dark blue */
+  --color-secondary: 30 58 138;   /* blue-900 */
+  --color-accent: 99 102 241;     /* indigo-500 */
+
+  --color-text-base: 31 41 55;      /* gray-800 */
+  --color-text-muted: 107 114 128;   /* gray-500 */
+  --color-text-inverted: 255 255 255; /* white */
+
+  --color-bg-base: 249 250 251;     /* gray-50 */
+  --color-bg-content: 255 255 255;   /* white */
+  --color-bg-subtle: 229 231 235;     /* gray-200 */
+
+  --color-success: 22 163 74;      /* green-600 */
+  --color-danger: 220 38 38;       /* red-600 */
+  --color-warning: 245 158 11;      /* amber-500 */
+  --color-info: 59 130 246;        /* blue-500 */
+}
+
+/* Tema Green Light */
+[data-theme='green'] {
+  --color-primary: 12 56 31;      /* custom dark green */
+  --color-secondary: 20 83 45;      /* green-900 */
+  --color-accent: 249 115 22;      /* orange-500 */
+
+  --color-text-base: 20 83 45;        /* green-900 */
+  --color-text-muted: 22 101 52;      /* green-800 */
+  --color-text-inverted: 240 253 244; /* green-50 */
+
+  --color-bg-base: 240 253 244;     /* green-50 */
+  --color-bg-content: 255 255 255;   /* white */
+  --color-bg-subtle: 220 252 231;     /* green-100 */
+
+  --color-success: 22 163 74;      /* green-600 */
+  --color-danger: 220 38 38;       /* red-600 */
+  --color-warning: 245 158 11;      /* amber-500 */
+  --color-info: 59 130 246;        /* blue-500 */
+}
+
+/* Tema Navy Light (Custom) */
+[data-theme='navy'] {
+  --color-primary: 34 62 90;      /* #223E5A */
+  --color-secondary: 51 77 106;     /* #334D6A */
+  --color-accent: 68 92 122;       /* #445C7A */
+
+  --color-text-base: 0 32 57;         /* #002039 */
+  --color-text-muted: 17 47 73;        /* #112F49 */
+  --color-text-inverted: 249 250 251;  /* gray-50 */
+
+  --color-bg-base: 249 250 251;     /* gray-50 */
+  --color-bg-content: 255 255 255;   /* white */
+  --color-bg-subtle: 229 231 235;     /* gray-200 */
+
+  --color-success: 22 163 74;      /* green-600 */
+  --color-danger: 220 38 38;       /* red-600 */
+  --color-warning: 245 158 11;      /* amber-500 */
+  --color-info: 59 130 246;        /* blue-500 */
+}
+
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: rgb(var(--color-text-base));
+  background-color: rgb(var(--color-bg-base));
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
-}
-
-/* 1. Definimos las variables de color para el tema por defecto (indigo) */
-:root {
-  --color-primary: 36 58 81; /* #243A51 */
-  --color-secondary: 52 73 94; /* slightly lighter blue-gray */
-  --color-accent: 251 191 36; /* amber-400 */
-  --color-text: 243 244 246; /* gray-100 */
-  --color-background: 20 32 45; /* darker blue-gray */
-  --color-background-soft: 30 48 67; /* medium dark blue-gray */
-}
-
-/* 2. Definimos las variables para el tema verde */
-[data-theme='green'] {
-  --color-primary: 34 197 94; /* green-500 */
-  --color-secondary: 22 163 74; /* green-600 */
-  --color-accent: 249 115 22; /* orange-500 */
-  --color-text: 243 244 246; /* gray-100 */
-  --color-background: 20 32 25; /* dark green-ish */
-  --color-background-soft: 21 38 32; /* custom dark green-gray */
-}
-
-/* 3. (Opcional) Puedes definir un tema indigo explícito si quieres ser consistente */
-[data-theme='mdb'] {
-  --color-primary: 36 58 81; /* #243A51 */
-  --color-secondary: 52 73 94; /* slightly lighter blue-gray */
-  --color-accent: 251 191 36; /* amber-400 */
-  --color-text: 243 244 246; /* gray-100 */
-  --color-background: 20 32 45; /* darker blue-gray */
-  --color-background-soft: 30 48 67; /* medium dark blue-gray */
 }
 
 /* Custom Scrollbar Styles */
@@ -69,18 +107,18 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2); /* Light thumb on dark background */
+  background-color: rgb(var(--color-bg-subtle));
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgb(var(--color-secondary));
 }
 
 /* For Firefox */
 .custom-scrollbar {
   scrollbar-width: thin; /* "auto" or "thin" */
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent; /* thumb color track color */
+  scrollbar-color: rgb(var(--color-bg-subtle)) transparent; /* thumb color track color */
 }
 
 
