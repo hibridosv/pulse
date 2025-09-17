@@ -80,7 +80,7 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
         <div className="p-4 space-y-6 text-text-base"> {/* Main padding and spacing */}
 
           {/* Sección 1: Información Básica y Estado */}
-          <div className="grid grid-cols-1 md:grid-cols-10 gap-4 pb-4 border-b border-bg-subtle">
+          <div className="grid grid-cols-10 gap-4 pb-4 border-b border-bg-subtle">
             <div className="col-span-9">
               <div className="text-lg font-bold text-text-base mb-1">{record.description}</div>
               <p className="text-sm text-text-muted">Código: <span className="font-semibold text-primary">{record.cod}</span></p>
@@ -93,12 +93,25 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
 
           {/* Sección 2: Métricas Clave */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-bg-subtle/50 p-4 rounded-lg flex items-center gap-3">
+            <div className="relative group bg-bg-subtle/50 p-4 rounded-lg flex items-center gap-3 cursor-pointer">
               <MdOutlineAttachMoney size={24} className="text-primary" />
               <div>
                 <p className="text-sm text-text-muted">Precio:</p>
                 <p className="text-lg font-bold text-text-base">{record.prices[0] ? numberToMoney(record.prices[0].price, system) : numberToMoney(0, system)}</p>
               </div>
+              {record.prices  && (
+                <div className="absolute left-0 top-full mt-2 w-48 bg-bg-content border border-bg-subtle rounded-lg shadow-xl ring-2 ring-primary z-20 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="p-2">
+                    <p className="text-sm font-semibold text-text-base mb-1">Listado de Precios:</p>
+                    {record.prices.map((priceItem, index) => (
+                      <div key={index} className="flex justify-between text-sm text-text-muted">
+                        <span>Cant. {priceItem.qty}:</span>
+                        <span>{numberToMoney(priceItem.price, system)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="bg-bg-subtle/50 p-4 rounded-lg flex items-center gap-3">
               <MdOutlineInventory size={24} className="text-primary" />
@@ -109,11 +122,11 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
                 </p>
               </div>
             </div>
-            <div className={`p-4 rounded-lg flex items-center gap-3 ${realQuantity <= 0 ? 'bg-danger/20' : 'bg-bg-subtle/50'}`}>
-              <MdProductionQuantityLimits size={24} className={`${realQuantity <= 0 ? 'text-danger' : 'text-primary'}`} />
+            <div className={`p-4 rounded-lg flex items-center gap-3 ${realQuantity <= 0  || responseData?.data? 'bg-danger/20' : 'bg-bg-subtle/50'}`}>
+              <MdProductionQuantityLimits size={24} className='text-primary' />
               <div>
                 <p className="text-sm text-text-muted">Cant. Actual:</p>
-                <p className={`text-lg font-bold ${realQuantity <= 0 ? 'text-danger' : 'text-text-base'}`}>
+                <p className="text-lg font-bold text-text-base">
                   {realQuantity} <span className="text-text-muted text-sm">({record.quantity_unit?.abbreviation ?? 'Unidad'})</span>
                 </p>
               </div>
