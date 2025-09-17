@@ -22,6 +22,7 @@ import { FaSpinner } from "react-icons/fa";
 import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useModalStore from "@/stores/modalStorage";
+import { LoadingPage } from "@/components/LoadingPage";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -36,9 +37,9 @@ export default function DashboardPage() {
   const { elementSelected } = useSelectedElementStore();
   const { modals, closeModal } = useModalStore();
 
-//   if (status === "loading") {
-//     return <p>Loading...</p>;
-//   }
+  if (status === "loading") {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
@@ -56,22 +57,22 @@ export default function DashboardPage() {
           <ShowProductsStatistics />
 
           { permissionExists(permission, "inventory-download") && 
-                    <div className="mt-2 p-2">
-                      <LinksList links={links} separator="?" text="DESCARGAS" />
-                      <div onClick={loadingRequest ? ()=>{} : ()=>getRequest('transactions/products/prices')} >
-                          {loadingRequest ? <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer" >
-                            ACTUALIZANDO...
-                            <FaSpinner className="animate-spin" />
-                            </li> : <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer" >
-                              ACTUALIZAR PRECIOS
-                              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                          </li>
-                          }
-                      </div>
-                    </div>
+              <div className="mt-2 p-2">
+                <LinksList links={links} separator="?" text="DESCARGAS" />
+                <div onClick={loadingRequest ? ()=>{} : ()=>getRequest('transactions/products/prices')} >
+                    {loadingRequest ? <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer" >
+                      ACTUALIZANDO...
+                      <FaSpinner className="animate-spin" />
+                      </li> : <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer" >
+                        ACTUALIZAR PRECIOS
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                          stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </li>
+                    }
+                </div>
+              </div>
               } 
         </div>
     </div> 

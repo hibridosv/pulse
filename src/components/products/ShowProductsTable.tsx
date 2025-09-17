@@ -57,10 +57,12 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
       <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{product.minimum_stock}</td>
       <td className="px-3 py-2 text-center">
         <Dropdown label={<FiSettings size={18} /> }>
-          <DropdownItem onClick={() => { setElement(product); openModal('editProduct'); }}>Editar</DropdownItem>
-          <DropdownItem onClick={() => { setElement(product); openModal('deleteProduct'); }}>Eliminar</DropdownItem>
+          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
+          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Actualizar Precios</DropdownItem>
+          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Editar</DropdownItem>
+          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Kardex</DropdownItem>
           <DropdownDivider />
-          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Ver Detalles</DropdownItem>
+          <DropdownItem onClick={() => { setElement(product); openModal('deleteProduct'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
         </Dropdown>
       </td>
     </tr>

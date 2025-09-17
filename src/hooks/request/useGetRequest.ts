@@ -15,10 +15,9 @@ export function useGetRequest() {
       const response = await get(url);
       setResponseData(response.data);
       if (showMessage) setMessage(response);
-      return response.data;
     } catch (err: any) {
       if (showMessage) setErrorMessage(err);
-      return null;
+      setResponseData(null);
     } finally {
       setLoading(false);
     }

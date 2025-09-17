@@ -13,7 +13,7 @@ import { NothingHere } from "../NothingHere";
 export interface ProductDetailsModalProps {
   onClose: () => void;
   isShow: boolean;
-  record: Product; // Use Product interface for better typing
+  record: Product; 
 }
 
 export function ProductDetailsModal(props: ProductDetailsModalProps) {
@@ -29,10 +29,9 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
 
     const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
 
-
     if (!isShow) { return null; }
     if (!record) { return <NothingHere />; }
-    
+
   // Helper para renderizar una fila de detalle
   const DetailRow = ({ label, value, icon }: { label: string; value: React.ReactNode; icon?: React.ReactNode }) => (
     <div className="flex items-center gap-2 text-text-base">

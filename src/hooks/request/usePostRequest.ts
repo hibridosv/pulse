@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { get, post } from '@/services/httpService'; // Asegúrate de que la ruta sea correcta
 import useToastMessageStore from '@/stores/toastMessageStore';
+import { set } from 'react-hook-form';
 
 
 
@@ -15,10 +16,9 @@ export function useGetRequest() {
       const response = await post(url, data);
       setResponseData(response.data);
       setMessage(response);
-      return response.data;
     } catch (err: any) {
       setErrorMessage(err);
-      return null;
+      setResponseData(null);
     } finally {
       setLoading(false);
     }
