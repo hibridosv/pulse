@@ -53,7 +53,7 @@ body {
 }
 
 /* 3. (Opcional) Puedes definir un tema indigo explícito si quieres ser consistente */
-[data-theme='indigo'] {
+[data-theme='mdb'] {
   --color-primary: 36 58 81; /* #243A51 */
   --color-secondary: 52 73 94; /* slightly lighter blue-gray */
   --color-accent: 251 191 36; /* amber-400 */
