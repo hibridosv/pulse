@@ -9,15 +9,15 @@ export function useGetRequest() {
   const [loading, setLoading] = useState(false);
   const { setMessage, setError: setErrorMessage } = useToastMessageStore();
 
-  const getRequest = useCallback(async (url: string) => {
+  const getRequest = useCallback(async (url: string, showMessage: boolean = true) => {
     setLoading(true);
     try {
       const response = await get(url);
       setResponseData(response.data);
-      setMessage(response);
+      if (showMessage) setMessage(response);
       return response.data;
     } catch (err: any) {
-      setErrorMessage(err);
+      if (showMessage) setErrorMessage(err);
       return null;
     } finally {
       setLoading(false);

@@ -2,13 +2,12 @@
 import { Button, Preset } from "../button/button";
 import useConfigStore from "@/stores/configStore";
 import Modal from "../modal/Modal";
-import { numberToMoney } from "@/lib/utils"; // Import numberToMoney
-import { Product } from "@/interfaces/products"; // Import Product interface
+import { numberToMoney } from "@/lib/utils"; 
+import { Product } from "@/interfaces/products"; 
 import { MdOutlineHomeRepairService, MdOutlineCategory, MdOutlineLocationOn, MdOutlineBrandingWatermark, MdOutlineInventory, MdOutlineAttachMoney, MdOutlineInfo, MdOutlineCalendarToday, MdOutlineUpdate, MdProductionQuantityLimits } from "react-icons/md"; // Icons
-import { FaBox, FaTag, FaUserTie, FaCheckCircle, FaTimesCircle } from "react-icons/fa"; // More icons
+import { FaBox, FaTag, FaUserTie, FaCheckCircle, FaTimesCircle } from "react-icons/fa"; 
 import { useGetRequest } from "@/hooks/request/useGetRequest";
-import { useGetResourceLogic } from "@/hooks/request/useGetResouceLogic";
-import { useCallback } from "react";
+import { useEffect } from "react";
 import { NothingHere } from "../NothingHere";
 
 export interface ProductDetailsModalProps {
@@ -22,18 +21,18 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
   const { system } = useConfigStore();
   const { responseData, getRequest, loading } = useGetRequest();
 
+    useEffect(() => {
+        if (isShow && record?.id) {
+            getRequest(`orders/products/${record?.id}/quantity`, false);
+        }
+    }, [getRequest, record?.id, isShow]);
 
-    const loadQuantity = useCallback(() => {
-      if (!responseData && record?.id) {
-          getRequest(`orders/products/${record?.id}/quantity`);
-      }
-    }, [responseData, getRequest, record?.id]); 
-    useGetResourceLogic(loadQuantity);
     const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
 
 
     if (!isShow) { return null; }
     if (!record) { return <NothingHere />; }
+    
   // Helper para renderizar una fila de detalle
   const DetailRow = ({ label, value, icon }: { label: string; value: React.ReactNode; icon?: React.ReactNode }) => (
     <div className="flex items-center gap-2 text-text-base">
@@ -127,7 +126,7 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
               <div>
                 <p className="text-sm text-text-muted">Cant. Actual:</p>
                 <p className="text-lg font-bold text-text-base">
-                  {realQuantity} <span className="text-text-muted text-sm">({record.quantity_unit?.abbreviation ?? 'Unidad'})</span>
+                  { loading ? 'Cargando...' : <span> {realQuantity} <span className="text-text-muted text-sm">({record.quantity_unit?.abbreviation ?? 'Unidad'})</span></span> }
                 </p>
               </div>
             </div>
