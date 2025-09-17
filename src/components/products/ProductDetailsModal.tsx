@@ -9,7 +9,7 @@ import { FaBox, FaTag, FaUserTie, FaCheckCircle, FaTimesCircle } from "react-ico
 import { useGetRequest } from "@/hooks/request/useGetRequest";
 import { useGetResourceLogic } from "@/hooks/request/useGetResouceLogic";
 import { useCallback } from "react";
-import { NothingHere } from "../NotingHere";
+import { NothingHere } from "../NothingHere";
 
 export interface ProductDetailsModalProps {
   onClose: () => void;

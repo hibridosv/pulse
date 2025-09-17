@@ -2,7 +2,7 @@
 
 import useDashBoardStore from "@/stores/dashboardStore";
 import { CardDashBoard } from "./CardDashboard";
-import { NothingHere } from "../NotingHere";
+import { NothingHere } from "../NothingHere";
 
 export function PrincipalInfo() {
     const { cards, loading } = useDashBoardStore();
