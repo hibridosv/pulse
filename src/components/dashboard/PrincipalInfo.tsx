@@ -12,7 +12,7 @@ export function PrincipalInfo() {
             <div className="bg-gray-50">
                 <div className="container px-5 mx-auto py-8">
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                        {[...Array(4)].map((_, index) => (
+                        {[...Array(12)].map((_, index) => (
                            <CardDashBoard key={index} isLoading={true} />
                         ))}
                     </div>

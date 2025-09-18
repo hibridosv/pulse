@@ -7,6 +7,7 @@ import { Cut } from "@/interfaces/Cuts";
 import { DeleteCutButton } from "./DeleteCutsButton";
 import { CutDetailsModal } from "./CutDetailsModal";
 import useModalStore from "@/stores/modalStorage";
+import { NothingHere } from "../NothingHere";
 
 export interface ShowCutsTableProps {
   records: Cut[];
@@ -19,7 +20,7 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
 
   const firstRecord = records && records[0];
   if (!records || records.length === 0) {
-    return null;
+    return <NothingHere />;
   }
 
   const listItems = records.map((record: Cut) => (

@@ -20,12 +20,13 @@ import { Pagination } from "@/components/Pagination";
 import { CashDrawer } from "@/interfaces/cashdrawers";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { FaUser, FaUsers } from "react-icons/fa";
+import { Loader } from "@/components/Loader";
 
 export default function Page() {
   const { status } = useSession();
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   useCashDrawersLogic()
-  const { cashDrawers } = useCashDrawerStore();
+  const { cashDrawers, loading: cashDrawerLoading } = useCashDrawerStore();
   const { cuts, loading } = useCutStore();
   const { cashdrawer: cashDrawerActive, user } = useConfigStore();
   const { modals, openModal, closeModal } = useModalStore();
@@ -50,7 +51,7 @@ export default function Page() {
         <ViewTitle text="Cajas disponibles" />
 
         <div  className="flex justify-center py-4 px-4">
-        {
+        { cashDrawerLoading ? <Loader /> :
           cashDrawers?.data && cashDrawers?.data.map((cash: any) => (
             <div key={cash.id} className="md:mx-6 mx-2 shadow-2xl shadow-slate-900 rounded-t-full clickeable" 
             onClick={()=>handleSelect(cash)}>

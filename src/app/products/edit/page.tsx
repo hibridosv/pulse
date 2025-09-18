@@ -28,7 +28,7 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
       <div className="col-span-7 border-r md:border-primary">
           <ViewTitle text="Kardex de Producto" />
-          { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTableLink records={products?.data} link="kardex" /> }
+          { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTableLink records={products?.data} link="edit" /> }
 
       </div>
       <div className="col-span-3">

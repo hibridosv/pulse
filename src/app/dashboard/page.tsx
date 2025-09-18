@@ -23,9 +23,7 @@ export default function DashboardPage() {
               <div className="col-span-6 border-r md:border-sky-600">
                 <div className="flex justify-between">
                   <ViewTitle text='PANEL PRINCIPAL' />
-                  
                 </div>
-
                 <PrincipalInfo  />
               </div>
               <div className="col-span-4">
