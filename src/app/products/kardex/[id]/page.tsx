@@ -3,12 +3,16 @@
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LoadingPage } from "@/components/LoadingPage";
 import { NothingHere } from "@/components/NothingHere";
+import { KardexDetailsModal } from "@/components/products/kardex/KardexDetailsModal";
 import { ShowKardexTable } from "@/components/products/kardex/ShowKardexTable";
 import { ViewTitle } from "@/components/ViewTitle";
-import { useKardexLogic } from "@/hooks/useKardexLogic";
+import { useKardexLogic } from "@/hooks/products/useKardexLogic";
 import { urlConstructor } from "@/lib/utils";
+import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/productStore";
+import useSelectedElementStore from "@/stores/selectedElementStorage";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -16,7 +20,8 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data: session, status } = useSession();
   const { kardex, loadKardex, loading, product } = useProductStore();
   useKardexLogic(id);
-
+  const { elementSelected } = useSelectedElementStore();
+  const { modals, closeModal } = useModalStore();
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -39,7 +44,11 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="mt-2 p-2">
             <DateRange onSubmit={handleFormSubmit} loading={loading} />
           </div>
+          <div className="mt-2 p-2 flex justify-center">
+            <Link href="/products/kardex" className="button-href">Buscar otro producto</Link>
+          </div>
       </div> 
+      <KardexDetailsModal isShow={modals['kardexDetails']} onClose={() => closeModal('kardexDetails')} record={elementSelected} />
     </div>
   );
 }

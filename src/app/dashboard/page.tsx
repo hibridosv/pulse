@@ -7,7 +7,7 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { PrincipalInfo } from "@/components/dashboard/PrincipalInfo";
 import { CharBarWeek } from "@/components/dashboard/CharBarWeek";
 import { CharBarDay } from "@/components/dashboard/CharBarDay";
-import { useDashBoardLogic } from "@/hooks/useDashBoardLogic";
+import { useDashBoardLogic } from "@/hooks/config/useDashBoardLogic";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();

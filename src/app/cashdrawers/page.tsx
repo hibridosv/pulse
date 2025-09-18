@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { LoadingPage } from "@/components/LoadingPage";
 import { ViewTitle } from "@/components/ViewTitle";
-import { useCashDrawersLogic } from "@/hooks/useCashDrawersLogic";
+import { useCashDrawersLogic } from "@/hooks/cuts/useCashDrawersLogic";
 import useCashDrawerStore from "@/stores/cashdrawersStore";
 import Image from "next/image";
 import useConfigStore from "@/stores/configStore";
@@ -12,7 +12,7 @@ import { CashdrawerModal } from "@/components/cashdrawer/CashDrawerModal";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useState } from "react";
 import { CashdrawerDetails } from "@/components/cashdrawer/CashDrawerDetails";
-import { useCutsLogic } from "@/hooks/useCutsLogic";
+import { useCutsLogic } from "@/hooks/cuts/useCutsLogic";
 import useCutStore from "@/stores/cutStore";
 import { ShowCutsTable } from "@/components/cuts/ShowCutsTable";
 import { usePagination } from "@/hooks/usePagination";
