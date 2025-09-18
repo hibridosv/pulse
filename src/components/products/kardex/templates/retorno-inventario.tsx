@@ -18,49 +18,49 @@ export function RetornoInventario(props: RetornoInventarioProps) {
     
     return (<div className="w-full">
 
-                <div className="w-full mx-3 shadow-md shadow-amber-500 rounded-md p-4 font-semibold">
-
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Fecha</div>
-                        <div className=" w-3/4 ml-4">{ formatDateAsDMY(request?.charged_at) } { formatHourAsHM(request?.charged_at) }</div>
+                <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 text-text-base">
+                    <h4 className="text-lg font-bold mb-2">Detalles del Retorno de Inventario</h4>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Fecha</div>
+                        <div className="w-3/4 ml-4">{ formatDateAsDMY(request?.charged_at) } { formatHourAsHM(request?.charged_at) }</div>
                     </div>
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500 bg-red-100">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Eliminada</div>
-                        <div className=" w-3/4 ml-4">{ formatDateAsDMY(request?.canceled_at) } { formatHourAsHM(request?.canceled_at) }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0 bg-danger/10">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Eliminada</div>
+                        <div className="w-3/4 ml-4">{ formatDateAsDMY(request?.canceled_at) } { formatHourAsHM(request?.canceled_at) }</div>
                     </div>
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Documento</div>
-                        <div className=" w-3/4 ml-4">{ request?.invoice_assigned?.name } # { request?.invoice }</div>
-                    </div>
-
-
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Orden Numero</div>
-                        <div className=" w-3/4 ml-4">{ request?.number }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Documento</div>
+                        <div className="w-3/4 ml-4">{ request?.invoice_assigned?.name } # { request?.invoice }</div>
                     </div>
 
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Cajero</div>
-                        <div className=" w-3/4 ml-4">{ request?.casheir?.name }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Orden Numero</div>
+                        <div className="w-3/4 ml-4">{ request?.number }</div>
                     </div>
 
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Cliente</div>
-                        <div className=" w-3/4 ml-4">{ request?.client?.name ? request?.client?.name : "N/A" }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Cajero</div>
+                        <div className="w-3/4 ml-4">{ request?.casheir?.name }</div>
                     </div>
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Tipo Pago</div>
-                        <div className=" w-3/4 ml-4">{ getPaymentTypeName(request?.payment_type) }</div>
+
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Cliente</div>
+                        <div className="w-3/4 ml-4">{ request?.client?.name ? request?.client?.name : "N/A" }</div>
                     </div>
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Total</div>
-                        <div className=" w-3/4 ml-4">{ numberToMoney(request?.total, system) }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Tipo Pago</div>
+                        <div className="w-3/4 ml-4">{ getPaymentTypeName(request?.payment_type) }</div>
+                    </div>
+
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Total</div>
+                        <div className="w-3/4 ml-4">{ numberToMoney(request?.total, system) }</div>
                     </div>
 
                 </div>

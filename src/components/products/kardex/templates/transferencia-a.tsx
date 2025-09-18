@@ -16,35 +16,39 @@ export function TransferenciaA(props: TransferenciaAProps) {
     
     return (<div className="w-full">
 
-                <div className="w-full mx-3 shadow-md shadow-amber-500 rounded-md p-4 font-semibold">
-
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Fecha</div>
-                        <div className=" w-3/4 ml-4">{ formatDateAsDMY(request?.created_at) } { formatHourAsHM(request?.created_at) }</div>
+                <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 text-text-base">
+                    <h4 className="text-lg font-bold mb-2">Detalles de la Transferencia</h4>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Fecha</div>
+                        <div className="w-3/4 ml-4">{ formatDateAsDMY(request?.created_at) } { formatHourAsHM(request?.created_at) }</div>
                     </div>
 
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Enviado a</div>
-                        <div className=" w-3/4 ml-4">{ request?.to?.description }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Enviado a</div>
+                        <div className="w-3/4 ml-4">{ request?.to?.description }</div>
                     </div>
 
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Envia</div>
-                        <div className=" w-3/4 ml-4">{ request?.send }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Envia</div>
+                        <div className="w-3/4 ml-4">{ request?.send }</div>
                     </div>
 
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Recive</div>
-                        <div className=" w-3/4 ml-4">{ request?.receive }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Recive</div>
+                        <div className="w-3/4 ml-4">{ request?.receive }</div>
                     </div>
 
 
-                    <div className="mx-3 flex justify-between p-2 font-semibold border-2 border-gray-500">
-                        <div className=" w-1/4 border-r-2 border-gray-500">Estado</div>
-                        <div className=" w-3/4 ml-4">{ statusOfTransfer(request?.status) }</div>
+                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
+                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Estado</div>
+                        <div className="w-3/4 ml-4">
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${request?.status == 1 ? 'bg-success/20 text-success' : request?.status == 2 ? 'bg-warning/20 text-warning' : 'bg-danger/20 text-danger'}`}>
+                                { statusOfTransfer(request?.status) }
+                            </span>
+                        </div>
                     </div>
 
 
