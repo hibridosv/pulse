@@ -12,6 +12,6 @@ export function useKardexLogic(id: string) {
         const formatedDate = actualDate.toFormat('yyyy-MM-dd');
         loadKardex(encodeURI(`products/${id}/kardex?option=1&initialDate=${formatedDate} 00:00:00`));
         loadProduct(`products/${id}?included=prices,category,quantityUnit,provider,brand,location`);
-  }, [loadKardex, id])
+  }, [loadKardex, id, loadProduct])
 
 }

@@ -179,8 +179,8 @@ interface DrawerProps {
 }
 
 const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
   const { theme, setTheme } = useThemeStore();
+  if (!isOpen) return null;
 
   return (
     <div

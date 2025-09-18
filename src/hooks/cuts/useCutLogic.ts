@@ -8,6 +8,6 @@ export function useCutLogic(url: string) {
 
   useEffect(() => {
       loadCut(url)
-  }, [loadCut])
+  }, [loadCut, url])
 
 }

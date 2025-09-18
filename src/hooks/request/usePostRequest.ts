@@ -21,7 +21,7 @@ export function usePostRequest() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [setErrorMessage, setMessage]);
 
 
   return { responseData, loading, postRequest };

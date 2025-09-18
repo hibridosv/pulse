@@ -15,6 +15,6 @@ export function useProductLogic(currentPage: any, searchTerm: string, sortBy: st
         } else {
            loadProducts(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15${currentPage}${searchTerm}`)
         }
-  }, [loadProducts, currentPage, searchTerm, sortBy])
+  }, [loadProducts, currentPage, searchTerm, sortBy, searchTermNew, sortByNew])
 
 }

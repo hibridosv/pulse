@@ -21,7 +21,7 @@ export function useGetRequest() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [setErrorMessage, setMessage]);
 
 
   return { responseData, loading, getRequest };

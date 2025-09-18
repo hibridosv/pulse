@@ -7,6 +7,6 @@ export function useCutsLogic(url: string, currentPage: any, showAll: boolean) {
 
   useEffect(() => {
       loadCuts(url)
-  }, [loadCuts, currentPage, showAll])
+  }, [loadCuts, currentPage, showAll, url])
 
 }

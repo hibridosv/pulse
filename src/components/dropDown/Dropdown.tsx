@@ -36,7 +36,7 @@ export const Dropdown: FC<DropdownProps> = ({ label, children }) => {
         width: rect.width, 
       });
     }
-  }, [isOpen]);
+  }, []); // 'isOpen' eliminado
 
   // Cierra el dropdown al hacer clic fuera
   useEffect(() => {
