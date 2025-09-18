@@ -1,15 +1,14 @@
 import { create } from 'zustand';
 import { deleteService, getServices } from '@/services/services';
 import useToastMessageStore from './toastMessageStore';
-import useModalStore from './modalStorage';
-
-
 
 
 const useProductStore = create((set) => ({
   products: [],
-  statistics: [],
   product: [],
+  statistics: [],
+  kardex: [],
+  kardexDetails: [],
   error: [],
   loading: false,
   loadingStat: false,
@@ -20,6 +19,18 @@ const useProductStore = create((set) => ({
     try {
       const response = await getServices(url);
       set({ products: response.data.data, error: null });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+    loadProduct: async (url) => {
+    set({ loading: true });
+    try {
+      const response = await getServices(url);
+      set({ product: response.data.data, error: null });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -57,6 +68,30 @@ const useProductStore = create((set) => ({
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ deleting: false });
+    }
+  },
+
+  loadKardex: async (url) => {
+    set({ loading: true });
+    try {
+      const response = await getServices(url);
+      set({ kardex: response.data.data, error: null });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+    loadKardexDetails: async (url) => {
+    set({ loading: true });
+    try {
+      const response = await getServices(url);
+      set({ kardexDetails: response.data.data, error: null });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ loading: false });
     }
   },
 

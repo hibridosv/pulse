@@ -14,6 +14,7 @@ import { NothingHere } from "@/components/NothingHere";
 import { DeleteModal } from "../DeleteModal";
 import useProductStore from "@/stores/productStore";
 import { BiLoader } from "react-icons/bi";
+import { useGetRequest } from "@/hooks/request/useGetRequest";
 
 export interface ShowProductsTableProps {
   records: Product[];
@@ -29,7 +30,7 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
   const isLocation = activeConfig?.includes("product-brand");
   const isBrand = activeConfig?.includes("product-locations");
   const { deleteProduct, deleting } = useProductStore();
-
+  const { getRequest, loading: loadingRequest } = useGetRequest();
 
   if (!records || records.length === 0) {
     return <NothingHere />;
@@ -61,9 +62,9 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
       <td className="px-3 py-2 text-center whitespace-nowrap">{product?.brand?.name ?? "--"}</td> }
       <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{product.minimum_stock}</td>
       <td className="px-3 py-2 text-center">
-        { deleting ? <BiLoader className="animate-spin" /> : <Dropdown label={<FiSettings size={18} /> }>
+        { deleting || loadingRequest ? <BiLoader className="animate-spin" /> : <Dropdown label={<FiSettings size={18} /> }>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
-          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Actualizar Precios</DropdownItem>
+          <DropdownItem onClick={() => { getRequest(`transactions/products/prices/${product.cod}`); }}>Actualizar Precios</DropdownItem>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Editar</DropdownItem>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Kardex</DropdownItem>
           <DropdownDivider />

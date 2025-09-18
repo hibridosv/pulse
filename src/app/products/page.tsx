@@ -24,7 +24,7 @@ import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useModalStore from "@/stores/modalStorage";
 import { LoadingPage } from "@/components/LoadingPage";
 
-export default function DashboardPage() {
+export default function Page() {
   const { data: session, status } = useSession();
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
