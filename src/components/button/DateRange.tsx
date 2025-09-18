@@ -14,9 +14,10 @@ export type DateRangeValues = {
 
 type DateRangeProps = {
   onSubmit: (values: DateRangeValues) => void;
+  loading?: boolean;
 };
 
-export const DateRange: React.FC<DateRangeProps> = ({ onSubmit }) => {
+export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false }) => {
   const [option, setOption] = useState('1');
   const [initialDate, setInitialDate] = useState('');
   const [finalDate, setFinalDate] = useState('');
@@ -95,7 +96,7 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit }) => {
       </div>)}
 
       <div className="flex justify-center">
-       <Button text='Aplicar' type="submit" preset={Preset.save} />
+       <Button text='Aplicar' type="submit" preset={loading ? Preset.saving : Preset.save} disabled={loading} />
       </div>
 
       <div className="mt-3 text-red-600 flex items-center justify-center h-full font-semibold">

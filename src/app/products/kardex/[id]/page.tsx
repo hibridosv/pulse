@@ -37,7 +37,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <ViewTitle text="Busqueda" />
           </div>
           <div className="mt-2 p-2">
-            <DateRange onSubmit={handleFormSubmit} />
+            <DateRange onSubmit={handleFormSubmit} loading={loading} />
           </div>
       </div> 
     </div>

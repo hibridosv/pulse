@@ -66,7 +66,7 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
           <DropdownItem onClick={() => { getRequest(`transactions/products/prices/${product.cod}`); }}>Actualizar Precios</DropdownItem>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Editar</DropdownItem>
-          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Kardex</DropdownItem>
+          <DropdownItem as={`/products/kardex/${product.id}`}>Kardex</DropdownItem>
           <DropdownDivider />
           <DropdownItem onClick={() => { setElement(product); openModal('deleteProduct'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
         </Dropdown> }
