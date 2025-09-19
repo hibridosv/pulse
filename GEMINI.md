@@ -167,3 +167,10 @@ Components are styled to be theme-aware and professional, following these patter
   - **Hover States**: `hover:bg-bg-subtle` on `<tr>`.
   - **Conditional Styling**: E.g., `bg-danger/10 text-danger` for status indicators (like out-of-stock products).
 - **Responsive Design**: Components like `Pagination` utilize `flex-wrap` and conditional visibility (`hidden sm:inline`) to adapt to different screen sizes.
+## Cambios Recientes del Agente
+
+Esta sección documenta los cambios significativos realizados por el agente para mejorar la calidad del código, la coherencia de los estilos y la funcionalidad del proyecto.
+
+### 1. Configuración y Corrección de ESLint
+
+-   **Configuración de ESLint:** Se creó el archivo `.eslintrc.json` con la configuración `next/core-web-vitals` para establecer un estándar de linting en el proyecto, resolviendo problemas de configuración interactiva.
