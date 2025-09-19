@@ -51,17 +51,29 @@ Asegúrate de tener instalado lo siguiente:
     ```
 
 4.  **Configura las variables de entorno:**
-    Crea un archivo `.env.local` en la raíz del proyecto, copiando el ejemplo `.env.local.example` (si existiera) o usando la siguiente plantilla:
+    Crea un archivo `.env.local` en la raíz del proyecto. Este archivo es **obligatorio** para el correcto funcionamiento de la aplicación.
 
     ```dotenv
+    # ========================
+    # API y Autenticación
+    # ========================
     # URL base de la API de Laravel
-    NEXT_PUBLIC_API_URL=http://tu-api-laravel.test/api
+    NEXT_PUBLIC_API_URL=http://pulse-api.test/api
 
     # URL completa de tu aplicación Next.js (para NextAuth)
     NEXTAUTH_URL=http://localhost:3000
 
-    # Clave secreta para firmar los JWT de NextAuth (genera una con `openssl rand -base64 32`)
-    NEXTAUTH_SECRET=tu_super_secreto_aqui
+    # Clave secreta para firmar los JWT de NextAuth (genera una con: openssl rand -base64 32)
+    NEXTAUTH_SECRET=Th3S3cr3tK3yG0esH3re
+
+    # ========================
+    # Real-Time (Pusher)
+    # ========================
+    # Clave de la aplicación Pusher
+    NEXT_PUBLIC_PUSHER_APP_KEY=your_pusher_app_key
+    
+    # Cluster de la aplicación Pusher
+    NEXT_PUBLIC_PUSHER_CLUSTER=mt1
     ```
 
 ### Ejecución
@@ -99,6 +111,7 @@ Asegúrate de tener instalado lo siguiente:
 ### Backend (Consumido por el Frontend)
 -   **API:** [Laravel](https://laravel.com/)
 -   **Autenticación API:** [Laravel Passport](https://laravel.com/docs/passport) (OAuth2)
+-   **Eventos en tiempo real:** [Laravel Echo](https://laravel.com/docs/broadcasting) con [Pusher](https://pusher.com/)
 
 ### Dev-Tools
 -   **Linting:** [ESLint](https://eslint.org/)
@@ -140,18 +153,43 @@ La aplicación cuenta con un sistema de temas personalizable basado en variables
 
 ---
 
-## 🤝 Contribuciones
+## 📜 Política de Desarrollo Interno
 
-Las contribuciones son bienvenidas. Para contribuir:
+Este es un proyecto de código cerrado para uso exclusivo de la empresa **Hibrido**. No se aceptan contribuciones públicas.
 
-1.  Haz un **Fork** de este repositorio.
-2.  Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
-3.  Realiza tus cambios y haz **Commit** (`git commit -m 'Añade nueva funcionalidad'`).
-4.  Haz **Push** a la rama (`git push origin feature/nueva-funcionalidad`).
-5.  Abre un **Pull Request**.
+### Flujo de Trabajo para Nuevas Características
+
+Todo el desarrollo debe seguir el siguiente flujo de trabajo para mantener la coherencia y calidad del código:
+
+1.  **Crear una Rama:**
+    A partir de la rama `main`, crea una nueva rama para tu tarea. Utiliza los siguientes prefijos según el tipo de tarea:
+    -   `feature/<nombre-descriptivo>` para nuevas funcionalidades.
+    -   `fix/<nombre-descriptivo>` para corrección de errores.
+    -   `refactor/<nombre-descriptivo>` para mejoras de código sin cambiar la funcionalidad.
+
+    ```bash
+    # Ejemplo para una nueva característica
+    git checkout -b feature/gestion-de-usuarios
+    ```
+
+2.  **Desarrollar:**
+    Implementa los cambios en tu rama. Realiza commits atómicos y descriptivos.
+
+3.  **Verificar Calidad de Código:**
+    Antes de solicitar una revisión, asegúrate de que el código cumple con los estándares de linting del proyecto.
+    ```bash
+    npm run lint
+    ```
+    Corrige todos los errores y advertencias reportados.
+
+4.  **Crear Pull Request (PR):**
+    Una vez que la tarea esté completa y verificada, haz push de tu rama al repositorio remoto y abre un **Pull Request** dirigido a la rama `main`.
+
+5.  **Revisión de Código y Fusión:**
+    El PR será revisado por el equipo. Una vez aprobado, será fusionado a `main`. No se deben fusionar ramas sin la aprobación de al menos un revisor.
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+Este proyecto es propiedad de **Hibrido**. Todos los derechos reservados.
