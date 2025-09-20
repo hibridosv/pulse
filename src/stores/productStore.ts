@@ -14,7 +14,7 @@ const useProductStore = create((set) => ({
   loadingStat: false,
   deleting: false,
 
-  loadProducts: async (url) => {
+  loadProducts: async (url: string) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
@@ -26,7 +26,7 @@ const useProductStore = create((set) => ({
     }
   },
 
-    loadProduct: async (url) => {
+    loadProduct: async (url: string) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
@@ -38,7 +38,7 @@ const useProductStore = create((set) => ({
     }
   },
 
-  loadStatistics: async (url) => {
+  loadStatistics: async (url: string) => {
     set({ loadingStat: true });
     try {
       const response = await getServices(url);
@@ -50,7 +50,7 @@ const useProductStore = create((set) => ({
     }
   },
 
-  deleteProduct: async (url, id) => {
+  deleteProduct: async (url: string, id: string) => {
     set({ deleting: true });
     try {
       const response = await deleteService(url); 

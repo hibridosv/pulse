@@ -49,7 +49,7 @@ const useConfigStore = create(
         }
       },
 
-      setActiveConfig: (activeConfig) => {
+      setActiveConfig: (activeConfig: any) => {
         set({ activeConfig });
       },
 

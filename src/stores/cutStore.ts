@@ -12,7 +12,7 @@ const useCutStore = create((set) => ({
   error: [],
   loading: false,
   deleting: false,
-  loadCuts: async (url) => {
+  loadCuts: async (url: string) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
@@ -24,7 +24,7 @@ const useCutStore = create((set) => ({
     }
   },
 
-    loadCut: async (url) => {
+    loadCut: async (url: string) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
@@ -36,7 +36,7 @@ const useCutStore = create((set) => ({
     }
   },
 
-    deleteCut: async (url) => {
+    deleteCut: async (url: string) => {
     set({ deleting: true });
     try {
       const response = await deleteService(url); 
