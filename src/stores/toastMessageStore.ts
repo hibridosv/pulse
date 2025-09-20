@@ -1,5 +1,14 @@
 import { create } from 'zustand';
-const useToastMessageStore = create((set) => ({
+interface ToastMessageState {
+  message: any | null;
+  error: any | null;
+  setMessage: (message: any) => void;
+  clearMessage: () => void;
+  setError: (error: any) => void;
+  clearError: () => void;
+}
+
+const useToastMessageStore = create<ToastMessageState>((set) => ({
   message: null,
   error: null,
   setMessage: (message: any) => set({ message }),

@@ -54,8 +54,8 @@ const useProductStore = create((set) => ({
     set({ deleting: true });
     try {
       const response = await deleteService(url); 
-      set((state) => {
-        const updatedProducts = state.products.data.filter((product) => product.id !== id);
+      set((state: any) => {
+        const updatedProducts = state.products.data.filter((product: any) => product.id !== id);
         return {
           products: {
             ...state.products,
@@ -71,7 +71,7 @@ const useProductStore = create((set) => ({
     }
   },
 
-  loadKardex: async (url) => {
+  loadKardex: async (url: string) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
@@ -83,7 +83,7 @@ const useProductStore = create((set) => ({
     }
   },
 
-    loadKardexDetails: async (url) => {
+    loadKardexDetails: async (url: string) => {
     set({ loading: true });
     try {
       const response = await getServices(url);

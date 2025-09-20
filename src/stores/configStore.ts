@@ -1,9 +1,31 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { getServices } from '@/services/services';
+import useToastMessageStore from './toastMessageStore';
+
+interface ConfigStoreState {
+  configurations: any[];
+  activeConfig: any[];
+  system: any[];
+  payMethods: any[];
+  permission: any[];
+  user: any[];
+  invoiceExist: boolean;
+  isInvoiceExpires: number;
+  role: string | null;
+  cashdrawer: any[];
+  client: any[];
+  tenant: any[];
+  isLoaded: boolean;
+  loading: boolean;
+  error: Error | null;
+  loadConfig: () => Promise<void>;
+  setActiveConfig: (activeConfig: any) => void;
+  clearConfig: () => void;
+}
 
 const useConfigStore = create(
-  persist(
+  persist<ConfigStoreState>(
     (set) => ({
       configurations: [],
       activeConfig: [],
@@ -43,7 +65,7 @@ const useConfigStore = create(
           set({ tenant: data.tenant });
           set({ isLoaded: true });
         } catch (error) {
-          console.error(error)
+          useToastMessageStore.getState().setError(error);
         } finally {
           set({ loading: false });
         }
@@ -62,7 +84,7 @@ const useConfigStore = create(
           user: [],
           invoiceExist: false,
           isInvoiceExpires: 0,
-          role: "",
+          role: null,
           cashdrawer: [],
           client: [],
           tenant: [],

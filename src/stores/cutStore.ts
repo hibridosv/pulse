@@ -6,10 +6,21 @@ import useConfigStore from './configStore';
 
 
 
-const useCutStore = create((set) => ({
+interface CutStoreState {
+  cuts: any[]; // Consider a more specific type for cuts
+  cut: any;    // Consider a more specific type for cut
+  error: Error | null;
+  loading: boolean;
+  deleting: boolean;
+  loadCuts: (url: string) => Promise<void>;
+  loadCut: (url: string) => Promise<void>;
+  deleteCut: (url: string) => Promise<void>;
+}
+
+const useCutStore = create<CutStoreState>((set) => ({
   cuts: [],
-  cut: [],
-  error: [],
+  cut: null,
+  error: null,
   loading: false,
   deleting: false,
   loadCuts: async (url: string) => {
@@ -24,7 +35,7 @@ const useCutStore = create((set) => ({
     }
   },
 
-    loadCut: async (url: string) => {
+  loadCut: async (url: string) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
@@ -36,10 +47,10 @@ const useCutStore = create((set) => ({
     }
   },
 
-    deleteCut: async (url: string) => {
+  deleteCut: async (url: string) => {
     set({ deleting: true });
     try {
-      const response = await deleteService(url); 
+      const response = await deleteService(url);
       await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10');
       await useCashDrawerStore.getState().loadCashDrawers();
       await useConfigStore.getState().loadConfig();

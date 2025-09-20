@@ -6,9 +6,18 @@ import useConfigStore from './configStore';
 import useCutStore from './cutStore';
 
 
-const useCashDrawerStore = create((set) => ({
+interface CashDrawerState {
+  cashDrawers: any[]; // Consider defining a more specific type for cashDrawers
+  error: Error | null;
+  loading: boolean;
+  loadCashDrawers: () => Promise<void>;
+  openCashDrawer: (url: string, data: any) => Promise<void>;
+  closeCashDrawer: (url: string, data: any) => Promise<void>;
+}
+
+const useCashDrawerStore = create<CashDrawerState>((set) => ({
   cashDrawers: [],
-  error: [],
+  error: null,
   loading: false,
   loadCashDrawers: async () => {
     set({ loading: true });
