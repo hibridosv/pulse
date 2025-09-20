@@ -29,9 +29,9 @@ export const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-4 font-semibold">
-            <div>{ client.nombre_comercial }</div>
+            <div>{ client?.nombre_comercial }</div>
             <div>|</div>
-            <div>{ user.name }</div>
+            <div>{ user?.name }</div>
           </div>
 
           {/* Lado Derecho (puedes añadir más cosas aquí) */}

@@ -6,18 +6,18 @@ import { User } from '@/interfaces/user';
 import { CashDrawer } from '@/interfaces/cashdrawers';
 
 interface ConfigStoreState {
-  configurations: any[];
-  activeConfig: any[];
-  system: any[];
-  payMethods: any[];
-  permission: any[];
+  configurations: any;
+  activeConfig: any;
+  system: any;
+  payMethods: any;
+  permission: any;
   user: User | null;
   invoiceExist: boolean;
   isInvoiceExpires: number;
   role: string | null;
   cashdrawer: CashDrawer | null;
-  client: any[];
-  tenant: any[];
+  client: any | null;
+  tenant: any;
   isLoaded: boolean;
   loading: boolean;
   error: Error | null;
@@ -29,12 +29,12 @@ interface ConfigStoreState {
 const useConfigStore = create(
   persist<ConfigStoreState>(
     (set) => ({
-      configurations: [],
-      activeConfig: [],
+      configurations: null,
+      activeConfig: null,
 
-      system: [],
-      payMethods: [],
-      permission: [],
+      system: null,
+      payMethods: null,
+      permission: null,
       user: null,
       invoiceExist: false,
       isInvoiceExpires: 0,
@@ -42,8 +42,8 @@ const useConfigStore = create(
 
       cashdrawer: null,
 
-      client: [],
-      tenant: [],
+      client: null,
+      tenant: null,
 
       isLoaded: false,
       loading: false,
@@ -79,17 +79,17 @@ const useConfigStore = create(
 
       clearConfig: () => {
         set({ 
-          configurations: [],
-          system: [],
-          payMethods: [],
-          permission: [],
+          configurations: null,
+          system: null,
+          payMethods: null,
+          permission: null,
           user: null,
           invoiceExist: false,
           isInvoiceExpires: 0,
           role: null,
           cashdrawer: null,
-          client: [],
-          tenant: [],
+          client: null,
+          tenant: null,
           isLoaded: false,
          });
       },

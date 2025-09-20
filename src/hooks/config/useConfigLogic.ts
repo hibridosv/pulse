@@ -10,11 +10,13 @@ export function useConfigLogic() {
     if (!isLoaded) {
       loadConfig()
     }
-    if (configurations && !activeConfig) {
+  }, [isLoaded, loadConfig])
+
+  useEffect(() => {
+    if (configurations.length > 0 && activeConfig.length === 0) {
       let extracted = extractActiveFeature(configurations)
       setActiveConfig(extracted)
     }
-
-  }, [isLoaded, loadConfig, setActiveConfig, configurations, activeConfig])
+  }, [configurations, activeConfig, setActiveConfig])
 
 }
