@@ -45,7 +45,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <DateRange onSubmit={handleFormSubmit} loading={loading} />
           </div>
           <div className="mt-2 p-2 flex justify-center">
-            <Link href="/products/kardex" className="button-href">Buscar otro producto</Link>
+            <Link href="/products/search?page=kardex" className="button-href">Buscar otro producto</Link>
           </div>
       </div> 
       <KardexDetailsModal isShow={modals['kardexDetails']} onClose={() => closeModal('kardexDetails')} record={elementSelected} />

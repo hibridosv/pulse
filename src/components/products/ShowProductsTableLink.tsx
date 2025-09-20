@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 
 export interface ShowProductsTableLinkProps {
   records: Product[];
-  link: string;
+  link: string | null;
 }
 
 export function ShowProductsTableLink(props: ShowProductsTableLinkProps) {

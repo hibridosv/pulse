@@ -51,7 +51,7 @@ export function ShowKardexTable(props: ShowKardexTableProps) {
         <p className="text-sm text-text-muted mt-2">Método de Cálculo: <span className="font-semibold">COSTO PROMEDIO PONDERADO</span></p>
       </div>
       <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
-        { kardex.length > 0 ? (
+        { kardex && kardex.length > 0 ? (
           <table className="w-full text-sm text-left">
             <thead className="text-xs text-text-base uppercase bg-bg-subtle font-bold">
                 <tr>

@@ -11,6 +11,7 @@ import { useState } from "react";
 import useProductStore from "@/stores/productStore";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ShowProductsTableLink } from "@/components/products/ShowProductsTableLink";
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -19,6 +20,10 @@ export default function Page() {
   const [sortBy, setSortBy] = useState("-cod");
   const { products, loading } = useProductStore();
   useProductLogic(currentPage, searchTerm, sortBy);
+  const searchParams = useSearchParams();
+  const pageParam = searchParams.get('page');
+
+  console.log('Page parameter:', pageParam);
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -27,8 +32,8 @@ export default function Page() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
       <div className="col-span-7 border-r md:border-primary">
-          <ViewTitle text="Kardex de Producto" />
-          { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTableLink records={products?.data} link="edit" /> }
+          <ViewTitle text={pageParam === 'kardex' ? 'Kardex de Producto' : 'Buscar Producto'} />
+          { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTableLink records={products?.data} link={pageParam} /> }
 
       </div>
       <div className="col-span-3">

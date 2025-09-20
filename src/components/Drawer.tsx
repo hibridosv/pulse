@@ -26,13 +26,13 @@ const menuItems: MenuItem[] = [
     children: [
       { label: "Ver Productos", href: "/products" },
       { label: "Registrar Producto", href: "/products/register" },
-      { label: "Editar Producto", href: "/products/edit" },
-      { label: "Agregar Productos", href: "/products/add" },
-      { label: "Descontar Productos", href: "/products/failure" },
+      { label: "Editar Producto", href: "/products/search?page=edit" },
+      { label: "Agregar Productos", href: "/products/search?page=add" },
+      { label: "Descontar Productos", href: "/products/search?page=remove" },
       { label: "Productos Relacionados", href: "/products/linked" },
       { label: "Bajas Existencias", href: "/products/stock" },
       { label: "Proximos Vencimientos", href: "/products/expiration" },
-      { label: "Kardex", href: "/products/kardex" },
+      { label: "Kardex", href: "/products/search?page=kardex" },
     ],
   },
   {
