@@ -26,7 +26,7 @@ export function ShowProductsTableLink(props: ShowProductsTableLinkProps) {
 
   const listItems = records.map((product: Product) => (
     <tr key={product.id}
-      onClick={() => router.push(`${link}/${product.id}`)}
+      onClick={() => router.push(`/products/${product.id}/${link}`)}
       className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'} clickeable cursor-pointer`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         {product.cod}

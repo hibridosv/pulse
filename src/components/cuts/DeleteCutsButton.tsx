@@ -20,7 +20,7 @@ export function DeleteCutButton(props: DeleteCutButtonProps) {
     <DeleteModal
         isShow={modals['delCut']}
         text="¿Estas seguro de eliminar este corte?"
-        onDelete={() =>deleteCut(`cuts/${cut.id}`)}
+        onDelete={() =>{ deleteCut(`cuts/${cut.id}`); closeModal('delCut')}}
         onClose={() => closeModal('delCut')}
       />
   </div>);

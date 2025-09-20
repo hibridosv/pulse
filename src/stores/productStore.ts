@@ -3,13 +3,31 @@ import { deleteService, getServices } from '@/services/services';
 import useToastMessageStore from './toastMessageStore';
 
 
-const useProductStore = create((set) => ({
-  products: [],
-  product: [],
-  statistics: [],
-  kardex: [],
-  kardexDetails: [],
-  error: [],
+interface ProductStoreState {
+  products: any | null;
+  product: any | null;
+  statistics: any | null;
+  kardex: any | null;
+  kardexDetails: any | null;
+  error: Error | null;
+  loading: boolean;
+  loadingStat: boolean;
+  deleting: boolean;
+  loadProducts: (url: string) => Promise<void>;
+  loadProduct: (url: string) => Promise<void>;
+  loadStatistics: (url: string) => Promise<void>;
+  deleteProduct: (url: string, id: string) => Promise<void>;
+  loadKardex: (url: string) => Promise<void>;
+  loadKardexDetails: (url: string) => Promise<void>;
+}
+
+const useProductStore = create<ProductStoreState>((set) => ({
+  products: null,
+  product: null,
+  statistics: null,
+  kardex: null,
+  kardexDetails: null,
+  error: null,
   loading: false,
   loadingStat: false,
   deleting: false,

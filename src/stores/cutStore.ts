@@ -7,8 +7,8 @@ import useConfigStore from './configStore';
 
 
 interface CutStoreState {
-  cuts: any[]; // Consider a more specific type for cuts
-  cut: any;    // Consider a more specific type for cut
+  cuts: any; 
+  cut: any;
   error: Error | null;
   loading: boolean;
   deleting: boolean;

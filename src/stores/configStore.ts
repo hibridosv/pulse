@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { getServices } from '@/services/services';
 import useToastMessageStore from './toastMessageStore';
+import { User } from '@/interfaces/user';
+import { CashDrawer } from '@/interfaces/cashdrawers';
 
 interface ConfigStoreState {
   configurations: any[];
@@ -9,11 +11,11 @@ interface ConfigStoreState {
   system: any[];
   payMethods: any[];
   permission: any[];
-  user: any[];
+  user: User | null;
   invoiceExist: boolean;
   isInvoiceExpires: number;
   role: string | null;
-  cashdrawer: any[];
+  cashdrawer: CashDrawer | null;
   client: any[];
   tenant: any[];
   isLoaded: boolean;
@@ -33,12 +35,12 @@ const useConfigStore = create(
       system: [],
       payMethods: [],
       permission: [],
-      user: [],
+      user: null,
       invoiceExist: false,
       isInvoiceExpires: 0,
       role: null,
 
-      cashdrawer: [],
+      cashdrawer: null,
 
       client: [],
       tenant: [],
@@ -81,11 +83,11 @@ const useConfigStore = create(
           system: [],
           payMethods: [],
           permission: [],
-          user: [],
+          user: null,
           invoiceExist: false,
           isInvoiceExpires: 0,
           role: null,
-          cashdrawer: [],
+          cashdrawer: null,
           client: [],
           tenant: [],
           isLoaded: false,

@@ -4,10 +4,11 @@ import useToastMessageStore from './toastMessageStore';
 import useModalStore from './modalStorage';
 import useConfigStore from './configStore';
 import useCutStore from './cutStore';
+import { CashDrawer } from '@/interfaces/cashdrawers';
 
 
 interface CashDrawerState {
-  cashDrawers: any[]; // Consider defining a more specific type for cashDrawers
+  cashDrawers: any | null; // Consider defining a more specific type for cashDrawers
   error: Error | null;
   loading: boolean;
   loadCashDrawers: () => Promise<void>;
@@ -16,7 +17,7 @@ interface CashDrawerState {
 }
 
 const useCashDrawerStore = create<CashDrawerState>((set) => ({
-  cashDrawers: [],
+  cashDrawers: null,
   error: null,
   loading: false,
   loadCashDrawers: async () => {

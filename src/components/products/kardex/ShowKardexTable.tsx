@@ -16,16 +16,16 @@ export interface ShowKardexTableProps {
 
 export function ShowKardexTable(props: ShowKardexTableProps) {
   const { product, kardex } = props;
-  const { system, activeConfig } = useConfigStore();
-  const { openModal, closeModal, modals } = useModalStore();
-  const { setElement, elementSelected } = useSelectedElementStore();
+  const { system } = useConfigStore();
+  const { openModal } = useModalStore();
+  const { setElement } = useSelectedElementStore();
 
 
   if (!product) {
     return <NothingHere />;
   }
 
-  const listItems = kardex.map((record: any) => (
+  const listItems = kardex && kardex.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary">{ formatDateAsDMY(record.created_at) } { formatHourAsHM(record.created_at) }</td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium hover:underline clickeable" onClick={() => { setElement(record); openModal('kardexDetails'); }}>{ record.description }</td>
@@ -42,11 +42,11 @@ export function ShowKardexTable(props: ShowKardexTableProps) {
   return (
     <div className="m-4">
       <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle px-4 mb-2">
-        <h3 className="text-2xl font-bold text-text-base mb-1">{product.description}</h3>
+        <h3 className="text-2xl font-bold text-text-base mb-1">{product?.description ?? '--'}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-text-base text-sm">
-          <p><span className="font-semibold text-text-muted">Código:</span> {product.cod}</p>
-          <p><span className="font-semibold text-text-muted">Categoría:</span> {product.category?.name ?? '--'}</p>
-          <p><span className="font-semibold text-text-muted">Stock Actual:</span> {product.quantity} {product.quantity_unit?.abbreviation ?? 'Unidad'}</p>
+          <p><span className="font-semibold text-text-muted">Código:</span> {product?.cod ?? '--'}</p>
+          <p><span className="font-semibold text-text-muted">Categoría:</span> {product?.category?.name ?? '--'}</p>
+          <p><span className="font-semibold text-text-muted">Stock Actual:</span> {product?.quantity} {product?.quantity_unit?.abbreviation ?? 'Unidad'}</p>
         </div>
         <p className="text-sm text-text-muted mt-2">Método de Cálculo: <span className="font-semibold">COSTO PROMEDIO PONDERADO</span></p>
       </div>
@@ -55,7 +55,7 @@ export function ShowKardexTable(props: ShowKardexTableProps) {
           <table className="w-full text-sm text-left">
             <thead className="text-xs text-text-base uppercase bg-bg-subtle font-bold">
                 <tr>
-                <th scope="col" colSpan={3} className="py-3 px-4 border text-center text-text-base">Código: {product.cod}</th>
+                <th scope="col" colSpan={3} className="py-3 px-4 border text-center text-text-base">Código: {product?.cod}</th>
                 <th scope="col" colSpan={2} className="py-3 px-4 border text-center text-text-base">Entradas</th>
                 <th scope="col" colSpan={2} className="py-3 px-4 border text-center text-text-base">Salidas</th>
                 <th scope="col" colSpan={2} className="py-3 px-4 border text-center text-text-base">Saldo</th>
