@@ -1,5 +1,6 @@
 'use client';
 import { FC, ReactElement, useState } from "react";
+import Link from 'next/link';
 import { signOut } from "next-auth/react";
 import { IoClose } from "react-icons/io5";
 import { FaCashRegister, FaChevronDown, FaFileInvoice, FaSignOutAlt, FaTools } from "react-icons/fa";
@@ -25,13 +26,13 @@ const menuItems: MenuItem[] = [
     label: "Inventario", icon: <MdInventory className="mt-1 mr-2" />,
     children: [
       { label: "Ver Productos", href: "/products" },
-      { label: "Registrar Producto", href: "/products/register" },
+      { label: "Registrar Producto", href: "/products/new" },
       { label: "Editar Producto", href: "/products/search?page=edit" },
       { label: "Agregar Productos", href: "/products/search?page=add" },
       { label: "Descontar Productos", href: "/products/search?page=remove" },
       { label: "Productos Relacionados", href: "/products/linked" },
       { label: "Bajas Existencias", href: "/products/stock" },
-      { label: "Proximos Vencimientos", href: "/products/expiration" },
+      { label: "Proximos Vencimientos", href: "/products/expiring" },
       { label: "Kardex", href: "/products/search?page=kardex" },
     ],
   },
@@ -155,15 +156,15 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
       </button>
       {isOpen && (
         <ul className="pl-4 pt-2">
-          {item.children?.map((child, index) => (
+          {item.children?.map((child: any, index) => (
             <li key={index} className="mb-1">
-              <a
+              <Link
                 href={child.href}
                 onClick={onClose}
                 className="block p-1 rounded text-text-inverted/70 hover:bg-white/10 hover:text-text-inverted"
               >
                 {child.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -214,19 +215,19 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         {/* Menu List (Scrollable)*/}
         <div className="flex-grow overflow-y-auto z-10 custom-scrollbar relative">
           <ul className="p-4 relative z-10">
-            {menuItems.map((item, index) =>
+            {menuItems.map((item: any, index: number) =>
               item.children ? (
                 <SubMenu key={index} item={item} onClose={onClose} />
               ) : (
                 <li key={index} className="mb-2">
-                  <a
+                  <Link
                     href={item.href}
                     onClick={onClose}
                     className="p-2 rounded text-text-inverted/90 hover:bg-white/10 hover:text-text-inverted flex"
                   >
                    {item.icon}
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               )
             )}

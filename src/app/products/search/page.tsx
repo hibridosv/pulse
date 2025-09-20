@@ -17,7 +17,7 @@ export default function Page() {
   const { data: session, status } = useSession();
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
   const {currentPage, handlePageNumber} = usePagination("&page=1");
-  const [sortBy, setSortBy] = useState("-cod");
+  const [sortBy, setSortBy] = useState("-updated_at");
   const { products, loading } = useProductStore();
   useProductLogic(currentPage, searchTerm, sortBy);
   const searchParams = useSearchParams();
