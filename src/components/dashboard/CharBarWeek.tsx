@@ -24,7 +24,7 @@ export function CharBarWeek(){
     const { chartWeek, loading } = useDashBoardStore();
 
   if (loading) return <div className="bg-gray-200 rounded-lg animate-pulse h-full w-full"></div>
-  if (!chartWeek) return null;
+  if (!Array.isArray(chartWeek) || chartWeek.length === 0) return null;
   
   const data = {
     labels: chartWeek.map((item: DaysOfWeek) => item.label),

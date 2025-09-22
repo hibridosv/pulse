@@ -8,33 +8,25 @@ import { useForm } from "react-hook-form";
 import useConfigStore from "@/stores/configStore";
 import { Button, Preset } from "@/components/button/button";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
+import useProductStore from "@/stores/productStore";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
+import useStateStore from "@/stores/stateStorage";
+import { ShowProductsNewTable } from "@/components/products/ShowProductsNewTable";
+import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
 
 
 export default function Page() {
   const { data: session, status } = useSession();
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
-  const { activeConfig, configurations } = useConfigStore();
+  const { activeConfig } = useConfigStore();
   const { onSubmit, categories, brands, quantityUnits, providers, locations, lastProducts } = useProductNewLogic();
-
- const isSending = false;
-
+  const { loading: loadingProducts } = useProductStore();
+  const { loading } = useStateStore();
+  const isSending = loading["productForm"] ? true : false;
 
   if (status === "loading") {
     return <LoadingPage />;
   }
-
-  //   useEffect(() => {
-  //   setExpiresStatus(getConfigStatus("product-expires", config));
-  //   setBrandStatus(getConfigStatus("product-brand", config));
-  //   setMeasuresStatus(getConfigStatus("product-measures", config));
-  //   setPrescriptionStatus(getConfigStatus("product-prescription", config));
-  //   setDiscountStatus(getConfigStatus("product-default-discount", config));
-  //   setCommissionStatus(getConfigStatus("product-default-commission", config));
-  //   setLocationsStatus(getConfigStatus("product-locations", config));
-  //   // eslint-disable-next-line
-  // }, [config]);
-  console.log(activeConfig);
-  console.log(configurations);
 
 
   return (
@@ -136,6 +128,7 @@ export default function Page() {
                   </select>
                 </div>
 
+              { activeConfig && activeConfig['product-locations'] && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="location_id" className="input-label">Ubicación (Click para agregar)</label>
                   <select id="location_id" {...register("location_id")} className="input">
@@ -147,9 +140,9 @@ export default function Page() {
                       );
                     })}
                   </select>
-                </div>
+                </div> )}
 
-
+              { activeConfig && activeConfig['product-brand'] && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="brand_id" className="input-label">Marca</label>
                   <select  id="brand_id" {...register("brand_id")} className="input">
@@ -161,44 +154,43 @@ export default function Page() {
                       );
                     })}
                   </select>
-                </div>
+                </div> )}
 
-
+                { activeConfig && activeConfig['product-measures'] && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="measure" className="input-label">Medida</label>
                   <input type="text" id="measure" {...register("measure")} className="input" />
-                </div>
+                </div> )}
 
+                { activeConfig && activeConfig['product-default-discount'] && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="default_discount" className="input-label">Descuento por Defecto %</label>
                   <input type="number" step="any" id="default_discount" {...register("default_discount")} className="input" />
-                </div>
+                </div> )}
 
+                { activeConfig && activeConfig['product-default-commission'] && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="default_commission" className="input-label">Comisión por Defecto %</label>
                   <input type="number" step="any" id="default_commission" {...register("default_commission")} className="input" />
-                </div>
+                </div> )}
 
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="lot_id" className="input-label">Lote</label>
                   <input type="text" id="lot_id" {...register("lot_id")} className="input" />
                 </div>
+
               { activeConfig && activeConfig['product-expires'] && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                     <label htmlFor="expiration" className="input-label">Fecha de vencimiento</label>
-                    <input
-                      type="date"
-                      id="expiration"
-                      {...register("expiration")}
-                      className="input"
-                    />
+                    <input type="date" id="expiration" {...register("expiration")} className="input" />
                 </div> )}
 
+                { activeConfig && activeConfig['product-prescription'] && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="prescription" className="input-label" >Solicitar Receta </label>
                 <input type="checkbox" placeholder="prescription" {...register("prescription")} />
-                </div> </>)}
+                </div> )} </>)}
 
                 <div className="w-full md:w-full px-3 mb-2">
                 <label htmlFor="information" className="input-label" >Información </label>
@@ -216,8 +208,10 @@ export default function Page() {
 
         </div>
         <div className="col-span-5">
-            <ViewTitle text="Ultimos Producto" />
+            <ViewTitle text="Ultimos Productos" />
+            { loadingProducts ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsNewTable records={lastProducts?.data} /> }
         </div> 
+        <ProductsLinkedModal isShow={true} onClose={() => {}} product={lastProducts?.data[0]} records={[]} />
         <ToasterMessage />
     </div>
   );

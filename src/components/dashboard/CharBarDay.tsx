@@ -24,7 +24,7 @@ export function CharBarDay(){
     const { chartDay, loading } = useDashBoardStore();
 
   if (loading) return <div className="bg-gray-200 rounded-lg animate-pulse h-full w-full"></div>;
-  if (!chartDay) return null;
+  if (!Array.isArray(chartDay) || chartDay.length === 0) return null;
   
   const data = {
     labels: chartDay.map((item: DayData) => item.hour),

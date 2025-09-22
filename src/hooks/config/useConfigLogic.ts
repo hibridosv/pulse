@@ -13,10 +13,11 @@ export function useConfigLogic() {
   }, [isLoaded, loadConfig])
 
   useEffect(() => {
-    if (configurations.length > 0 && activeConfig.length === 0) {
+    if (configurations && configurations.length > 0) {
+      console.log("Extracting active features from configurations:");
       let extracted = extractActiveFeature(configurations)
       setActiveConfig(extracted)
     }
-  }, [configurations, activeConfig, setActiveConfig])
+  }, [configurations, setActiveConfig])
 
 }

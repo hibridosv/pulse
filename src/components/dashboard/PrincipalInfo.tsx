@@ -21,7 +21,7 @@ export function PrincipalInfo() {
         );
     }
 
-    if (!cards || cards.length === 0) {
+    if (!Array.isArray(cards) || cards.length === 0) {
         return (
             <div className="bg-gray-50 py-8">
                 <NothingHere text="No se encontraron datos" width="164" height="98" />

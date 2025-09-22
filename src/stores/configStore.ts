@@ -31,7 +31,6 @@ const useConfigStore = create(
     (set) => ({
       configurations: null,
       activeConfig: null,
-
       system: null,
       payMethods: null,
       permission: null,
@@ -39,12 +38,9 @@ const useConfigStore = create(
       invoiceExist: false,
       isInvoiceExpires: 0,
       role: null,
-
       cashdrawer: null,
-
       client: null,
       tenant: null,
-
       isLoaded: false,
       loading: false,
       error: null,
@@ -79,18 +75,21 @@ const useConfigStore = create(
 
       clearConfig: () => {
         set({ 
-          configurations: null,
-          system: null,
-          payMethods: null,
-          permission: null,
-          user: null,
-          invoiceExist: false,
-          isInvoiceExpires: 0,
-          role: null,
-          cashdrawer: null,
-          client: null,
-          tenant: null,
-          isLoaded: false,
+            configurations: null,
+            activeConfig: null,
+            system: null,
+            payMethods: null,
+            permission: null,
+            user: null,
+            invoiceExist: false,
+            isInvoiceExpires: 0,
+            role: null,
+            cashdrawer: null,
+            client: null,
+            tenant: null,
+            isLoaded: false,
+            loading: false,
+            error: null,
          });
       },
 

@@ -17,22 +17,33 @@ export default function Page() {
   const { data: session, status } = useSession();
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
   const {currentPage, handlePageNumber} = usePagination("&page=1");
-  const [sortBy, setSortBy] = useState("-updated_at");
+  const sortBy = "-updated_at";
   const { products, loading } = useProductStore();
   useProductLogic(currentPage, searchTerm, sortBy);
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
 
-  console.log('Page parameter:', pageParam);
-
   if (status === "loading") {
     return <LoadingPage />;
+  }
+
+  const getNameOfPage = (param: string | null): string => {
+    switch(param) {
+      case 'kardex':
+        return 'Kardex de Producto';
+      case 'edit':
+        return 'Editar Producto';
+      case 'view':
+        return 'Ver Producto';
+      default:
+        return 'Buscar Producto';
+    }
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
       <div className="col-span-7 border-r md:border-primary">
-          <ViewTitle text={pageParam === 'kardex' ? 'Kardex de Producto' : 'Buscar Producto'} />
+          <ViewTitle text={getNameOfPage(pageParam)} />
           { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTableLink records={products?.data} link={pageParam} /> }
 
       </div>

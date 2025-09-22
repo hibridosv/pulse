@@ -4,10 +4,10 @@
  * @returns 
  */
 
-export const extractActiveFeature = (configurations: any): string[] => {
+export const extractActiveFeature = (configurations: any[]): string[] => {
   const activeFeatures: string[] = [];
-  configurations.forEach((config: any) => {
-    if (config.active == 1) {
+  configurations.forEach(config => {
+    if (config.active === 1) {
       activeFeatures.push(config.feature);
     }
   });

@@ -20,7 +20,7 @@ export function CardDashBoard(props: CardDashBoardProps) {
             </div>
         )
     }
-    if (!records) return null;
+    if (!records || !system) return null;
 
 
     const themeStyles: { [key: number]: { color: string; bgColor: string } } = {
