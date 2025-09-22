@@ -16,67 +16,75 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
     const { onClose, isShow } = props;
     const { register, handleSubmit, resetField, setFocus } = useForm();
     const { loading } = useStateStore();
-    const isSending = loading["productSending"] ? true : false;
+    const isSending = loading["categoryForm"] ? true : false;
     const { elementSelected, setElement } = useSelectedElementStore();
     const { onSubmit } = useProductCategoriesLogic(isShow, setFocus);
     const { categories } = useCategoriesStore();
-
-
     if (!isShow) return null;
 
+    const selectedType = elementSelected ?? 1; // Default to 1
 
-  return (
-    <Modal show={isShow} onClose={onClose} size="md" headerTitle="Agregar Categoría" closeOnOverlayClick={false} hideCloseButton={true}>
-      <Modal.Body>
+    return (
+        <Modal show={isShow} onClose={onClose} size="md" headerTitle="Agregar Categoría">
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Modal.Body>
 
-        <div className="flex justify-between p-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
-            <div>
-                <div className="font-medium text-text-muted text-center clickeable" onClick={()=>setElement(1)}>Categoria</div>
-            </div>
-            <div>
-                <div className="font-medium text-text-muted text-center clickeable" onClick={()=>setElement(2)}>Sub Categoria</div>
-            </div>
-        </div>
+                    {/* Segmented Control for Type Selection */}
+                    <div className="flex items-center p-1 space-x-1 bg-bg-subtle rounded-lg">
+                        <button
+                            type="button"
+                            onClick={() => setElement(1)}
+                            className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${selectedType === 1 ? 'bg-primary text-text-inverted shadow-sm' : 'text-text-base hover:bg-bg-content'}`}
+                        >
+                            Categoría
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setElement(2)}
+                            className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${selectedType === 2 ? 'bg-primary text-text-inverted shadow-sm' : 'text-text-base hover:bg-bg-content'}`}
+                        >
+                            Subcategoría
+                        </button>
+                    </div>
 
-        <form className="max-w-lg mt-4" onSubmit={handleSubmit(onSubmit)} >
+                    {/* Form Fields */}
+                    <div className="space-y-4">
+                        {selectedType === 2 && (
+                            <div>
+                                <label htmlFor="dependable" className="block text-sm font-medium text-text-base mb-2">
+                                    Categoría Principal
+                                </label>
+                                <select
+                                    id="dependable"
+                                    {...register("dependable", { required: true })}
+                                    className="input" >
+                                    {categories?.map((cat: any) => (
+                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
 
+                        <div>
+                            <label htmlFor="name" className="block text-sm font-medium text-text-base mb-2">
+                                {selectedType === 1 ? "Nombre de la Categoría" : "Nombre de la Subcategoría"}
+                            </label>
+                            <input
+                                id="name"
+                                {...register("name", { required: true })}
+                                className="input"
+                                autoFocus
+                            />
+                        </div>
+                    </div>
 
-      { elementSelected == 2 && 
-      <div className="w-full md:w-full px-3 mb-4">
-          <label htmlFor="categoria" className="input-label">
-            Categoria
-          </label>
-            <select
-              defaultValue={categories[0]?.id}
-              id="categoria"
-              {...register("categoria")}
-              className="input"
-            >
-              {categories.map((value: any) => {
-                return (
-                  <option key={value.id} value={value.id}>
-                    {value.name}
-                  </option>
-                );
-              })}
-            </select>
-        </div> }
-
-            <div className="w-full md:w-full px-3 mb-4">
-              <label htmlFor="name" className="input-label">{ elementSelected == 1 ? "Nombre de la categoría" : "Nombre de la sub Categoría" } </label>
-              <input {...register("name", {})} className="input w-full" />
-            </div>
-
-              <div className="flex justify-center">
-                <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
-              </div>
-      </form>
-
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} disabled={isSending} />
-      </Modal.Footer>
-    </Modal>
-  );
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button type="button" onClick={onClose} preset={Preset.cancel} disabled={isSending} />
+                    <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
+                </Modal.Footer>
+            </form>
+        </Modal>
+    );
 }
 
