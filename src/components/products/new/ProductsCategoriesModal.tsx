@@ -26,9 +26,8 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
 
     return (
         <Modal show={isShow} onClose={onClose} size="md" headerTitle="Agregar Categoría">
-            <form onSubmit={handleSubmit(onSubmit)}>
                 <Modal.Body>
-
+                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 rounded-md border p-3" >
                     {/* Segmented Control for Type Selection */}
                     <div className="flex items-center p-1 space-x-1 bg-bg-subtle rounded-lg">
                         <button
@@ -77,13 +76,15 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
                             />
                         </div>
                     </div>
+                    <div className="flex justify-end">
+                    <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
+                    </div>
 
+                </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="button" onClick={onClose} preset={Preset.cancel} disabled={isSending} />
-                    <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
                 </Modal.Footer>
-            </form>
         </Modal>
     );
 }

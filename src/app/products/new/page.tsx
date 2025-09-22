@@ -27,7 +27,7 @@ export default function Page() {
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
-  const { modals, closeModal } = useModalStore();
+  const { modals, closeModal, openModal } = useModalStore();
   const { elementSelected } = useSelectedElementStore();
 
 
@@ -97,7 +97,7 @@ export default function Page() {
                 </div>
                 { watch("product_type") == 1 && (<>
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="category_id" className="input-label">Categoria (Click para agregar)</label>
+                  <label htmlFor="category_id" className="input-label clickeable" onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
                   <select id="category_id" {...register("category_id")} className="input">
                     {subCategories && subCategories.map((value: any) => {
                       return (
