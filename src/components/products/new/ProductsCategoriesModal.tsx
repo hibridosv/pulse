@@ -1,17 +1,11 @@
 
 import { useForm } from "react-hook-form";
-import { Product } from "@/interfaces/products";
 import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
-import { productTypeIcon } from "../utils";
-import { SearchInput } from "@/components/Search";
-import { useSearchTerm } from "@/hooks/useSearchTerm";
-import { usePagination } from "@/hooks/usePagination";
 import useStateStore from "@/stores/stateStorage";
-import { useProductLinkedLogic } from "@/hooks/products/useProductsLinkedLogic";
 import useSelectedElementStore from "@/stores/selectedElementStorage";
-import useToastMessageStore from "@/stores/toastMessageStore";
 import { useProductCategoriesLogic } from "@/hooks/products/useProductCategoriesLogic";
+import useCategoriesStore from "@/stores/categoriesStore";
 
 export interface ProductsCategoriesModalProps {
   onClose: () => void;
@@ -24,18 +18,12 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
     const { loading } = useStateStore();
     const isSending = loading["productSending"] ? true : false;
     const { elementSelected, setElement } = useSelectedElementStore();
-    useProductCategoriesLogic(isShow, setFocus);
-    if (!isShow) return null;
-    
+    const { onSubmit } = useProductCategoriesLogic(isShow, setFocus);
+    const { categories } = useCategoriesStore();
 
- const onSubmit = async (data: any) => { console.log(data) };
- const PrincipalCategories = [
-    { id: 1, name: "Bebidas" },
-    { id: 2, name: "Comidas" },
-    { id: 3, name: "Limpieza" },
-    { id: 4, name: "Higiene" },
-    { id: 5, name: "Otros" },
- ];
+
+    if (!isShow) return null;
+
 
   return (
     <Modal show={isShow} onClose={onClose} size="md" headerTitle="Agregar Categoría" closeOnOverlayClick={false} hideCloseButton={true}>
@@ -50,21 +38,21 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
             </div>
         </div>
 
-<form className="max-w-lg mt-4" onSubmit={handleSubmit(onSubmit)} >
+        <form className="max-w-lg mt-4" onSubmit={handleSubmit(onSubmit)} >
 
 
-      { elementSelected == 1 && 
+      { elementSelected == 2 && 
       <div className="w-full md:w-full px-3 mb-4">
           <label htmlFor="categoria" className="input-label">
             Categoria
           </label>
             <select
-              defaultValue={PrincipalCategories[0]?.id}
+              defaultValue={categories[0]?.id}
               id="categoria"
               {...register("categoria")}
               className="input"
             >
-              {PrincipalCategories.map((value: any) => {
+              {categories.map((value: any) => {
                 return (
                   <option key={value.id} value={value.id}>
                     {value.name}
@@ -73,8 +61,6 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
               })}
             </select>
         </div> }
-
-
 
             <div className="w-full md:w-full px-3 mb-4">
               <label htmlFor="name" className="input-label">{ elementSelected == 1 ? "Nombre de la categoría" : "Nombre de la sub Categoría" } </label>

@@ -23,14 +23,13 @@ export default function Page() {
   const { data: session, status } = useSession();
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { onSubmit, PrincipalCategories, brands, quantityUnits, providers, locations, lastProducts } = useProductNewLogic();
+  const { onSubmit, subCategories, brands, quantityUnits, providers, locations, lastProducts } = useProductNewLogic();
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
   const { modals, closeModal } = useModalStore();
   const { elementSelected } = useSelectedElementStore();
 
-  console.log("categories", PrincipalCategories);
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -100,7 +99,7 @@ export default function Page() {
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="category_id" className="input-label">Categoria (Click para agregar)</label>
                   <select id="category_id" {...register("category_id")} className="input">
-                    {PrincipalCategories && PrincipalCategories.map((value: any) => {
+                    {subCategories && subCategories.map((value: any) => {
                       return (
                         <option key={value.id} value={value.id}>
                           {value.name}
@@ -221,7 +220,7 @@ export default function Page() {
         </div> 
         <ProductsLinkedModal isShow={modals['productLinked']} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
         <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={elementSelected} /> 
-        <ProductsCategoriesModal isShow={false} onClose={() => closeModal('productCategories')} />
+        <ProductsCategoriesModal isShow={true} onClose={() => closeModal('productCategories')} />
         <ToasterMessage />
     </div>
   );

@@ -23,7 +23,7 @@ export function useProductNewLogic() {
   const { activeConfig, system } = useConfigStore();
   const { openLoading, closeLoading } = useStateStore();
   const { openModal } = useModalStore();
-  const [PrincipalCategories, setPrincipalCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
 
   useEffect(() => {
 
@@ -74,13 +74,13 @@ export function useProductNewLogic() {
 
     useEffect(() => {
       if (categories) {
-        const filtered = categories.filter((item: any) => item.category_type === "1");
-        setPrincipalCategories(filtered);
+        const allSubcategories = categories.flatMap((category: any) => category.subcategories || []);
+        setSubCategories(allSubcategories);
       }
       // eslint-disable-next-line
   }, [categories]);
 
 
-  return { onSubmit, PrincipalCategories, lastProducts, brands, quantityUnits, providers, locations }
+  return { onSubmit, subCategories, lastProducts, brands, quantityUnits, providers, locations }
 
 }
