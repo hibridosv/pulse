@@ -6,6 +6,7 @@ import useCategoriesStore from '@/stores/categoriesStore'
 import useConfigStore from '@/stores/configStore'
 import useContactStore from '@/stores/ContactStore'
 import useLocationStore from '@/stores/LocationsStore'
+import useModalStore from '@/stores/modalStorage'
 import useProductStore from '@/stores/productStore'
 import useQuantityUnitStore from '@/stores/QuantityUnitStore'
 import useStateStore from '@/stores/stateStorage'
@@ -21,6 +22,7 @@ export function useProductNewLogic() {
   const { loadLocations, locations } = useLocationStore();
   const { activeConfig, system } = useConfigStore();
   const { openLoading, closeLoading } = useStateStore();
+  const { openModal } = useModalStore();
 
   useEffect(() => {
     if (!lastProducts) {
@@ -57,6 +59,9 @@ export function useProductNewLogic() {
       const response = await createService('products', data);
       useToastMessageStore.getState().setMessage(response);
       await loadProducts("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
+      if (data.product_type == 3) {
+        openModal('productLinked');
+      }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       console.error(error);

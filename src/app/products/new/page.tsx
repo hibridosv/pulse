@@ -13,6 +13,8 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import useStateStore from "@/stores/stateStorage";
 import { ShowProductsNewTable } from "@/components/products/ShowProductsNewTable";
 import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
+import Modal from "@/components/modal/Modal";
+import useModalStore from "@/stores/modalStorage";
 
 
 export default function Page() {
@@ -23,6 +25,7 @@ export default function Page() {
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
+  const { modals, openModal, closeModal } = useModalStore();
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -211,7 +214,7 @@ export default function Page() {
             <ViewTitle text="Ultimos Productos" />
             { loadingProducts ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsNewTable records={lastProducts?.data} /> }
         </div> 
-        <ProductsLinkedModal isShow={true} onClose={() => {}} product={lastProducts?.data[0]} records={[]} />
+        <ProductsLinkedModal isShow={modals['productLinked']} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
         <ToasterMessage />
     </div>
   );
