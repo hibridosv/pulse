@@ -13,8 +13,9 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import useStateStore from "@/stores/stateStorage";
 import { ShowProductsNewTable } from "@/components/products/ShowProductsNewTable";
 import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
-import Modal from "@/components/modal/Modal";
 import useModalStore from "@/stores/modalStorage";
+import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
+import useSelectedElementStore from "@/stores/selectedElementStorage";
 
 
 export default function Page() {
@@ -25,7 +26,8 @@ export default function Page() {
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
-  const { modals, openModal, closeModal } = useModalStore();
+  const { modals, closeModal } = useModalStore();
+  const { elementSelected } = useSelectedElementStore();
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -215,6 +217,7 @@ export default function Page() {
             { loadingProducts ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsNewTable records={lastProducts?.data} /> }
         </div> 
         <ProductsLinkedModal isShow={modals['productLinked']} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
+        <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={elementSelected} /> 
         <ToasterMessage />
     </div>
   );

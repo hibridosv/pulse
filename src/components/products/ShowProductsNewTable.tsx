@@ -5,6 +5,8 @@ import { numberToMoney } from "@/lib/utils";
 import { Product } from "@/interfaces/products";
 import { productTypeIcon } from './utils';
 import { NothingHere } from "@/components/NothingHere";
+import useSelectedElementStore from "@/stores/selectedElementStorage";
+import useModalStore from "@/stores/modalStorage";
 
 
 export interface ShowProductsNewTableProps {
@@ -14,6 +16,8 @@ export interface ShowProductsNewTableProps {
 export function ShowProductsNewTable(props: ShowProductsNewTableProps) {
   const { records } = props;
   const { system } = useConfigStore();
+  const { setElement } = useSelectedElementStore();
+  const { openModal } = useModalStore();
 
 
 
@@ -26,7 +30,7 @@ export function ShowProductsNewTable(props: ShowProductsNewTableProps) {
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         {product.cod}
       </td>
-      <td className="px-3 py-2 whitespace-nowrap">
+      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() => { setElement(product); openModal('productDetails')}} >
         <div className="flex items-center">
           {productTypeIcon(product.product_type)}
           <span>{product.description}</span>

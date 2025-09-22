@@ -4,11 +4,14 @@ import useConfigStore from "@/stores/configStore";
 import Modal from "../modal/Modal";
 import { numberToMoney } from "@/lib/utils"; 
 import { Product } from "@/interfaces/products"; 
-import { MdOutlineHomeRepairService, MdOutlineCategory, MdOutlineLocationOn, MdOutlineBrandingWatermark, MdOutlineInventory, MdOutlineAttachMoney, MdOutlineInfo, MdOutlineCalendarToday, MdOutlineUpdate, MdProductionQuantityLimits } from "react-icons/md"; // Icons
+import { MdOutlineHomeRepairService, MdOutlineCategory, MdOutlineLocationOn, MdOutlineBrandingWatermark, MdOutlineInventory, MdOutlineAttachMoney, MdOutlineInfo, MdProductionQuantityLimits } from "react-icons/md"; // Icons
 import { FaBox, FaTag, FaUserTie, FaCheckCircle, FaTimesCircle } from "react-icons/fa"; 
 import { useGetRequest } from "@/hooks/request/useGetRequest";
-import { useEffect } from "react";
 import { NothingHere } from "../NothingHere";
+import { useProductDetailsLogic } from "@/hooks/products/useProductDetailsLogic";
+import { productTypeIcon } from "./utils";
+import useStateStore from "@/stores/stateStorage";
+import { Loader } from "../Loader";
 
 export interface ProductDetailsModalProps {
   onClose: () => void;
@@ -19,14 +22,10 @@ export interface ProductDetailsModalProps {
 export function ProductDetailsModal(props: ProductDetailsModalProps) {
   const { onClose, isShow, record } = props;
   const { system } = useConfigStore();
-  const { responseData, getRequest, loading } = useGetRequest();
-
-    useEffect(() => {
-        if (isShow && record?.id) {
-            getRequest(`orders/products/${record?.id}/quantity`, false);
-        }
-    }, [getRequest, record?.id, isShow]);
-
+  const { responseData, loading } = useGetRequest();
+  const { productsLinked } = useProductDetailsLogic(record, isShow);
+    const { loading: LoadingLinked } = useStateStore();
+    const isLoading = LoadingLinked["productSearch"] ? true : false;
     const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
 
     if (!isShow) { return null; }
@@ -71,6 +70,23 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
       </span>
     );
   };
+
+    const listItems = productsLinked && productsLinked.map((product: any) => (
+          <tr key={product.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
+          <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
+              {product?.composed?.cod}
+          </td>
+          <td className="px-3 py-2 whitespace-nowrap">
+              <div className="flex items-center">
+              {productTypeIcon(product?.composed?.product_type)}
+              <span>{product?.composed?.description}</span>
+              </div>
+          </td>
+          <td className={`px-3 py-2 text-center whitespace-nowrap font-bold ${product.quantity <= product.minimum_stock ? 'text-danger' : ''}`}>
+              {product.quantity}
+          </td>
+          </tr>
+      ));
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl" headerTitle={`Detalles: ${record.description}`} closeOnOverlayClick={false} hideCloseButton={false}>
@@ -132,6 +148,7 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
           </div>
 
           {/* Sección 3: Categorización y Ubicación */}
+          { record.product_type == 1 && (<>
           <div className="space-y-2">
             <h4 className="text-md font-semibold text-text-base border-b border-bg-subtle pb-1">Clasificación</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -163,6 +180,38 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
               <DetailRow label="Requiere Receta" value={record.prescription ? <FaCheckCircle className="text-success" /> : <FaTimesCircle className="text-danger" />} />
             </div>
           </div>
+          </>)}
+          { record.product_type == 2 && (
+          <div className="p-3 text-center bg-blue-500/10 text-blue-500 rounded-lg">
+            Este producto es un servicio, por lo que no tiene detalles adicionales.
+          </div>
+          )}
+          { record.product_type == 3 && (  
+          <div className="p-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
+            <h3 className="text-lg font-semibold text-text-base mb-3">Productos Vinculados</h3>
+            {productsLinked && productsLinked.length > 0 ? (
+                <div className="relative overflow-x-auto border border-bg-subtle rounded-lg">
+                    <table className="w-full text-sm text-left">
+                        <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
+                            <tr>
+                                <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Cod</th>
+                                <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Producto</th>
+                                <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Cant</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-bg-subtle/50">
+                            {listItems}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                <div className="p-3 text-center bg-blue-500/10 text-blue-500 rounded-lg">
+                    <p>No hay productos vinculados a este item.</p>
+                </div>
+            )}
+          </div>
+          )}
+
 
         </div>
       </Modal.Body>

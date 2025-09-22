@@ -43,6 +43,7 @@ export function useProductNewLogic() {
     if (!locations && (activeConfig && activeConfig['product-locations'])) {
       loadLocations('locations');
     }
+  // eslint-disable-next-line
   }, [loadProducts, loadCategories, loadBrands, loadQuantityUnits, loadContacts, loadLocations]);
 
   const onSubmit = async (data: any) => {

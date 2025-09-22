@@ -37,7 +37,7 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
         } else {
            fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&perPage=10${currentPage}${searchTerm}`)
         }
-  }, [loadProducts, currentPage, searchTerm, sortBy, searchTermNew, sortByNew, product])
+  }, [loadProducts, currentPage, searchTerm, sortBy, searchTermNew, sortByNew, product, openLoading, closeLoading]);
 
     const fetchDataLinked = async (url: string) => {
         try {

@@ -30,10 +30,8 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const { elementSelected, setElement, clearElement } = useSelectedElementStore();
     const isSending = loading["productSending"] ? true : false;
 
-    if (!isShow || !product) {
-        return null;
-    }
-
+    if (!isShow || !product) return null;
+    
     const handleClose = () => {
         if (productsLinked && productsLinked.length > 0) {
             resetField("quantity");
