@@ -11,7 +11,7 @@ import useProductStore from '@/stores/productStore'
 import useQuantityUnitStore from '@/stores/QuantityUnitStore'
 import useStateStore from '@/stores/stateStorage'
 import useToastMessageStore from '@/stores/toastMessageStore'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export function useProductNewLogic() {
   const { loadProducts, products: lastProducts } = useProductStore();
@@ -23,13 +23,14 @@ export function useProductNewLogic() {
   const { activeConfig, system } = useConfigStore();
   const { openLoading, closeLoading } = useStateStore();
   const { openModal } = useModalStore();
+  const [PrincipalCategories, setPrincipalCategories] = useState([]);
 
   useEffect(() => {
-    if (!lastProducts) {
-      loadProducts("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
-    }
+
+    loadProducts("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
+    
     if (!categories) {
-      loadCategories("categories?filterWhere[category_type]==2&filterWhere[is_restaurant]==0");
+      loadCategories("categories?sort=-created_at&included=subcategories&filterWhere[category_type]==1&filterWhere[is_restaurant]==0");
     }
     if (!brands) {
       loadBrands("brands");
@@ -71,6 +72,15 @@ export function useProductNewLogic() {
     }
   }
 
-  return { onSubmit, categories, lastProducts, brands, quantityUnits, providers, locations }
+    useEffect(() => {
+      if (categories) {
+        const filtered = categories.filter((item: any) => item.category_type === "1");
+        setPrincipalCategories(filtered);
+      }
+      // eslint-disable-next-line
+  }, [categories]);
+
+
+  return { onSubmit, PrincipalCategories, lastProducts, brands, quantityUnits, providers, locations }
 
 }

@@ -1,0 +1,62 @@
+{
+    "id": "9e99a1ef-3519-41ab-98c8-23cd381b2b45",
+    "name": "Principal",
+    "pronoun": "Principal",
+    "img": "default.png",
+    "category_type": "1",
+    "dependable": null,
+    "principal": 1,
+    "is_restaurant": 0,
+    "created_at": "2025-04-05T04:20:39.000000Z",
+    "updated_at": "2025-04-05T04:20:39.000000Z",
+    "subcategories": [
+        {
+            "id": "9e99a1ef-36d9-45a5-8f68-89d1c2df2ee0",
+            "name": "Principal",
+            "pronoun": "Principal",
+            "img": "default.png",
+            "category_type": "2",
+            "dependable": "9e99a1ef-3519-41ab-98c8-23cd381b2b45",
+            "principal": 1,
+            "is_restaurant": 0,
+            "created_at": "2025-04-05T04:20:39.000000Z",
+            "updated_at": "2025-04-05T04:20:39.000000Z"
+        },
+        {
+            "id": "9e99a1ef-37a4-4114-84e5-c9d2dc210138",
+            "name": "Principal",
+            "pronoun": "Principal",
+            "img": "default.png",
+            "category_type": "2",
+            "dependable": "9e99a1ef-3519-41ab-98c8-23cd381b2b45",
+            "principal": 1,
+            "is_restaurant": 1,
+            "created_at": "2025-04-05T04:20:39.000000Z",
+            "updated_at": "2025-04-05T04:20:39.000000Z"
+        },
+        {
+            "id": "9f253e92-342e-4db8-85b0-07912b65ae1b",
+            "name": "Bebidas",
+            "pronoun": "Bebidas",
+            "img": "ef5edcfb51.png",
+            "category_type": "2",
+            "dependable": "9e99a1ef-3519-41ab-98c8-23cd381b2b45",
+            "principal": 0,
+            "is_restaurant": 1,
+            "created_at": "2025-06-13T13:58:43.000000Z",
+            "updated_at": "2025-06-13T13:58:43.000000Z"
+        },
+        {
+            "id": "9f253fa6-2d45-4e7e-832d-8b19a4bee18a",
+            "name": "Guaros",
+            "pronoun": "Guaros",
+            "img": "2c244b18c2.png",
+            "category_type": "2",
+            "dependable": "9e99a1ef-3519-41ab-98c8-23cd381b2b45",
+            "principal": 0,
+            "is_restaurant": 1,
+            "created_at": "2025-06-13T14:01:44.000000Z",
+            "updated_at": "2025-06-13T14:01:44.000000Z"
+        }
+    ]
+}
