@@ -20,7 +20,7 @@ export function useProductCategoriesLogic(isShow: boolean, setFocus: any) {
             setElement(1);
         } 
      }
-    }, [setFocus, isShow, elementSelected])
+    }, [setFocus, isShow, elementSelected, setElement])
 
     useEffect(() => {
         if (!categories && isShow) {

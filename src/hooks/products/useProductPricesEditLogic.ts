@@ -1,6 +1,6 @@
 'use client'
 import useStateStore from '@/stores/stateStorage'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { getServices, createService, deleteService } from '@/services/services'
 import { Price } from '@/interfaces/price';
 import useToastMessageStore from '@/stores/toastMessageStore';
@@ -9,7 +9,7 @@ export function useProductPricesEditLogic(ProductId?: string, isShow?: boolean, 
     const [ prices, setPrices ] = useState<Price[] | null>();
     const { openLoading, closeLoading } = useStateStore();
 
-    const fetchDataPrices = async (url: string) => {
+    const fetchDataPrices = useCallback(async (url: string) => {
         openLoading("productPrices");
         try {
             const response = await getServices(url);
@@ -19,13 +19,13 @@ export function useProductPricesEditLogic(ProductId?: string, isShow?: boolean, 
         } finally {
             closeLoading("productPrices");
         }
-    };
+    }, [openLoading, closeLoading, setPrices]);
   
     useEffect(() => {
         if (isShow && ProductId) {
             fetchDataPrices(`prices?sort=created_at&filterWhere[product_id]==${ProductId}`);
         }
-    }, [isShow, ProductId]);
+    }, [isShow, ProductId, fetchDataPrices]);
 
     const addPrice = async (data: any) => {
         try {
@@ -48,9 +48,9 @@ export function useProductPricesEditLogic(ProductId?: string, isShow?: boolean, 
         }
     }
 
-    const deletePrice = async (id: string) => {
+    const deletePrice = async (url: string) => {
         try {
-            const response = await deleteService(`prices/${id}`);
+            const response = await deleteService(url);
             await fetchDataPrices(`prices?sort=created_at&filterWhere[product_id]==${ProductId}`);
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {

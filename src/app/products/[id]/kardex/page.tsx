@@ -28,7 +28,7 @@ export default function Page({ params }: { params: { id: string } }) {
     return <LoadingPage />;
   }
   const handleFormSubmit = async (values: DateRangeValues) => { 
-      let url = urlConstructor(values, `products/${id}/kardex`)
+      let url = urlConstructor(values, `kardex/products/${id}`)
       await loadKardex(url);
   }
 

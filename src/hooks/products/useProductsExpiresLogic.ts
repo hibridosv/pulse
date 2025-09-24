@@ -29,7 +29,7 @@ export function useProductExpiresLogic() {
             }
         }
         getProductsExpired();
-    }, []);
+    }, [openLoading, closeLoading]);
 
     return { productsExpired, expired };
 }

@@ -18,6 +18,8 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
     const { onClose, isShow, record } = props;
     const { system } = useConfigStore();
 
+    if (!record || !isShow) return null;
+
 
     const setStatus =(status: number)=> {
       switch (status) {

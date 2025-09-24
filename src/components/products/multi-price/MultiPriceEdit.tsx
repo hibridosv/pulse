@@ -7,9 +7,9 @@ import { usePriceTypes } from "./priceTypeToText";
 import { useProductPricesEditLogic } from "@/hooks/products/useProductPricesEditLogic";
 import { NothingHere } from "@/components/NothingHere";
 import useStateStore from "@/stores/stateStorage";
-import { DeletePriceButton } from "./DeletePriceButton";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { usePriceSelectedOptions } from "@/hooks/products/usePriceSelectedOptions";
+import { DeleteButton } from "@/components/button/DeleteButton";
 
 export interface MultiPrice {
   productId: string;
@@ -107,7 +107,7 @@ export function MultiPriceEdit(props: MultiPrice) {
                       </td>
                       <td className="px-2 py-2">{priceTypeToText(price.price_type)}</td>
                       <td className="px-2 py-2 text-center">
-                        <DeletePriceButton price={price} onDeleteConfirm={deletePrice} />
+                        <DeleteButton id={price.id} url="prices" disabled={false} text="¿Estas seguro de eliminar este precio?" onDeleteConfirm={deletePrice} header="Eliminar Precio" />
                       </td>
                     </tr>
                   );
