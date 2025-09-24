@@ -127,10 +127,13 @@ body {
   @apply cursor-pointer active:relative active:top-1
 }
 .input {
-  @apply bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
+  @apply bg-bg-content appearance-none border-2 border-bg-subtle rounded-md w-full py-2 px-4 text-text-base leading-tight focus:outline-none focus:bg-bg-content focus:border-primary shadow-sm
 }
 .input-disabled {
-  @apply appearance-none block w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 rounded-md
+  @apply appearance-none block w-full bg-bg-subtle border border-bg-subtle text-text-muted py-2 px-4 leading-tight focus:outline-none rounded-md cursor-not-allowed shadow-sm
+}
+.input-select {
+  @apply bg-bg-content appearance-none border-2 border-bg-subtle rounded-md w-full py-2 px-4 pr-8 text-text-base leading-tight focus:outline-none focus:bg-bg-content focus:border-primary shadow-sm
 }
 .input-label {
   @apply truncate block text-gray-700 text-sm font-bold

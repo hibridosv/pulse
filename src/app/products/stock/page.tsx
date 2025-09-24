@@ -36,8 +36,10 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-7 border-r md:border-primary">
         <ViewTitle text="Productos" />
-        { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTable records={products?.data} setSortBy={setSortBy} sortBy={sortBy} /> }
-        <Pagination records={products} handlePageNumber={handlePageNumber } />
+        <div className="p-2">
+          { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTable records={products?.data} setSortBy={setSortBy} sortBy={sortBy} /> }
+          <Pagination records={products} handlePageNumber={handlePageNumber } />
+        </div>
     </div>
     <div className="col-span-3">
         <div className="flex justify-between">

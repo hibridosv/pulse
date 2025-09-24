@@ -48,7 +48,7 @@ export function ShowProductsTableLink(props: ShowProductsTableLinkProps) {
   ));
 
   return (
-    <div className="m-4">
+    <div>
       <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">

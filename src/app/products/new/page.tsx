@@ -48,7 +48,7 @@ export default function Page() {
 
                 <div className="w-full px-3 mb-2">
                   <label htmlFor="product_type" className={"input-label"}>Tipo de Registro</label>
-                  <select id="product_type" {...register("product_type")} className="input" >
+                  <select id="product_type" {...register("product_type")} className="input-select" >
                     <option value={1}> Producto </option>
                     <option  value={2}> Servicio </option>
                     <option  value={3}> Relacionado </option>
@@ -89,7 +89,7 @@ export default function Page() {
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="saved" className={"input-label"}>Gavado</label>
-                  <select id="saved" {...register("saved")} className="input"
+                  <select id="saved" {...register("saved")} className="input-select"
                   >
                     <option value={1}> Gravado </option>
                     <option  value={0}> Exento </option>
@@ -98,7 +98,7 @@ export default function Page() {
                 { watch("product_type") == 1 && (<>
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="category_id" className="input-label clickeable" onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
-                  <select id="category_id" {...register("category_id")} className="input">
+                  <select id="category_id" {...register("category_id")} className="input-select">
                     {subCategories && subCategories.map((value: any) => {
                       return (
                         <option key={value.id} value={value.id}>
@@ -111,7 +111,7 @@ export default function Page() {
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="quantity_unit_id" className="input-label">Unidad de Medida</label>
-                  <select  id="quantity_unit_id" {...register("quantity_unit_id")} className="input">
+                  <select  id="quantity_unit_id" {...register("quantity_unit_id")} className="input-select">
                     {quantityUnits && quantityUnits.map((value: any) => {
                       return (
                         <option key={value.id} value={value.id}>
@@ -124,7 +124,7 @@ export default function Page() {
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="provider_id" className="input-label" >Proveedor (Click para agregar)</label>
-                  <select id="provider_id" {...register("provider_id")} className="input">
+                  <select id="provider_id" {...register("provider_id")} className="input-select">
                     {providers && providers.map((value: any) => {
                       return (
                         <option key={value.id} value={value.id}>
@@ -138,7 +138,7 @@ export default function Page() {
               { activeConfig && activeConfig.includes('product-locations') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="location_id" className="input-label">Ubicación (Click para agregar)</label>
-                  <select id="location_id" {...register("location_id")} className="input">
+                  <select id="location_id" {...register("location_id")} className="input-select">
                     {locations && locations.map((value: any) => {
                       return (
                         <option key={value.id} value={value.id}>
@@ -152,7 +152,7 @@ export default function Page() {
               { activeConfig && activeConfig.includes('product-brand') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="brand_id" className="input-label">Marca</label>
-                  <select  id="brand_id" {...register("brand_id")} className="input">
+                  <select  id="brand_id" {...register("brand_id")} className="input-select">
                     {brands && brands.map((value: any) => {
                       return (
                         <option key={value.id} value={value.id}>
@@ -216,7 +216,9 @@ export default function Page() {
         </div>
         <div className="col-span-5">
             <ViewTitle text="Ultimos Productos" />
-            { loadingProducts ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsNewTable records={lastProducts?.data} /> }
+            <div className="p-2">
+              { loadingProducts ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsNewTable records={lastProducts?.data} /> }
+            </div>
         </div> 
         <ProductsLinkedModal isShow={modals['productLinked']} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
         <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={elementSelected} /> 

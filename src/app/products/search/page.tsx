@@ -44,7 +44,9 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
       <div className="col-span-7 border-r md:border-primary">
           <ViewTitle text={getNameOfPage(pageParam)} />
-          { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTableLink records={products?.data} link={pageParam} /> }
+          <div className="p-2">
+            { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTableLink records={products?.data} link={pageParam} /> }
+          </div>
 
       </div>
       <div className="col-span-3">

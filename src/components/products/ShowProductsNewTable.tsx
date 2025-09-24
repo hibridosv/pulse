@@ -29,19 +29,19 @@ export function ShowProductsNewTable(props: ShowProductsNewTableProps) {
     <tr 
       key={product.id} 
       className={`whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
-      <td className="px-4 py-4 font-medium text-primary hover:underline">
+      <td className="px-3 py-2 font-medium text-primary hover:underline">
         {product.cod}
       </td>
-      <td className="px-4 py-4 clickeable" onClick={() => { setElement(product); openModal('productDetails')}}>
+      <td className="px-3 py-2 clickeable" onClick={() => { setElement(product); openModal('productDetails')}}>
         <div className="flex items-center space-x-2">
           {productTypeIcon(product.product_type)}
           <span>{product.description}</span>
         </div>
       </td>
-      <td className="px-4 py-4 text-right font-medium">
+      <td className="px-3 py-2 text-right font-medium">
         {product.prices[0] ? numberToMoney(product.prices[0].price, system) : numberToMoney(0, system)}
       </td>
-      <td className={`px-4 py-4 text-center font-bold ${product.quantity <= product.minimum_stock ? 'text-danger' : ''}`}>
+      <td className={`px-3 py-2 text-center font-bold ${product.quantity <= product.minimum_stock ? 'text-danger' : ''}`}>
         {product.quantity}
       </td>
     </tr>

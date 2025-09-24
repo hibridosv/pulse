@@ -71,7 +71,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
               <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="saved" className={"input-label"}>Gavado</label>
-                <select id="saved" {...register("saved")} className="input"
+                <select id="saved" {...register("saved")} className="input-select"
                 >
                   <option value={1}> Gravado </option>
                   <option  value={0}> Exento </option>
@@ -80,7 +80,7 @@ export default function Page({ params }: { params: { id: string } }) {
               { product.product_type == 1 && (<>
               <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="category_id" className="input-label clickeable" onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
-                <select id="category_id" {...register("category_id")} className="input">
+                <select id="category_id" {...register("category_id")} className="input-select">
                   {subCategories && subCategories.map((value: any) => {
                     return (
                       <option key={value.id} value={value.id}>
@@ -93,7 +93,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
               <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="quantity_unit_id" className="input-label">Unidad de Medida</label>
-                <select  id="quantity_unit_id" {...register("quantity_unit_id")} className="input">
+                <select  id="quantity_unit_id" {...register("quantity_unit_id")} className="input-select">
                   {quantityUnits && quantityUnits.map((value: any) => {
                     return (
                       <option key={value.id} value={value.id}>
@@ -106,7 +106,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
               <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="provider_id" className="input-label" >Proveedor (Click para agregar)</label>
-                <select id="provider_id" {...register("provider_id")} className="input">
+                <select id="provider_id" {...register("provider_id")} className="input-select">
                   {providers && providers.map((value: any) => {
                     return (
                       <option key={value.id} value={value.id}>
@@ -120,7 +120,7 @@ export default function Page({ params }: { params: { id: string } }) {
             { activeConfig && activeConfig.includes('product-locations') && (
               <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="location_id" className="input-label">Ubicación (Click para agregar)</label>
-                <select id="location_id" {...register("location_id")} className="input">
+                <select id="location_id" {...register("location_id")} className="input-select">
                   {locations && locations.map((value: any) => {
                     return (
                       <option key={value.id} value={value.id}>
@@ -134,7 +134,7 @@ export default function Page({ params }: { params: { id: string } }) {
             { activeConfig && activeConfig.includes('product-brand') && (
               <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="brand_id" className="input-label">Marca</label>
-                <select  id="brand_id" {...register("brand_id")} className="input">
+                <select  id="brand_id" {...register("brand_id")} className="input-select">
                   {brands && brands.map((value: any) => {
                     return (
                       <option key={value.id} value={value.id}>
