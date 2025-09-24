@@ -1,9 +1,5 @@
 'use client';
-
-import { useCallback } from 'react';
-import { useGetResourceLogic } from "@/hooks/request/useGetResouceLogic";
 import useProductStore from "@/stores/productStore";
-
 // --- Componente Skeleton con Estilos de Tema ---
 function StatisticsSkeleton() {
   return (
@@ -12,7 +8,7 @@ function StatisticsSkeleton() {
         <div className="h-5 bg-bg-subtle rounded w-1/2"></div>
       </div>
       <div className="pt-4 space-y-4">
-        {[...Array(4)].map((_, i) => (
+        {[...Array(1)].map((_, i) => (
           <div key={i} className="flex justify-between items-center">
             <div className="h-4 bg-bg-subtle rounded w-1/3"></div>
             <div className="h-6 bg-bg-subtle rounded w-1/4"></div>
@@ -24,30 +20,19 @@ function StatisticsSkeleton() {
 }
 
 // --- Componente Principal ---
-export function ShowProductsStatistics() {
-  const { statistics, loadStatistics, loadingStat } = useProductStore();
+export function ShowLowStockStatistics() {
+  const { products, loading } = useProductStore();
 
-  const loadStats = useCallback(() => {
-    if (!statistics || Object.keys(statistics).length === 0) {
-        loadStatistics('statistics');
-    }
-  }, [loadStatistics, statistics]); 
-
-  useGetResourceLogic(loadStats);
-
-  if (loadingStat) {
+  if (loading) {
     return <StatisticsSkeleton />;
   }
 
-  if (!statistics || Object.keys(statistics).length === 0) {
+  if (!products || Object.keys(products).length === 0) {
     return null;
   }
 
   const statsList = [
-    { label: 'Total Registros', value: statistics.totalProducts },
-    { label: 'Productos', value: statistics.products },
-    { label: 'Servicios', value: statistics.services },
-    { label: 'Relacionados', value: statistics.linked },
+    { label: 'Total Registros', value: products.total || 0 },
   ];
 
   return (

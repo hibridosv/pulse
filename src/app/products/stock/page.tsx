@@ -15,8 +15,8 @@ import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useModalStore from "@/stores/modalStorage";
 import { LoadingPage } from "@/components/LoadingPage";
+import { useLowStockLogic } from "@/hooks/products/useLowStockLogic";
 import { ShowLowStockStatistics } from "@/components/products/ShowLowStockStatistics";
-import { useLinkedProductsLogic } from "@/hooks/products/useLinkedProductsLogic";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -24,7 +24,7 @@ export default function Page() {
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
   const [sortBy, setSortBy] = useState("-cod");
   const { products, loading } = useProductStore();
-  useLinkedProductsLogic(currentPage, searchTerm, sortBy);
+  useLowStockLogic(currentPage, searchTerm, sortBy);
   const { elementSelected } = useSelectedElementStore();
   const { modals, closeModal } = useModalStore();
 

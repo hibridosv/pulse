@@ -23,13 +23,13 @@ export default function Page() {
   const { data: session, status } = useSession();
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { onSubmit, subCategories, brands, quantityUnits, providers, locations, lastProducts } = useProductNewLogic();
+  const { onSubmit, subCategories, brands, quantityUnits, providers, locations, products } = useProductNewLogic();
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
   const { modals, closeModal, openModal } = useModalStore();
   const { elementSelected } = useSelectedElementStore();
-
+  const lastProducts = products?.data;
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -135,7 +135,7 @@ export default function Page() {
                   </select>
                 </div>
 
-              { activeConfig && activeConfig['product-locations'] && (
+              { activeConfig && activeConfig.includes('product-locations') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="location_id" className="input-label">Ubicación (Click para agregar)</label>
                   <select id="location_id" {...register("location_id")} className="input">
@@ -149,7 +149,7 @@ export default function Page() {
                   </select>
                 </div> )}
 
-              { activeConfig && activeConfig['product-brand'] && (
+              { activeConfig && activeConfig.includes('product-brand') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="brand_id" className="input-label">Marca</label>
                   <select  id="brand_id" {...register("brand_id")} className="input">
@@ -163,19 +163,19 @@ export default function Page() {
                   </select>
                 </div> )}
 
-                { activeConfig && activeConfig['product-measures'] && (
+                { activeConfig && activeConfig.includes('product-measures') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="measure" className="input-label">Medida</label>
                   <input type="text" id="measure" {...register("measure")} className="input" />
                 </div> )}
 
-                { activeConfig && activeConfig['product-default-discount'] && (
+                { activeConfig && activeConfig.includes('product-default-discount') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="default_discount" className="input-label">Descuento por Defecto %</label>
                   <input type="number" step="any" id="default_discount" {...register("default_discount")} className="input" />
                 </div> )}
 
-                { activeConfig && activeConfig['product-default-commission'] && (
+                { activeConfig && activeConfig.includes('product-default-commission') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="default_commission" className="input-label">Comisión por Defecto %</label>
                   <input type="number" step="any" id="default_commission" {...register("default_commission")} className="input" />
@@ -187,13 +187,13 @@ export default function Page() {
                   <input type="text" id="lot_id" {...register("lot_id")} className="input" />
                 </div>
 
-              { activeConfig && activeConfig['product-expires'] && (
+              { activeConfig && activeConfig.includes('product-expires') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                     <label htmlFor="expiration" className="input-label">Fecha de vencimiento</label>
                     <input type="date" id="expiration" {...register("expiration")} className="input" />
                 </div> )}
 
-                { activeConfig && activeConfig['product-prescription'] && (
+                { activeConfig && activeConfig.includes('product-prescription') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="prescription" className="input-label" >Solicitar Receta </label>
                 <input type="checkbox" placeholder="prescription" {...register("prescription")} />

@@ -15,7 +15,7 @@ export interface ShowProductsTableLinkProps {
 
 export function ShowProductsTableLink(props: ShowProductsTableLinkProps) {
   const { records, link } = props;
-  const { system, activeConfig } = useConfigStore();
+  const { system } = useConfigStore();
   const router = useRouter();
 
 

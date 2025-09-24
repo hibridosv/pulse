@@ -7,14 +7,13 @@ import useConfigStore from '@/stores/configStore'
 import useContactStore from '@/stores/ContactStore'
 import useLocationStore from '@/stores/LocationsStore'
 import useModalStore from '@/stores/modalStorage'
-import useProductStore from '@/stores/productStore'
 import useQuantityUnitStore from '@/stores/QuantityUnitStore'
 import useStateStore from '@/stores/stateStorage'
 import useToastMessageStore from '@/stores/toastMessageStore'
 import { useEffect, useState } from 'react'
+import { useGetRequest } from '../request/useGetRequest'
 
 export function useProductNewLogic() {
-  const { loadProducts, products: lastProducts } = useProductStore();
   const { loadCategories, categories } = useCategoriesStore();
   const { loadBrands, brands } = useBrandsStore();
   const { loadQuantityUnits, quantityUnits } = useQuantityUnitStore();
@@ -24,11 +23,13 @@ export function useProductNewLogic() {
   const { openLoading, closeLoading } = useStateStore();
   const { openModal } = useModalStore();
   const [subCategories, setSubCategories] = useState([]);
-
+  const { getRequest, responseData: products } = useGetRequest();
+  
   useEffect(() => {
 
-    loadProducts("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
-    
+    if (!products) {
+      getRequest("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
+    }
     if (!categories) {
       loadCategories("categories?sort=-created_at&included=subcategories&filterWhere[category_type]==1&filterWhere[is_restaurant]==0");
     }
@@ -41,11 +42,11 @@ export function useProductNewLogic() {
     if (!providers) {
       loadContacts('contacts?filterWhere[is_provider]==1');
     }
-    if (!locations && (activeConfig && activeConfig['product-locations'])) {
+    if (!locations && (activeConfig && activeConfig.includes('product-locations'))) {
       loadLocations('locations');
     }
   // eslint-disable-next-line
-  }, [loadProducts, loadCategories, loadBrands, loadQuantityUnits, loadContacts, loadLocations]);
+  }, [getRequest, loadCategories, loadBrands, loadQuantityUnits, loadContacts, loadLocations]);
 
   const onSubmit = async (data: any) => {
     openLoading("productForm");
@@ -60,7 +61,7 @@ export function useProductNewLogic() {
     try {
       const response = await createService('products', data);
       useToastMessageStore.getState().setMessage(response);
-      await loadProducts("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
+      await getRequest("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
       if (data.product_type == 3) {
         openModal('productLinked');
       }
@@ -81,6 +82,6 @@ export function useProductNewLogic() {
   }, [categories]);
 
 
-  return { onSubmit, subCategories, lastProducts, brands, quantityUnits, providers, locations }
+  return { onSubmit, subCategories, products, brands, quantityUnits, providers, locations }
 
 }
