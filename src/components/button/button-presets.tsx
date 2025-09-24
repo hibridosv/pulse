@@ -54,7 +54,7 @@ export const stylePresets = {
   // Action buttons (with specific colors)
   close: `${BASE} bg-danger hover:bg-danger/90 focus:ring-danger`,
   cancel: `${BASE} bg-text-muted hover:bg-text-muted/90 focus:ring-text-muted`, // Using text-muted for a neutral cancel
-  save: `${BASE} bg-success hover:bg-success/90 focus:ring-success`,
+  save: `${BASE} bg-primary hover:bg-primary/90 focus:ring-primary`,
   accept: `${BASE} bg-info hover:bg-info/90 focus:ring-info`,
   add: `${BASE} bg-primary hover:bg-primary/90 focus:ring-primary`,
   send: `${BASE} bg-info hover:bg-info/90 focus:ring-info`,
