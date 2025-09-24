@@ -1,8 +1,8 @@
 'use client'
 
+import { Button, Preset } from "@/components/button/button";
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LoadingPage } from "@/components/LoadingPage";
-import { NothingHere } from "@/components/NothingHere";
 import { KardexDetailsModal } from "@/components/products/kardex/KardexDetailsModal";
 import { ShowKardexTable } from "@/components/products/kardex/ShowKardexTable";
 import { ViewTitle } from "@/components/ViewTitle";
@@ -12,7 +12,7 @@ import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/productStore";
 import useSelectedElementStore from "@/stores/selectedElementStorage";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -22,6 +22,7 @@ export default function Page({ params }: { params: { id: string } }) {
   useKardexLogic(id);
   const { elementSelected } = useSelectedElementStore();
   const { modals, closeModal } = useModalStore();
+  const router = useRouter();
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -44,9 +45,9 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="mt-2 p-2">
             <DateRange onSubmit={handleFormSubmit} loading={loading} />
           </div>
-          <div className="mt-2 p-2 flex justify-center">
-            <Link href="/products/search?page=kardex" className="button-href">Buscar otro producto</Link>
-          </div>
+          <div className="w-full p-4 flex justify-end">
+            <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   
+          </div>  
       </div> 
       <KardexDetailsModal isShow={modals['kardexDetails']} onClose={() => closeModal('kardexDetails')} record={elementSelected} />
     </div>

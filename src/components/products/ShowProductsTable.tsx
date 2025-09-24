@@ -65,7 +65,7 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
         { deleting || loadingRequest ? <BiLoader className="animate-spin" /> : <Dropdown label={<FiSettings size={18} /> }>
           <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
           <DropdownItem onClick={() => { getRequest(`transactions/products/prices/${product.cod}`); }}>Actualizar Precios</DropdownItem>
-          <DropdownItem onClick={() => { setElement(product); openModal('productDetails'); }}>Editar</DropdownItem>
+          <DropdownItem as={`/products/${product.id}/edit`}>Editar</DropdownItem>
           <DropdownItem as={`/products/${product.id}/kardex`}>Kardex</DropdownItem>
           <DropdownDivider />
           <DropdownItem onClick={() => { setElement(product); openModal('deleteProduct'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
@@ -102,7 +102,6 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
         isShow={elementSelected?.id && modals['deleteProduct']}
         text={`¿Estas seguro de eliminar el producto ${elementSelected?.description}?`}
         onDelete={() =>{ deleteProduct(`products/${elementSelected?.id}`, elementSelected?.id); closeModal('deleteProduct'); }}
-        onClose={() => closeModal('deleteProduct')}
-      />
+        onClose={() => closeModal('deleteProduct')} />
     </div>
-}
+)}

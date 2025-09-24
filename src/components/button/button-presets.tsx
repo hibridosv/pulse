@@ -6,6 +6,7 @@ import { AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from 
 import { IoMdAddCircle } from "react-icons/io"
 import { FaEdit, FaInfoCircle } from "react-icons/fa";
 import { MdOutlineCheckCircle, MdOutlineError, MdOutlineInfo } from "react-icons/md"; // New icons for success, error, info
+import { IoArrowBack } from "react-icons/io5";
 
 /**
  * All text will start off looking like this.
@@ -41,6 +42,7 @@ export const textPresets = {
   smallEdit: "",
   smallPrint: "",
   smallPrintDisable: "",
+  back: "Regresar",
 }
 
 export const stylePresets = {
@@ -78,6 +80,7 @@ export const stylePresets = {
     smallEdit: `transition ease-in duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 clickeable`,
     smallPrint: `transition ease-in duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 clickeable`,
     smallPrintDisable: `transition ease-in duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2`,
+    back: `${BASE} bg-secondary hover:bg-secondary/90 focus:ring-secondary`,
 };
 
 export const iconPresets = {
@@ -110,4 +113,5 @@ export const iconPresets = {
   smallEdit: <FaEdit color="#31B92F" size={23} />,
   smallPrint: <AiFillPrinter color="#2FA0B9" size={25} />,
   smallPrintDisable: <AiFillPrinter color="grey" size={25} />,
+  back: <IoArrowBack className="mr-3" />,
 };

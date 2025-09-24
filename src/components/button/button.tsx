@@ -28,6 +28,7 @@ export enum Preset {
     smallEdit = "smallEdit",
     smallPrint = "smallPrint",
     smallPrintDisable = "smallPrintDisable",
+    back = "back",
   }
   
   export interface ButtonProps {
