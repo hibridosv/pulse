@@ -2,7 +2,7 @@
 
 import { Button, Preset } from "@/components/button/button";
 import { LoadingPage } from "@/components/LoadingPage";
-import { MultiPriceEdit } from "@/components/products/MultiPriceEdit";
+import { MultiPriceEdit } from "@/components/products/multi-price/MultiPriceEdit";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductEditLogic } from "@/hooks/products/useProductEditLogic";
@@ -39,7 +39,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-      <div className="col-span-7 border-r md:border-primary">
+      <div className="col-span-5 border-r md:border-primary">
           <ViewTitle text="Editar Producto" />
 
           <div className="w-full px-4">
@@ -191,9 +191,35 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
 
       </div>
-      <div className="col-span-3">
+      <div className="col-span-5">
         <ViewTitle text="Detalles" />
-        <MultiPriceEdit text="Editar Precios" />        
+        <div className="w-full px-4">
+          <MultiPriceEdit text="Editar Precios" />   
+        </div>     
+        <div>
+          <div>Prueba de botones</div>
+          <Button text="Abrir Modal" preset={Preset.accept} /> <hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.add} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.cancel} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.close} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.danger} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.link} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.primary} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.secondary} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.save} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.saving} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallClose} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallCloseDisable} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallEdit} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallInfo} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallMinus} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallMinusDisable} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallPlus} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallPlusDisable} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallPrint} /><hr className="m-2" />
+          <Button text="Abrir Modal" preset={Preset.smallPrintDisable} /><hr className="m-2" />
+
+        </div>
       </div> 
         <ToasterMessage />
     </div>
