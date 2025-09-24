@@ -5,7 +5,6 @@ import useConfigStore from "@/stores/configStore";
 import { numberToMoney4Digits } from "@/lib/utils";
 import { usePriceTypes } from "./priceTypeToText";
 import { useProductPricesEditLogic } from "@/hooks/products/useProductPricesEditLogic";
-import { NothingHere } from "@/components/NothingHere";
 import useStateStore from "@/stores/stateStorage";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { usePriceSelectedOptions } from "@/hooks/products/usePriceSelectedOptions";
@@ -78,9 +77,7 @@ export function MultiPriceEdit(props: MultiPrice) {
 
       {isLoading ? (
         <SkeletonTable rows={3} columns={4} />
-      ) : !prices?.length ? (
-        <NothingHere text="No hay precios disponibles" />
-      ) : (
+      ) : prices?.length && (
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-text-base">
             <thead className="text-xs text-text-base uppercase bg-bg-subtle/60">

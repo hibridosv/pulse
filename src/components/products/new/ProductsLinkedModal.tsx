@@ -24,14 +24,14 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage, handlePageNumber} = usePagination("&page=1");
     const sortBy = "-updated_at";
-    const { products, onSubmit, productsLinked } = useProductLinkedLogic(currentPage, searchTerm, sortBy, product);
+    const { products, onSubmit, productsLinked, loading: isSending } = useProductLinkedLogic(currentPage, searchTerm, sortBy, product, isShow);
+    const { elementSelected, setElement, clearElement } = useSelectedElementStore();
     const { loading } = useStateStore();
     const isLoading = loading["productSearch"] ? true : false;
-    const { elementSelected, setElement, clearElement } = useSelectedElementStore();
-    const isSending = loading["productSending"] ? true : false;
 
     if (!isShow || !product) return null;
-    
+    console.log(product.id);
+
     const handleClose = () => {
         if (productsLinked && productsLinked.length > 0) {
             resetField("quantity");
@@ -40,6 +40,16 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
         }
         useToastMessageStore.getState().setError({ message: "Para cerrar debe tener al menos un producto vinculado."});
     };
+
+    const handleOnSubmit = (data: any) => {
+        const newData = {
+            ...data,
+            product_id: product.id,
+            added_product_id: elementSelected.id,
+        }
+       onSubmit(newData);            
+    };
+
 
 
   const listItems = productsLinked && productsLinked.map((product: any) => (
@@ -129,13 +139,9 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
                         <p className="font-bold">Producto seleccionado:</p>
                         <p>{elementSelected.cod} - {elementSelected.description}</p>
                     </div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(handleOnSubmit)}>
                         <div className="mb-4">
                             <label className="block text-sm font-medium mb-2" htmlFor="quantity">Cantidad a vincular</label>
-                            <input type="hidden" {...register("product_id")} value={product.id} />
-                            <input type="hidden" {...register("added_product_id")} value={elementSelected.id} />
-                            
-
                             <input
                                 type="number"
                                 id="quantity"

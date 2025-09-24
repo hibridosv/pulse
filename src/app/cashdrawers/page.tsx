@@ -44,7 +44,7 @@ export default function Page() {
       openModal('cashDrawerOpen');
     }
   }
- console.log(cuts);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-5 border-r md:border-primary">

@@ -14,7 +14,6 @@ export function useConfigLogic() {
 
   useEffect(() => {
     if (configurations && configurations.length > 0) {
-      console.log("Extracting active features from configurations:");
       let extracted = extractActiveFeature(configurations)
       setActiveConfig(extracted)
     }

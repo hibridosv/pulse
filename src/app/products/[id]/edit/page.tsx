@@ -14,6 +14,7 @@ import useStateStore from "@/stores/stateStorage";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { ProductLinked } from "@/components/products/ProductLinked";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -195,6 +196,9 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="w-full px-4">
           <MultiPriceEdit text="Editar Precios" productId={id} isShow={true} />   
         </div>  
+
+        <ProductLinked record={product} isShow={true} isEditable={true} />
+  
         <div className="w-full p-4 flex justify-end">
           <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   
         </div>   

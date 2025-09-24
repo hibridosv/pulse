@@ -50,7 +50,6 @@ const { loadProduct, product } = useProductStore();
       }
       if (data.expiration) data.expires = 1;
     data.taxes = getCountryProperty(parseInt(system?.country)).taxes;
-    console.log("Submitting product data:", data);
     try {
       const response = await updateService(`products/${id}`, data);
       useToastMessageStore.getState().setMessage(response);

@@ -33,7 +33,6 @@ export function useProductCategoriesLogic(isShow: boolean, setFocus: any) {
         data.category_type = elementSelected;
         data.dependable = elementSelected == 1 ? null : data.dependable;
         data.pronoun = data.name;
-        console.log("submit category", data);
             openLoading("categoryForm");
             try {
                 const response = await createService('categories', data);
