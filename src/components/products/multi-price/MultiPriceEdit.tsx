@@ -1,15 +1,15 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Option, RadioButton } from "../../button/RadioButton";
+import { RadioButton } from "../../button/RadioButton";
 import { Button, Preset } from "../../button/button";
 import useConfigStore from "@/stores/configStore";
 import { numberToMoney4Digits } from "@/lib/utils";
-import { optionsRadioButton, priceTypeToText } from "./priceTypeToText";
+import { usePriceTypes } from "./priceTypeToText";
 import { useProductPricesEditLogic } from "@/hooks/products/useProductPricesEditLogic";
 import { NothingHere } from "@/components/NothingHere";
 import useStateStore from "@/stores/stateStorage";
-import { Loader } from "@/components/Loader";
 import { DeletePriceButton } from "./DeletePriceButton";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { usePriceSelectedOptions } from "@/hooks/products/usePriceSelectedOptions";
 
 export interface MultiPrice {
   productId: string;
@@ -26,14 +26,11 @@ export function MultiPriceEdit(props: MultiPrice) {
   const { text, productId, isShow } = props;
   const { system } = useConfigStore();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
-  const [selectedOption, setSelectedOption] = useState<Option | null>(
-    optionsRadioButton[0] ? optionsRadioButton[0] : null
-  );
+  const { options, priceTypeToText } = usePriceTypes();
+  const { selectedOption, setSelectedOption } = usePriceSelectedOptions(options);
   const { prices, addPrice, deletePrice } = useProductPricesEditLogic(productId, isShow, reset, selectedOption);
   const { loading } = useStateStore();
   const isLoading = loading["productPrices"] ? true : false;
-
-
   if (!isShow) {
     return null;
   }
@@ -44,7 +41,7 @@ export function MultiPriceEdit(props: MultiPrice) {
         <h3 className="text-lg font-semibold text-text-base">{text}</h3>
         <div className="w-full flex justify-center">
           <RadioButton
-            options={optionsRadioButton}
+            options={options}
             onSelectionChange={setSelectedOption}
           />
         </div>
@@ -75,17 +72,15 @@ export function MultiPriceEdit(props: MultiPrice) {
           {errors.price && <p className="text-danger text-xs mt-1">{errors.price.message}</p>}
         </div>
         <div className="self-end">
-            <Button type="submit" preset={Preset.add} text="Agregar Precio" />
+            <Button type="submit" preset={isLoading ? Preset.saving : Preset.add} text={isLoading ? "Guardando ..." : "Agregar Precio"} disabled={isLoading} />
         </div>
       </form>
 
-      {isLoading && <Loader />}
-
-      {!isLoading && !prices?.length && (
+      {isLoading ? (
+        <SkeletonTable rows={3} columns={4} />
+      ) : !prices?.length ? (
         <NothingHere text="No hay precios disponibles" />
-      )}
-
-      {prices && prices.length > 0 && (
+      ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-text-base">
             <thead className="text-xs text-text-base uppercase bg-bg-subtle/60">
@@ -105,7 +100,7 @@ export function MultiPriceEdit(props: MultiPrice) {
                 )
                 .map((price) => {
                   return (
-                    <tr key={price.id} className="odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle" >
+                    <tr key={price.id} className="odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle">
                       <td className="px-2 py-2 font-medium">{price.qty}</td>
                       <td className="px-2 py-2">
                         {numberToMoney4Digits(price.price, system)}
