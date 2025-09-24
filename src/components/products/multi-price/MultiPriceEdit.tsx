@@ -2,28 +2,45 @@ import { useState } from "react";
 import { Option, RadioButton } from "../../button/RadioButton";
 import { Button, Preset } from "../../button/button";
 import useConfigStore from "@/stores/configStore";
-import { Price } from "@/interfaces/price";
 import { numberToMoney4Digits } from "@/lib/utils";
 import { optionsRadioButton, priceTypeToText } from "./priceTypeToText";
+import { useProductPricesEditLogic } from "@/hooks/products/useProductPricesEditLogic";
+import { NothingHere } from "@/components/NothingHere";
+import useStateStore from "@/stores/stateStorage";
+import { Loader } from "@/components/Loader";
+import { DeletePriceButton } from "./DeletePriceButton";
 
 export interface MultiPrice {
+  productId: string;
+  isShow: boolean;
   text: string;
 }
 
-// Sample data to demonstrate styling with multiple rows
-  const samplePrices: Price[] = [
-    { id: "1", price: 25.5, price_type: 1, qty: 1 },
-    { id: "2", price: 22.0, price_type: 2, qty: 10 },
-    { id: "3", price: 20.0, price_type: 3, qty: 25 },
-  ];
-
 export function MultiPriceEdit(props: MultiPrice) {
-  const { text } = props;
+  const { text, productId, isShow } = props;
   const { system } = useConfigStore();
+  const { prices } = useProductPricesEditLogic(productId, isShow);
+  const { loading } = useStateStore();
+  const isLoading = loading["productPrices"] ? true : false;
+
+  console.log(prices);
 
   const [selectedOption, setSelectedOption] = useState<Option | null>(
     optionsRadioButton[0] ? optionsRadioButton[0] : null
   );
+
+  if (!isShow) {
+    return null;
+  }
+
+  if (isLoading) {
+     return <Loader />;
+  }
+
+  if (!prices) {
+    return (<NothingHere text="No hay precios disponibles" />);
+  }
+
 
   return (
     <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 md:p-6">
@@ -58,27 +75,30 @@ export function MultiPriceEdit(props: MultiPrice) {
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle">
-            {samplePrices
+            {prices &&
+              prices
               .filter((price) =>
                 selectedOption?.id === 0
                   ? true
                   : price.price_type === selectedOption?.id
               )
-              .map((price) => (
-                <tr
-                  key={price.id}
-                  className="odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle"
-                >
-                  <td className="px-2 py-2 font-medium">{price.qty}</td>
-                  <td className="px-2 py-2">
-                    {numberToMoney4Digits(price.price, system)}
-                  </td>
-                  <td className="px-2 py-2">{priceTypeToText(price.price_type)}</td>
-                  <td className="px-2 py-2 text-center">
-                    <Button noText={true} preset={Preset.smallClose} />
-                  </td>
-                </tr>
-              ))}
+              .map((price) => {
+                return (
+                    <tr
+                      key={price.id}
+                      className="odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle"
+                    >
+                      <td className="px-2 py-2 font-medium">{price.qty}</td>
+                      <td className="px-2 py-2">
+                        {numberToMoney4Digits(price.price, system)}
+                      </td>
+                      <td className="px-2 py-2">{priceTypeToText(price.price_type)}</td>
+                      <td className="px-2 py-2 text-center">
+                        <DeletePriceButton price={price} />
+                      </td>
+                    </tr>
+                  )
+              })}
           </tbody>
         </table>
       </div>

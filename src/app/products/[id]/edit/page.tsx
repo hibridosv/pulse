@@ -194,38 +194,8 @@ export default function Page({ params }: { params: { id: string } }) {
       <div className="col-span-5">
         <ViewTitle text="Detalles" />
         <div className="w-full px-4">
-          <MultiPriceEdit text="Editar Precios" />   
+          <MultiPriceEdit text="Editar Precios" productId={id} isShow={true} />   
         </div>     
-        <div>
-          <div>Prueba de botones</div>
-          <Button text="Primario" preset={Preset.primary} /><hr className="m-2" />
-          <Button text="Secundario" preset={Preset.secondary} /><hr className="m-2" />
-          <Button text="Danger" preset={Preset.danger} /><hr className="m-2" />
-          <Button text="Success" preset={Preset.success} /><hr className="m-2" />
-          <Button text="Info" preset={Preset.info} /><hr className="m-2" />
-          <Button text="Warning" preset={Preset.warning} /><hr className="m-2" />
-          <Button text="Cerrar" preset={Preset.close} /><hr className="m-2" />
-          <Button text="Cancelar" preset={Preset.cancel} /><hr className="m-2" />
-          <Button text="Guardar" preset={Preset.save} /><hr className="m-2" />
-          <Button text="Aceptar" preset={Preset.accept} /> <hr className="m-2" />
-          <Button text="Agregar" preset={Preset.add} /><hr className="m-2" />
-          <Button text="Send" preset={Preset.send} /><hr className="m-2" />
-          <Button text="Saving" preset={Preset.saving} /><hr className="m-2" />
-          <Button text="Submitting" preset={Preset.submitting} /><hr className="m-2" />
-          <Button text="Loading" preset={Preset.loading} /><hr className="m-2" />
-          <Button text="Link" preset={Preset.link} /><hr className="m-2" />
-          <Button preset={Preset.smallClose} /><hr className="m-2" />
-          <Button preset={Preset.smallCloseDisable} /><hr className="m-2" />
-          <Button preset={Preset.smallEdit} /><hr className="m-2" />
-          <Button preset={Preset.smallInfo} /><hr className="m-2" />
-          <Button preset={Preset.smallMinus} /><hr className="m-2" />
-          <Button preset={Preset.smallMinusDisable} /><hr className="m-2" />
-          <Button preset={Preset.smallPlus} /><hr className="m-2" />
-          <Button preset={Preset.smallPlusDisable} /><hr className="m-2" />
-          <Button preset={Preset.smallPrint} /><hr className="m-2" />
-          <Button preset={Preset.smallPrintDisable} /><hr className="m-2" />
-
-        </div>
       </div> 
         <ToasterMessage />
     </div>
