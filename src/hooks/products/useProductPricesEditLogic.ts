@@ -1,11 +1,11 @@
 'use client'
 import useStateStore from '@/stores/stateStorage'
-import { use, useEffect, useState } from 'react'
-import { getServices } from '@/services/services'
+import { useEffect, useState } from 'react'
+import { getServices, createService, deleteService } from '@/services/services'
 import { Price } from '@/interfaces/price';
 import useToastMessageStore from '@/stores/toastMessageStore';
 
-export function useProductPricesEditLogic(ProductId: string, isShow: boolean) {
+export function useProductPricesEditLogic(ProductId?: string, isShow?: boolean, reset?: any, selectedOption?: any) {
     const [ prices, setPrices ] = useState<Price[] | null>();
     const { openLoading, closeLoading } = useStateStore();
 
@@ -23,22 +23,40 @@ export function useProductPricesEditLogic(ProductId: string, isShow: boolean) {
   
     useEffect(() => {
         if (isShow && ProductId) {
-            fetchDataPrices(`prices?sort=-created_at&filterWhere[product_id]==${ProductId}`);
+            fetchDataPrices(`prices?sort=created_at&filterWhere[product_id]==${ProductId}`);
         }
     }, [isShow, ProductId]);
 
-    const deletePrice = async (id: string) => {
+    const addPrice = async (data: any) => {
         try {
-            const response = await deletePrice(`prices/${id}`);
+            if (!selectedOption || selectedOption.id === 0) {
+                useToastMessageStore.getState().setError({ message : "Por favor, seleccione un tipo de precio."});
+                return;
+            }
+            const priceData = {
+                product_id: ProductId,
+                qty: data.quantity,
+                price: data.price,
+                price_type: selectedOption.id,
+            };
+            const response = await createService('prices', priceData);
+            await fetchDataPrices(`prices?sort=created_at&filterWhere[product_id]==${ProductId}`);
             useToastMessageStore.getState().setMessage(response);
-            await fetchDataPrices(`prices?sort=-created_at&filterWhere[product_id]==${ProductId}`);
+            reset();
         } catch (error) {
             useToastMessageStore.getState().setError(error);
         }
     }
 
+    const deletePrice = async (id: string) => {
+        try {
+            const response = await deleteService(`prices/${id}`);
+            await fetchDataPrices(`prices?sort=created_at&filterWhere[product_id]==${ProductId}`);
+            useToastMessageStore.getState().setMessage(response);
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+        }
+    }
 
-
-    return { prices, deletePrice  }
-
+    return { prices, addPrice, deletePrice  }
 }
