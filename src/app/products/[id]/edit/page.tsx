@@ -2,6 +2,7 @@
 
 import { Button, Preset } from "@/components/button/button";
 import { LoadingPage } from "@/components/LoadingPage";
+import { MultiPriceEdit } from "@/components/products/MultiPriceEdit";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductEditLogic } from "@/hooks/products/useProductEditLogic";
@@ -191,7 +192,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
       </div>
       <div className="col-span-3">
-
+        <ViewTitle text="Detalles" />
+        <MultiPriceEdit text="Editar Precios" />        
       </div> 
         <ToasterMessage />
     </div>
