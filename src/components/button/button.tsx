@@ -5,6 +5,9 @@ export enum Preset {
     primary = "primary",
     secondary = "secondary",
     danger = "danger",
+    success = "success",
+    info = "info",
+    warning = "warning",
     close = "close",
     cancel = "cancel",
     save = "save",
@@ -12,6 +15,8 @@ export enum Preset {
     add = "add",
     send = "send",
     saving = "saving",
+    submitting = "submitting",
+    loading = "loading",
     link = "link",
     smallClose = "smallClose",
     smallCloseDisable = "smallCloseDisable",
@@ -44,7 +49,7 @@ export enum Preset {
     const full = isFull ? "w-full" : null;
     const textStyles = `${textStyle} ${style} ${full}`;
     const icon = iconPresets[preset] || iconPresets.primary;
-    const buttonText = text ? text : textPresets[preset] || "Button"
+    const buttonText = text ? text : textPresets[preset] || null;
     const finalText = noText ? null : buttonText
   
     if (disabled) return (<div className={textStyles}>{icon} {finalText}</div>)
