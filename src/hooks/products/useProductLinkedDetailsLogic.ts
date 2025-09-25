@@ -13,7 +13,7 @@ export function useProductLinkedDetailsLogic(product: Product, isShow: boolean) 
         if (isShow && product && product.id && product.product_type == 3 && productId != product.id) {
             loadProducts(product?.id);
         }
-    }, [product, isShow]);
+    }, [product, isShow, loadProducts, productId]);
 
     return { productsLinked, loading  };
 }

@@ -1,6 +1,8 @@
 import { Loader } from "@/components/Loader";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
+import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/productRemovedStore";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
 
@@ -16,6 +18,8 @@ export const typeFailure = (status: number) => {
 
 export function LastRegistersTable() {
     const {product, loading, products} = productRemovedStore();
+    const { openModal } = useModalStore();
+    const { setSelectedElement } = useTempSelectedElementStore();
 
     if (loading) return <Loader />;
     if (product && !loading) return null;
@@ -23,7 +27,9 @@ export function LastRegistersTable() {
       const listItems = products?.data && products?.data.map((product: any) => (
         <tr 
           key={product.id} 
-          className={`whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
+          className={`whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}
+          onClick={() => { openModal("viewDetails"); setSelectedElement("viewDetails", product);  }}
+          >
           <td className="px-3 py-2 font-medium text-primary hover:underline">
             { formatDateAsDMY(product?.created_at) } { formatHourAsHM(product?.created_at) }
           </td>

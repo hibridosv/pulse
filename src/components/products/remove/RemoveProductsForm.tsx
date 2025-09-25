@@ -1,7 +1,8 @@
 import { Button, Preset } from "@/components/button/button";
+import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/productRemovedStore";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import { useForm } from "react-hook-form";
 import { MdBallot } from "react-icons/md";
 
@@ -11,11 +12,32 @@ type Inputs = {
 
 export function RemoveProductsForm() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
-    const { product, loading } = productRemovedStore();
+    const { product, loading, createProduct } = productRemovedStore();
     const { getSelectedElement, clearSelectedElement} = useTempSelectedElementStore();
+    const { openModal } = useModalStore();
+    const { setSelectedElement } = useTempSelectedElementStore();
+    const lotSelected = getSelectedElement("lotSelected");
     const elementSelected = getSelectedElement('product');
 
     if (!product || !elementSelected) return null;
+
+    const onSubmit = async (data: Inputs) => {
+        if (!data.quantity || !product?.reason) {
+          useToastMessageStore.getState().setError({ message : "Debe ingresar la cantidad"});
+          return 
+        }
+        const newData = {
+          ...data,
+          product_id : elementSelected?.id,
+          failure_id : product?.id,
+          type : product?.type,
+          reason : product?.reason,
+          lot_id : lotSelected?.id,
+        }
+        createProduct(newData);
+        reset();
+        clearSelectedElement();
+    }
 
   return (
         <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 md:p-6">
@@ -27,14 +49,14 @@ export function RemoveProductsForm() {
                     <span>Existencia: { elementSelected?.quantity }</span>
                   </div>
             </div>
-            <form onSubmit={handleSubmit(console.log)} className="w-full">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                     <div className="flex flex-col mb-4">
               <label htmlFor="quantity" className="input-label">
                 Cantidad
               </label>
               <div className="flex items-center gap-2">
-                <input type="number" {...register("quantity", { required: "La cantidad es obligatorio.", valueAsNumber: true })} className="input" step="any" min={0} />
-                <MdBallot size={30} className="text-text-muted clickeable" />
+                <input type="number" {...register("quantity", { required: "La cantidad es obligatorio.", valueAsNumber: true, max: elementSelected?.quantity })} className="input" step="any" min={0} />
+                <MdBallot size={30} color={lotSelected ? "red" : "gray"} className="text-text-muted clickeable" onClick={()=>{ openModal('ChangeLot'); setSelectedElement('product', elementSelected) }} />
               </div>
               {errors.quantity && <p className="text-danger text-xs mt-1">{errors.quantity.message}</p>}
             </div>

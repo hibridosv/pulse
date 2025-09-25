@@ -1,13 +1,10 @@
 import { SearchInput } from "@/components/Search";
-import { useProductLogic } from "@/hooks/products/useProductsLogic";
 import { useProductsRemoveSearchLogic } from "@/hooks/products/useProductsRemoveSearchLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import productRemovedStore from "@/stores/productRemovedStore";
 import useProductStore from "@/stores/productStore";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import { FiChevronRight } from "react-icons/fi";
 
 
 export function RemoveProductsSearch() {
@@ -19,8 +16,6 @@ export function RemoveProductsSearch() {
     const { products, loading: loadingSearch } = useProductStore();
     useProductsRemoveSearchLogic(currentPage, searchTerm, sortBy);
     const elementSelected = getSelectedElement('product');
-
-    console.log("Product: ", products);
 
     if (!product || loading) return null;
     if (elementSelected) return null;
@@ -34,7 +29,8 @@ export function RemoveProductsSearch() {
                   <ul className="divide-y divide-bg-subtle">
                     {products?.data && products.data.map((item: any) => {
                         return (
-                          <li key={item.id} className="flex justify-between p-3 hover:bg-bg-subtle rounded-md cursor-pointer transition-colors duration-150" onClick={() => setSelectedElement('product', item)}>
+                          <li key={item.id} className="flex justify-between p-3 hover:bg-bg-subtle rounded-md cursor-pointer transition-colors duration-150" 
+                          onClick={() => {setSelectedElement('product', item); handleSearchTerm(''); }}>
                             <span>{item.cod} - {item.description}</span>
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">

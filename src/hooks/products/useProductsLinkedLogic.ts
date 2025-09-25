@@ -48,7 +48,7 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
         if (isShow && product && product.id && product.product_type == 3 && productId != product.id) {
             fetchDataLinked(product.id);
         }
-  }, [product, isShow, fetchDataLinked])
+  }, [product, isShow, fetchDataLinked, productId])
 
 
 const onSubmit = async (data: any) => {
