@@ -1,6 +1,7 @@
 import { Button, Preset } from "@/components/button/button";
 import productRemovedStore from "@/stores/productRemovedStore";
 import useSelectedElementStore from "@/stores/selectedElementStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useForm } from "react-hook-form";
 import { MdBallot } from "react-icons/md";
 
@@ -11,7 +12,8 @@ type Inputs = {
 export function RemoveProductsForm() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
     const { product, loading } = productRemovedStore();
-    const { elementSelected, setElement } = useSelectedElementStore();
+    const { getSelectedElement, clearSelectedElement} = useTempSelectedElementStore();
+    const elementSelected = getSelectedElement('product');
 
     if (!product || !elementSelected) return null;
 
@@ -38,7 +40,7 @@ export function RemoveProductsForm() {
             </div>
 
             <div className="flex justify-end gap-4">
-              <Button text="Cancelar" disabled={loading} preset={Preset.cancel} onClick={()=>setElement(null)} />
+              <Button text="Cancelar" disabled={loading} preset={Preset.cancel} onClick={()=>clearSelectedElement()} />
               <Button type="submit" disabled={loading} preset={loading ? Preset.saving : Preset.save} />
             </div>
           </form>
