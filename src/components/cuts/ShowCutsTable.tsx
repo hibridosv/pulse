@@ -7,9 +7,9 @@ import { Cut } from "@/interfaces/Cuts";
 import { CutDetailsModal } from "./CutDetailsModal";
 import useModalStore from "@/stores/modalStorage";
 import { NothingHere } from "../NothingHere";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useCutStore from "@/stores/cutStore";
 import { DeleteButton } from "../button/DeleteButton";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export interface ShowCutsTableProps {
   records: Cut[];
@@ -19,8 +19,9 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
   const { records } = props;
   const { system } = useConfigStore();
   const { modals, openModal, closeModal } = useModalStore();
-  const { elementSelected, setElement } = useSelectedElementStore();
   const { deleteCut, deleting } = useCutStore();
+  const { getSelectedElement, setSelectedElement} = useTempSelectedElementStore();
+
 
   const firstRecord = records && records[0];
   if (!records || records.length === 0) {
@@ -31,15 +32,15 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
     <tr 
       key={record.id} 
       className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
-      <td className="px-3 py-2 whitespace-nowrap clickeable hover:underline" onClick={() =>{ setElement(record); openModal('cutDetails')}}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable hover:underline" onClick={() =>{ setSelectedElement("cutDetails", record); openModal('cutDetails')}}>
         {record?.close ? `${formatDateAsDMY(record.close)} ${formatTime(record.close)}` : "Sin corte"}
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() =>{ setElement(record); openModal('cutDetails')}}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() =>{ setSelectedElement("cutDetails", record); openModal('cutDetails')}}>
         {record?.employee?.name}
       </td>
       <td 
         className={`px-3 py-2 whitespace-nowrap font-bold text-right clickeable ${record?.cash_diference > 0 ? 'text-info' : record?.cash_diference < 0 ? 'text-danger' : 'text-text-base'}`}
-        onClick={() =>{ setElement(record); openModal('cutDetails')}}
+        onClick={() =>{ setSelectedElement("cutDetails", record); openModal('cutDetails')}}
       >
         {numberToMoney(record?.cash_diference ?? 0, system)}
       </td>
@@ -66,7 +67,7 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
           </tbody>
         </table>
       </div>
-      <CutDetailsModal isShow={modals['cutDetails']} onClose={() => closeModal('cutDetails')} record={elementSelected} />
+      <CutDetailsModal isShow={modals['cutDetails']} onClose={() => closeModal('cutDetails')} record={getSelectedElement('cutDetails')} />
     </div>
   );
 }

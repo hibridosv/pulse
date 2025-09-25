@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
 import useStateStore from "@/stores/stateStorage";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import { useProductCategoriesLogic } from "@/hooks/products/useProductCategoriesLogic";
 import useCategoriesStore from "@/stores/categoriesStore";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export interface ProductsCategoriesModalProps {
   onClose: () => void;
@@ -17,12 +17,14 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
     const { register, handleSubmit, resetField, setFocus } = useForm();
     const { loading } = useStateStore();
     const isSending = loading["categoryForm"] ? true : false;
-    const { elementSelected, setElement } = useSelectedElementStore();
-    const { onSubmit } = useProductCategoriesLogic(isShow, setFocus);
+    const { onSubmit } = useProductCategoriesLogic(isShow, setFocus, resetField);
     const { categories } = useCategoriesStore();
+    const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
+
+
     if (!isShow) return null;
 
-    const selectedType = elementSelected ?? 1; // Default to 1
+    const selectedType = getSelectedElement("option") ?? 1; // Default to 1
 
     return (
         <Modal show={isShow} onClose={onClose} size="md" headerTitle="Agregar Categoría">
@@ -32,14 +34,14 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
                     <div className="flex items-center p-1 space-x-1 bg-bg-subtle rounded-lg">
                         <button
                             type="button"
-                            onClick={() => setElement(1)}
+                            onClick={() => setSelectedElement("option",1)}
                             className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${selectedType === 1 ? 'bg-primary text-text-inverted shadow-sm' : 'text-text-base hover:bg-bg-content'}`}
                         >
                             Categoría
                         </button>
                         <button
                             type="button"
-                            onClick={() => setElement(2)}
+                            onClick={() => setSelectedElement("option",2)}
                             className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${selectedType === 2 ? 'bg-primary text-text-inverted shadow-sm' : 'text-text-base hover:bg-bg-content'}`}
                         >
                             Subcategoría

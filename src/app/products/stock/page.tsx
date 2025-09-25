@@ -12,11 +12,11 @@ import useProductStore from "@/stores/productStore";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useModalStore from "@/stores/modalStorage";
 import { LoadingPage } from "@/components/LoadingPage";
 import { useLowStockLogic } from "@/hooks/products/useLowStockLogic";
 import { ShowLowStockStatistics } from "@/components/products/ShowLowStockStatistics";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -25,8 +25,8 @@ export default function Page() {
   const [sortBy, setSortBy] = useState("-cod");
   const { products, loading } = useProductStore();
   useLowStockLogic(currentPage, searchTerm, sortBy);
-  const { elementSelected } = useSelectedElementStore();
   const { modals, closeModal } = useModalStore();
+  const { getSelectedElement } =useTempSelectedElementStore();
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -50,7 +50,7 @@ export default function Page() {
           <ShowLowStockStatistics />
         </div>
     </div> 
-    <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={elementSelected} /> 
+    <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={getSelectedElement("productDetails")} /> 
     <ToasterMessage />
 </div>
   );

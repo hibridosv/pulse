@@ -6,7 +6,7 @@ import { Product } from "@/interfaces/products";
 import { NothingHere } from "@/components/NothingHere";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
 export interface ShowKardexTableProps {
@@ -18,7 +18,7 @@ export function ShowKardexTable(props: ShowKardexTableProps) {
   const { product, kardex } = props;
   const { system } = useConfigStore();
   const { openModal } = useModalStore();
-  const { setElement } = useSelectedElementStore();
+  const { setSelectedElement } = useTempSelectedElementStore();
 
 
   if (!product) {
@@ -28,7 +28,7 @@ export function ShowKardexTable(props: ShowKardexTableProps) {
   const listItems = kardex && kardex.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary">{ formatDateAsDMY(record.created_at) } { formatHourAsHM(record.created_at) }</td>
-      <td className="px-3 py-2 text-left whitespace-nowrap font-medium hover:underline clickeable" onClick={() => { setElement(record); openModal('kardexDetails'); }}>{ record.description }</td>
+      <td className="px-3 py-2 text-left whitespace-nowrap font-medium hover:underline clickeable" onClick={() => { setSelectedElement("kardexDetails", record); openModal('kardexDetails'); }}>{ record.description }</td>
       <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{ record.unit_cost }</td>
       <td className={`px-3 py-2 text-center whitespace-nowrap  ${record.qty_in ? 'text-text-muted' : 'text-success font-semibold'}`}>{ record.qty_in ? record.qty_in : 0 }</td>
       <td className={`px-3 py-2 text-center whitespace-nowrap  ${record.total_in ? 'text-text-muted' : 'text-success font-semibold'}`}>{ numberToMoney(record.total_in ? record.total_in : 0, system) }</td>

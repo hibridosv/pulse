@@ -10,7 +10,7 @@ import useStateStore from "@/stores/stateStorage";
 import { ShowProductsExpiredTable } from "@/components/products/expired/ShowProductsExpiredTable";
 import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import useModalStore from "@/stores/modalStorage";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -18,8 +18,7 @@ export default function Page() {
   const { loading } = useStateStore();
   const isLoading = loading["Expirations"] ? true : false;
   const { modals, closeModal } = useModalStore();
-  const { elementSelected } = useSelectedElementStore();
-
+  const { getSelectedElement } = useTempSelectedElementStore();
 
 
   if (status === "loading") {
@@ -36,7 +35,7 @@ export default function Page() {
         <ViewTitle text="Detalles" />
         <ExpiredStatistics statics={expired} isLoading={isLoading} />
     </div> 
-    <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={elementSelected} /> 
+    <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={getSelectedElement("productDetails")} /> 
     <ToasterMessage />
 </div>
   );

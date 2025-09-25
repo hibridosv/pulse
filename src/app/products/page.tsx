@@ -20,9 +20,9 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useModalStore from "@/stores/modalStorage";
 import { LoadingPage } from "@/components/LoadingPage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -34,8 +34,9 @@ export default function Page() {
   const { permission } = useConfigStore();
   const links = useSetLinkLogic();
   const { getRequest, loading: loadingRequest } = useGetRequest();
-  const { elementSelected } = useSelectedElementStore();
   const { modals, closeModal } = useModalStore();
+  const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
+
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -78,7 +79,7 @@ export default function Page() {
               } 
         </div>
     </div> 
-    <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={elementSelected} /> 
+    <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={getSelectedElement('productDetails')} /> 
     <ToasterMessage />
 </div>
   );

@@ -2,11 +2,10 @@
 
 import useConfigStore from "@/stores/configStore";
 import { numberToMoney } from "@/lib/utils";
-import { Product } from "@/interfaces/products";
 import { NothingHere } from "@/components/NothingHere";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useModalStore from "@/stores/modalStorage";
 import { formatDateAsDMY } from "@/lib/date-formats";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
 export interface ShowProductsExpiredTableProps {
@@ -16,8 +15,8 @@ export interface ShowProductsExpiredTableProps {
 export function ShowProductsExpiredTable(props: ShowProductsExpiredTableProps) {
   const { records } = props;
   const { system } = useConfigStore();
-  const { setElement } = useSelectedElementStore();
   const { openModal } = useModalStore();
+  const { setSelectedElement } = useTempSelectedElementStore();
 
 
   if (!records || records.length === 0) {
@@ -36,7 +35,7 @@ export function ShowProductsExpiredTable(props: ShowProductsExpiredTableProps) {
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { record.product.cod }
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() => { setElement(record.product); openModal('productDetails')  }}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() => { setSelectedElement('productDetails', record.product); openModal('productDetails')  }}>
         { record.product.description }
       </td>
       <td className="px-3 py-2 text-right whitespace-nowrap font-medium" >

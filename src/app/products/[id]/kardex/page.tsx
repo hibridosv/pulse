@@ -10,7 +10,7 @@ import { useKardexLogic } from "@/hooks/products/useKardexLogic";
 import { urlConstructor } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/productStore";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -20,9 +20,9 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data: session, status } = useSession();
   const { kardex, loadKardex, loading, product } = useProductStore();
   useKardexLogic(id);
-  const { elementSelected } = useSelectedElementStore();
   const { modals, closeModal } = useModalStore();
   const router = useRouter();
+  const { getSelectedElement } = useTempSelectedElementStore();
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -49,7 +49,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   
           </div>  
       </div> 
-      <KardexDetailsModal isShow={modals['kardexDetails']} onClose={() => closeModal('kardexDetails')} record={elementSelected} />
+      <KardexDetailsModal isShow={modals['kardexDetails']} onClose={() => closeModal('kardexDetails')} record={getSelectedElement('kardexDetails')} />
     </div>
   );
 }

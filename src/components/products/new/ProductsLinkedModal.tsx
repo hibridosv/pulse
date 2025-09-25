@@ -9,8 +9,8 @@ import { useSearchTerm } from "@/hooks/useSearchTerm";
 import { usePagination } from "@/hooks/usePagination";
 import useStateStore from "@/stores/stateStorage";
 import { useProductLinkedLogic } from "@/hooks/products/useProductsLinkedLogic";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export interface ProductsLinkedModalProps {
   onClose: () => void;
@@ -25,9 +25,10 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const {currentPage, handlePageNumber} = usePagination("&page=1");
     const sortBy = "-updated_at";
     const { products, onSubmit, productsLinked, loading: isSending } = useProductLinkedLogic(currentPage, searchTerm, sortBy, product, isShow);
-    const { elementSelected, setElement, clearElement } = useSelectedElementStore();
     const { loading } = useStateStore();
     const isLoading = loading["productSearch"] ? true : false;
+    const { setSelectedElement, getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+    const elementSelected = getSelectedElement("product");
 
     if (!isShow || !product) return null;
 
@@ -62,7 +63,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const ProductList = products.data && products.data.map((productMap: Product) => {
         if (product.id === productMap.id) return;
         return (
-            <li key={productMap.id} className="flex justify-between p-3 hover:bg-bg-subtle rounded-md cursor-pointer transition-colors duration-150" onClick={() => setElement(productMap)}>
+            <li key={productMap.id} className="flex justify-between p-3 hover:bg-bg-subtle rounded-md cursor-pointer transition-colors duration-150" onClick={() => setSelectedElement("product", productMap)}>
                 <span>{productMap.cod} - {productMap.description}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -141,7 +142,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
                             />
                         </div>
                         <div className="flex justify-end items-center gap-3 border-t border-bg-subtle pt-4 mt-4">
-                            <Button onClick={() => clearElement()} text="Cancelar" preset={Preset.cancel} />
+                            <Button onClick={() => clearSelectedElement()} text="Cancelar" preset={Preset.cancel} />
                             <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
                         </div>
                     </form>

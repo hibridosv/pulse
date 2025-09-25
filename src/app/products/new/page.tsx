@@ -15,8 +15,8 @@ import { ShowProductsNewTable } from "@/components/products/ShowProductsNewTable
 import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
 import useModalStore from "@/stores/modalStorage";
 import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
-import useSelectedElementStore from "@/stores/selectedElementStorage";
 import { ProductsCategoriesModal } from "@/components/products/new/ProductsCategoriesModal";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
 export default function Page() {
@@ -28,8 +28,8 @@ export default function Page() {
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
   const { modals, closeModal, openModal } = useModalStore();
-  const { elementSelected } = useSelectedElementStore();
   const lastProducts = products?.data;
+  const { getSelectedElement } = useTempSelectedElementStore();
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -221,7 +221,7 @@ export default function Page() {
             </div>
         </div> 
         <ProductsLinkedModal isShow={modals['productLinked']} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
-        <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={elementSelected} /> 
+        <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={getSelectedElement('productDetails')} /> 
         <ProductsCategoriesModal isShow={modals['productCategories']} onClose={() => closeModal('productCategories')} />
         <ToasterMessage />
     </div>

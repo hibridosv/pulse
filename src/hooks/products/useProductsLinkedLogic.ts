@@ -1,10 +1,9 @@
 'use client'
-import { Product } from '@/interfaces/products';
 import { createService, getServices } from '@/services/services';
 import useProductLinkedStore from '@/stores/productLinkedStore';
 import useProductStore from '@/stores/productStore'
-import useSelectedElementStore from '@/stores/selectedElementStorage';
 import useStateStore from '@/stores/stateStorage';
+import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import { useEffect, useState } from 'react'
 
@@ -14,8 +13,9 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
   const [sortByNew, setSortByNew] = useState("");
   const [ products, setProducts ] = useState([]) as any;
   const { openLoading, closeLoading } = useStateStore();
-  const { clearElement, elementSelected } = useSelectedElementStore();
   const { loadProducts: fetchDataLinked, products: productsLinked, loading, productId} = useProductLinkedStore();
+  const { clearSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+  const elementSelected = getSelectedElement("product");
 
   useEffect(() => {
         const fetchData = async (url: string) => {
@@ -61,7 +61,7 @@ const onSubmit = async (data: any) => {
       const response = await createService(`products/${newData.product_id}/linked`, newData);
       useToastMessageStore.getState().setMessage(response);
       await fetchDataLinked(newData.product_id);
-      clearElement();
+      clearSelectedElement();
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       console.error(error);
