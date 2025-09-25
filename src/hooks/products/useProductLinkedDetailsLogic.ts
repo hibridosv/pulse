@@ -10,7 +10,7 @@ export function useProductLinkedDetailsLogic(product: Product, isShow: boolean) 
 
 
     useEffect(() => {
-        if (isShow && product?.id && product.product_type == 3 && productId != product?.id) {
+        if (isShow && product && product.id && product.product_type == 3 && productId != product.id) {
             loadProducts(product?.id);
         }
     }, [product, isShow]);

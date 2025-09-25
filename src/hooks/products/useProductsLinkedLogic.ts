@@ -14,7 +14,7 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
   const [sortByNew, setSortByNew] = useState("");
   const [ products, setProducts ] = useState([]) as any;
   const { openLoading, closeLoading } = useStateStore();
-  const { clearElement } = useSelectedElementStore();
+  const { clearElement, elementSelected } = useSelectedElementStore();
   const { loadProducts: fetchDataLinked, products: productsLinked, loading, productId} = useProductLinkedStore();
 
   useEffect(() => {
@@ -36,26 +36,31 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
         } else if (searchTerm != searchTermNew || sortBy != sortByNew) {
             setSearchTermNew(searchTerm);
             setSortByNew(sortBy);
-            fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&perPage=10&page=1${searchTerm}`)
+            fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&filterWhere[product_type]=!3&perPage=10&page=1${searchTerm}`)
         } else {
-            fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&perPage=10${currentPage}${searchTerm}`)
+            fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&filterWhere[product_type]=!3&perPage=10${currentPage}${searchTerm}`)
         } 
     }
   }, [loadProducts, currentPage, searchTerm, sortBy, searchTermNew, sortByNew, product, openLoading, closeLoading, isShow]);
 
 
     useEffect(() => {
-        if (isShow && product?.id && product.product_type == 3 && productId != product?.id) {
-            fetchDataLinked(product?.id);
+        if (isShow && product && product.id && product.product_type == 3 && productId != product.id) {
+            fetchDataLinked(product.id);
         }
   }, [product, isShow, fetchDataLinked])
 
 
 const onSubmit = async (data: any) => {
+    const newData = {
+            ...data,
+            product_id: product.id,
+            added_product_id: elementSelected.id,
+        }
     try {
-      const response = await createService(`products/${data.product_id}/linked`, data);
+      const response = await createService(`products/${newData.product_id}/linked`, newData);
       useToastMessageStore.getState().setMessage(response);
-      await fetchDataLinked(data.product_id);
+      await fetchDataLinked(newData.product_id);
       clearElement();
     } catch (error) {
       useToastMessageStore.getState().setError(error);

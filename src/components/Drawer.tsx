@@ -29,7 +29,7 @@ const menuItems: MenuItem[] = [
       { label: "Registrar Producto", href: "/products/new" },
       { label: "Editar Producto", href: "/products/search?page=edit" },
       { label: "Agregar Productos", href: "/products/search?page=add" },
-      { label: "Descontar Productos", href: "/products/search?page=remove" },
+      { label: "Descontar Productos", href: "/products/remove" },
       { label: "Productos Relacionados", href: "/products/linked" },
       { label: "Bajas Existencias", href: "/products/stock" },
       { label: "Proximos Vencimientos", href: "/products/expiring" },

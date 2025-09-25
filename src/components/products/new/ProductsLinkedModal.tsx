@@ -30,7 +30,6 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const isLoading = loading["productSearch"] ? true : false;
 
     if (!isShow || !product) return null;
-    console.log(product.id);
 
     const handleClose = () => {
         if (productsLinked && productsLinked.length > 0) {
@@ -39,15 +38,6 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
             return;
         }
         useToastMessageStore.getState().setError({ message: "Para cerrar debe tener al menos un producto vinculado."});
-    };
-
-    const handleOnSubmit = (data: any) => {
-        const newData = {
-            ...data,
-            product_id: product.id,
-            added_product_id: elementSelected.id,
-        }
-       onSubmit(newData);            
     };
 
 
@@ -139,7 +129,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
                         <p className="font-bold">Producto seleccionado:</p>
                         <p>{elementSelected.cod} - {elementSelected.description}</p>
                     </div>
-                    <form onSubmit={handleSubmit(handleOnSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-4">
                             <label className="block text-sm font-medium mb-2" htmlFor="quantity">Cantidad a vincular</label>
                             <input
