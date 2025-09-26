@@ -29,7 +29,7 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-7 border-r md:border-primary">
         <ViewTitle text="Proximos Vencimientos" />
-        <ShowProductsExpiredTable records={productsExpired} />
+        <ShowProductsExpiredTable records={productsExpired} isLoading={isLoading} />
     </div>
     <div className="col-span-3">
         <ViewTitle text="Detalles" />

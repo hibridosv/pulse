@@ -1,6 +1,7 @@
 import { Button, Preset } from "@/components/button/button";
 import { Switch } from "@/components/button/Switch";
 import { Loader } from "@/components/Loader";
+import { SkeletonForm } from "@/components/skeleton/SkeletonForm";
 import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
 import useContactStore from "@/stores/ContactStore";
 import productAddStore from "@/stores/productAddStore";
@@ -20,7 +21,7 @@ export function AddInitialForm() {
     const [isAccountActive, setIsAccountActive] = useState(false);
 
     
-    if (loading) return <Loader />;
+    if (loading) return <SkeletonForm />;
     if (product && !loading) return null;
 
 

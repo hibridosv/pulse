@@ -6,18 +6,22 @@ import { NothingHere } from "@/components/NothingHere";
 import useModalStore from "@/stores/modalStorage";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
 
 
 export interface ShowProductsExpiredTableProps {
   records: any;
+  isLoading?: boolean;
 }
 
 export function ShowProductsExpiredTable(props: ShowProductsExpiredTableProps) {
-  const { records } = props;
+  const { records, isLoading } = props;
   const { system } = useConfigStore();
   const { openModal } = useModalStore();
   const { setSelectedElement } = useTempSelectedElementStore();
 
+
+  if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
   if (!records || records.length === 0) {
     return <NothingHere />;

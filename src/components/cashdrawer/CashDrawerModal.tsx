@@ -17,6 +17,8 @@ export function CashdrawerModal(props: CashdrawerModalProps) {
     const { openCashDrawer, closeCashDrawer, loading } = useCashDrawerStore();
     const text = drawer && drawer.status == 2 ? "Cierre" : "Apertura";
 
+    if (!isShow || !drawer) return null
+
     const onSubmit = (data: any)=>{
       if (drawer && drawer.status == 2) {
         closeCashDrawer(`cashdrawers/${drawer.id}/close`, data);
@@ -25,8 +27,6 @@ export function CashdrawerModal(props: CashdrawerModalProps) {
       }
       resetField("quantity");
     }
-
-
 
   return (
     <Modal show={isShow} onClose={onClose} size="md" headerTitle={`${text} de caja`} closeOnOverlayClick={false} hideCloseButton={true}>

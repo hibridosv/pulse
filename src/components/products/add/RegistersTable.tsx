@@ -1,5 +1,6 @@
 
 import { NothingHere } from "@/components/NothingHere";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
 import { documentType } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
@@ -12,7 +13,7 @@ export function RegistersTable() {
     const { openModal } = useModalStore();
     const { setSelectedElement } = useTempSelectedElementStore();
 
-    if (loading) return null;
+    if (loading) return <SkeletonTable rows={4} columns={5} />;
     if (product) return null;
     if (products && products.data === 0) return (<NothingHere text="No se encuentran registros" />)
     

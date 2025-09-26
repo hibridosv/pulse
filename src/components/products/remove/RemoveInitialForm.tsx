@@ -1,5 +1,6 @@
 import { Button, Preset } from "@/components/button/button";
 import { Loader } from "@/components/Loader";
+import { SkeletonForm } from "@/components/skeleton/SkeletonForm";
 import productRemovedStore from "@/stores/productRemovedStore";
 import { useForm } from "react-hook-form";
 
@@ -12,7 +13,7 @@ export function RemoveInitialForm(props: RemoveInitialFormProps) {
     const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
     const { product, loading, createPrincipal } = productRemovedStore();
 
-    if (loading) return <Loader />;
+    if (loading) return <SkeletonForm />;
     if (product && !loading) return null;
 
 
