@@ -6,8 +6,8 @@ import { useState } from "react";
 export interface DeleteButtonProps {
   id: string;
   disabled: boolean;
-  url?: string;
   onDeleteConfirm: (id: string) => void;
+  url?: string;
   text?: string;
   header?: string;
   preset?: Preset;
@@ -28,7 +28,7 @@ export function DeleteButton(props: DeleteButtonProps) {
           preset={finalPreset} 
           onClick={() => setIsModalOpen(true)} 
           disabled={disabled} 
-          noText 
+          noText={preset ? false : true}
         />
     <DeleteModal
         isShow={isModalOpen}

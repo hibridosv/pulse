@@ -9,12 +9,12 @@ interface ProductAddStoreState {
   error: Error | null;
   loading: boolean;
   deleting: boolean;
+  saving: boolean;
   loadProducts: (url: string) => Promise<void>;
   loadProduct: (url: string) => Promise<void>;
   createPrincipal: (data: any) => Promise<void>;
   createProduct: (data: any) => Promise<void>;
   deleteProduct: (url: string) => Promise<void>;
-  deletePrincipal: (url: string) => Promise<void>;
   savePrincipal: (url: string) => Promise<void>;
 }
 
@@ -22,6 +22,7 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
     products: null,
     product: null,
     loading: false,
+    saving: false,
     error: null,
     deleting: false,
     loadProducts: async (url: string) => {
@@ -30,7 +31,7 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
             const response = await getServices(url);
             set({ products: response.data.data, error: null });
         } catch (error) {
-            useToastMessageStore.getState().setError(error);
+            console.error('Error fetching data:', error);
         } finally {
             set({ loading: false });
         }
@@ -74,7 +75,7 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
             set({ loading: false });
         }
     },
-    
+
     deleteProduct: async (url: string) => {
         set({ deleting: true });
         try {
@@ -88,31 +89,17 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
         }
     },
 
-    deletePrincipal: async (url: string) => {
-        set({ deleting: true });
-        try {
-            const response = await deleteService(url); 
-            set({ product: null, error: null });
-            useToastMessageStore.getState().setMessage(response);
-            // await productAddStore.getState().loadProducts(`removes?sort=-created_at&included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]=2&perPage=10`);
-        } catch (error) {
-            useToastMessageStore.getState().setError(error);
-        } finally {
-            set({ deleting: false });
-        }
-    },
-
     savePrincipal: async (url: string) => {
-        set({ deleting: true });
+        set({ saving: true });
         try {
-            const response = await updateService(url, { status: 2 }); 
+            const response = await updateService(url, {}); 
             set({ product: null, error: null });
             useToastMessageStore.getState().setMessage(response);
-            // await productAddStore.getState().loadProducts(`removes?sort=-created_at&included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]=2&perPage=10`);
+            await productAddStore.getState().loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]=1&perPage=10`);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
         } finally {
-            set({ deleting: false });
+            set({ saving: false });
         }
     },
 

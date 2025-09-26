@@ -35,7 +35,6 @@ export function AddInitialForm() {
             data.provider_id = data.provider_id ? data.provider_id : providers.data ? providers.data[0].id : 0;
             data.comment = data.comment ? data.comment : "Ingreso de productos";
             data.account_active = isAccountActive;
-            console.log(data);
             setSelectedElement("isBill", data.bills_active);
             createPrincipal(data);
             reset();
@@ -43,7 +42,7 @@ export function AddInitialForm() {
 
 
     return (
-        <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-6 w-full max-w-4xl mx-auto">
+        <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-4 w-full max-w-4xl mx-auto">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 border-b border-bg-subtle pb-6">
                     <div>

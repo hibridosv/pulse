@@ -8,9 +8,9 @@ import { Button, Preset } from "@/components/button/button";
 
 export function AddProductForm() {
     useProductAddLogic();
-    const { register, handleSubmit } = useForm();
-    const { product, loading } = productAddStore();
-    const { getSelectedElement } = useTempSelectedElementStore();
+    const { register, handleSubmit, reset } = useForm();
+    const { product, loading, createProduct } = productAddStore();
+    const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
     const isBill = getSelectedElement("isBill");
     const productSelected = getSelectedElement("product");
 
@@ -18,8 +18,24 @@ export function AddProductForm() {
 
     const isSending = false;
 
+    const onSubmit = async (data: any) => {
+      data.product_id = productSelected.id
+      data.actual_stock = data.quantity
+      data.provider_id = product.provider_id
+      data.employee_id = product.employee_id
+      data.document_type = product.document_type
+      data.comment = product.comment
+      data.product_register_principal = product.id
+      data.unit_cost = isBill ? data.unit_cost * 1.13 : data.unit_cost;
+      data.sale_price = productSelected?.prices[0]?.price;
+      await createProduct(data);
+      reset();
+      clearSelectedElement("product");
+  }
+
+
     return (
-        <div className="space-y-6 px-4 absolute z-50">
+        <div className="space-y-6">
             <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-6 w-full max-w-4xl mx-auto">
                 <h3 className="text-lg font-semibold text-text-base border-b border-bg-subtle pb-3 mb-4">Resumen de la Compra</h3>
                 <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
@@ -55,14 +71,14 @@ export function AddProductForm() {
                     <h3 className="text-xl font-semibold text-primary mb-4 pb-3 border-b border-bg-subtle">
                         Añadir: {productSelected?.description}
                     </h3>
-                    <form onSubmit={handleSubmit(console.log)} className="w-full">
+                    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                             <div>
                                 <label htmlFor="quantity" className="block text-sm font-bold text-text-muted mb-1"> Cantidad </label>
                                 <input
                                     type="number"
                                     id="quantity"
-                                    {...register("quantity")}
+                                    {...register("quantity", {required: true})}
                                     className="input"
                                     step="any"
                                     min={0}
@@ -74,7 +90,7 @@ export function AddProductForm() {
                                 <input
                                     type="number"
                                     id="unit_cost"
-                                    {...register("unit_cost")}
+                                    {...register("unit_cost", {required: true})}
                                     className="input"
                                     step="any"
                                     min={0}
@@ -97,8 +113,9 @@ export function AddProductForm() {
                                   />
                               </div>
                         </div>
-                        <div className="flex justify-center mt-6 pt-4 border-t border-bg-subtle">
+                        <div className="flex justify-center mt-6 pt-4 border-t border-bg-subtle gap-4">
                             <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
+                            <Button disabled={isSending} preset={Preset.close} text="Cancelar" onClick={()=>clearSelectedElement("product")} />
                         </div>
                     </form>
                 </div>
