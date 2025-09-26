@@ -2,19 +2,24 @@
 
 import { Button, Preset } from "@/components/button/button";
 import { LoadingPage } from "@/components/LoadingPage";
+import { AddDetailsModal } from "@/components/products/add/AddDetailsModal";
 import { AddInitialForm } from "@/components/products/add/AddInitialForm";
 import { AddProductForm } from "@/components/products/add/AddProductForm";
 import { RegistersProductsTable } from "@/components/products/add/RegistersProductsTable";
 import { RegistersTable } from "@/components/products/add/RegistersTable";
 import { ViewTitle } from "@/components/ViewTitle";
+import useModalStore from "@/stores/modalStorage";
 import productAddStore from "@/stores/productAddStore";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useSession } from "next-auth/react";
 
 
 
 export default function Page() {
-  const { data: session, status } = useSession();
-  const { saving, product, savePrincipal, deleting, loading } = productAddStore();
+    const { data: session, status } = useSession();
+    const { saving, product, savePrincipal, deleting, loading } = productAddStore();
+    const { modals, closeModal } = useModalStore();
+    const { getSelectedElement } = useTempSelectedElementStore();
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -31,7 +36,7 @@ export default function Page() {
           </div>
       </div>
       <div className="col-span-6">
-          <ViewTitle text="Ultima entrada" />
+          <ViewTitle text={product ? "Productos ingresados" : "Ultimos Ingresos"} />
           <div className="p-4">
             <RegistersProductsTable />
             <RegistersTable />
@@ -42,6 +47,7 @@ export default function Page() {
             )}
             </div>
       </div> 
+      <AddDetailsModal isShow={modals["viewDetails"]} onClose={()=>closeModal("viewDetails")} product={getSelectedElement("viewDetails")} />
     </div>
   );
 }

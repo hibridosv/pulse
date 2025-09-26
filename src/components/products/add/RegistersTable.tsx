@@ -1,21 +1,20 @@
-import { Button, Preset } from "@/components/button/button";
+
 import { NothingHere } from "@/components/NothingHere";
-import { formatDate, formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
-import { documentType, numberToMoney } from "@/lib/utils";
-import useConfigStore from "@/stores/configStore";
+import { formatDate, formatHourAsHM } from "@/lib/date-formats";
+import { documentType } from "@/lib/utils";
+import useModalStore from "@/stores/modalStorage";
 import productAddStore from "@/stores/productAddStore";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
 export function RegistersTable() {
-    const { loading, product, products, deleting, deleteProduct } = productAddStore();
-    const { system } = useConfigStore();
-
+    const { loading, product, products } = productAddStore();
+    const { openModal } = useModalStore();
+    const { setSelectedElement } = useTempSelectedElementStore();
 
     if (loading) return null;
     if (product) return null;
     if (products && products.data === 0) return (<NothingHere text="No se encuentran registros" />)
-
-        console.log(products);
     
     const listItems = products?.data && products?.data.map((record: any) => {
 
@@ -23,7 +22,8 @@ export function RegistersTable() {
             <tr 
             title={ record?.status === 2 ? `Eliminado por ${record?.deleted_by?.name}` : ``}
             key={record.id} 
-            className={`whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 2 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
+            onClick={() => { openModal("viewDetails"); setSelectedElement("viewDetails", record);  }}
+            className={`clickeable whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 2 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
             <td className="px-3 py-2 font-medium text-primary hover:underline">
                 <div className="flex justify-between">
                     <span>{ documentType(record.document_type) }</span>  <span className="text-right">{ record.document_number ?? "--"}</span>

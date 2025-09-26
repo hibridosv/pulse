@@ -26,7 +26,6 @@ export default function Page() {
     const { getSelectedElement } = useTempSelectedElementStore();
     const isActive = product?.failures && product.failures.filter((fai: any) => fai.status == 1).length > 0;
 
-    console.log("IsActive: ", isActive)
 
   if (status === "loading") {
     return <LoadingPage />;
