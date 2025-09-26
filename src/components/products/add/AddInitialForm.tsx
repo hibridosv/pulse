@@ -3,11 +3,11 @@ import { Switch } from "@/components/button/Switch";
 import { Loader } from "@/components/Loader";
 import productRemovedStore from "@/stores/productRemovedStore";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 
 export function AddInitialForm() {
-    const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
+    const { register, handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm();
     const { product, loading, createPrincipal } = productRemovedStore();
     const [isTaxesActive, setIsTaxesActive] = useState(false);
 
@@ -15,19 +15,21 @@ export function AddInitialForm() {
     if (loading) return <Loader />;
     if (product && !loading) return null;
 
-    const isBillsActive = false;
-    const isAccountActive = false;
+    const isBillsActive = true;
+    const isAccountActive = true;
     const isSending = false;
 
     const accounts = {} as any;
     const providers = {} as any;
     const categories = {} as any;
 
-   console.log("IsTaxesActive", isTaxesActive);
+    const onSubmit = (data: any) => {
+        console.log("Submit ", data);
+    }
 
   return (
         <div className="w-full px-4">
-            <form onSubmit={handleSubmit(console.log)} className="w-full">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
               <div className="flex flex-wrap -mx-3 mb-6">
 
                 <div className="w-full md:w-1/2 px-3 mb-2">
@@ -57,11 +59,17 @@ export function AddInitialForm() {
                 <div className="w-full md:w-1/2 px-3 mb-2">
                   <label className={`$"input-label" mb-2`}> Sumar Impuestos </label>
                         <div>
-                            <Switch
-                            checked={isTaxesActive}
-                            label={isTaxesActive ? 'Activo' : 'Inactivo'}
-                            onChange={() => setIsTaxesActive(!isTaxesActive)}
-                             />
+                            <Controller 
+                                name="taxes_active"
+                                control={control}
+                                render={({field})=> (
+                                <Switch
+                                    checked={field.value}
+                                    label={field.value ? 'Activo' : 'Inactivo'}
+                                    onChange={field.onChange}
+                                    />
+                                )}
+                            />
                       </div>
                 </div>
 
@@ -70,7 +78,7 @@ export function AddInitialForm() {
                   <textarea
                     {...register("comment", {})}
                     rows={2}
-                    className={`$"input" w-full`}
+                    className="input w-full"
                   />
                 </div>
 
