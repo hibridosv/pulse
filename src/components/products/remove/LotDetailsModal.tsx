@@ -18,7 +18,7 @@ export function LotDetailsModal(props: LotDetailsModalProps) {
     const { onClose, isShow, product } = props;
 
 
-  const listItems = product.failures && product.failures.map((record: any) => (
+  const listItems = product?.failures && product?.failures.map((record: any) => (
         <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
         <td className="px-3 py-2 whitespace-nowrap font-medium text-primary text-center">
             { record?.product?.cod }
@@ -40,7 +40,7 @@ export function LotDetailsModal(props: LotDetailsModalProps) {
 
 
   return (
-    <Modal show={isShow} onClose={onClose} size="xl4" headerTitle="Detalles del Lote" closeOnOverlayClick={false} hideCloseButton={true}>
+    <Modal show={isShow} onClose={onClose} size="xl4" headerTitle="Detalles de la salida de productos" closeOnOverlayClick={false} hideCloseButton={true}>
       <Modal.Body>
 
         <div className="p-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
@@ -48,7 +48,7 @@ export function LotDetailsModal(props: LotDetailsModalProps) {
                 <div><span className="font-medium text-text-base">Tipo de Salida:</span> <span className="text-text-muted">{ typeFailure(product?.type)}</span></div>
                 <div><span className="font-medium text-text-base">Fecha de Salida:</span> <span className="text-text-muted">{ formatDate(product?.created_at)} { formatHourAsHM(product?.created_at)}</span></div>
             </div>
-            {product && product.failures ? (
+            {product && product?.failures ? (
                 <div className="relative overflow-x-auto border border-bg-subtle rounded-lg">
                     <table className="w-full text-sm text-left">
                         <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
