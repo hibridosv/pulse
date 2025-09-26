@@ -25,7 +25,7 @@ export function useLotAssignLogic(product: Product, isShow: boolean) {
         if (isShow && product?.id) {
             fetchData(`registers?filterWhere[product_id]==${product?.id}&filterWhere[status]==1`);
         }
-    }, [product?.id, isShow]);
+    }, [product?.id, isShow, openLoading, closeLoading]);
 
     return { lots };
 }
