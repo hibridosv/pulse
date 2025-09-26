@@ -19,7 +19,7 @@ export function AddProductsSearch() {
     const elementSelected = getSelectedElement('product');
 
     if (!product || loading) return null;
-    if (elementSelected) return null;
+    // if (elementSelected) return null;
 
 
   return (

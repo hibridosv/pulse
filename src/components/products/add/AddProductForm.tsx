@@ -2,108 +2,107 @@ import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
 import { documentType } from "@/lib/utils";
 import productAddStore from "@/stores/productAddStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { AddProductsSearch } from "./AddProductsSearch";
 import { Button, Preset } from "@/components/button/button";
 
 export function AddProductForm() {
     useProductAddLogic();
-    const { register, handleSubmit, control, watch, reset } = useForm();
-    const { product, loading, createPrincipal } = productAddStore();
+    const { register, handleSubmit } = useForm();
+    const { product, loading } = productAddStore();
     const { getSelectedElement } = useTempSelectedElementStore();
     const isBill = getSelectedElement("isBill");
     const productSelected = getSelectedElement("product");
 
+    if (loading || !product) return null;
 
-
-    if (loading) return null;
-    if (!product) return null;
-
-   const isSending = false;
-
+    const isSending = false;
 
     return (
-        <div className="p-4 m-4">
-            <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-6 w-full max-w-4xl mx-auto mb-4">
-                <div className="flex justify-between border-b-2">
-                  <div>Numero de documento</div>
-                  <div>{ product.document_number }</div>
-                </div>
-                <div className="flex justify-between border-b-2">
-                  <div>Tipo de Documento</div>
-                  <div>{ documentType(product.document_type) }</div>
-                </div>
-                <div className="flex justify-between border-b-2">
-                  <div>Proveedor</div>
-                  <div>{ product?.provider?.name }</div>
-                </div>
-                <div className="flex justify-between border-b-2">
-                  <div>{ product.comment }</div>
-                </div>
-                <div className="flex justify-between border-b-2">
-                  <div>{ isBill ? "Productos con impuestos incluidos" : "Productos sin impuestos" }</div>
-                </div>
-              </div>
-
-            <div className="m-2">
-              <AddProductsSearch />
+        <div className="space-y-6 px-4 absolute z-50">
+            <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-6 w-full max-w-4xl mx-auto">
+                <h3 className="text-lg font-semibold text-text-base border-b border-bg-subtle pb-3 mb-4">Resumen de la Compra</h3>
+                <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                    <div className="col-span-1">
+                        <dt className="font-medium text-text-muted">Número de documento</dt>
+                        <dd className="text-text-base font-semibold mt-1">{product.document_number || "N/A"}</dd>
+                    </div>
+                    <div className="col-span-1">
+                        <dt className="font-medium text-text-muted">Tipo de Documento</dt>
+                        <dd className="text-text-base font-semibold mt-1">{documentType(product.document_type)}</dd>
+                    </div>
+                    <div className="col-span-1">
+                        <dt className="font-medium text-text-muted">Proveedor</dt>
+                        <dd className="text-text-base font-semibold mt-1">{product?.provider?.name || "N/A"}</dd>
+                    </div>
+                    <div className="col-span-1">
+                        <dt className="font-medium text-text-muted">Impuestos</dt>
+                        <dd className="text-text-base font-semibold mt-1">{isBill ? "Productos con impuestos incluidos" : "Productos sin impuestos"}</dd>
+                    </div>
+                    {product.comment && (
+                        <div className="md:col-span-2">
+                            <dt className="font-medium text-text-muted">Comentario</dt>
+                            <dd className="text-text-base font-normal mt-1 bg-bg-subtle/50 p-2 rounded-md">{product.comment}</dd>
+                        </div>
+                    )}
+                </dl>
             </div>
-            <div>
-              { productSelected?.id && (<>
-              <form onSubmit={handleSubmit(console.log)} className="w-full">
-              <div className="flex flex-wrap -mx-3 mb-6">
-                <div className='w-full font-bold text-lg text-teal-900 border-b-2 mb-2'>{productSelected?.description}</div>
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="quantity" className="input-label"> Cantidad </label>
-                    <input
-                          type="number"
-                          id="quantity"
-                          {...register("quantity")}
-                          className="input"
-                          step="any"
-                          min={0}
-                        />
+
+            <AddProductsSearch />
+
+            {productSelected?.id && (
+                <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-6 w-full max-w-4xl mx-auto">
+                    <h3 className="text-xl font-semibold text-primary mb-4 pb-3 border-b border-bg-subtle">
+                        Añadir: {productSelected?.description}
+                    </h3>
+                    <form onSubmit={handleSubmit(console.log)} className="w-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                            <div>
+                                <label htmlFor="quantity" className="block text-sm font-bold text-text-muted mb-1"> Cantidad </label>
+                                <input
+                                    type="number"
+                                    id="quantity"
+                                    {...register("quantity")}
+                                    className="input"
+                                    step="any"
+                                    min={0}
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="unit_cost" className="block text-sm font-bold text-text-muted mb-1"> Precio Costo </label>
+                                <input
+                                    type="number"
+                                    id="unit_cost"
+                                    {...register("unit_cost")}
+                                    className="input"
+                                    step="any"
+                                    min={0}
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="lot" className="block text-sm font-bold text-text-muted mb-1"> Lote </label>
+                                <input type="text" id="lot" {...register("lot")} className="input" />
+                            </div>
+                              <div>
+                                  <label htmlFor="expiration" className="block text-sm font-bold text-text-muted mb-1">
+                                      Fecha de vencimiento
+                                  </label>
+                                  <input
+                                      type="date"
+                                      id="expiration"
+                                      {...register("expiration", { disabled: productSelected.expires ? false : true })}
+                                      className={productSelected.expires ? "input" : "input-disabled"}
+                                  />
+                              </div>
+                        </div>
+                        <div className="flex justify-center mt-6 pt-4 border-t border-bg-subtle">
+                            <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
+                        </div>
+                    </form>
                 </div>
-
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="unit_cost" className="input-label"> Precio Costo </label>
-                    <input
-                          type="number"
-                          id="unit_cost"
-                          {...register("unit_cost")}
-                          className="input"
-                          step="any"
-                          min={0}
-                        />
-                </div>
-
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="lot" className="input-label"> Lote </label>
-                    <input type="text" id="lot" {...register("lot")} className="input" />
-                </div>
-
-                {productSelected?.expires ?
-                  <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="expiration" className="input-label">
-                      Fecha de vencimiento
-                    </label>
-                    <input
-                      type="date"
-                      id="expiration"
-                      {...register("expiration")}
-                      className="input"
-                    />
-                  </div> : null
-                }
-              </div>
-              <div className="flex justify-center">
-                  <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
-              </div>
-            </form>
-                </>)}
-            </div>  
-
-
+            )}
         </div>
     );
 }
