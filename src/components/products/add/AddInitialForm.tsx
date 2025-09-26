@@ -1,200 +1,192 @@
 import { Button, Preset } from "@/components/button/button";
 import { Switch } from "@/components/button/Switch";
 import { Loader } from "@/components/Loader";
-import productRemovedStore from "@/stores/productRemovedStore";
+import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
+import useContactStore from "@/stores/ContactStore";
+import productAddStore from "@/stores/productAddStore";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-
 export function AddInitialForm() {
-    const { register, handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm();
-    const { product, loading, createPrincipal } = productRemovedStore();
-    const [isTaxesActive, setIsTaxesActive] = useState(false);
+    useProductAddLogic();
+    const { register, handleSubmit, control, watch, reset } = useForm();
+    const { product, loading, createPrincipal } = productAddStore();
+    const { contacts: providers } = useContactStore();
+    const { setSelectedElement } = useTempSelectedElementStore();
 
+    const [isBillsActive, setIsBillsActive] = useState(false);
+    const [isAccountActive, setIsAccountActive] = useState(false);
 
+    
     if (loading) return <Loader />;
     if (product && !loading) return null;
 
-    const isBillsActive = true;
-    const isAccountActive = true;
-    const isSending = false;
 
-    const accounts = {} as any;
-    const providers = {} as any;
-    const categories = {} as any;
+    const categories = { data: [] };
+    const accounts = { data: [] };
 
     const onSubmit = (data: any) => {
-        console.log("Submit ", data);
-    }
+            if (isAccountActive && (!data.account_name || !data.account_quantity) || isBillsActive && (!data.bills_name || !data.bills_quantity) ) {
+            useToastMessageStore.getState().setError({ message : "Faltan algunos datos importantes para continuar!"});
+            return
+            }
+            data.provider_id = data.provider_id ? data.provider_id : providers.data ? providers.data[0].id : 0;
+            data.comment = data.comment ? data.comment : "Ingreso de productos";
+            data.account_active = isAccountActive;
+            console.log(data);
+            setSelectedElement("isBill", data.bills_active);
+            createPrincipal(data);
+            reset();
+    };
 
-  return (
-        <div className="w-full px-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-              <div className="flex flex-wrap -mx-3 mb-6">
 
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="document_number" className="input-label">Numero de Documento</label>
-                    <input type="text" id="document_number" {...register("document_number")} className="input" />
-                </div>
+    return (
+        <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-6 w-full max-w-4xl mx-auto">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 border-b border-bg-subtle pb-6">
+                    <div>
+                        <label htmlFor="document_number" className="block text-sm font-bold text-text-muted mb-1">
+                            Número de Documento
+                        </label>
+                        <input type="text" id="document_number" {...register("document_number")} className="input" />
+                    </div>
 
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="document_type" className="input-label"> Tipo de Documento </label>
-                    <select
-                          id="document_type" {...register("document_type")} className="input" >
-                        <option value="0">Ninguno</option>
-                        <option value="1">Ticket</option>
-                        <option value="2">Factura</option>
-                        <option value="3">Credito Fiscal</option>
-                    </select>
-                </div>
+                    <div>
+                        <label htmlFor="document_type" className="block text-sm font-bold text-text-muted mb-1">
+                            Tipo de Documento
+                        </label>
+                        <select id="document_type" {...register("document_type")} className="input">
+                            <option value="0">Ninguno</option>
+                            <option value="1">Ticket</option>
+                            <option value="2">Factura</option>
+                            <option value="3">Crédito Fiscal</option>
+                        </select>
+                    </div>
 
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="provider_id" className={`$"input-label" clickeable`}> Proveedor (Click para agregar)</label>
-                    <select defaultValue={providers && providers.data && providers.data.length > 0 ? providers.data[0].id : 0}
-                          id="provider_id" {...register("provider_id")} className="input" >
-                          {providers?.data?.map((value: any) => <option key={value.id} value={value.id}> {value.name}</option>)}
-                    </select>
-                </div>
+                    <div>
+                        <label htmlFor="provider_id" className="block text-sm font-bold text-text-muted mb-1">
+                            Proveedor
+                        </label>
+                        {providers ?
+                        <select id="provider_id" {...register("provider_id")} className="input" defaultValue={providers[0] ?? 0}>
+                            {providers?.map((value: any) => {
+                                return (<option key={value.id} value={value.id}>{value.name}</option>)
+                            })}                        
+                        </select> :
+                        <div className="input-disabled"></div>    }
+                    </div>
 
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                  <label className={`$"input-label" mb-2`}> Sumar Impuestos </label>
-                        <div>
-                            <Controller 
-                                name="taxes_active"
-                                control={control}
-                                render={({field})=> (
+                    <div className="flex items-end pb-1">
+                        <Controller
+                            name="bills_active"
+                            control={control}
+                            defaultValue={false}
+                            render={({ field }) => (
                                 <Switch
                                     checked={field.value}
-                                    label={field.value ? 'Activo' : 'Inactivo'}
                                     onChange={field.onChange}
-                                    />
-                                )}
-                            />
-                      </div>
-                </div>
-
-                <div className="w-full md:w-full px-3 mb-4">
-                  <label htmlFor="comment" className="input-label"> Comentario{" "} </label>
-                  <textarea
-                    {...register("comment", {})}
-                    rows={2}
-                    className="input w-full"
-                  />
-                </div>
-
-                
-                <div className="uppercase text-xl font-semibold text-slate-800 m-2 bg-slate-400 w-full px-6 clickeable rounded-md border shadow-md shadow-slate-400">{ isBillsActive ? "Cancelar" : "Activar"} ingreso como gasto</div>
-                
-              {
-                isBillsActive && <>
-                    <div className=" font-semibold text-lg text-teal-800 text-center uppercase px-2">Información del ingreso de gasto</div>
-
-                    <div className="w-full md:w-full px-3 mb-2">
-                      <label htmlFor="bills_name" className="input-label">Nombre del Gasto *</label>
-                      <input type="text" id="bills_name" {...register("bills_name")} className="input" step="any" min={0} />
+                                    label="Sumar Impuestos"
+                                />
+                            )}
+                        />
                     </div>
 
-                    <div className="w-full md:w-1/2 px-3 mb-2">
-                      <label htmlFor="bills_payment_type" className="input-label"> Tipo de pago </label>
-                      <select defaultValue={1} id="bills_payment_type" {...register("bills_payment_type")} className="input"  >
-                        <option value="1">Efectivo</option>
-                        <option value="2">Tarjeta</option>
-                        <option value="3">Transferencia</option>
-                        <option value="4">Cheque</option>
-                        <option value="6">BTC</option>
-                        <option value="0">Otro</option>
-                      </select>
+                    <div className="md:col-span-2">
+                        <label htmlFor="comment" className="block text-sm font-bold text-text-muted mb-1">
+                            Comentario
+                        </label>
+                        <textarea {...register("comment")} rows={2} id="comment" className="input" />
                     </div>
-                      
-                    <div className="w-full md:w-1/2 px-3 mb-2">
-                      <label htmlFor="bills_categories_id" className={`$"input-label"`}> Categoria de gasto </label>
-                      <select
-                        defaultValue={categories && categories.data && categories.data.length > 0 ? categories.data[0].id : 0}
-                        id="bills_categories_id" {...register("bills_categories_id")} className="input" >
-                        {categories?.data?.map((value: any) => <option key={value.id} value={value.id}> {value.name}</option> )}
-                      </select>
-                    </div>
-
-
-                    <div className="w-full md:w-1/2 px-3 mb-2">
-                        <label htmlFor="bills_payment_type" className="input-label"> Tipo de pago </label>
-                        <select
-                          defaultValue={1}
-                          id="bills_payment_type"
-                          {...register("bills_payment_type")}
-                          className="input"
-                        >
-                          <option value="1">Efectivo</option>
-                          <option value="2">Tarjeta</option>
-                          <option value="3">Transferencia</option>
-                          <option value="4">Cheque</option>
-                          <option value="6">BTC</option>
-                          <option value="0">Otro</option>
-                        </select>
-                      </div>
-
-
-                    {watch("bills_payment_type") != 1 ? <div className="w-full md:w-1/2 px-3 mb-2">
-                        <label htmlFor="bills_cash_accounts_id" className="input-label"> Cuenta de tranferencia </label>
-                        <select
-                          defaultValue={accounts && accounts.data && accounts.data.length > 0 ? accounts.data[0].id : 0}
-                          id="bills_cash_accounts_id"
-                          {...register("bills_cash_accounts_id")}
-                          className="input"
-                        >
-                          {accounts?.data?.map((value: any) => {
-                            return (
-                              <option key={value.id} value={value.id}> {value.account}{" | "}{value.bank}{" | $"}{value.balance}</option>
-                            );
-                          })}
-                        </select>
-                      </div> :
-                      <div className="w-full md:w-1/2 px-3 mb-2">
-                        <label className="input-label"> Cuenta de tranferencia </label>
-                        <input className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight bg-red-200 focus:outline-none pointer-events-none" readOnly />
-                      </div>
-                      }
-
-
-                    <div className="w-full md:w-full px-3 mb-2">
-                      <label htmlFor="bills_quantity" className="input-label"> Cantidad *</label>
-                      <input
-                        type="number" id="bills_quantity" {...register("bills_quantity")} className="input" step="any" min={0} />
-                    </div>
-
-                </>
-              }
-                <div className="uppercase text-xl font-semibold text-slate-800 m-2 bg-slate-400 w-full px-6 clickeable rounded-md border shadow-md shadow-slate-400">{ isAccountActive ? "Cancelar" : "Activar"} ingreso de cuenta por pagar</div>
-
-              {  isAccountActive && <>
-              <div className=" font-semibold text-lg text-teal-800 text-center uppercase px-2">Información de la cuenta por pagar</div>
-              <div className="w-full md:w-full px-3 mb-2">
-                    <label htmlFor="account_name" className="input-label">Nombre de la cuenta *</label>
-                    <input type="text" id="account_name" {...register("account_name")} className="input" step="any" min={0} />
                 </div>
 
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="account_quantity" className="input-label"> Cantidad *</label>
-                    <input type="number" id="account_quantity" {...register("account_quantity")} className="input" step="any" min={0} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-2">
+                    <div className="bg-bg-subtle/50 p-2 rounded-lg flex items-center">
+                        <Switch
+                            checked={isBillsActive}
+                            onChange={setIsBillsActive}
+                            label="Registrar como Gasto"
+                        />
+                    </div>
+                    <div className="bg-bg-subtle/50 p-2 rounded-lg flex items-center">
+                        <Switch
+                            checked={isAccountActive}
+                            onChange={setIsAccountActive}
+                            label="Crear Cuenta por Pagar"
+                        />
+                    </div>
                 </div>
 
-                
-                <div className="w-full md:w-1/2 px-3 mb-2">
-                    <label htmlFor="account_expiration" className="input-label">
-                      Fecha de vencimiento
-                    </label>
-                    <input type="date" id="account_expiration" {...register("account_expiration")} className="input" />
-                  </div>
-                </>
-              }
+                {isBillsActive && (
+                    <div className="md:col-span-2 space-y-4 pt-4 border-t border-bg-subtle">
+                        <h3 className="text-lg font-semibold text-text-base">Información del Gasto</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div>
+                                <label htmlFor="bills_name" className="block text-sm font-bold text-text-muted mb-1">Nombre del Gasto *</label>
+                                <input type="text" id="bills_name" {...register("bills_name")} className="input" />
+                            </div>
+                            <div>
+                                <label htmlFor="bills_quantity" className="block text-sm font-bold text-text-muted mb-1">Cantidad *</label>
+                                <input type="number" id="bills_quantity" {...register("bills_quantity")} className="input" step="any" min={0} />
+                            </div>
+                            <div>
+                                <label htmlFor="bills_payment_type" className="block text-sm font-bold text-text-muted mb-1">Tipo de pago</label>
+                                <select id="bills_payment_type" {...register("bills_payment_type")} className="input">
+                                    <option value="1">Efectivo</option>
+                                    <option value="2">Tarjeta</option>
+                                    <option value="3">Transferencia</option>
+                                    <option value="4">Cheque</option>
+                                    <option value="6">BTC</option>
+                                    <option value="0">Otro</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label htmlFor="bills_categories_id" className="block text-sm font-bold text-text-muted mb-1">Categoría de gasto</label>
+                                <select id="bills_categories_id" {...register("bills_categories_id")} className="input">
+                                    {categories?.data?.map((value: any) => <option key={value.id} value={value.id}>{value.name}</option>)}                                </select>
+                            </div>
+                            {watch("bills_payment_type") != 1 ? (
+                                <div>
+                                    <label htmlFor="bills_cash_accounts_id" className="block text-sm font-bold text-text-muted mb-1">Cuenta de transferencia</label>
+                                    <select id="bills_cash_accounts_id" {...register("bills_cash_accounts_id")} className="input">
+                                        {accounts?.data?.map((value: any) => (
+                                            <option key={value.id} value={value.id}>{value.account} | {value.bank} | ${value.balance}</option>
+                                        ))}                                    </select>
+                                </div>
+                            ) : (
+                                <div>
+                                    <label className="block text-sm font-bold text-text-muted mb-1">Cuenta de transferencia</label>
+                                    <input className="input-disabled" readOnly value="N/A para pagos en efectivo" />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
 
-              </div>
-
-              <div className="flex justify-center">
-              <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
-              </div>
-
+                {isAccountActive && (
+                    <div className="md:col-span-2 space-y-4 pt-4 border-t border-bg-subtle">
+                        <h3 className="text-lg font-semibold text-text-base">Información de la Cuenta por Pagar</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div>
+                                <label htmlFor="account_name" className="block text-sm font-bold text-text-muted mb-1">Nombre de la cuenta *</label>
+                                <input type="text" id="account_name" {...register("account_name")} className="input" />
+                            </div>
+                            <div>
+                                <label htmlFor="account_quantity" className="block text-sm font-bold text-text-muted mb-1">Cantidad *</label>
+                                <input type="number" id="account_quantity" {...register("account_quantity")} className="input" step="any" min={0} />
+                            </div>
+                            <div className="md:col-span-2">
+                                <label htmlFor="account_expiration" className="block text-sm font-bold text-text-muted mb-1">Fecha de vencimiento</label>
+                                <input type="date" id="account_expiration" {...register("account_expiration")} className="input" />
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div className="flex justify-center pt-6 border-t border-bg-subtle">
+                    <Button type="submit" disabled={loading} preset={loading ? Preset.saving : Preset.save} />
+                </div>
             </form>
         </div>
-  );
+    );
 }

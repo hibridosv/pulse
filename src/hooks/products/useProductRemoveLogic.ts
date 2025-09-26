@@ -6,7 +6,7 @@ export function useProductRemoveLogic() {
  const { loadProduct, loadProducts} = productRemovedStore();
 
     useEffect(() => {
-        loadProduct(`removes/initial?included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]=1`);
+        loadProduct(`removes/find?included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]=1`);
     }, [loadProduct]);
 
 

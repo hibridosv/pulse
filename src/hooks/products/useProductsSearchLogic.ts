@@ -2,7 +2,7 @@
 import useProductStore from '@/stores/productStore'
 import { useEffect, useState } from 'react'
 
-export function useProductsRemoveSearchLogic(currentPage: any, searchTerm: string, sortBy: string) {
+export function useProductsSearchLogic(currentPage: any, searchTerm: string, sortBy: string) {
   const { loadProducts } = useProductStore()
   const [searchTermNew, setSearchTermNew] = useState("");
   const [sortByNew, setSortByNew] = useState("");

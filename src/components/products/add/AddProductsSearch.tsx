@@ -2,13 +2,14 @@ import { SearchInput } from "@/components/Search";
 import { useProductsSearchLogic } from "@/hooks/products/useProductsSearchLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
+import productAddStore from "@/stores/productAddStore";
 import productRemovedStore from "@/stores/productRemovedStore";
 import useProductStore from "@/stores/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
-export function RemoveProductsSearch() {
-    const { product, loading } = productRemovedStore();
+export function AddProductsSearch() {
+    const { product, loading } = productAddStore();
     const { getSelectedElement, setSelectedElement} = useTempSelectedElementStore();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage, handlePageNumber} = usePagination("&page=1");

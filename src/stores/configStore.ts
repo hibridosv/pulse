@@ -48,7 +48,7 @@ const useConfigStore = create(
       loadConfig: async () => {
         set({ loading: true });
         try {
-          const response = await getServices('config/initial');
+          const response = await getServices('config/find');
           let data = response.data.data;
           set({ configurations: data.configurations });
           set({ system: data.system });
