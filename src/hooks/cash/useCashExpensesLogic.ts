@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import cashExpensesStore from '@/stores/cash/cashExpensesStore';
 import cashAccountStore from '@/stores/cash/cashAccountStore';
-import { on } from 'events';
+
 
 export function useCashExpensesLogic(reset: any, setValue: any) {
- const { loadExpenses, loadExpensesCategories, expenses, expensesCategories, createExpense } = cashExpensesStore();
+ const { loadExpenses, loadExpensesCategories, expenses, expensesCategories, createExpense, createExpenseCategory } = cashExpensesStore();
  const { loadAccount, accounts } = cashAccountStore();
 
 
@@ -31,6 +31,10 @@ export function useCashExpensesLogic(reset: any, setValue: any) {
         setValue("payment_type", 1)
         }
 
+    const createCategory = async (data: any)=>{
+        await createExpenseCategory({ name: data.name });
+        reset();
+    }
 
-    return { expenses, expensesCategories, accounts, onSubmit };
+    return { expenses, expensesCategories, accounts, onSubmit, createCategory };
 }

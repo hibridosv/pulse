@@ -1,51 +1,64 @@
-
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
 import cashExpensesStore from "@/stores/cash/cashExpensesStore";
+import { useCashExpensesLogic } from "@/hooks/cash/useCashExpensesLogic";
 
-export interface ProductsLinkedModalProps {
+export interface NewCategoryModalProps {
   onClose: () => void;
   isShow: boolean;
 }
 
-export function NewCategoryModal(props: ProductsLinkedModalProps) {
-    const { onClose, isShow } = props;
-    const { register, handleSubmit, resetField } = useForm();
-    const { expensesCategories, createExpenseCategory, loading } = cashExpensesStore();
+
+
+export function NewCategoryModal({ onClose, isShow }: NewCategoryModalProps) {
+  const { register, handleSubmit, reset, setValue } = useForm();
+  const { expensesCategories, loading } = cashExpensesStore();
+  const { createCategory } = useCashExpensesLogic(reset, setValue); 
 
   return (
-    <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Categorias de gastos" closeOnOverlayClick={false} hideCloseButton={true}>
+    <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Categorías de Gastos">
       <Modal.Body>
-        <div>
-                <div className='top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
-                  <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">
-                    { expensesCategories && expensesCategories.map((item: any) => {
-                        return (
-                          <li 
-                            key={item.id} 
-                            className="flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150">
-                            <span className="font-medium text-text-base">{item.name}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </li>
-                        );
-                    })}
-                  </ul>
-                </div> 
-
-                <div className="p-4 ">
-                    <form className="max-w-lg mt-4" onSubmit={handleSubmit(console.log)} >
-                        <div className="w-full md:w-full px-3 mb-4">
-                            <label htmlFor="name" className="input-label" >Categoria</label>
-                            <input {...register("name", {})} className={`input w-full`} />
-                        </div>
-                        <div className="flex justify-center">
-                            <Button type="submit" disabled={loading} preset={loading ? Preset.saving : Preset.save} />
-                        </div>
-                    </form>
+        <div className="flex flex-col gap-6">
+          <div>
+            <h3 className="text-lg font-medium text-text-base mb-4 px-1">Crear Nueva Categoría</h3>
+            <div className="bg-bg-base rounded-lg border border-bg-subtle/80 p-4">
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit(createCategory)}>
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-text-muted mb-1">
+                    Nombre de la categoría
+                  </label>
+                  <input id="name" type="text" {...register("name", { required: "El nombre es obligatorio" })}
+                    className="input"
+                    placeholder="Ej: Oficina, Transporte..."
+                    autoComplete="off"
+                  />
                 </div>
+                <Button type="submit" disabled={loading} preset={loading ? Preset.saving : Preset.save}  />
+              </form>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium text-text-base mb-4 px-1">Categorías Existentes</h3>
+            <div className='bg-bg-base rounded-lg border border-bg-subtle/80'>
+              <ul className="divide-y divide-bg-subtle max-h-60 overflow-y-auto custom-scrollbar">
+                {expensesCategories && expensesCategories.length > 0 ? (
+                  expensesCategories.map((item: any) => (
+                    <li
+                      key={item.id}
+                      className="flex justify-between items-center p-3 transition-colors duration-150"
+                    >
+                      <span className="font-medium text-text-base">{item.name}</span>
+                      <div className="w-2 h-2 bg-bg-subtle rounded-full" />
+                    </li>
+                  ))
+                ) : (
+                  <li className="p-4 text-center text-text-muted">No hay categorías.</li>
+                )}
+              </ul>
+            </div>
+          </div>
         </div>
       </Modal.Body>
       <Modal.Footer>
@@ -54,4 +67,3 @@ export function NewCategoryModal(props: ProductsLinkedModalProps) {
     </Modal>
   );
 }
-

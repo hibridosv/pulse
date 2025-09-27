@@ -4,6 +4,7 @@ import { NothingHere } from "@/components/NothingHere";
 import { useCashExpensesLogic } from "@/hooks/cash/useCashExpensesLogic";
 import cashExpensesStore from "@/stores/cash/cashExpensesStore";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
 import { useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 
@@ -12,6 +13,7 @@ export function ExpensesForm() {
   const { expensesCategories: categories, accounts, onSubmit } = useCashExpensesLogic(reset, setValue); 
   const { cashdrawer } = useConfigStore();
   const { loading } = cashExpensesStore();
+  const { openModal } = useModalStore()
 
   return (
     <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-4 w-full max-w-4xl mx-auto">
@@ -82,7 +84,7 @@ export function ExpensesForm() {
           </div>
 
           <div className="w-full md:w-1/2 px-3 mb-2">
-            <label htmlFor="cash_bills_categories_id" className="input-label clickeable" title="Agregar categoria de gasto">
+            <label htmlFor="cash_bills_categories_id" className="input-label clickeable" title="Agregar categoria de gasto" onClick={()=> openModal("NewCategory")}>
               <span className="flex items-center"><span>Categoria de gasto</span> <FaPlus className="ml-2" color="green" size={12} /></span>
             </label>
             <select defaultValue={ categories && categories?.length > 0 ? categories[0].id : 0 } id="cash_bills_categories_id" {...register("cash_bills_categories_id")} className="input-select" >

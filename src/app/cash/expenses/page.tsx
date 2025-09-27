@@ -6,11 +6,13 @@ import { ExpensesForm } from "@/components/cash/expenses/ExpensesForm";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ExpensesTable } from "@/components/cash/expenses/ExpensesTable";
 import { NewCategoryModal } from "@/components/cash/NewCategoryModal";
+import useModalStore from "@/stores/modalStorage";
 
 
 
 export default function Page() {
   const { data: session, status } = useSession();
+  const { modals, closeModal} = useModalStore();
 
 
   if (status === "loading") {
@@ -31,7 +33,7 @@ export default function Page() {
           <ExpensesTable />
         </div>
     </div> 
-    <NewCategoryModal isShow={true} onClose={() => {}} />
+    <NewCategoryModal isShow={modals["NewCategory"]} onClose={() => closeModal("NewCategory")} />
     <ToasterMessage />
   </div>
   )}
