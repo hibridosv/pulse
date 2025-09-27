@@ -2,6 +2,7 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import { NothingHere } from "@/components/NothingHere";
 import { useCashExpensesLogic } from "@/hooks/cash/useCashExpensesLogic";
+import cashAccountStore from "@/stores/cash/cashAccountStore";
 import cashExpensesStore from "@/stores/cash/cashExpensesStore";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
@@ -10,9 +11,11 @@ import { FaPlus } from "react-icons/fa";
 
 export function ExpensesForm() {
   const { register, handleSubmit, setValue, watch, reset } = useForm();
-  const { expensesCategories: categories, accounts, onSubmit } = useCashExpensesLogic(reset, setValue); 
+  const {  onSubmit } = useCashExpensesLogic(reset, setValue); 
+  const { expensesCategories: categories, } = cashExpensesStore();
+  const { accounts } = cashAccountStore();
   const { cashdrawer } = useConfigStore();
-  const { loading } = cashExpensesStore();
+  const { sending } = cashExpensesStore();
   const { openModal } = useModalStore()
 
   return (
@@ -129,7 +132,7 @@ export function ExpensesForm() {
         </div>
 
         <div className="flex justify-center">
-          <Button type="submit" disabled={loading} preset={loading ? Preset.saving : Preset.save} />
+          <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
         </div>
       </form>
       )}

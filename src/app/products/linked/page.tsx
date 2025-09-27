@@ -49,7 +49,7 @@ export default function Page() {
           <ShowLowStockStatistics />
         </div>
     </div> 
-    <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={getSelectedElement("productDetails")} /> 
+    <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getSelectedElement("productDetails")} /> 
     <ToasterMessage />
 </div>
   );

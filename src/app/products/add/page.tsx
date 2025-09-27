@@ -47,7 +47,7 @@ export default function Page() {
             )}
             </div>
       </div> 
-      <AddDetailsModal isShow={modals["viewDetails"]} onClose={()=>closeModal("viewDetails")} product={getSelectedElement("viewDetails")} />
+      <AddDetailsModal isShow={modals.viewDetails} onClose={()=>closeModal("viewDetails")} product={getSelectedElement("viewDetails")} />
     </div>
   );
 }

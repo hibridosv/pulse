@@ -67,7 +67,7 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
           </tbody>
         </table>
       </div>
-      <CutDetailsModal isShow={modals['cutDetails']} onClose={() => closeModal('cutDetails')} record={getSelectedElement('cutDetails')} />
+      <CutDetailsModal isShow={modals.cutDetails} onClose={() => closeModal('cutDetails')} record={getSelectedElement('cutDetails')} />
     </div>
   );
 }

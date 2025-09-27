@@ -35,5 +35,5 @@ export function useCashExpensesLogic(reset: any, setValue: any) {
         }
     }
 
-    return { expenses, expensesCategories, accounts, onSubmit, createCategory };
+    return { onSubmit, createCategory };
 }

@@ -78,7 +78,7 @@ export function ProductLinked(props: ProductLinkedProps) {
             )}
           </div>
           )}
-            <ProductsLinkedModal isShow={modals['productLinked']} onClose={() => {closeModal('productLinked') }} product={record} />
+            <ProductsLinkedModal isShow={modals.productLinked} onClose={() => {closeModal('productLinked') }} product={record} />
         </div>
 
   );

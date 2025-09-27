@@ -25,7 +25,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const { loading: loadingProduct, product } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
-  const { modals, closeModal, openModal } = useModalStore();
+  const {  openModal } = useModalStore();
   const { onSubmit } = useProductEditLogic(id, setValue);
   const router = useRouter();
 

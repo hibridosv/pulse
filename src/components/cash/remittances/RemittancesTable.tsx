@@ -2,22 +2,23 @@ import { DeleteButton } from "@/components/button/DeleteButton";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
-import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
-import cashExpensesStore from "@/stores/cash/cashExpensesStore";
+import { numberToMoney } from "@/lib/utils";
+import cashRemittancesStore from "@/stores/cash/cashRemittancesStore";
 import useConfigStore from "@/stores/configStore";
 import { FaSpinner } from "react-icons/fa";
 
 
-export function ExpensesTable() {
+export function RemittancesTable() {
     const { system } = useConfigStore();
-    const { expenses, loading, deleting, deleteExpense } = cashExpensesStore();
+    const { remittances, loading, deleting, deleteRemittance } = cashRemittancesStore();
 
-    if (expenses && loading) return <SkeletonTable rows={4} columns={7} />;
-    if (!expenses) return null;
-    if (expenses && expenses.length === 0) return (<NothingHere text="No se encuentran gastos" />)
+
+    if (remittances && loading) return <SkeletonTable rows={4} columns={7} />;
+    if (!remittances) return null;
+    if (remittances && remittances.length === 0) return (<NothingHere text="No se encuentran remesas" />)
 
     let total = 0;
-    const listItems = expenses && expenses.map((record: any) => {
+    const listItems = remittances && remittances.map((record: any) => {
         if (record.status === 1) {
             total += record.quantity;
         }
@@ -37,11 +38,11 @@ export function ExpensesTable() {
                 { numberToMoney(record?.quantity, system)}
             </td>
             <td className={`px-3 py-2 text-center font-semibold`}>
-                { getPaymentTypeName(record?.payment_type) }
+                { record?.account?.account }
             </td>
-            <td className="px-3 py-2  flex justify-center">
+            <td className="px-3 py-2 flex justify-center">
               { deleting ? <FaSpinner className="animate-spin" size={20} color="red" /> :
-                <DeleteButton id={record.id} url="cash/expenses" onDeleteConfirm={deleteExpense} disabled={record.status === 0 || deleting} />
+                <DeleteButton id={record.id} url="cash/remittances" onDeleteConfirm={deleteRemittance} disabled={record.status === 0 || deleting} />
               }
             </td>
             </tr>
@@ -57,7 +58,7 @@ export function ExpensesTable() {
               <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Hora</th>
               <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Descripcion</th>
               <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Cant</th>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Tipo Pago</th>
+              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Cuenta</th>
               <th scope="col" className="px-4 py-3 font-bold tracking-wider text-center">Del</th>
             </tr>
           </thead>

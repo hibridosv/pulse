@@ -56,8 +56,8 @@ export default function Page() {
             </div>
 
       </div> 
-      <ChangeLotModal isShow={modals["ChangeLot"]} onClose={()=>closeModal("ChangeLot")} product={getSelectedElement("product")}/>
-      <LotDetailsModal isShow={modals["viewDetails"]} onClose={()=>closeModal("viewDetails")} product={getSelectedElement("viewDetails")}/>
+      <ChangeLotModal isShow={modals.ChangeLot} onClose={()=>closeModal("ChangeLot")} product={getSelectedElement("product")}/>
+      <LotDetailsModal isShow={modals.viewDetails} onClose={()=>closeModal("viewDetails")} product={getSelectedElement("viewDetails")}/>
       <ToasterMessage />
     </div>
   );

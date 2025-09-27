@@ -35,7 +35,7 @@ export default function Page() {
         <ViewTitle text="Detalles" />
         <ExpiredStatistics statics={expired} isLoading={isLoading} />
     </div> 
-    <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={getSelectedElement("productDetails")} /> 
+    <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getSelectedElement("productDetails")} /> 
     <ToasterMessage />
 </div>
   );

@@ -220,9 +220,9 @@ export default function Page() {
               { loadingProducts ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsNewTable records={lastProducts?.data} /> }
             </div>
         </div> 
-        <ProductsLinkedModal isShow={modals['productLinked']} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
-        <ProductDetailsModal isShow={modals['productDetails']} onClose={() => closeModal('productDetails')} record={getSelectedElement('productDetails')} /> 
-        <ProductsCategoriesModal isShow={modals['productCategories']} onClose={() => closeModal('productCategories')} />
+        <ProductsLinkedModal isShow={modals.productLinked} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
+        <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getSelectedElement('productDetails')} /> 
+        <ProductsCategoriesModal isShow={modals.productCategories} onClose={() => closeModal('productCategories')} />
         <ToasterMessage />
     </div>
   );

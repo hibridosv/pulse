@@ -49,7 +49,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   
           </div>  
       </div> 
-      <KardexDetailsModal isShow={modals['kardexDetails']} onClose={() => closeModal('kardexDetails')} record={getSelectedElement('kardexDetails')} />
+      <KardexDetailsModal isShow={modals.kardexDetails} onClose={() => closeModal('kardexDetails')} record={getSelectedElement('kardexDetails')} />
     </div>
   );
 }

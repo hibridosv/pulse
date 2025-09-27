@@ -33,7 +33,7 @@ export default function Page() {
           <ExpensesTable />
         </div>
     </div> 
-    <NewCategoryModal isShow={modals["NewCategory"]} onClose={() => closeModal("NewCategory")} />
+    <NewCategoryModal isShow={modals.NewCategory} onClose={() => closeModal("NewCategory")} />
     <ToasterMessage />
   </div>
   )}

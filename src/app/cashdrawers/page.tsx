@@ -60,8 +60,8 @@ export default function Page() {
         <ShowCutsTable records={cuts?.data} /> }
         <Pagination records={cuts} handlePageNumber={handlePageNumber } />
     </div> 
-    <CashdrawerModal isShow={modals['cashDrawerOpen']} onClose={() => closeModal('cashDrawerOpen')} drawer={selectDrawer}  />
-    <CashdrawerDetails isShow={modals['cashDrawerDetails']} onClose={() => closeModal('cashDrawerDetails')}  />
+    <CashdrawerModal isShow={modals.cashDrawerOpen} onClose={() => closeModal('cashDrawerOpen')} drawer={selectDrawer}  />
+    <CashdrawerDetails isShow={modals.cashDrawerDetails} onClose={() => closeModal('cashDrawerDetails')}  />
     <ToasterMessage />
 </div>
   );

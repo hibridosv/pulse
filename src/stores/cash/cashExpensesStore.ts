@@ -9,6 +9,7 @@ interface cashExpensesStoreProps {
   expensesCategories: any | null;
   error: Error | null;
   loading: boolean;
+  sending: boolean;
   deleting: boolean;
   loadExpenses: (url: string) => Promise<void>;
   loadExpensesCategories: (url: string) => Promise<void>;
@@ -22,6 +23,7 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
     expensesCategories: null,
     error: null,
     loading: false,
+    sending: false,
     deleting: false,
     loadExpenses: async (url: string) => {
         set({ loading: true });
@@ -49,7 +51,7 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
 
 
     createExpense: async (data) => {
-        set({ loading: true });
+        set({ sending: true });
         try {
             const response = await createService("cash/expenses", data);
             set({ expenses: response.data.data, error: null });
@@ -57,7 +59,7 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
         } catch (error) {
             useToastMessageStore.getState().setError(error);
         } finally {
-            set({ loading: false });
+            set({ sending: false });
         }
     },
 

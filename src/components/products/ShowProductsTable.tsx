@@ -100,7 +100,7 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
         </table>
       </div>
       <DeleteModal
-        isShow={elementSelected?.id && modals['deleteProduct']}
+        isShow={elementSelected?.id && modals.deleteProduct}
         text={`¿Estas seguro de eliminar el producto ${elementSelected?.description}?`}
         onDelete={() =>{ deleteProduct(`products/${elementSelected?.id}`, elementSelected?.id); closeModal('deleteProduct'); }}
         onClose={() => closeModal('deleteProduct')} />
