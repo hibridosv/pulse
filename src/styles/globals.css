@@ -133,7 +133,14 @@ body {
   @apply appearance-none block w-full bg-bg-subtle border border-bg-subtle text-text-muted py-2 px-4 leading-tight focus:outline-none rounded-md cursor-not-allowed shadow-sm
 }
 .input-select {
-  @apply bg-bg-content appearance-none border-2 border-bg-subtle rounded-md w-full py-2 px-4 pr-8 text-text-base leading-tight focus:outline-none focus:bg-bg-content focus:border-primary shadow-sm
+  @apply bg-bg-content border-2 border-bg-subtle rounded-md w-full py-2 px-4 pr-10 text-text-base leading-tight focus:outline-none focus:bg-bg-content focus:border-primary shadow-sm;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23374151' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
 }
 .input-label {
   @apply truncate block text-gray-700 text-sm font-bold

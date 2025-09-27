@@ -58,7 +58,7 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
                                 <select
                                     id="dependable"
                                     {...register("dependable", { required: true })}
-                                    className="input" >
+                                    className="input-select" >
                                     {categories?.map((cat: any) => (
                                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                                     ))}

@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
 import cashExpensesStore from "@/stores/cash/cashExpensesStore";
@@ -9,10 +9,13 @@ export interface NewCategoryModalProps {
   isShow: boolean;
 }
 
+export interface INewCategory {
+  name: string;
+}
 
 
 export function NewCategoryModal({ onClose, isShow }: NewCategoryModalProps) {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm<INewCategory>();
   const { expensesCategories, loading } = cashExpensesStore();
   const { createCategory } = useCashExpensesLogic(reset, setValue); 
 

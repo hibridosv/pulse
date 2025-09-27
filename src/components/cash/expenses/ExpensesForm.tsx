@@ -42,7 +42,7 @@ export function ExpensesForm() {
             <label htmlFor="type" className="input-label">
               Tipo de gasto *
             </label>
-            <select defaultValue={0} id="type" {...register("type")} className="input" >
+            <select defaultValue={0} id="type" {...register("type")} className="input-select" >
               <option value="0">Sin Comprobante</option>
               <option value="1">Con Comprobante</option>
             </select>

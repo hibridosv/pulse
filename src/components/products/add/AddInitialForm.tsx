@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export function AddInitialForm() {
-    useProductAddLogic();
+    const { expensesCategories: categories, accounts} = useProductAddLogic();
     const { register, handleSubmit, control, watch, reset } = useForm();
     const { product, loading, createPrincipal } = productAddStore();
     const { contacts: providers } = useContactStore();
@@ -25,8 +25,6 @@ export function AddInitialForm() {
     if (product && !loading) return null;
 
 
-    const categories = { data: [] };
-    const accounts = { data: [] };
 
     const onSubmit = (data: any) => {
             if (isAccountActive && (!data.account_name || !data.account_quantity) || isBillsActive && (!data.bills_name || !data.bills_quantity) ) {
@@ -57,7 +55,7 @@ export function AddInitialForm() {
                         <label htmlFor="document_type" className="block text-sm font-bold text-text-muted mb-1">
                             Tipo de Documento
                         </label>
-                        <select id="document_type" {...register("document_type")} className="input">
+                        <select id="document_type" {...register("document_type")} className="input-select">
                             <option value="0">Ninguno</option>
                             <option value="1">Ticket</option>
                             <option value="2">Factura</option>
@@ -70,7 +68,7 @@ export function AddInitialForm() {
                             Proveedor
                         </label>
                         {providers ?
-                        <select id="provider_id" {...register("provider_id")} className="input" defaultValue={providers[0] ?? 0}>
+                        <select id="provider_id" {...register("provider_id")} className="input-select" defaultValue={providers[0] ?? 0}>
                             {providers?.map((value: any) => {
                                 return (<option key={value.id} value={value.id}>{value.name}</option>)
                             })}                        
@@ -132,7 +130,7 @@ export function AddInitialForm() {
                             </div>
                             <div>
                                 <label htmlFor="bills_payment_type" className="block text-sm font-bold text-text-muted mb-1">Tipo de pago</label>
-                                <select id="bills_payment_type" {...register("bills_payment_type")} className="input">
+                                <select id="bills_payment_type" {...register("bills_payment_type")} className="input-select">
                                     <option value="1">Efectivo</option>
                                     <option value="2">Tarjeta</option>
                                     <option value="3">Transferencia</option>
@@ -143,16 +141,20 @@ export function AddInitialForm() {
                             </div>
                             <div>
                                 <label htmlFor="bills_categories_id" className="block text-sm font-bold text-text-muted mb-1">Categoría de gasto</label>
-                                <select id="bills_categories_id" {...register("bills_categories_id")} className="input">
-                                    {categories?.data?.map((value: any) => <option key={value.id} value={value.id}>{value.name}</option>)}                                </select>
+                                <select id="bills_categories_id" {...register("bills_categories_id")} className="input-select">
+                                    {categories && categories?.map((value: any) => (
+                                        <option key={value.id} value={value.id}>{value.name}</option>
+                                    ))}                                
+                                </select>
                             </div>
                             {watch("bills_payment_type") != 1 ? (
                                 <div>
                                     <label htmlFor="bills_cash_accounts_id" className="block text-sm font-bold text-text-muted mb-1">Cuenta de transferencia</label>
-                                    <select id="bills_cash_accounts_id" {...register("bills_cash_accounts_id")} className="input">
-                                        {accounts?.data?.map((value: any) => (
+                                    <select id="bills_cash_accounts_id" {...register("bills_cash_accounts_id")} className="input-select">
+                                        {accounts && accounts?.map((value: any) => (
                                             <option key={value.id} value={value.id}>{value.account} | {value.bank} | ${value.balance}</option>
-                                        ))}                                    </select>
+                                        ))}
+                                    </select>
                                 </div>
                             ) : (
                                 <div>

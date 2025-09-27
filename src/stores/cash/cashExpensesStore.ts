@@ -64,7 +64,7 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
     createExpenseCategory: async (data) => {
         set({ loading: true });
         try {
-            const response = await createService("cash/cagories", data);
+            const response = await createService("cash/categories", data);
             set({ expensesCategories: response.data.data, error: null });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
