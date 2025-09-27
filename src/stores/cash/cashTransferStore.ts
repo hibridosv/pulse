@@ -7,6 +7,7 @@ import cashAccountStore from './cashAccountStore';
 
 interface cashTransferStoreI {
   transfers: any | null;
+  history: any | null;
   error: Error | null;
   loading: boolean;
   sending: boolean;
@@ -14,10 +15,12 @@ interface cashTransferStoreI {
   loadTransfers: (url: string) => Promise<void>;
   createTransfer: (data: any) => Promise<void>;
   deleteTransfer: (url: string) => Promise<void>;
+  loadHistory: (url: string) => Promise<void>;
 }
 
 const cashTransferStore = create<cashTransferStoreI>((set) => ({
     transfers: null,
+    history: null,
     error: null,
     loading: false,
     sending: false,
@@ -60,6 +63,19 @@ const cashTransferStore = create<cashTransferStoreI>((set) => ({
             useToastMessageStore.getState().setError(error);
         } finally {
             set({ deleting: false });
+        }
+    },
+
+    
+    loadHistory: async (url: string) => {
+        set({ loading: true });
+        try {
+            const response = await getServices(url);
+            set({ history: response.data.data, error: null });
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+        } finally {
+            set({ loading: false });
         }
     },
 
