@@ -1,21 +1,8 @@
 import { Button, Preset } from "@/components/button/button";
-import { Loader } from "@/components/Loader";
 import { NothingHere } from "@/components/NothingHere";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import productRemovedStore from "@/stores/productRemovedStore";
 import { FaSpinner } from "react-icons/fa";
-
-
-
-export const typeFailure = (status: number) => {
-  switch (status) {
-    case 1: return <span className="status-danger">Averias</span>  
-    case 2: return <span className="status-success">Traslado</span>
-    case 3: return <span className="status-info">Devolución</span>
-    case 4: return <span className="status-warning">Cambio</span>
-    case 5: return <span className="status-warning">Otros</span>
-  }
-}
 
 
 export function ProductsRegistersTable() {

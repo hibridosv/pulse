@@ -3,17 +3,7 @@ import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/productRemovedStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-
-
-
-export const typeFailure = (status: number) => {
-  switch (status) {
-    case 1: return <span className="status-danger">Averias</span>  
-    case 2: return <span className="status-success">Traslado</span>
-    case 3: return <span className="status-info">Devolución</span>
-    case 4: return <span className="status-warning">Cambio</span>
-  }
-}
+import { typeFailure } from "../utils";
 
 
 export function LastRegistersTable() {
@@ -36,7 +26,7 @@ export function LastRegistersTable() {
           <td className="px-3 py-2" >
              { product?.employee?.name }
           </td>
-          <td className="px-3 py-2 text-center font-medium">
+          <td className="px-3 py-2 text-left font-medium">
             { typeFailure(product?.type) }
           </td>
           <td className={`px-3 py-2 text-left`}>

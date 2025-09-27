@@ -7,6 +7,7 @@ import useModalStore from "@/stores/modalStorage";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { Indicator } from "@/components/Indicators";
 
 
 export interface ShowProductsExpiredTableProps {
@@ -29,9 +30,9 @@ export function ShowProductsExpiredTable(props: ShowProductsExpiredTableProps) {
 
     const status = (expiration: string) => {
     if (new Date(expiration) <= new Date()) {
-        return <div className="status-danger">Expirado</div>
+        return <Indicator type="danger" text="Expirado" />
     }
-    return <div className="status-success">Por Expirar</div>
+    return <Indicator type="success" text="Por Expirar" />
   }
 
   const listItems = records.map((record: any) => (

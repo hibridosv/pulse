@@ -2,9 +2,9 @@
 import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
-import { typeFailure } from "./ProductsRegistersTable";
 import { ButtonDownload } from "@/components/button/button-download";
 import { FaDownload } from "react-icons/fa";
+import { typeFailure } from "../utils";
 
 
 

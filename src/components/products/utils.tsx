@@ -1,5 +1,6 @@
 import { FaLayerGroup } from "react-icons/fa";
 import { MdOutlineHomeRepairService } from "react-icons/md";
+import { Indicator } from "../Indicators";
 
   export const productTypeIcon = (type: number) => {
     switch (type) {
@@ -22,9 +23,10 @@ import { MdOutlineHomeRepairService } from "react-icons/md";
 
   export const typeFailure = (status: number) => {
   switch (status) {
-    case 1: return <span className="status-danger">Averias</span>  
-    case 2: return <span className="status-success">Traslado</span>
-    case 3: return <span className="status-info">Devolución</span>
-    case 4: return <span className="status-warning">Cambio</span>
+    case 1: return <Indicator type="danger" text="Averias" />
+    case 2: return <Indicator type="success" text="Traslados" />
+    case 3: return <Indicator type="info" text="Devoluciones" />
+    case 4: return <Indicator type="warning" text="Cambios" />
+    case 5: return <Indicator type="dark" text="Otros" />
   }
 }
