@@ -2,6 +2,11 @@
 import { ViewTitle } from "@/components/ViewTitle";
 import { useSession } from "next-auth/react";
 import { LoadingPage } from "@/components/LoadingPage";
+import { ExpensesForm } from "@/components/cash/expenses/ExpensesForm";
+import { ToasterMessage } from "@/components/toaster-message";
+import { ExpensesTable } from "@/components/cash/expenses/ExpensesTable";
+import { NewCategoryModal } from "@/components/cash/NewCategoryModal";
+
 
 
 export default function Page() {
@@ -14,13 +19,19 @@ export default function Page() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-7 border-r md:border-primary">
+    <div className="col-span-4 border-r md:border-primary">
         <ViewTitle text="Gastos" />
-
+        <div className="p-4">
+          <ExpensesForm />
+        </div>
     </div>
-    <div className="col-span-3">
-
+    <div className="col-span-6">
+        <ViewTitle text="Ultimos movimientos" />
+        <div className="p-4">
+          <ExpensesTable />
+        </div>
     </div> 
-</div>
-  );
-}
+    <NewCategoryModal isShow={true} onClose={() => {}} />
+    <ToasterMessage />
+  </div>
+  )}
