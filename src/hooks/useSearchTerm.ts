@@ -1,23 +1,22 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useDebounce } from 'use-debounce';
 
-export function useSearchTerm(searchRows: string[], delay = 300) {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [term, setTerm] = useState("");
-    const [debouncedTerm] = useDebounce(term, delay);
+export function useSearchTerm(searchRows: string[], delay = 300, minChars = 3) {
+    const [inputValue, setInputValue] = useState("");
+    const [debouncedValue] = useDebounce(inputValue, delay);
 
-    useEffect(() => {
-        if (debouncedTerm !== "") {
-            const filters = searchRows.map((field: string) => `filter[${field}]=${debouncedTerm}`).join('&');
-            setSearchTerm(`&${filters}`);
-        } else {
-            setSearchTerm("");
+    const searchTerm = useMemo(() => {
+        if (!debouncedValue || debouncedValue.length < minChars) {
+            return "";
         }
-    }, [debouncedTerm, searchRows]);
+        const filters = searchRows
+            .map((field: string) => `filter[${field}]=${debouncedValue}`)
+            .join('&');
+        return `&${filters}`;
+    }, [debouncedValue, searchRows, minChars]);
 
     const handleSearchTerm = (term: string) => {
-        setTerm(term);
+        setInputValue(term);
     };
 
     return { searchTerm, handleSearchTerm };

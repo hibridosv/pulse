@@ -35,7 +35,7 @@ export default function Page() {
   const links = useSetLinkLogic();
   const { getRequest, loading: loadingRequest } = useGetRequest();
   const { modals, closeModal } = useModalStore();
-  const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempSelectedElementStore();
 
 
   if (status === "loading") {

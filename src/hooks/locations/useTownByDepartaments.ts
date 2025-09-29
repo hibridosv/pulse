@@ -1,16 +1,17 @@
-// 'use client'
-// import { useEffect, useState } from "react";
+'use client'
+import { getMunicipiosByDepartamentoId } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
-// export const useTownByDepartament = (departaments, departamentSelected) => {
-//   const [townsExtracted, setTownsExtracted] = useState([]);
+export const useTownByDepartament = (departaments: any, departamentSelected: any) => {
+  const [townsExtracted, setTownsExtracted] = useState([]);
 
-//     useEffect(() => {
-//         if (departaments && departamentSelected) {
-//             const departmentNames = getMunicipiosByDepartamentoId(departaments, departamentSelected);
-//             setTownsExtracted(departmentNames);  
-//         }
+    useEffect(() => {
+        if (departaments && departamentSelected) {
+            const departmentNames = getMunicipiosByDepartamentoId(departaments, departamentSelected);
+            setTownsExtracted(departmentNames);  
+        }
     
-//       }, [departaments, departamentSelected]);
+      }, [departaments, departamentSelected]);
 
-//   return { townsExtracted };
-// };
+  return { townsExtracted };
+};

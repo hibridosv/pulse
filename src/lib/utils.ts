@@ -57,3 +57,60 @@ export const documentType = (document: DocumentTypes): string => {
   if (document == DocumentTypes.creditoFiscal) return DocumentTypesNames.creditoFiscal;
   return DocumentTypesNames.ninguno;
 }
+
+
+
+export function formatDuiWithAll(cadena: string) {
+  if(!cadena) return; 
+  var doc = cadena.replace(/-/g, '');
+  if (doc.length == 14) {
+        var partes = [
+          doc.slice(0, 4),   // Primer grupo de 4 dígitos
+          doc.slice(4, 10),  // Segundo grupo de 6 dígitos
+          doc.slice(10, 13), // Tercer grupo de 3 dígitos
+          doc.slice(13)      // Último dígito
+      ];
+    return partes.join('-');
+  } else {
+    var posicion = doc.length - 1;
+    return doc.slice(0, posicion) + '-' + doc.slice(posicion);
+  }
+
+}
+
+export const getDepartmentNameById = (id: string, data: any): any => {
+  if(!data?.departamentos) return; 
+  const department = data?.departamentos.find((dept: any) => dept.id === id);
+  if (department) {
+    return department?.nombre;
+  }
+};
+
+export const getMunicipioNameById = (id_mun: string, data: any): any => {
+  if(!data?.departamentos) return; 
+  for (const departamento of data?.departamentos) {
+    const municipio = departamento?.municipios.find((mun: any) => mun.id_mun === id_mun);
+    if (municipio) {
+      return municipio?.nombre;
+    }
+  }
+};
+
+
+export function getCountryNameByCode(code: any, countries: any) {
+  if(!code || !countries) return; 
+  if (!Array.isArray(countries)) {
+    return 'La lista de países no es válida';
+}
+
+  const country = countries && countries.find((c:any) => c.code === code);
+  return country ? country.country : 'Código no encontrado';
+}
+
+export const getMunicipiosByDepartamentoId = (data: any, departamentoId: string) => {
+  const departamento = data.departamentos.find((dep: any) => dep.id === departamentoId);
+  if (departamento) {
+    return departamento.municipios;
+  }
+  return [];
+};

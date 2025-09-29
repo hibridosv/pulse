@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 
-export const useDepartaments = () => {
-  const [departaments, setDepartaments] = useState(null) as any;
+export const useCountries = () => {
+  const [countries, setCountries] = useState(null) as any;
 
 
   useEffect(() => {
     // Llamar al archivo JSON desde la carpeta public
-    fetch('/el-salvador.json')
+    fetch('/countries.json')
       .then((response) => response.json())
-      .then((jsonData) => setDepartaments(jsonData))
+      .then((jsonData) => setCountries(jsonData))
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
 
-  return { departaments };
+  return { countries };
 };

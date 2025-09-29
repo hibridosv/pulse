@@ -8,7 +8,11 @@ export function useContactsLogic(currentPage: string, searchTerm: string) {
 
 
     useEffect(() => {
-        loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1&perPage=10${currentPage}${searchTerm}`);
+        if (searchTerm === "") {
+            loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1&perPage=10${currentPage}${searchTerm}`);
+        } else {
+            loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1&perPage=10&page=1${searchTerm}`);
+        }
     }, [loadContacts, currentPage, searchTerm]);
 
 }

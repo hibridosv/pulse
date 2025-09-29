@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface Contact {
     id:              string;
     name:            string;
@@ -23,6 +25,7 @@ export interface Contact {
     is_credit_block?: number;
     excluded?:        number;
     employee_id?:     null;
+    employee?:        User;
     status:          number;
     comment?:         string;
     created_at:      Date;
