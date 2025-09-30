@@ -4,7 +4,7 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
 import { documentType } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
-import productAddStore from "@/stores/productAddStore";
+import productAddStore from "@/stores/products/productAddStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 

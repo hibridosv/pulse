@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback } from 'react';
 import { useGetResourceLogic } from "@/hooks/request/useGetResouceLogic";
-import useProductStore from "@/stores/productStore";
+import useProductStore from "@/stores/products/productStore";
+import { useCallback } from 'react';
 
 // --- Componente Skeleton con Estilos de Tema ---
 function StatisticsSkeleton() {

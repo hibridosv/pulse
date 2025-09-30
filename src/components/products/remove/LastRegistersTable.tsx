@@ -1,7 +1,7 @@
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
-import productRemovedStore from "@/stores/productRemovedStore";
+import productRemovedStore from "@/stores/products/productRemovedStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { typeFailure } from "../utils";
 

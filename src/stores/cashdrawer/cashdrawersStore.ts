@@ -1,10 +1,9 @@
+import { getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
-import { getServices, createService, updateService, deleteService } from '@/services/services';
-import useToastMessageStore from './toastMessageStore';
-import useModalStore from './modalStorage';
-import useConfigStore from './configStore';
+import useConfigStore from '../configStore';
+import useModalStore from '../modalStorage';
+import useToastMessageStore from '../toastMessageStore';
 import useCutStore from './cutStore';
-import { CashDrawer } from '@/interfaces/cashdrawers';
 
 
 interface CashDrawerState {

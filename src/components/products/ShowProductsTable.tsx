@@ -1,20 +1,20 @@
 'use client';
 
-import useConfigStore from "@/stores/configStore";
-import { numberToMoney } from "@/lib/utils";
-import useModalStore from "@/stores/modalStorage";
-import { Product } from "@/interfaces/products";
-import { productTypeIcon, sortBySelected } from './utils';
-import { DropdownItem } from "@/components/dropDown/DropdownItem";
-import { DropdownDivider } from "@/components/dropDown/DropdownDivider";
-import { FiSettings } from "react-icons/fi";
 import { Dropdown } from "@/components/dropDown/Dropdown";
+import { DropdownDivider } from "@/components/dropDown/DropdownDivider";
+import { DropdownItem } from "@/components/dropDown/DropdownItem";
 import { NothingHere } from "@/components/NothingHere";
-import { DeleteModal } from "../DeleteModal";
-import useProductStore from "@/stores/productStore";
-import { BiLoader } from "react-icons/bi";
 import { useGetRequest } from "@/hooks/request/useGetRequest";
+import { Product } from "@/interfaces/products";
+import { numberToMoney } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
+import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { BiLoader } from "react-icons/bi";
+import { FiSettings } from "react-icons/fi";
+import { DeleteModal } from "../DeleteModal";
+import { productTypeIcon, sortBySelected } from './utils';
 
 export interface ShowProductsTableProps {
   records: Product[];

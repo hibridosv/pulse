@@ -1,5 +1,7 @@
 'use client';
-import useProductStore from "@/stores/productStore";
+
+import useProductStore from "@/stores/products/productStore";
+
 // --- Componente Skeleton con Estilos de Tema ---
 function StatisticsSkeleton() {
   return (

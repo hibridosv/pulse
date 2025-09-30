@@ -1,5 +1,5 @@
 'use client'
-import useCashDrawerStore from '@/stores/cashdrawersStore'
+import useCashDrawerStore from '@/stores/cashdrawer/cashdrawersStore'
 import { useEffect } from 'react'
 
 export function useCashDrawersLogic() {

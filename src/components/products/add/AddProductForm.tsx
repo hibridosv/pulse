@@ -1,10 +1,10 @@
+import { Button, Preset } from "@/components/button/button";
 import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
 import { documentType } from "@/lib/utils";
-import productAddStore from "@/stores/productAddStore";
+import productAddStore from "@/stores/products/productAddStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useForm } from "react-hook-form";
 import { AddProductsSearch } from "./AddProductsSearch";
-import { Button, Preset } from "@/components/button/button";
 
 export function AddProductForm() {
     useProductAddLogic();

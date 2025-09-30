@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
 import useContactStore from '@/stores/ContactStore';
-import productAddStore from '@/stores/productAddStore';
 import cashAccountStore from '@/stores/cash/cashAccountStore';
 import cashExpensesStore from '@/stores/cash/cashExpensesStore';
+import productAddStore from '@/stores/products/productAddStore';
 
 export function useProductAddLogic() {
   const { loadProduct, loadProducts} = productAddStore();

@@ -9,7 +9,7 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { useKardexLogic } from "@/hooks/products/useKardexLogic";
 import { urlConstructor } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
-import useProductStore from "@/stores/productStore";
+import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useRouter } from "next/navigation";
 

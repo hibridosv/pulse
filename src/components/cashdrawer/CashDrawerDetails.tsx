@@ -1,10 +1,10 @@
 
+import { useCutLogic } from "@/hooks/cuts/useCutLogic";
+import { numberToMoney } from "@/lib/utils";
+import useCutStore from "@/stores/cashdrawer/cutStore";
+import useConfigStore from "@/stores/configStore";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
-import useConfigStore from "@/stores/configStore";
-import { numberToMoney } from "@/lib/utils";
-import { useCutLogic } from "@/hooks/cuts/useCutLogic";
-import useCutStore from "@/stores/cutStore";
 
 export interface CashdrawerDetailsProps {
   onClose: () => void;

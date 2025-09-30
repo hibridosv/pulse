@@ -7,7 +7,7 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { useProductLogic } from "@/hooks/products/useProductsLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
-import useProductStore from "@/stores/productStore";
+import useProductStore from "@/stores/products/productStore";
 import { useSearchParams } from 'next/navigation';
 
 export default function Page() {

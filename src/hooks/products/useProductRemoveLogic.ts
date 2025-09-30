@@ -1,6 +1,6 @@
+import productRemovedStore from '@/stores/products/productRemovedStore';
 import { useEffect } from 'react';
 
-import productRemovedStore from '@/stores/productRemovedStore';
 
 export function useProductRemoveLogic() {
  const { loadProduct, loadProducts} = productRemovedStore();

@@ -1,6 +1,6 @@
 import { Button, Preset } from "@/components/button/button";
 import useModalStore from "@/stores/modalStorage";
-import productRemovedStore from "@/stores/productRemovedStore";
+import productRemovedStore from "@/stores/products/productRemovedStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { useForm } from "react-hook-form";

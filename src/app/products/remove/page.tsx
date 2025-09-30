@@ -12,7 +12,7 @@ import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductRemoveLogic } from "@/hooks/products/useProductRemoveLogic";
 import useModalStore from "@/stores/modalStorage";
-import productRemovedStore from "@/stores/productRemovedStore";
+import productRemovedStore from "@/stores/products/productRemovedStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 

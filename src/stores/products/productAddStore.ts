@@ -1,6 +1,6 @@
+import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
-import { getServices, createService, deleteService, updateService } from '@/services/services';
-import useToastMessageStore from './toastMessageStore';
+import useToastMessageStore from '../toastMessageStore';
 
 
 interface ProductAddStoreState {

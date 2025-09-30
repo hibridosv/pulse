@@ -11,7 +11,7 @@ import { ToasterMessage } from "@/components/toaster-message";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useProductStore from "@/stores/productStore";
+import useProductStore from "@/stores/products/productStore";
 import useStateStore from "@/stores/stateStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useForm } from "react-hook-form";

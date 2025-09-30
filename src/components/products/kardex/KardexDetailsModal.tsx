@@ -1,18 +1,18 @@
 'use client';
-import useConfigStore from "@/stores/configStore";
-import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
+import Modal from "@/components/modal/Modal";
 import { NothingHere } from "@/components/NothingHere";
-import { Ventas } from "./templates/ventas";
-import { IngresoProducto } from "./templates/ingreso-producto";
-import { AjusteInventario } from "./templates/ajuste-inventario";
-import { RegistroAverias } from "./templates/registro-averias";
-import { InventarioInicial } from "./templates/inventario-inicial";
-import { RetornoInventario } from "./templates/retorno-inventario";
-import { TransferenciaDesde } from "./templates/transferencia-desde";
-import { TransferenciaA } from "./templates/transferencia-a";
 import { useKardexDetailLogic } from "@/hooks/products/useKardexDetailLogic";
-import useProductStore from "@/stores/productStore";
+import useConfigStore from "@/stores/configStore";
+import useProductStore from "@/stores/products/productStore";
+import { AjusteInventario } from "./templates/ajuste-inventario";
+import { IngresoProducto } from "./templates/ingreso-producto";
+import { InventarioInicial } from "./templates/inventario-inicial";
+import { RegistroAverias } from "./templates/registro-averias";
+import { RetornoInventario } from "./templates/retorno-inventario";
+import { TransferenciaA } from "./templates/transferencia-a";
+import { TransferenciaDesde } from "./templates/transferencia-desde";
+import { Ventas } from "./templates/ventas";
 
 export interface KardexDetailsModalProps {
   onClose: () => void;

@@ -1,15 +1,15 @@
 'use client';
 
-import { formatDateAsDMY, formatTime } from "@/lib/date-formats";
-import useConfigStore from "@/stores/configStore";
-import { numberToMoney } from "@/lib/utils";
 import { Cut } from "@/interfaces/Cuts";
-import { CutDetailsModal } from "./CutDetailsModal";
+import { formatDateAsDMY, formatTime } from "@/lib/date-formats";
+import { numberToMoney } from "@/lib/utils";
+import useCutStore from "@/stores/cashdrawer/cutStore";
+import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import { NothingHere } from "../NothingHere";
-import useCutStore from "@/stores/cutStore";
-import { DeleteButton } from "../button/DeleteButton";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { DeleteButton } from "../button/DeleteButton";
+import { NothingHere } from "../NothingHere";
+import { CutDetailsModal } from "./CutDetailsModal";
 
 export interface ShowCutsTableProps {
   records: Cut[];

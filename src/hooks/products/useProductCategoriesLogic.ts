@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import useCategoriesStore from '@/stores/categoriesStore';
 import { createService } from '@/services/services';
-import useToastMessageStore from '@/stores/toastMessageStore';
+import useCategoriesStore from '@/stores/products/categoriesStore';
 import useStateStore from '@/stores/stateStorage';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useToastMessageStore from '@/stores/toastMessageStore';
+import { useEffect } from 'react';
 
 
 

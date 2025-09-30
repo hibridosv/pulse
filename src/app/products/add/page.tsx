@@ -8,7 +8,7 @@ import { RegistersProductsTable } from "@/components/products/add/RegistersProdu
 import { RegistersTable } from "@/components/products/add/RegistersTable";
 import { ViewTitle } from "@/components/ViewTitle";
 import useModalStore from "@/stores/modalStorage";
-import productAddStore from "@/stores/productAddStore";
+import productAddStore from "@/stores/products/productAddStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 

@@ -12,7 +12,7 @@ import { useLowStockLogic } from "@/hooks/products/useLowStockLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useModalStore from "@/stores/modalStorage";
-import useProductStore from "@/stores/productStore";
+import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useState } from "react";
 

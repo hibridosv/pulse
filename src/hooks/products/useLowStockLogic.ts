@@ -1,6 +1,6 @@
 'use client'
-import useProductStore from '@/stores/productStore'
-import { useEffect, useState } from 'react'
+import useProductStore from '@/stores/products/productStore';
+import { useEffect, useState } from 'react';
 
 export function useLowStockLogic(currentPage: any, searchTerm: string, sortBy: string) {
   const { loadProducts } = useProductStore()

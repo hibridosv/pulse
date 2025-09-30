@@ -1,8 +1,7 @@
 'use client'
-import useDasboardStore from '@/stores/dashboardStore'
-import useProductStore from '@/stores/productStore';
+import useProductStore from '@/stores/products/productStore';
 import { DateTime } from 'luxon';
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 export function useKardexLogic(id: string) {
   const { loadKardex, loadProduct } = useProductStore();

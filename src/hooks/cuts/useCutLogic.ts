@@ -1,6 +1,6 @@
 'use client'
+import useCutStore from '@/stores/cashdrawer/cutStore'
 import { useEffect } from 'react'
-import useCutStore from '@/stores/cutStore'
 
 
 export function useCutLogic(url: string) {

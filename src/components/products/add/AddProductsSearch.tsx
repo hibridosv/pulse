@@ -2,8 +2,8 @@ import { SearchInput } from "@/components/Search";
 import { useProductsSearchLogic } from "@/hooks/products/useProductsSearchLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
-import productAddStore from "@/stores/productAddStore";
-import useProductStore from "@/stores/productStore";
+import productAddStore from "@/stores/products/productAddStore";
+import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export function AddProductsSearch() {

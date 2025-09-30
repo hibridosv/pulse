@@ -1,11 +1,11 @@
 
-import { useForm } from "react-hook-form";
-import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
-import useStateStore from "@/stores/stateStorage";
+import Modal from "@/components/modal/Modal";
 import { useProductCategoriesLogic } from "@/hooks/products/useProductCategoriesLogic";
-import useCategoriesStore from "@/stores/categoriesStore";
+import useCategoriesStore from "@/stores/products/categoriesStore";
+import useStateStore from "@/stores/stateStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { useForm } from "react-hook-form";
 
 export interface ProductsCategoriesModalProps {
   onClose: () => void;

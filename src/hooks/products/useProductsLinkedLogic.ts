@@ -1,11 +1,11 @@
 'use client'
 import { createService, getServices } from '@/services/services';
-import useProductLinkedStore from '@/stores/productLinkedStore';
-import useProductStore from '@/stores/productStore'
+import useProductLinkedStore from '@/stores/products/productLinkedStore';
+import useProductStore from '@/stores/products/productStore';
 import useStateStore from '@/stores/stateStorage';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 export function useProductLinkedLogic(currentPage: any, searchTerm: string, sortBy: string, product: any, isShow: boolean) {
   const { loadProducts } = useProductStore()

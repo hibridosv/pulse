@@ -10,7 +10,7 @@ import { useProductEditLogic } from "@/hooks/products/useProductEditLogic";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useProductStore from "@/stores/productStore";
+import useProductStore from "@/stores/products/productStore";
 import useStateStore from "@/stores/stateStorage";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

@@ -17,7 +17,7 @@ import { useSearchTerm } from "@/hooks/useSearchTerm";
 import { permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useProductStore from "@/stores/productStore";
+import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";

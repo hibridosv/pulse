@@ -1,6 +1,6 @@
 import { Button, Preset } from "@/components/button/button";
 import { SkeletonForm } from "@/components/skeleton/SkeletonForm";
-import productRemovedStore from "@/stores/productRemovedStore";
+import productRemovedStore from "@/stores/products/productRemovedStore";
 import { useForm } from "react-hook-form";
 
 export interface RemoveInitialFormProps {

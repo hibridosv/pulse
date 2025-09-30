@@ -1,7 +1,6 @@
 'use client'
-import useDasboardStore from '@/stores/dashboardStore'
-import useProductStore from '@/stores/productStore';
-import { useEffect } from 'react'
+import useProductStore from '@/stores/products/productStore';
+import { useEffect } from 'react';
 
 export function useKardexDetailLogic(id: string) {
   const { loadKardexDetails } = useProductStore();

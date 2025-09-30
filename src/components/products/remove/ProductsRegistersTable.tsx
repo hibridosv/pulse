@@ -1,7 +1,7 @@
 import { Button, Preset } from "@/components/button/button";
 import { NothingHere } from "@/components/NothingHere";
 import { formatDateAsDMY } from "@/lib/date-formats";
-import productRemovedStore from "@/stores/productRemovedStore";
+import productRemovedStore from "@/stores/products/productRemovedStore";
 import { FaSpinner } from "react-icons/fa";
 
 

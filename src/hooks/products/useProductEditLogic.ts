@@ -2,10 +2,10 @@
 import { getCountryProperty } from '@/lib/utils'
 import { updateService } from '@/services/services'
 import useConfigStore from '@/stores/configStore'
+import useProductStore from '@/stores/products/productStore'
 import useStateStore from '@/stores/stateStorage'
 import useToastMessageStore from '@/stores/toastMessageStore'
 import { useEffect } from 'react'
-import useProductStore from '@/stores/productStore'
 
 export function useProductEditLogic(id?: string, setValue?: any) {
 const { loadProduct, product } = useProductStore();

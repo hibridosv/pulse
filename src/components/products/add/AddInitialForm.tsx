@@ -1,10 +1,9 @@
 import { Button, Preset } from "@/components/button/button";
 import { Switch } from "@/components/button/Switch";
-import { Loader } from "@/components/Loader";
 import { SkeletonForm } from "@/components/skeleton/SkeletonForm";
 import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
 import useContactStore from "@/stores/ContactStore";
-import productAddStore from "@/stores/productAddStore";
+import productAddStore from "@/stores/products/productAddStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { useState } from "react";

@@ -1,9 +1,9 @@
 
-import useCashDrawerStore from "@/stores/cashdrawersStore";
+import { CashDrawer } from "@/interfaces/cashdrawers";
+import useCashDrawerStore from "@/stores/cashdrawer/cashdrawersStore";
+import { useForm } from "react-hook-form";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
-import { useForm } from "react-hook-form";
-import { CashDrawer } from "@/interfaces/cashdrawers";
 
 export interface CashdrawerModalProps {
   onClose: () => void;

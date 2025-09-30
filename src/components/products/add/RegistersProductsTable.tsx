@@ -4,7 +4,7 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import productAddStore from "@/stores/productAddStore";
+import productAddStore from "@/stores/products/productAddStore";
 import { FaSpinner } from "react-icons/fa";
 
 

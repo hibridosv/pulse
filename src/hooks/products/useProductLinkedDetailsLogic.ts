@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
 import { Product } from '@/interfaces/products';
-import useProductLinkedStore from '@/stores/productLinkedStore';
+import useProductLinkedStore from '@/stores/products/productLinkedStore';
+import { useEffect } from 'react';
 
 
 

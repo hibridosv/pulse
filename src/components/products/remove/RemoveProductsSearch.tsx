@@ -2,8 +2,8 @@ import { SearchInput } from "@/components/Search";
 import { useProductsSearchLogic } from "@/hooks/products/useProductsSearchLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
-import productRemovedStore from "@/stores/productRemovedStore";
-import useProductStore from "@/stores/productStore";
+import productRemovedStore from "@/stores/products/productRemovedStore";
+import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 

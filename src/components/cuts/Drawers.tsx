@@ -1,11 +1,11 @@
 'use client';
 
+import { CashDrawer } from "@/interfaces/cashdrawers";
+import useCashDrawerStore from "@/stores/cashdrawer/cashdrawersStore";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import useCashDrawerStore from "@/stores/cashdrawersStore";
 import Image from "next/image";
-import { CashDrawer } from "@/interfaces/cashdrawers";
 import { SkeletonDrawers } from "../skeleton/SkeletonDrawers";
 
 
