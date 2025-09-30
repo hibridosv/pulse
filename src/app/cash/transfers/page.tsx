@@ -1,26 +1,20 @@
 'use client';
-import { ViewTitle } from "@/components/ViewTitle";
-import { useSession } from "next-auth/react";
-import { LoadingPage } from "@/components/LoadingPage";
 import { TransfersForm } from "@/components/cash/transfers/TransfersForm";
-import { Pagination } from "@/components/Pagination";
-import { usePagination } from "@/hooks/usePagination";
-import { useCashTransfersLogic } from "@/hooks/cash/useCashTransfersLogic";
 import { TransfersTable } from "@/components/cash/transfers/TransfersTable";
+import { Pagination } from "@/components/Pagination";
 import { ToasterMessage } from "@/components/toaster-message";
+import { ViewTitle } from "@/components/ViewTitle";
+import { useCashTransfersLogic } from "@/hooks/cash/useCashTransfersLogic";
+import { usePagination } from "@/hooks/usePagination";
 import cashTransferStore from "@/stores/cash/cashTransferStore";
 
 
 export default function Page() {
-  const { status } = useSession();
     const {currentPage, handlePageNumber} = usePagination("&page=1");
     useCashTransfersLogic(currentPage);
     const { transfers } = cashTransferStore();
 
 
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">

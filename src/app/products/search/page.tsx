@@ -1,20 +1,16 @@
 'use client';
 
-import { ViewTitle } from "@/components/ViewTitle";
-import { useSession } from "next-auth/react";
-import { LoadingPage } from "@/components/LoadingPage";
+import { ShowProductsTableLink } from "@/components/products/ShowProductsTableLink";
 import { SearchInput } from "@/components/Search";
-import { useSearchTerm } from "@/hooks/useSearchTerm";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { ViewTitle } from "@/components/ViewTitle";
 import { useProductLogic } from "@/hooks/products/useProductsLogic";
 import { usePagination } from "@/hooks/usePagination";
-import { useState } from "react";
+import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useProductStore from "@/stores/productStore";
-import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ShowProductsTableLink } from "@/components/products/ShowProductsTableLink";
 import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
-  const { data: session, status } = useSession();
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const sortBy = "-updated_at";
@@ -23,9 +19,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
 
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
+
 
   const getNameOfPage = (param: string | null): string => {
     switch(param) {

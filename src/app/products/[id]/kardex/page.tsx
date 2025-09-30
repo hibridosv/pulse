@@ -2,7 +2,7 @@
 
 import { Button, Preset } from "@/components/button/button";
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
-import { LoadingPage } from "@/components/LoadingPage";
+import { NothingHere } from "@/components/NothingHere";
 import { KardexDetailsModal } from "@/components/products/kardex/KardexDetailsModal";
 import { ShowKardexTable } from "@/components/products/kardex/ShowKardexTable";
 import { ViewTitle } from "@/components/ViewTitle";
@@ -11,26 +11,28 @@ import { urlConstructor } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const { data: session, status } = useSession();
   const { kardex, loadKardex, loading, product } = useProductStore();
   useKardexLogic(id);
   const { modals, closeModal } = useModalStore();
   const router = useRouter();
   const { getSelectedElement } = useTempSelectedElementStore();
 
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
+
   const handleFormSubmit = async (values: DateRangeValues) => { 
       let url = urlConstructor(values, `kardex/products/${id}`)
       await loadKardex(url);
   }
+
+  
+    if (!product && !loading) {
+      return <NothingHere text="Producto no encontrado." />;
+    }
+  
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">

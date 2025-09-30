@@ -1,29 +1,23 @@
 'use client';
-import { ViewTitle } from "@/components/ViewTitle";
-import { useSession } from "next-auth/react";
-import { LoadingPage } from "@/components/LoadingPage";
-import { HistoryTable } from "@/components/cash/history/HistoryTable";
-import { useCashHistoryLogic } from "@/hooks/cash/useCashHistoryLogic";
-import cashTransferStore from "@/stores/cash/cashTransferStore";
-import { usePagination } from "@/hooks/usePagination";
 import { Pagination } from "@/components/Pagination";
-import { CashTotal } from "@/components/cash/history/CashTotal";
-import { ToasterMessage } from "@/components/toaster-message";
-import { AccountsTransfersModal } from "@/components/cash/accounts/AccountsTransfersModal";
-import useModalStore from "@/stores/modalStorage";
+import { ViewTitle } from "@/components/ViewTitle";
 import { Button, Preset } from "@/components/button/button";
+import { AccountsTransfersModal } from "@/components/cash/accounts/AccountsTransfersModal";
+import { CashTotal } from "@/components/cash/history/CashTotal";
+import { HistoryTable } from "@/components/cash/history/HistoryTable";
+import { ToasterMessage } from "@/components/toaster-message";
+import { useCashHistoryLogic } from "@/hooks/cash/useCashHistoryLogic";
+import { usePagination } from "@/hooks/usePagination";
+import cashTransferStore from "@/stores/cash/cashTransferStore";
+import useModalStore from "@/stores/modalStorage";
 
 
 export default function Page() {
-  const { status } = useSession();
     const {currentPage, handlePageNumber} = usePagination("&page=1");
     useCashHistoryLogic(currentPage);
     const { history } = cashTransferStore();
     const { modals, openModal, closeModal } = useModalStore();
 
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">

@@ -1,25 +1,22 @@
 'use client';
 
 import { Pagination } from "@/components/Pagination";
+import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
+import { ShowLowStockStatistics } from "@/components/products/ShowLowStockStatistics";
 import { ShowProductsTable } from "@/components/products/ShowProductsTable";
 import { SearchInput } from "@/components/Search";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
+import { useLinkedProductsLogic } from "@/hooks/products/useLinkedProductsLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
-import useProductStore from "@/stores/productStore";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import useModalStore from "@/stores/modalStorage";
-import { LoadingPage } from "@/components/LoadingPage";
-import { ShowLowStockStatistics } from "@/components/products/ShowLowStockStatistics";
-import { useLinkedProductsLogic } from "@/hooks/products/useLinkedProductsLogic";
+import useProductStore from "@/stores/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { useState } from "react";
 
 export default function Page() {
-  const { data: session, status } = useSession();
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
   const [sortBy, setSortBy] = useState("-cod");
@@ -29,9 +26,6 @@ export default function Page() {
   const { getSelectedElement } = useTempSelectedElementStore();
 
 
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">

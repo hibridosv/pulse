@@ -1,15 +1,15 @@
 'use client';
 
-import { useSession, signIn } from "next-auth/react";
+import { LoadingPage } from "@/components/LoadingPage";
+import useConfigStore from "@/stores/configStore";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { LuLoader } from "react-icons/lu";
-import { LoadingPage } from "@/components/LoadingPage";
-import useConfigStore from "@/stores/configStore";
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

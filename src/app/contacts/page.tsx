@@ -1,29 +1,26 @@
 'use client';
+import { Button, Preset } from "@/components/button/button";
+import { AddContactModal } from "@/components/contacs/AddContactModal";
+import { ContactsTable } from "@/components/contacs/ContactsTable";
+import { getParamString } from "@/components/contacs/utils";
+import { ViewContactModal } from "@/components/contacs/ViewContactModal";
+import { DeleteModal } from "@/components/DeleteModal";
+import { Pagination } from "@/components/Pagination";
+import { SearchInput } from "@/components/Search";
+import { ShowTotal } from "@/components/ShowTotal";
+import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
-import { useSession } from "next-auth/react";
-import { LoadingPage } from "@/components/LoadingPage";
 import { useContactsLogic } from "@/hooks/contacts/useContactsLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
-import { SearchInput } from "@/components/Search";
-import { ContactsTable } from "@/components/contacs/ContactsTable";
-import { Pagination } from "@/components/Pagination";
 import useContactStore from "@/stores/ContactStore";
-import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
-import { ViewContactModal } from "@/components/contacs/ViewContactModal";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useModalStore from "@/stores/modalStorage";
-import { AddContactModal } from "@/components/contacs/AddContactModal";
-import { Button, Preset } from "@/components/button/button";
-import { DeleteModal } from "@/components/DeleteModal";
-import { BiPlusCircle } from "react-icons/bi";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useSearchParams } from 'next/navigation';
-import { getParamString } from "@/components/contacs/utils";
+import { BiPlusCircle } from "react-icons/bi";
 
 
 export default function Page() {
-  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
   const {currentPage, handlePageNumber} = usePagination("&page=1");
@@ -33,10 +30,6 @@ export default function Page() {
   const { getSelectedElement, clearSelectedElement } =  useTempSelectedElementStore();
   const { modals, closeModal, openModal} = useModalStore();
  
-
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
 
 
   return (

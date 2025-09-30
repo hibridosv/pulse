@@ -1,8 +1,9 @@
 'use client'
 
 import { Button, Preset } from "@/components/button/button";
-import { LoadingPage } from "@/components/LoadingPage";
+import { NothingHere } from "@/components/NothingHere";
 import { MultiPriceEdit } from "@/components/products/multi-price/MultiPriceEdit";
+import { ProductLinked } from "@/components/products/ProductLinked";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductEditLogic } from "@/hooks/products/useProductEditLogic";
@@ -11,14 +12,11 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/productStore";
 import useStateStore from "@/stores/stateStorage";
-import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { ProductLinked } from "@/components/products/ProductLinked";
+import { useForm } from "react-hook-form";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const { data: session, status } = useSession();
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
   const { subCategories, brands, quantityUnits, providers, locations } = useProductNewLogic();
@@ -29,12 +27,9 @@ export default function Page({ params }: { params: { id: string } }) {
   const { onSubmit } = useProductEditLogic(id, setValue);
   const router = useRouter();
 
-  if (status === "loading" || loadingProduct) {
-    return <LoadingPage />;
-  }
 
-  if (!product) {
-    return <div className="p-4">Producto no encontrado.</div>;
+  if (!product && !loadingProduct) {
+    return <NothingHere text="Producto no encontrado." />;
   }
 
   return (

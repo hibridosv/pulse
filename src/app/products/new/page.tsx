@@ -1,26 +1,23 @@
 'use client';
 
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
-import { LoadingPage } from "@/components/LoadingPage";
-import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
-import useConfigStore from "@/stores/configStore";
 import { Button, Preset } from "@/components/button/button";
-import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
-import useProductStore from "@/stores/productStore";
-import SkeletonTable from "@/components/skeleton/skeleton-table";
-import useStateStore from "@/stores/stateStorage";
-import { ShowProductsNewTable } from "@/components/products/ShowProductsNewTable";
-import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
-import useModalStore from "@/stores/modalStorage";
 import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
+import { ShowProductsNewTable } from "@/components/products/ShowProductsNewTable";
 import { ProductsCategoriesModal } from "@/components/products/new/ProductsCategoriesModal";
+import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { ToasterMessage } from "@/components/toaster-message";
+import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
+import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
+import useProductStore from "@/stores/productStore";
+import useStateStore from "@/stores/stateStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { useForm } from "react-hook-form";
 
 
 export default function Page() {
-  const { data: session, status } = useSession();
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
   const { onSubmit, subCategories, brands, quantityUnits, providers, locations, products } = useProductNewLogic();
@@ -30,10 +27,6 @@ export default function Page() {
   const { modals, closeModal, openModal } = useModalStore();
   const lastProducts = products?.data;
   const { getSelectedElement } = useTempSelectedElementStore();
-
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
 
 
   return (

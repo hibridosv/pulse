@@ -2,30 +2,27 @@
 
 import { LinksList } from "@/components/button/LinkList";
 import { Pagination } from "@/components/Pagination";
+import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import { ShowProductsStatistics } from "@/components/products/ShowProductsStatistics";
 import { ShowProductsTable } from "@/components/products/ShowProductsTable";
 import { SearchInput } from "@/components/Search";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
+import { useProductLogic } from "@/hooks/products/useProductsLogic";
 import { useSetLinkLogic } from "@/hooks/products/useSetLinksLogic";
 import { useGetRequest } from "@/hooks/request/useGetRequest";
 import { usePagination } from "@/hooks/usePagination";
-import { useProductLogic } from "@/hooks/products/useProductsLogic";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import { permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/productStore";
-import { useSession } from "next-auth/react";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
-import useModalStore from "@/stores/modalStorage";
-import { LoadingPage } from "@/components/LoadingPage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export default function Page() {
-  const { data: session, status } = useSession();
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
   const [sortBy, setSortBy] = useState("-cod");
@@ -38,9 +35,6 @@ export default function Page() {
   const { getSelectedElement } = useTempSelectedElementStore();
 
 
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">

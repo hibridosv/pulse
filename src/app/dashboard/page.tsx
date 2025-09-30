@@ -1,21 +1,16 @@
 'use client';
 
-import { useSession, signOut } from "next-auth/react";
-import { LoadingPage } from "@/components/LoadingPage";
-import { useConfigLogic } from "@/hooks/config/useConfigLogic";
 import { ViewTitle } from "@/components/ViewTitle";
-import { PrincipalInfo } from "@/components/dashboard/PrincipalInfo";
-import { CharBarWeek } from "@/components/dashboard/CharBarWeek";
 import { CharBarDay } from "@/components/dashboard/CharBarDay";
+import { CharBarWeek } from "@/components/dashboard/CharBarWeek";
+import { PrincipalInfo } from "@/components/dashboard/PrincipalInfo";
+import { useConfigLogic } from "@/hooks/config/useConfigLogic";
 import { useDashBoardLogic } from "@/hooks/config/useDashBoardLogic";
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession();
   useConfigLogic(); // carga todas las configuraciones necesarias
   useDashBoardLogic();
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
+
 
   return (
           <div>

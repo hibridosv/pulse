@@ -1,25 +1,22 @@
 'use client'
 
 import { Button, Preset } from "@/components/button/button";
-import { LoadingPage } from "@/components/LoadingPage";
 import { ChangeLotModal } from "@/components/products/remove/ChangeLotModal";
 import { LastRegistersTable } from "@/components/products/remove/LastRegistersTable";
 import { LotDetailsModal } from "@/components/products/remove/LotDetailsModal";
 import { ProductsRegistersTable } from "@/components/products/remove/ProductsRegistersTable";
-import { RemoveProductsSearch } from "@/components/products/remove/RemoveProductsSearch";
 import { RemoveInitialForm } from "@/components/products/remove/RemoveInitialForm";
 import { RemoveProductsForm } from "@/components/products/remove/RemoveProductsForm";
+import { RemoveProductsSearch } from "@/components/products/remove/RemoveProductsSearch";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductRemoveLogic } from "@/hooks/products/useProductRemoveLogic";
 import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/productRemovedStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import { useSession } from "next-auth/react";
 
 
 export default function Page() {
-  const { data: session, status } = useSession();
   useProductRemoveLogic();
     const { loading, product, deleting, deletePrincipal, savePrincipal } = productRemovedStore();
     const { modals, closeModal } = useModalStore();
@@ -27,9 +24,6 @@ export default function Page() {
     const isActive = product?.failures && product.failures.filter((fai: any) => fai.status == 1).length > 0;
 
 
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
