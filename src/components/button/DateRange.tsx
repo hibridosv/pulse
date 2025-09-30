@@ -1,27 +1,47 @@
 'use client'
 
+import { formatDate } from '@/lib/date-formats';
+import { DateTime } from 'luxon';
 import React, { useState } from 'react';
 import { Button, Preset } from '../button/button';
-import { DateTime } from 'luxon';
-import { formatDate } from '@/lib/date-formats';
 
 export type DateRangeValues = {
   option?: string;
   initialDate?: string | any;
   finalDate?: string | any;
-  product_id?: string | any;
+  [key: string]: any; // Index signature for additional fields
 };
+
+export type SelectOption = {
+    value: string | number;
+    label: string;
+  };
+
+export type AdditionalField = {
+    name: string;
+    label: string;
+    type: 'text' | 'number' | 'search' | 'select';
+    placeholder?: string;
+    options?: SelectOption[];
+  };
 
 type DateRangeProps = {
   onSubmit: (values: DateRangeValues) => void;
   loading?: boolean;
+  additionalFields?: AdditionalField[];
 };
 
-export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false }) => {
+export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false, additionalFields }) => {
   const [option, setOption] = useState('1');
   const [initialDate, setInitialDate] = useState('');
   const [finalDate, setFinalDate] = useState('');
   const [dateValues, setDateValues] = useState<DateRangeValues>({});
+  const [additionalData, setAdditionalData] = useState<{[key: string]: any}>({});
+
+  const handleAdditionalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setAdditionalData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +55,7 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false 
       option: option,
       initialDate: option == '1' ? initialDate ? `${initialDate} 00:00:00` : `${formatedDate} 00:00:00` : initialDate ? `${initialDate} 00:00:00` : `${startOfMonth.toISODate()} 00:00:00`,
       finalDate: option == '2' ? finalDate ? `${finalDate} 23:59:59` : `${endOfMonth.toISODate()} 23:59:59` : "",
+      ...additionalData
     };
 
     setDateValues(values)
@@ -94,6 +115,38 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false 
             disabled={option != '2'}
           />
       </div>)}
+
+      {additionalFields && additionalFields.map(field => (
+        <div className="w-full px-3 mb-2" key={field.name}>
+            <label htmlFor={field.name} className="input-label">{field.label}</label>
+            {field.type === 'select' ? (
+                <select
+                    className="input-select"
+                    id={field.name}
+                    name={field.name}
+                    onChange={handleAdditionalChange}
+                    value={additionalData[field.name] || ''}
+                >
+                    {field.placeholder && <option value="">{field.placeholder}</option>}
+                    {field.options?.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            ) : (
+                <input
+                    className="input"
+                    type={field.type}
+                    id={field.name}
+                    name={field.name}
+                    placeholder={field.placeholder || ''}
+                    onChange={handleAdditionalChange}
+                    value={additionalData[field.name] || ''}
+                />
+            )}
+        </div>
+        ))}
 
       <div className="flex justify-center">
        <Button text='Aplicar' type="submit" preset={loading ? Preset.saving : Preset.save} disabled={loading} />
