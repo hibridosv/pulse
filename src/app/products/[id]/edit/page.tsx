@@ -53,7 +53,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 <label htmlFor="description" className="input-label">Descripción</label>
                 <input type="text" id="description" {...register("description", { required: true })} className="input" />
               </div>
-              { product &&  product?.product_type == 1 && (<>
+              { product.product_type == 1 && (<>
               <div className="w-full md:w-1/2 px-3 mb-2">
                 <label htmlFor="quantity" className="input-label">Cantidad</label>
                 <input type="number" readOnly id="quantity" {...register("quantity", { required: true })} className="input-disabled" />
@@ -73,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
                   <option  value={0}> Exento </option>
                 </select>
               </div>
-              { product && product.product_type == 1 && (<>
+              { product.product_type == 1 && (<>
               <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="category_id" className="input-label clickeable" onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
                 <select id="category_id" {...register("category_id")} className="input-select">
