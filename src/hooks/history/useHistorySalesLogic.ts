@@ -1,12 +1,42 @@
-import cashAccountStore from '@/stores/cash/cashAccountStore';
-import { useEffect } from 'react';
+import { DateRangeValues } from '@/components/button/DateRange';
+import { urlConstructor } from '@/lib/utils';
+import { getServices } from '@/services/services';
+import useStateStore from '@/stores/stateStorage';
+import { DateTime } from 'luxon';
+import { useCallback, useEffect, useState } from 'react';
+import { useSetLinkLogic } from '../products/useSetLinksLogic';
 
 
-export function useHistorySalesLogic() {
- const { loadAccount } = cashAccountStore();
+export function useHistorySalesLogic(url: string, linkUrl: string) {
+    const [ history, setHistory ] = useState(null);
+    const { openLoading, closeLoading, loading } = useStateStore()
+    const { links, addLink} = useSetLinkLogic()
 
-    useEffect(() => {
-        loadAccount(`cash/accounts?sort=-created_at&filterWhere[status]==1`);
-    }, [loadAccount]);
+
+    const handleGet = useCallback(async (data: DateRangeValues, url: string, linkUrl: string) => {
+        openLoading("history");
+        try {
+            let urlScoped = urlConstructor(data, url);
+            const response = await getServices(urlScoped);
+            setHistory(response.data.data);
+            addLink(links, data, linkUrl);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            closeLoading("history");
+        }
+    }, [addLink, closeLoading, links, openLoading]);
+
+  useEffect(() => {
+        (async () => { 
+        const actualDate = DateTime.now();
+        const formatedDate = actualDate.toFormat('yyyy-MM-dd');
+        await handleGet({option: "1", initialDate: `${formatedDate} 00:00:00`}, url, linkUrl)
+        })();
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [url, linkUrl, handleGet]);
+    
+
+  return { history, handleGet, loading, links }
 
 }
