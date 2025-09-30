@@ -42,7 +42,7 @@ export function ContactsTable() {
             <td className="px-1 py-1 flex justify-center">
             <Dropdown label={<FiSettings size={18} /> }>
                 <DropdownItem onClick={() => { setSelectedElement('contactDetails', record); openModal('contactDetails'); }}>Ver Contacto</DropdownItem>
-                <DropdownItem onClick={() => { setSelectedElement('contactEdit', record); openModal('contactEdit'); }}>Editar</DropdownItem>
+                <DropdownItem onClick={() => { setSelectedElement('contactAdd', record); openModal('contactAdd'); }}>Editar</DropdownItem>
                 <DropdownDivider />
                 <DropdownItem onClick={() => { setSelectedElement('deleteContact', record); openModal('deleteContact'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
             </Dropdown> 

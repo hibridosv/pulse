@@ -19,9 +19,6 @@ export function ContactDetailsSV(props: ContactDetailsSVPropd) {
 
   if (!isShow) return null;
 
-  console.log("departaments", departaments);
-  console.log("countries", countries);
-
 
   return (
     <div className="flex flex-col gap-2"> 

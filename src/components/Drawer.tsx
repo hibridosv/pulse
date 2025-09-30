@@ -57,10 +57,10 @@ const menuItems: MenuItem[] = [
     label: "Directorio", icon: <BiUserPin className="mt-1 mr-2" />,
     children: [
       { label: "Contactos", href: "/contacts" },
-      { label: "Clientes", href: "/contacts/customers" },
-      { label: "Repartidores", href: "/contacts/drivers" },
-      { label: "Proveedores", href: "/contacts/suppliers" },
-      { label: "Referidos", href: "/contacts/referrals" },
+      { label: "Clientes", href: "/contacts?page=customers" },
+      { label: "Repartidores", href: "/contacts?page=drivers" },
+      { label: "Proveedores", href: "/contacts?page=suppliers" },
+      { label: "Referidos", href: "/contacts?page=referrals" },
     ],
   },
   {

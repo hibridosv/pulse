@@ -1,15 +1,15 @@
-import { BiCheckCircle } from "react-icons/bi";
 import useConfigStore from "@/stores/configStore";
-import { formatDuiWithAll, getCountryNameByCode, getDepartmentNameById, getMunicipioNameById } from "@/lib/utils";
-import { formatDateAsDMY } from "@/lib/date-formats";
 import { useDepartaments } from "@/hooks/locations/useDepartaments";
 import { useCountries } from "@/hooks/locations/useCountries";
 import { Contact } from "@/interfaces/contact";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, Preset } from "../button/button";
-import { useState } from "react";
 import { useTownByDepartament } from "@/hooks/locations/useTownByDepartaments";
-import { Switch } from "../button/Switch";
+import { useContactsAddLogic } from "@/hooks/contacts/useContactsAddLogic";
+import useContactStore from "@/stores/ContactStore";
+import useUserStore from "@/stores/UserStore";
+import { useSearchParams } from "next/navigation";
+import { getParamString } from "./utils";
 
 export interface ContactAddSVPropd {
   isShow: boolean;
@@ -19,25 +19,23 @@ export interface ContactAddSVPropd {
 export function ContactAddSV(props: ContactAddSVPropd) {
   const { isShow, record } = props;
   const { system, activeConfig } = useConfigStore();
+  const searchParams = useSearchParams();
+  const pageParam = searchParams.get('page');
   const { register, handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm();
   const { departaments } = useDepartaments();
   const { countries } = useCountries();
   let selectDepartament =  (watch("departament_doc")) ? watch("departament_doc") : departaments && departaments.departamentos[0].id;
   const { townsExtracted } = useTownByDepartament(departaments, selectDepartament);
   let regex =  (watch("country") == "9300") ? "^([0-9]{8}-[0-9]{1}|[0-9]{4}-[0-9]{6}-[0-9]{3}-[0-9]{1})?$" : "^[a-zA-Z0-9-]+$";
-
+  const { onSubmit } = useContactsAddLogic(isShow, record, setValue, departaments, countries, townsExtracted,  getParamString(pageParam));
+  const { saving } = useContactStore();
+  const { users } = useUserStore();
 
   if (!isShow) return null;
 
-//   console.log("townsExtracted", townsExtracted);
-  console.log("countries", countries);
-
-  const isSending = false;
-  
-
   return (
     <div className="p-2"> 
-        <form onSubmit={handleSubmit(console.log)} className="w-full">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
               <div className="flex flex-wrap -mx-3">
 
             <div className="w-full md:w-full px-3 mb-2 flex justify-between">
@@ -53,7 +51,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
 
             <div className="w-full md:w-full px-3 mb-2">
                 <label htmlFor="name" className="input-label">Nombre completo *</label>
-                <input type="text" id="name" {...register("name")} 
+                <input type="text" id="name" {...register("name", { required: true })} 
                 onBlur={(e) => setValue('taxpayer', e.target.value)} className="input" />
             </div>
 
@@ -182,7 +180,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                     <label htmlFor="employee_id" className="input-label"> Asignar Vendedor </label>
                     <select defaultValue={record?.employee?.name ? record?.employee?.id : ""} id="employee_id" {...register("employee_id")} className="input-select">
                         <option value="">Seleccionar...</option>
-                        {/* {users?.data?.map((value: any) => <option key={value.id} value={value.id}> {value.name}</option>)} */}
+                        {users?.map((value: any) => <option key={value.id} value={value.id}> {value.name}</option>)}
                     </select>
                     </div>
                   }
@@ -192,7 +190,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
 
 
               <div className="flex justify-center mt-4">
-              <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
+              <Button type="submit" disabled={saving} preset={saving ? Preset.saving : Preset.save} />
               </div>
 
             </form>

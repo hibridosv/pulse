@@ -114,3 +114,19 @@ export const getMunicipiosByDepartamentoId = (data: any, departamentoId: string)
   }
   return [];
 };
+
+
+export function formatDocument(cadena: string) {
+  if (!cadena) return;
+  return cadena.replace(/-/g, '');
+}
+
+
+export function formatNumberPhone(num: any) {
+  if (!num || num.length == 0) return;
+  let numStr = num.toString();
+  if (numStr.length !== 8) {
+      return num
+  }
+  return `${numStr.slice(0, 4)}-${numStr.slice(4, 8)}`;
+}
