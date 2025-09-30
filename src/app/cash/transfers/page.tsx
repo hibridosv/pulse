@@ -12,11 +12,10 @@ import cashTransferStore from "@/stores/cash/cashTransferStore";
 
 
 export default function Page() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
     const {currentPage, handlePageNumber} = usePagination("&page=1");
     useCashTransfersLogic(currentPage);
     const { transfers } = cashTransferStore();
-    console.log(transfers);
 
 
   if (status === "loading") {

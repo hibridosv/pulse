@@ -4,8 +4,6 @@ import { useSession } from "next-auth/react";
 import { LoadingPage } from "@/components/LoadingPage";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useCashDrawersLogic } from "@/hooks/cuts/useCashDrawersLogic";
-import useCashDrawerStore from "@/stores/cashdrawersStore";
-import Image from "next/image";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import { CashdrawerModal } from "@/components/cashdrawer/CashDrawerModal";
@@ -17,10 +15,8 @@ import useCutStore from "@/stores/cutStore";
 import { ShowCutsTable } from "@/components/cuts/ShowCutsTable";
 import { usePagination } from "@/hooks/usePagination";
 import { Pagination } from "@/components/Pagination";
-import { CashDrawer } from "@/interfaces/cashdrawers";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { FaUser, FaUsers } from "react-icons/fa";
-import { Loader } from "@/components/Loader";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { Drawers } from "@/components/cuts/Drawers";
 
@@ -29,8 +25,8 @@ export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   useCashDrawersLogic()
   const { cuts, loading } = useCutStore();
-  const { cashdrawer: cashDrawerActive, user } = useConfigStore();
-  const { modals, openModal, closeModal } = useModalStore();
+  const { user } = useConfigStore();
+  const { modals, closeModal } = useModalStore();
   const [showAll, setShowAll] = useState(true);
   useCutsLogic(`cuts?included=employee,cashdrawer${!showAll && `&filterWhere[employee_id]==${user?.id}`}&sort=-updated_at&perPage=10${currentPage}`, currentPage, showAll);
   const { getSelectedElement } = useTempSelectedElementStore();

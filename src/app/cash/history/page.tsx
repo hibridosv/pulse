@@ -15,7 +15,7 @@ import { Button, Preset } from "@/components/button/button";
 
 
 export default function Page() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
     const {currentPage, handlePageNumber} = usePagination("&page=1");
     useCashHistoryLogic(currentPage);
     const { history } = cashTransferStore();

@@ -1,3 +1,4 @@
+'use client';
 import useConfigStore from "@/stores/configStore";
 import { useDepartaments } from "@/hooks/locations/useDepartaments";
 import { useCountries } from "@/hooks/locations/useCountries";

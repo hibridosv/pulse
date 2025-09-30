@@ -9,6 +9,7 @@ import Image from "next/image";
 import { BiFingerprint, BiHelpCircle, BiHistory, BiLinkAlt, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
 import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
 import { GrConfigure } from "react-icons/gr";
+import useConfigStore from "@/stores/configStore";
 
 // --- Data Structure ---
 interface MenuItem {
@@ -181,7 +182,9 @@ interface DrawerProps {
 
 const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
   const { theme, setTheme } = useThemeStore();
+  const { tenant } = useConfigStore();
   if (!isOpen) return null;
+
 
   return (
     <div
@@ -200,12 +203,14 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         <div className="relative p-4 border-b border-white/10 flex-shrink-0 bg-primary/95 z-10">
           <div className="w-full h-10">
             <Image
-              src="/img/logo_hibrido_s.png"
-              alt="Logo Hibrido SV"
-              fill
-              style={{ objectFit: 'contain' }}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+                  src={`/img/${[1, 2].includes(tenant?.system) 
+                    ? 'logo_hibrido_s' 
+                    : 'logo_latam_s'}.png`}
+                  alt="Logo Hibrido SV"
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
           </div>
           <button onClick={onClose} className="absolute top-2 right-2 z-10 text-text-inverted/70 hover:text-text-inverted">
             <IoClose size={24} />

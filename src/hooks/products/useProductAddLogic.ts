@@ -17,7 +17,7 @@ export function useProductAddLogic() {
         loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]=1&perPage=10`);
         loadExpensesCategories(`cash/categories`);
         loadAccount(`cash/accounts?sort=-created_at&filterWhere[status]==1`);
-    }, [loadProduct, loadProducts]);
+    }, [loadProduct, loadProducts, loadExpensesCategories, loadAccount]);
 
 
     useEffect(() => {
