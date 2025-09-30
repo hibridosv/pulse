@@ -1,15 +1,15 @@
 'use client';
-import { FC, ReactElement, useState } from "react";
-import Link from 'next/link';
-import { signOut } from "next-auth/react";
-import { IoClose } from "react-icons/io5";
-import { FaCashRegister, FaChevronDown, FaFileInvoice, FaSignOutAlt, FaTools } from "react-icons/fa";
-import { useThemeStore } from "@/stores/themeStore";
-import Image from "next/image";
-import { BiFingerprint, BiHelpCircle, BiHistory, BiLinkAlt, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
-import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
-import { GrConfigure } from "react-icons/gr";
 import useConfigStore from "@/stores/configStore";
+import { useThemeStore } from "@/stores/themeStore";
+import { signOut } from "next-auth/react";
+import Image from "next/image";
+import Link from 'next/link';
+import { FC, ReactElement, useState } from "react";
+import { BiFingerprint, BiHelpCircle, BiHistory, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
+import { FaCashRegister, FaChevronDown, FaFileInvoice, FaSignOutAlt, FaTools } from "react-icons/fa";
+import { GrConfigure } from "react-icons/gr";
+import { IoClose } from "react-icons/io5";
+import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
 
 // --- Data Structure ---
 interface MenuItem {
@@ -57,11 +57,11 @@ const menuItems: MenuItem[] = [
   {
     label: "Directorio", icon: <BiUserPin className="mt-1 mr-2" />,
     children: [
-      { label: "Contactos", href: "/contacts" },
-      { label: "Clientes", href: "/contacts?page=customers" },
-      { label: "Repartidores", href: "/contacts?page=drivers" },
-      { label: "Proveedores", href: "/contacts?page=suppliers" },
-      { label: "Referidos", href: "/contacts?page=referrals" },
+      { label: "Contactos", href: "/contacts/search" },
+      { label: "Clientes", href: "/contacts/search?page=customers" },
+      { label: "Repartidores", href: "/contacts/search?page=drivers" },
+      { label: "Proveedores", href: "/contacts/search?page=suppliers" },
+      { label: "Referidos", href: "/contacts/search?page=referrals" },
     ],
   },
   {

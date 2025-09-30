@@ -1,10 +1,10 @@
-import { BiCheckCircle } from "react-icons/bi";
-import useConfigStore from "@/stores/configStore";
-import { formatDuiWithAll, getCountryNameByCode, getDepartmentNameById, getMunicipioNameById } from "@/lib/utils";
-import { formatDateAsDMY } from "@/lib/date-formats";
-import { useDepartaments } from "@/hooks/locations/useDepartaments";
 import { useCountries } from "@/hooks/locations/useCountries";
+import { useDepartaments } from "@/hooks/locations/useDepartaments";
 import { Contact } from "@/interfaces/contact";
+import { formatDateAsDMY } from "@/lib/date-formats";
+import { formatDuiWithAll, getCountryNameByCode, getDepartmentNameById, getMunicipioNameById } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
+import { BiCheckCircle } from "react-icons/bi";
 
 export interface ContactDetailsSVPropd {
   isShow: boolean;
@@ -160,7 +160,7 @@ export function ContactDetailsSV(props: ContactDetailsSVPropd) {
             </div>
           )}
 
-          {activeConfig.includes("contact-country") && record?.country && (
+          {activeConfig && activeConfig.includes("contact-country") && record?.country && (
             <div>
               <div className="text-text-muted text-xs uppercase font-medium">Pais</div>
               <div className="text-text-base text-sm font-semibold">{getCountryNameByCode(`${record?.country}`, countries)}</div>

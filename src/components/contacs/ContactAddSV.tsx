@@ -1,15 +1,15 @@
 'use client';
-import useConfigStore from "@/stores/configStore";
-import { useDepartaments } from "@/hooks/locations/useDepartaments";
-import { useCountries } from "@/hooks/locations/useCountries";
-import { Contact } from "@/interfaces/contact";
-import { useForm } from "react-hook-form";
-import { Button, Preset } from "../button/button";
-import { useTownByDepartament } from "@/hooks/locations/useTownByDepartaments";
 import { useContactsAddLogic } from "@/hooks/contacts/useContactsAddLogic";
+import { useCountries } from "@/hooks/locations/useCountries";
+import { useDepartaments } from "@/hooks/locations/useDepartaments";
+import { useTownByDepartament } from "@/hooks/locations/useTownByDepartaments";
+import { Contact } from "@/interfaces/contact";
+import useConfigStore from "@/stores/configStore";
 import useContactStore from "@/stores/ContactStore";
 import useUserStore from "@/stores/UserStore";
 import { useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { Button, Preset } from "../button/button";
 import { getParamString } from "./utils";
 
 export interface ContactAddSVPropd {
@@ -57,7 +57,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
             </div>
 
             {
-              activeConfig.includes("contact-code") && 
+              activeConfig &&  activeConfig.includes("contact-code") && 
               <div className="w-full md:w-full px-3 mb-2">
                   <label htmlFor="code" className="input-label">{ system?.contact_search ?? "Código"}</label>
                   <input type="text" id="code" {...register("code")} className="input" />
@@ -141,7 +141,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                     </select>
                     </div>
 
-                    <div className={`w-full ${activeConfig.includes("contact-excluded") ? 'md:w-1/2' : 'md:w-full'} px-3 mb-2`}>
+                    <div className={`w-full ${activeConfig && activeConfig.includes("contact-excluded") ? 'md:w-1/2' : 'md:w-full'} px-3 mb-2`}>
                     <label htmlFor="taxpayer_type" className="input-label"> Tipo de contribuyente </label>
                     <select defaultValue={1} id="taxpayer_type" {...register("taxpayer_type")} className="input-select">
                         <option value="1">CONTRIBUYENTE</option>
@@ -149,7 +149,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                     </select>
                     </div>
 
-                  { activeConfig.includes("contact-excluded") && 
+                  {activeConfig && activeConfig.includes("contact-excluded") && 
                     <div className="w-full md:w-1/2 px-3 mb-2 flex justify-between">
                       <div>
                     <input className="bg-lime-600 rounded-full" type="checkbox" {...register("excluded", {})} /> 
@@ -164,7 +164,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                     </div>
                   }
 
-                  { activeConfig.includes("contact-country") && countries &&
+                  {activeConfig && activeConfig.includes("contact-country") && countries &&
                     <div className="w-full md:w-full px-3 mb-2">
                       <label htmlFor="country" className="input-label"> Seleccione un pais </label>
                       <select defaultValue={"9300"} id="country" {...register("country")} className="input-select">
@@ -176,7 +176,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                   }
 
                   
-                  { activeConfig.includes("contact-user-seller") &&
+                  {activeConfig && activeConfig.includes("contact-user-seller") &&
                     <div className={`w-full px-3 mb-2`}>
                     <label htmlFor="employee_id" className="input-label"> Asignar Vendedor </label>
                     <select defaultValue={record?.employee?.name ? record?.employee?.id : ""} id="employee_id" {...register("employee_id")} className="input-select">
