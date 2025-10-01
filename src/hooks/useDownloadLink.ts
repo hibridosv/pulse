@@ -12,6 +12,7 @@ export function useDownloadLink() {
     const [links, setLinks] = useState<LinkUrls[]>([]);
 
     const addLink = useCallback((data: DateRangeValues, url: string, params?:any, maxLinks=3, nameLink="Descargar Documento" )=>{
+      if (!remoteUrl) return;
         const getParams = params ? params.map((param: any) => `&${param.name}=${param.value}`).join('') : '';
         const newUrl = `${remoteUrl}/download/${url}?${data.option ? `option=${data.option}` : ``}${data.initialDate ? `&initialDate=${data.initialDate}` : ``}${data.finalDate ? `&finalDate=${data.finalDate}` : ``}${getParams}` 
         
