@@ -28,7 +28,7 @@ export default function Page() {
             <DateRange onSubmit={handleFormSubmit} loading={isLoading} />
           </div>
           <div className="p-4">
-            <LinksList links={links} separator="?" text="DESCARGAS" />
+            <LinksList links={links} text="DESCARGAS" />
           </div>
     </div> 
 </div>
