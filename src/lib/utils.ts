@@ -130,3 +130,17 @@ export function formatNumberPhone(num: any) {
   }
   return `${numStr.slice(0, 4)}-${numStr.slice(4, 8)}`;
 }
+
+
+/// suma una item de un arreglo
+export const getTotalOfItem = (datos: any, item: string): any => {
+  let totalSuma = 0;
+
+  datos?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty(item)) {
+      totalSuma += elemento[item];
+    }
+  });
+
+  return totalSuma;
+}

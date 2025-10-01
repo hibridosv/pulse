@@ -2,7 +2,7 @@
 
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { numberToMoney } from "@/lib/utils";
+import { getTotalOfItem, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 
 
@@ -63,6 +63,11 @@ export function HistorySalesTable(props: HistorySalesTableI) {
             {listItems}
           </tbody>
         </table>
+          <div className="uppercase shadow-lg border-x-2 mx-4 mt-4 mb-4 p-4 bg-white rounded-lg">
+            <div>Cantidad de productos: <span className=" font-semibold">{ getTotalOfItem(records, "quantity_sum") }</span></div>
+            <div>Total descuentos: <span className=" font-semibold">{ numberToMoney(getTotalOfItem(records, "discount_sum"), system) }</span></div>
+            <div>Total de ventas: <span className=" font-semibold">{ numberToMoney(getTotalOfItem(records, "total_sum"), system) }</span></div>
+        </div>
       </div>
     </div>
   );
