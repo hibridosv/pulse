@@ -29,10 +29,10 @@ export function LinksList(props: LinksListProps) {
         <h3 className="text-base font-semibold text-text-base">{text}</h3>
       </div>
       <ul className="divide-y divide-bg-subtle">
-        {links.map((item) => {
+        {links.map((item, key) => {
           if (item.name && item.link) {
             return (
-              <li key={item.name} className="clickeable">
+              <li key={key} className="clickeable">
                 <a
                   href={`${item.link}${separator}code=${md5(dateToNumberValidate())}`}
                   target="_blank"

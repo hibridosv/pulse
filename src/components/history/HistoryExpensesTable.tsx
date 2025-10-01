@@ -40,7 +40,7 @@ export function HistoryExpensesTable(props: HistoryExpensesTableI) {
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
         { record?.category?.name ? record?.category?.name : "N/A" }
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         <div className="font-bold">{ record?.name }</div>
         <span className="small">{ record?.description }</span>
       </td>
