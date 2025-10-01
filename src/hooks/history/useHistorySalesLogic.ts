@@ -19,13 +19,13 @@ export function useHistorySalesLogic(url: string, linkUrl: string) {
             let urlScoped = urlConstructor(data, url);
             const response = await getServices(urlScoped);
             setHistory(response.data.data);
-            addLink(links, data, linkUrl);
+            addLink(data, linkUrl);
         } catch (error) {
             console.error(error);
         } finally {
             closeLoading("history");
         }
-    }, [addLink, closeLoading, links, openLoading]);
+    }, [addLink, closeLoading, openLoading]);
 
   useEffect(() => {
         (async () => { 
