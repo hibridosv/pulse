@@ -4,13 +4,13 @@ import { getServices } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useState } from 'react';
-import { useSetLinkLogic } from '../products/useSetLinksLogic';
+import { useDownloadLink } from '../useDownloadLink';
 
 
 export function useHistorySalesLogic(url: string, linkUrl: string) {
     const [ history, setHistory ] = useState(null);
     const { openLoading, closeLoading, loading } = useStateStore()
-    const { links, addLink} = useSetLinkLogic()
+    const { links, addLink} = useDownloadLink()
 
 
     const handleGet = useCallback(async (data: DateRangeValues, url: string, linkUrl: string) => {
