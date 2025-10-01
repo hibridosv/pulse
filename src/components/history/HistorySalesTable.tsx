@@ -63,10 +63,19 @@ export function HistorySalesTable(props: HistorySalesTableI) {
             {listItems}
           </tbody>
         </table>
-          <div className="uppercase shadow-lg border-x-2 mx-4 mt-4 mb-4 p-4 bg-white rounded-lg">
-            <div>Cantidad de productos: <span className=" font-semibold">{ getTotalOfItem(records, "quantity_sum") }</span></div>
-            <div>Total descuentos: <span className=" font-semibold">{ numberToMoney(getTotalOfItem(records, "discount_sum"), system) }</span></div>
-            <div>Total de ventas: <span className=" font-semibold">{ numberToMoney(getTotalOfItem(records, "total_sum"), system) }</span></div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
+            <div>
+                <p className="text-sm text-text-muted">Cantidad de productos</p>
+                <p className="text-lg font-semibold text-text-base">{ getTotalOfItem(records, "quantity_sum") }</p>
+            </div>
+            <div>
+                <p className="text-sm text-text-muted">Total descuentos</p>
+                <p className="text-lg font-semibold text-success">{ numberToMoney(getTotalOfItem(records, "discount_sum"), system) }</p>
+            </div>
+            <div>
+                <p className="text-sm text-text-muted">Total de ventas</p>
+                <p className="text-lg font-semibold text-primary">{ numberToMoney(getTotalOfItem(records, "total_sum"), system) }</p>
+            </div>
           </div>
       </div>
     </div>
