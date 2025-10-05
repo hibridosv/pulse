@@ -29,14 +29,14 @@ export function HistoryByProductTable(props: HistoryByProductTableI) {
         { formatDate(record?.order?.charged_at) } { formatHourAsHM(record?.order?.charged_at)}
       </td>
       <td className="px-3 py-2 whitespace-nowrap">
-        { record?.oreder?.casheir?.name ?? "--" }
+        { record?.order?.casheir?.name ?? "--" }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
-        <span>{ record?.oreder?.invoice_assigned?.name ?? "--" }:</span>
+        <span>{ record?.order?.invoice_assigned?.name ?? "--" }:</span>
         <span className="ml-3">{ record?.oreder?.invoice ?? "--" }</span>
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
-        { record?.oreder?.client?.name ?? "--" }
+        { record?.order?.client?.name ?? "--" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { record?.cod ?? "--" }
