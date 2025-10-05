@@ -36,7 +36,7 @@ export function HistoryByUserTable(props: HistoryByUserTableI) {
         <span className="ml-3">{ record?.invoice ?? "--" }</span>
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
-        { record?.client?.name }
+        { record?.client?.name ?? "--" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { getPaymentTypeName(record?.payment_type) }
