@@ -33,7 +33,7 @@ export function HistoryByProductTable(props: HistoryByProductTableI) {
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
         <span>{ record?.order?.invoice_assigned?.name ?? "--" }:</span>
-        <span className="ml-3">{ record?.oreder?.invoice ?? "--" }</span>
+        <span className="ml-3">{ record?.order?.invoice ?? "--" }</span>
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
         { record?.order?.client?.name ?? "--" }
