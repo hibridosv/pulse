@@ -7,20 +7,20 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
 
 
-export function useHistorySalesLogic(url: string, linkUrl: string) {
+export function useHistorySalesLogic(url: string, linkUrl: string, params: any) {
     const [ history, setHistory ] = useState(null);
     const { openLoading, closeLoading, loading } = useStateStore()
     const { links, addLink} = useDownloadLink()
 
 
-    const handleGet = useCallback(async (data: DateRangeValues, url: string, linkUrl: string) => {
+    const handleGet = useCallback(async (data: DateRangeValues, url: string, linkUrl: string, params: any) => {
         openLoading("history");
         try {
             let urlScoped = urlConstructor(data, url);
             const response = await getServices(urlScoped);
             console.log(response.status)
             setHistory(response.data.data);
-            addLink(data, linkUrl);
+            addLink(data, linkUrl, params);
         } catch (error) {
             console.error(error);
         } finally {
@@ -32,7 +32,7 @@ export function useHistorySalesLogic(url: string, linkUrl: string) {
         (async () => { 
         const actualDate = DateTime.now();
         const formatedDate = actualDate.toFormat('yyyy-MM-dd');
-        await handleGet({option: "1", initialDate: `${formatedDate} 00:00:00`}, url, linkUrl)
+        await handleGet({option: "1", initialDate: `${formatedDate} 00:00:00`}, url, linkUrl, params)
         })();
             // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [url, linkUrl, handleGet]);
