@@ -68,7 +68,7 @@ export function HistoryDeletedTable(props: HistoryDeletedTableI) {
           <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
             <div>
                 <p className="text-sm text-text-muted">Total Eliminadas: </p>
-                <p className="text-lg font-semibold text-text-base">{ records?.data.length }</p>
+                <p className="text-lg font-semibold text-text-base">{ records?.length }</p>
             </div>
             <div>
                 <p className="text-sm text-text-muted">Total de venta: </p>
