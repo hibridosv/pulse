@@ -26,17 +26,17 @@ export function HistoryByProductTable(props: HistoryByProductTableI) {
   const listItems = records.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
-        { formatDate(record?.charged_at) } { formatHourAsHM(record?.charged_at)}
+        { formatDate(record?.order?.charged_at) } { formatHourAsHM(record?.order?.charged_at)}
       </td>
       <td className="px-3 py-2 whitespace-nowrap">
-        { record?.casheir?.name ?? "--" }
+        { record?.oreder?.casheir?.name ?? "--" }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
-        <span>{ record?.invoice_assigned?.name ?? "--" }:</span>
-        <span className="ml-3">{ record?.invoice ?? "--" }</span>
+        <span>{ record?.oreder?.invoice_assigned?.name ?? "--" }:</span>
+        <span className="ml-3">{ record?.oreder?.invoice ?? "--" }</span>
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
-        { record?.client?.name ?? "--" }
+        { record?.oreder?.client?.name ?? "--" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { record?.cod ?? "--" }
