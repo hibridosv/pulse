@@ -24,8 +24,8 @@ export default function Page() {
           useToastMessageStore.getState().setError({ message: "Seleccione un contacto"});
           return
         }
-        values.productId = elementSelected?.id
-        await handleGet(values, 'histories/by-product', 'excel/by-product/', [{name: "productId", value: elementSelected?.id}]);
+        values.product_id = elementSelected?.id
+        await handleGet(values, 'histories/by-product', 'excel/by-product/', [{name: "product_id", value: elementSelected?.id}]);
     }
 
 
