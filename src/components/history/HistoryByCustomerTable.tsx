@@ -72,7 +72,7 @@ export function HistoryByCustomerTable(props: HistoryByCustomerTableI) {
           <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
             <div>
                 <p className="text-sm text-text-muted">Total descuentos: </p>
-                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records?.data, "discount"), system) }</p>
+                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records, "discount"), system) }</p>
             </div>
             <div>
                 <p className="text-sm text-text-muted">Total de venta: </p>
