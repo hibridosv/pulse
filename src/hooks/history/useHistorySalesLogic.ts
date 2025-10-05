@@ -7,13 +7,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
 
 
-export function useHistorySalesLogic(url: string, linkUrl: string, params: any) {
+export function useHistorySalesLogic(url: string, linkUrl: string, params: any | null = null) {
     const [ history, setHistory ] = useState(null);
     const { openLoading, closeLoading, loading } = useStateStore()
     const { links, addLink} = useDownloadLink()
 
 
-    const handleGet = useCallback(async (data: DateRangeValues, url: string, linkUrl: string, params: any) => {
+    const handleGet = useCallback(async (data: DateRangeValues, url: string, linkUrl: string, params: any | null = null) => {
         openLoading("history");
         try {
             let urlScoped = urlConstructor(data, url);
