@@ -132,7 +132,21 @@ export function formatNumberPhone(num: any) {
 }
 
 
-/// suma una item de un arreglo
+/// suma una item de un arreglo con aulgun estado
+export const getTotalOfItemWithStatus = (datos: any, item: string = 'total', filter: string =  "status", status: any =  1): any => {
+  if (!datos) return 0; 
+  let totalSuma = 0;
+
+  datos?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty(item)  && elemento[filter] == status) {
+      totalSuma += elemento[item];
+    }
+  });
+
+  return totalSuma;
+}
+
+
 export const getTotalOfItem = (datos: any, item: string = 'total'): any => {
   if (!datos) return 0; 
   let totalSuma = 0;
