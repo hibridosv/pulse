@@ -19,7 +19,7 @@ export function HistoryByProductTable(props: HistoryByProductTableI) {
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
   if (!records || records.length === 0) {
-    return <NothingHere />;
+    return <NothingHere text="Seleccione un producto" />;
   }
 
 

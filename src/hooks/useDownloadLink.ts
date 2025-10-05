@@ -13,8 +13,8 @@ export function useDownloadLink() {
 
     const addLink = useCallback((data: DateRangeValues, url: string, params?:any, maxLinks=3, nameLink="Descargar Documento" )=>{
       if (!remoteUrl) return;
-        const getParams = params ? params.map((param: any) => `&${param.name}=${param.value}`).join('') : '';
-        const newUrl = `${remoteUrl}/download/${url}?${data.option ? `option=${data.option}` : ``}${data.initialDate ? `&initialDate=${data.initialDate}` : ``}${data.finalDate ? `&finalDate=${data.finalDate}` : ``}${getParams}` 
+        const getParams = params ? params.map((param: any) => `${data.option ? '&' : '?' }${param.name}=${param.value}`).join('') : '';
+        const newUrl = `${remoteUrl}/download/${url}${data.option ? `?option=${data.option}` : ``}${data.initialDate ? `&initialDate=${data.initialDate}` : ``}${data.finalDate ? `&finalDate=${data.finalDate}` : ``}${getParams}` 
         
         const name = `${!data.option ? nameLink : data.option == '1' ?
                             `Fecha establecida ${formatDate(data.initialDate)}` : 
