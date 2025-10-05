@@ -25,7 +25,7 @@ export function useLoadUsersByFormLogic(isShow: boolean) {
             })
             const fieldUsersActive: AdditionalField[] = [{
               name: 'userId',
-              label: 'Usuarios',
+              label: 'Seleccione un usuario',
               type: 'select',
               options : filterUser
             }]

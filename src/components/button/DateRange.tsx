@@ -64,6 +64,41 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false,
 
   return (<div>
     <form onSubmit={handleSubmit}>
+
+      
+      {additionalFields && additionalFields.map(field => (
+        <div className="w-full px-3 pb-4 mb-4 border-b-2" key={field.name}>
+            <label htmlFor={field.name} className="input-label">{field.label}</label>
+            {field.type === 'select' ? (
+                <select
+                    className="input-select"
+                    id={field.name}
+                    name={field.name}
+                    onChange={handleAdditionalChange}
+                    value={additionalData[field.name] || ''}
+                >
+                    {field.placeholder && <option value="">{field.placeholder}</option>}
+                    {field.options?.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            ) : (
+                <input
+                    className="input"
+                    type={field.type}
+                    id={field.name}
+                    name={field.name}
+                    placeholder={field.placeholder || ''}
+                    onChange={handleAdditionalChange}
+                    value={additionalData[field.name] || ''}
+                />
+            )}
+        </div>
+        ))}
+
+
     <div className="flex justify-center">
         <div className="mb-[0.125rem] mr-4 inline-block min-h-[1.5rem] pl-[1.5rem]" >
           <input
@@ -116,37 +151,6 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false,
           />
       </div>)}
 
-      {additionalFields && additionalFields.map(field => (
-        <div className="w-full px-3 mb-2" key={field.name}>
-            <label htmlFor={field.name} className="input-label">{field.label}</label>
-            {field.type === 'select' ? (
-                <select
-                    className="input-select"
-                    id={field.name}
-                    name={field.name}
-                    onChange={handleAdditionalChange}
-                    value={additionalData[field.name] || ''}
-                >
-                    {field.placeholder && <option value="">{field.placeholder}</option>}
-                    {field.options?.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-            ) : (
-                <input
-                    className="input"
-                    type={field.type}
-                    id={field.name}
-                    name={field.name}
-                    placeholder={field.placeholder || ''}
-                    onChange={handleAdditionalChange}
-                    value={additionalData[field.name] || ''}
-                />
-            )}
-        </div>
-        ))}
 
       <div className="flex justify-center">
        <Button text='Aplicar' type="submit" preset={loading ? Preset.saving : Preset.save} disabled={loading} />
