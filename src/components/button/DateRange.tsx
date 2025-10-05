@@ -50,7 +50,7 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false,
             setAdditionalData(prev => ({ ...defaults, ...prev }));
           }
     }
-  }, [additionalFields]);
+  }, [additionalFields, setAdditionalData, additionalData]);
 
   const handleAdditionalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

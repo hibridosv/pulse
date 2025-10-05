@@ -1,9 +1,9 @@
 import { DateTime } from "luxon";
 
-export const formatDate = (date: string) =>
+export const formatDate = (date: Date) =>
   !date ? "" : new Date(date).toLocaleDateString();
 
-export const formatTime = (date: string) =>
+export const formatTime = (date: Date) =>
   !date ? "" : new Date(date).toLocaleTimeString();
 
 export const getDateFromStringOrDate = (date: Date | string): Date => {

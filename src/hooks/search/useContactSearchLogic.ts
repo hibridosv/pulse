@@ -14,6 +14,6 @@ export function useContactSearchLogic(currentPage: any, searchTerm: string, sort
           setSortByNew(sortBy);
           loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=${pagination}&page=1${searchTerm}`)
         }
-  }, [currentPage, searchTerm, sortBy, searchTermNew, sortByNew])
+  }, [loadContacts, currentPage, searchTerm, sortBy, searchTermNew, sortByNew, pagination, param])
 
 }
