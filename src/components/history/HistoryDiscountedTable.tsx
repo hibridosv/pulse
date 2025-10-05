@@ -3,16 +3,16 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
-import { getTotalOfItem, numberToMoney } from "@/lib/utils";
+import { getPaymentTypeName, getTotalOfItem, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 
 
-export interface HistoryRemittancesI {
+export interface HistoryDiscountedTableI {
   records: any;
   isLoading?: boolean;
 }
 
-export function HistoryRemittancesTable(props: HistoryRemittancesI) {
+export function HistoryDiscountedTable(props: HistoryDiscountedTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
 
@@ -26,22 +26,23 @@ console.log(records)
   const listItems = records.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && 'bg-red-200'}`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
-        { formatDate(record?.created_at) } | { formatHourAsHM(record?.created_at)}
+        { formatDate(record?.charged_at) } { formatHourAsHM(record?.charged_at)}
       </td>
       <td className="px-3 py-2 whitespace-nowrap">
-        { record?.name }
+        { record?.casheir?.name ?? "--" }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
-       { record?.description } 
+        <span>{ record?.invoice_assigned?.name ?? "--" }:</span>
+        <span className="ml-3">{ record?.invoice ?? "--" }</span>
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
-        { record?.account?.account }
+        { getPaymentTypeName(record?.payment_type) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
-        { record?.employee?.name }
+        { numberToMoney(record?.discount ?? 0, system) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        { numberToMoney(record?.quantity ? record?.quantity : 0, system) }
+        { numberToMoney(record?.total ?? 0, system) }
       </td>
     </tr>
   ));
@@ -52,12 +53,12 @@ console.log(records)
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
             <tr>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Fecha</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Nombre</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Descripción</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Tipo Pago</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Fecha </th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Cajero</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Cantidad</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Factura </th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Tipo Pago</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Descuento</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Total</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">
@@ -66,12 +67,12 @@ console.log(records)
         </table>
           <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
             <div>
-                <p className="text-sm text-text-muted">Numero total remesas: </p>
-                <p className="text-lg font-semibold text-text-base">{ records.length }</p>
+                <p className="text-sm text-text-muted">Total descuentos: </p>
+                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records?.data, "discount"), system) }</p>
             </div>
             <div>
-                <p className="text-sm text-text-muted">Total en remesas: </p>
-                <p className="text-lg font-semibold text-success">{ numberToMoney(getTotalOfItem(records, "quantity"), system) }</p>
+                <p className="text-sm text-text-muted">Total de venta: </p>
+                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records?.data, "total"), system) }</p>
             </div>
           </div>
       </div>

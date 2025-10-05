@@ -133,14 +133,43 @@ export function formatNumberPhone(num: any) {
 
 
 /// suma una item de un arreglo
-export const getTotalOfItem = (datos: any, item: string): any => {
+export const getTotalOfItem = (datos: any, item: string = 'total', status =  1): any => {
+  if (!datos) return 0; 
   let totalSuma = 0;
 
   datos?.forEach((elemento: any) => {
-    if (elemento.hasOwnProperty(item)) {
+    if (elemento.hasOwnProperty(item)  && elemento.status === status) {
       totalSuma += elemento[item];
     }
   });
 
   return totalSuma;
 }
+
+
+// obtiene el ultimo elemento de un arreglo
+export const getLastElement = (items: any, row = "status", status = 1)=> {
+  if(!items) return null;
+  const elementsWithStatus1 = items.filter((element:any) => element[row] === status);
+
+  if (elementsWithStatus1 && elementsWithStatus1.length > 0) {
+      const lastElementWithStatus1 = elementsWithStatus1[elementsWithStatus1.length - 1];
+      return lastElementWithStatus1;
+  } else {
+      return null;
+  }
+}
+
+// obtiene el primer elemento de un arreglo
+export const getFirstElement = (items: any, row = "status", status = 1)=> {
+  if(!items) return null;
+  const elementsWithStatus1 = items.filter((element: any) => element[row] === status);
+
+  if (elementsWithStatus1 && elementsWithStatus1.length > 0) {
+      const firstElementWithStatus1 = elementsWithStatus1[0];
+      return firstElementWithStatus1;
+  } else {
+      return null;
+  }
+}
+
