@@ -33,7 +33,7 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
       key={record.id} 
       className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
       <td className="px-3 py-2 whitespace-nowrap clickeable hover:underline" onClick={() =>{ setSelectedElement("cutDetails", record); openModal('cutDetails')}}>
-        {formatDateAsDMY(record.close)} {formatTime(record.close)}
+        { record.close && formatDateAsDMY(record.close)} { record.close ? formatTime(record.close) : "Sin Corte"}
       </td>
       <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() =>{ setSelectedElement("cutDetails", record); openModal('cutDetails')}}>
         {record?.employee?.name}
