@@ -2,25 +2,20 @@ import { SearchInput } from "@/components/Search";
 import { useProductsSearchLogic } from "@/hooks/products/useProductsSearchLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
-import productAddStore from "@/stores/products/productAddStore";
 import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export function ProductsSearch() {
-    const { product, loading } = productAddStore();
-    const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+    const { setSelectedElement} = useTempSelectedElementStore();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";
     const { products } = useProductStore();
     useProductsSearchLogic(currentPage, searchTerm, sortBy);
-    const elementSelected = getSelectedElement('product');
 
-    if (!product || loading) return null;
-    if (elementSelected) return null;
 
     const handleSelectProduct = (product: any) => {
-        setSelectedElement('product', product);
+        setSelectedElement('productSearched', product);
         handleSearchTerm('');
     };
 

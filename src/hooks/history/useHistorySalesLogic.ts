@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
 
 
-export function useHistorySalesLogic(url: string, linkUrl: string, params: any | null = null) {
+export function useHistorySalesLogic(url: string, linkUrl: string, loadAtStart: boolean = true) {
     const [ history, setHistory ] = useState(null);
     const { openLoading, closeLoading, loading } = useStateStore()
     const { links, addLink} = useDownloadLink()
@@ -29,13 +29,15 @@ export function useHistorySalesLogic(url: string, linkUrl: string, params: any |
     }, [addLink, closeLoading, openLoading]);
 
   useEffect(() => {
-        (async () => { 
-        const actualDate = DateTime.now();
-        const formatedDate = actualDate.toFormat('yyyy-MM-dd');
-        await handleGet({option: "1", initialDate: `${formatedDate} 00:00:00`}, url, linkUrl, params)
-        })();
+        if (loadAtStart) {
+            (async () => { 
+            const actualDate = DateTime.now();
+            const formatedDate = actualDate.toFormat('yyyy-MM-dd');
+            await handleGet({option: "1", initialDate: `${formatedDate} 00:00:00`}, url, linkUrl)
+            })();
+        }
             // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [url, linkUrl, handleGet]);
+    }, [url, linkUrl, handleGet, loadAtStart]);
     
 
   return { history, handleGet, loading, links }
