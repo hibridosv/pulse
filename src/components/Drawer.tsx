@@ -70,7 +70,7 @@ const menuItems: MenuItem[] = [
       { label: "Ventas", href: "/history/sales" },
       { label: "Gastos", href: "/history/expenses" },
       { label: "Remesas", href: "/history/remittances" },
-      { label: "Corted de Caja", href: "/history/cash-closures" },
+      { label: "Cortes de Caja", href: "/history/cash-closures" },
       { label: "Ventas con descuento", href: "/history/discounted" },
       { label: "Listado de Ventas", href: "/history/list" },
       { label: "Ventas por Usuario", href: "/history/by-user" },

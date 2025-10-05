@@ -63,7 +63,7 @@ export function HistorySalesTable(props: HistorySalesTableI) {
             {listItems}
           </tbody>
         </table>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
+          <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
             <div>
                 <p className="text-sm text-text-muted">Cantidad de productos</p>
                 <p className="text-lg font-semibold text-text-base">{ getTotalOfItem(records, "quantity_sum") }</p>

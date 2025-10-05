@@ -24,14 +24,14 @@ export function HistoryExpensesTable(props: HistoryExpensesTableI) {
 
 
   const listItems = records.map((record: any) => (
-    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
+    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && 'bg-red-200'}`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { formatDateAsDMY(record?.created_at) } 
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable">
+      <td className="px-3 py-2 whitespace-nowrap">
         { record?.employee?.name }
       </td>
-      <td className="px-3 py-2 text-right whitespace-nowrap font-medium" >
+      <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
        { record?.invoice ? documentType(record?.invoice) : "N/A" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
@@ -65,10 +65,10 @@ export function HistoryExpensesTable(props: HistoryExpensesTableI) {
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Fecha</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Empleado</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Documento</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">No Documento</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0 whitespace-nowrap">No Doc.</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Categoria</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Gasto</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Tipo Pago</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0 whitespace-nowrap">Tipo Pago</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Cuenta</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider text-right border-r border-bg-subtle last:border-r-0">Monto</th>
             </tr>
@@ -77,18 +77,14 @@ export function HistoryExpensesTable(props: HistoryExpensesTableI) {
             {listItems}
           </tbody>
         </table>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
+          <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
             <div>
-                <p className="text-sm text-text-muted">Cantidad de productos</p>
-                <p className="text-lg font-semibold text-text-base">{ getTotalOfItem(records, "quantity_sum") }</p>
+                <p className="text-sm text-text-muted">Numero total gastos: </p>
+                <p className="text-lg font-semibold text-text-base">{ records?.length }</p>
             </div>
             <div>
-                <p className="text-sm text-text-muted">Total descuentos</p>
-                <p className="text-lg font-semibold text-success">{ numberToMoney(getTotalOfItem(records, "discount_sum"), system) }</p>
-            </div>
-            <div>
-                <p className="text-sm text-text-muted">Total de ventas</p>
-                <p className="text-lg font-semibold text-primary">{ numberToMoney(getTotalOfItem(records, "total_sum"), system) }</p>
+                <p className="text-sm text-text-muted">Total en gastos: </p>
+                <p className="text-lg font-semibold text-success">{ numberToMoney(getTotalOfItem(records, "quantity"), system) }</p>
             </div>
           </div>
       </div>
