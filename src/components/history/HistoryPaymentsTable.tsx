@@ -26,17 +26,17 @@ console.log(records)
   const listItems = records.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && 'bg-red-200'}`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
-        { formatDate(record?.charged_at) } { formatHourAsHM(record?.charged_at)}
+        { formatDate(record?.created_at) } { formatHourAsHM(record?.created_at)}
       </td>
       <td className="px-3 py-2 whitespace-nowrap">
-        { record?.casheir?.name ?? "--" }
+        { record?.employee?.name ?? "--" }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
-        <span>{ record?.invoice_assigned?.name ?? "--" }:</span>
-        <span className="ml-3">{ record?.invoice ?? "--" }</span>
+        <span>{ record?.credit?.order?.invoice_assigned?.name ?? "--" }:</span>
+        <span className="ml-3">{ record?.credit?.order?.invoice ?? "--" }</span>
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
-        { record?.client ? record?.client?.name : "N/A" }
+        { record?.credit?.order?.client?.name ?? "N/A" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
         { numberToMoney(record?.quantity ?? 0, system) }
