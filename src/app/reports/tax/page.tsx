@@ -1,16 +1,21 @@
 'use client';
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
+import { fieldUsersActive } from "@/components/reports/utils";
 import { ViewTitle } from "@/components/ViewTitle";
-import { useReportsLogic } from "@/hooks/reports/useReportsLogic";
+import { useDownloadLink } from "@/hooks/useDownloadLink";
+import useStateStore from "@/stores/stateStorage";
 
 
 export default function Page() {
-  const { history, handleGet, loading, links } = useReportsLogic('reports/failures', 'excel/reports/failures/');
-  const isLoading = loading.history ?? false; 
+   const { links, addLink} = useDownloadLink();
+    const { openLoading, closeLoading, loading } = useStateStore()
+    const isLoading = loading.history ?? false; 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
-        await handleGet(values, 'reports/failures', 'excel/reports/failures/');
+        openLoading('loading')
+        addLink(values, 'excel/electronic/', values.anexo ? [{name: "anexo", value: values.anexo } , { name: "sucursal", value: values.sucursal }] : null);
+        closeLoading('loading')
     }
 
   return (
@@ -19,15 +24,17 @@ export default function Page() {
         <ViewTitle text="Reporte de anexos de IVA y descargas" />
         <div className="p-4">
           
+          
+
         </div>
     </div>
     <div className="col-span-3">
         <ViewTitle text="Seleccionar fechas" />
           <div className="mt-2 p-2">
-            <DateRange onSubmit={handleFormSubmit} loading={isLoading} />
+            <DateRange onSubmit={handleFormSubmit} loading={isLoading} additionalFields={fieldUsersActive} />
           </div>
           <div className="p-4">
-            <LinksList links={links} text="DESCARGAS" />
+            <LinksList links={links} text="DESCARGAR DOCUMENTOS" />
           </div>
     </div> 
 </div>

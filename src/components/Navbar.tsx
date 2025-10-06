@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import useConfigStore from '@/stores/configStore';
 import Link from 'next/link';
+import { useState } from 'react';
 import { HiMenu } from 'react-icons/hi';
 import { IoHome } from 'react-icons/io5';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
-import useConfigStore from '@/stores/configStore';
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
@@ -23,9 +23,9 @@ export const Navbar = () => {
             >
               <HiMenu size={32} />
             </button>
-            <Link href="/dashboard" className="text-xl font-bold text-text-inverted">
+            {/* <Link href="/dashboard" className="text-xl font-bold text-text-inverted">
               Pulse
-            </Link>
+            </Link> */}
           </div>
 
           <div className="flex items-center gap-4 font-semibold">
