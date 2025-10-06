@@ -188,6 +188,7 @@ export const getFirstElement = (items: any, row = "status", status = 1)=> {
 }
 
 // porcentaje de ganancias segun el precio costo y precio de venta de un producto
-export const percentage = (totalCost: number, totalPrice: number): number =>{
+export const percentage = (totalCost: number, totalPrice: number): number => {
+  if (totalCost === 0) return 0; 
   return ((totalPrice - totalCost) / totalCost) * 100;
-}
+};

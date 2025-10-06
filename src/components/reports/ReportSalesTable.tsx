@@ -110,15 +110,15 @@ export function ReportSalesTable(props: ReportSalesTableI) {
           <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
             <div>
                 <p className="text-sm text-text-muted">Subtotal</p>
-                <p className="text-lg font-semibold text-text-base">{numberToMoney(getTotalOfItem(records?.data, "subtotal"), system)}</p>
+                <p className="text-lg font-semibold text-text-base">{numberToMoney(getTotalOfItem(records, "subtotal"), system)}</p>
             </div>
             <div>
                 <p className="text-sm text-text-muted">Impuestos</p>
-                <p className="text-lg font-semibold text-success">{numberToMoney(getTotalOfItem(records?.data, "taxes"), system)}</p>
+                <p className="text-lg font-semibold text-success">{numberToMoney(getTotalOfItem(records, "taxes"), system)}</p>
             </div>
             <div>
                 <p className="text-sm text-text-muted">Ventas</p>
-                <p className="text-lg font-semibold text-primary">{numberToMoney(getTotalOfItem(records?.data, "total"), system)}</p>
+                <p className="text-lg font-semibold text-primary">{numberToMoney(getTotalOfItem(records, "total"), system)}</p>
             </div>
             <div>
                 <p className="text-sm text-text-muted">Margen</p>
