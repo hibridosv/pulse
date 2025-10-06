@@ -2,6 +2,7 @@
 
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { formatDateAsDMY } from "@/lib/date-formats";
 import { getTotalOfItem, numberToMoney, percentage } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 
@@ -35,40 +36,43 @@ export function ReportSalesTable(props: ReportSalesTableI) {
 
     return (
       <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
+      <td className="px-3 py-2 whitespace-nowrap">
+        {formatDateAsDMY(record?.created_at)}
+      </td>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         {record?.product}
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable">
+      <td className="px-3 py-2 whitespace-nowrap">
         {record?.cod}
       </td>
       <td className="px-3 py-2 text-right whitespace-nowrap font-medium" >
         {record?.quantity}
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         {numberToMoney(record?.unit_cost || 0, system)}
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         {numberToMoney(totalUnitCost, system)}
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`} title={numberToMoney(priceWithoutBill, system)}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`} title={numberToMoney(priceWithoutBill, system)}>
         {numberToMoney(record?.unit_price || 0, system)}
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`} title={numberToMoney(totalUnitPrice, system)}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`} title={numberToMoney(totalUnitPrice, system)}>
         {numberToMoney(record?.unit_price ? record?.unit_price * record?.quantity : 0, system)}
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         {record?.discount_percentage || 0} %
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
        {numberToMoney(record?.discount || 0, system)}
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
        {numberToMoney(record?.total || 0, system)}
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap `}>
        {numberToMoney(totalUnitPrice - totalUnitCost, system)}
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap `}>
        {percentage(totalUnitCost, totalUnitPrice).toFixed(2)} %
       </td>
     </tr>
