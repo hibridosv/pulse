@@ -76,7 +76,7 @@ export function ExpensesForm() {
             <label htmlFor="payment_type" className="input-label">
               Tipo de pago
             </label>
-            <select defaultValue={1} id="payment_type" {...register("payment_type")} className="input-select" >
+            <select defaultValue="1" id="payment_type" {...register("payment_type")} className="input-select" >
               <option value="1">Efectivo</option>
               <option value="2">Tarjeta</option>
               <option value="3">Transferencia</option>

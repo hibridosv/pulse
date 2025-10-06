@@ -18,7 +18,6 @@ export function useReportsLogic(url: string, linkUrl: string, loadAtStart: boole
         try {
             let urlScoped = urlConstructor(data, url);
             const response = await getServices(urlScoped);
-            console.log(response.status)
             setHistory(response.data.data);
             addLink(data, linkUrl, params);
         } catch (error) {

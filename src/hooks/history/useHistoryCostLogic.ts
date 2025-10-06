@@ -14,7 +14,6 @@ export function useHistoryCostLogic(url: string, linkUrl: string, params: any | 
         openLoading("history");
         try {
             const response = await getServices(url);
-            console.log(response.status)
             setHistory(response.data.data);
             addLink({}, linkUrl, params);
         } catch (error) {

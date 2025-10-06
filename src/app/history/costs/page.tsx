@@ -26,7 +26,6 @@ export default function Page() {
   const isLoading = loading.history ?? false; 
 
 
-console.log(history)
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-7 border-r md:border-primary">

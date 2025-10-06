@@ -18,7 +18,6 @@ export function useHistorySalesLogic(url: string, linkUrl: string, loadAtStart: 
         try {
             let urlScoped = urlConstructor(data, url);
             const response = await getServices(urlScoped);
-            console.log(response.status)
             setHistory(response.data.data);
             addLink(data, linkUrl, params);
         } catch (error) {

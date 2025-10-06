@@ -9,7 +9,6 @@ export function useContactSearchLogic(currentPage: any, searchTerm: string, sort
 
   useEffect(() => {
         if ((searchTerm != searchTermNew || sortBy != sortByNew) && searchTerm != "") {
-          console.log(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=${pagination}&page=1${searchTerm}`)
           setSearchTermNew(searchTerm);
           setSortByNew(sortBy);
           loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=${pagination}&page=1${searchTerm}`)

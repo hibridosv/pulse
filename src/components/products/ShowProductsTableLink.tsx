@@ -1,11 +1,11 @@
 'use client';
 
-import useConfigStore from "@/stores/configStore";
-import { numberToMoney } from "@/lib/utils";
-import { Product } from "@/interfaces/products";
-import { productTypeIcon } from './utils';
 import { NothingHere } from "@/components/NothingHere";
+import { Product } from "@/interfaces/products";
+import { numberToMoney } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
 import { useRouter } from 'next/navigation';
+import { productTypeIcon } from './utils';
 
 
 export interface ShowProductsTableLinkProps {
@@ -53,12 +53,12 @@ export function ShowProductsTableLink(props: ShowProductsTableLinkProps) {
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
             <tr>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0">Cod</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0">Producto</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider text-right border-r border-bg-subtle last:border-r-0">Precio</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0">Categoria</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Min</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle last:border-r-0">Cant</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle whitespace-nowrap">Cod</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle whitespace-nowrap">Producto</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider text-right border-r border-bg-subtle whitespace-nowrap">Precio</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle whitespace-nowrap">Categoria</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Min</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle whitespace-nowrap">Cant</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">
