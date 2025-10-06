@@ -68,7 +68,7 @@ console.log(records)
           <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
             <div>
                 <p className="text-sm text-text-muted">Total de abonos: </p>
-                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records?.data, "quantity"), system) }</p>
+                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records, "quantity"), system) }</p>
             </div>
           </div>
       </div>
