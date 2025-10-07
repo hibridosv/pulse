@@ -1,16 +1,17 @@
 
-import { useForm } from "react-hook-form";
-import { Product } from "@/interfaces/products";
-import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
-import { productTypeIcon } from "../utils";
+import { LiComponent } from "@/components/button/LiComponent";
+import Modal from "@/components/modal/Modal";
 import { SearchInput } from "@/components/Search";
-import { useSearchTerm } from "@/hooks/useSearchTerm";
-import { usePagination } from "@/hooks/usePagination";
-import useStateStore from "@/stores/stateStorage";
 import { useProductLinkedLogic } from "@/hooks/products/useProductsLinkedLogic";
-import useToastMessageStore from "@/stores/toastMessageStore";
+import { usePagination } from "@/hooks/usePagination";
+import { useSearchTerm } from "@/hooks/useSearchTerm";
+import { Product } from "@/interfaces/products";
+import useStateStore from "@/stores/stateStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
+import { useForm } from "react-hook-form";
+import { productTypeIcon } from "../utils";
 
 export interface ProductsLinkedModalProps {
   onClose: () => void;
@@ -63,13 +64,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const ProductList = products.data && products.data.map((productMap: Product) => {
         if (product.id === productMap.id) return;
         return (
-            <li key={productMap.id} className="flex justify-between p-3 hover:bg-bg-subtle rounded-md cursor-pointer transition-colors duration-150" onClick={() => setSelectedElement("product", productMap)}>
-                <span>{productMap.cod} - {productMap.description}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </li>
+            <LiComponent key={productMap.id} text={`${productMap.cod} - ${productMap.description}`}  onClick={() => setSelectedElement("product", productMap)} />
         );
     });
 

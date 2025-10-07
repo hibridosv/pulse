@@ -4,6 +4,7 @@ import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { LiComponent } from "../button/LiComponent";
 
 export function ProductsSearch() {
     const { setSelectedElement} = useTempSelectedElementStore();
@@ -27,16 +28,12 @@ export function ProductsSearch() {
                   <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">
                     {products.data.map((item: any) => {
                         return (
-                          <li 
+                          <LiComponent 
                             key={item.id} 
-                            className="flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md cursor-pointer transition-colors duration-150" 
+                            text={item.cod} 
+                            content={`${item.cod} - ${item.description}`} 
                             onClick={() => handleSelectProduct(item)}
-                          >
-                            <span className="font-medium text-text-base">{item.cod} - {item.description}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </li>
+                          />
                         );
                     })}
                   </ul>

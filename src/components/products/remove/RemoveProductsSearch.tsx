@@ -1,3 +1,4 @@
+import { LiComponent } from "@/components/button/LiComponent";
 import { SearchInput } from "@/components/Search";
 import { useProductsSearchLogic } from "@/hooks/products/useProductsSearchLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -27,23 +28,18 @@ export function RemoveProductsSearch() {
     };
 
     return (
-        <div className="relative w-full">
+        <div className="relative w-full px-4">
             <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." />
             { searchTerm && products && products.data && products.data.length > 0 && (
-                <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
+                <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50 mx-4'>
                   <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">
                     {products.data.map((item: any) => {
                         return (
-                          <li 
+                          <LiComponent 
                             key={item.id} 
-                            className="flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md cursor-pointer transition-colors duration-150" 
+                            text={`${item.cod} - ${item.description}`} 
                             onClick={() => handleSelectProduct(item)}
-                          >
-                            <span className="font-medium text-text-base">{item.cod} - {item.description}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </li>
+                          />
                         );
                     })}
                   </ul>

@@ -2,7 +2,7 @@
 
 import { dateToNumberValidate } from "@/lib/utils";
 import { md5 } from "js-md5";
-import { FiChevronRight } from "react-icons/fi";
+import { LiComponent } from "./LiComponent";
 
 export interface LinkUrls {
   name: string;
@@ -32,17 +32,7 @@ export function LinksList(props: LinksListProps) {
         {links.map((item, key) => {
           if (item.name && item.link) {
             return (
-              <li key={key} className="clickeable">
-                <a
-                  href={`${item.link}${separator}code=${md5(dateToNumberValidate())}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 flex justify-between items-center hover:bg-bg-subtle transition-colors duration-200"
-                >
-                  <span className="text-sm font-medium text-text-base">{item.name}</span>
-                  <FiChevronRight className="w-5 h-5 text-text-muted" />
-                </a>
-              </li>
+              <LiComponent key={key} text={item.name} href={`${item.link}${separator}code=${md5(dateToNumberValidate())}`} />
             );
           }
           return null;
