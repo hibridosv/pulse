@@ -7,7 +7,7 @@ import { KardexDetailsModal } from "@/components/products/kardex/KardexDetailsMo
 import { ShowKardexTable } from "@/components/products/kardex/ShowKardexTable";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useKardexLogic } from "@/hooks/products/useKardexLogic";
-import { urlConstructor } from "@/lib/utils";
+import { urlConstructor } from "@/lib/urlConstructor";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";

@@ -10,7 +10,7 @@ import { FaSpinner } from "react-icons/fa";
 
 
 export default function Page() {
-  const { history: downloads, handleGet, loading, links, handleCreateLinks, handleGenerateDocuments} = useDownloadsLogic(`document/download`);
+  const { history: downloads, handleGet, loading, links, handleCreateLinks, handleGenerateDocuments} = useDownloadsLogic(`downloads`);
   const loadingDownload = loading.downloads ?? false; 
   const isLoading = loading.loading ?? false; 
   const creating = loading.creating ?? false; 
@@ -37,7 +37,7 @@ export default function Page() {
                     {
                       download.status == 1 ? 
                      <LiComponent text={download.comments} href={`${API_URL}zip/download/${download?.id}`} />  :
-                    <li className="flex justify-between p-3 hover:bg-red-200 hover:text-red-800 clickeable" onClick={creating ? ()=>{} : () => handleGet('document/download') }>
+                    <li className="flex justify-between p-3 hover:bg-red-200 hover:text-red-800 clickeable" onClick={creating ? ()=>{} : () => handleGet('downloads') }>
                         Se esta procesando el archivo de descarga (Click para actualizar)
                         <FaSpinner className="animate-spin" size={30} />
                     </li>

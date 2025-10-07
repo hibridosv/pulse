@@ -1,5 +1,5 @@
 import { DateRangeValues } from '@/components/button/DateRange';
-import { urlConstructor } from '@/lib/utils';
+import { urlConstructor } from '@/lib/urlConstructor';
 import { getServices } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
 import { DateTime } from 'luxon';

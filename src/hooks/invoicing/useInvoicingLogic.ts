@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
 
 
-export function useHistorySalesLogic(url: string, linkUrl: string, loadAtStart: boolean = true) {
+export function useInvoicingLogic(url: string, linkUrl: string, loadAtStart: boolean = true) {
     const [ history, setHistory ] = useState(null);
     const { openLoading, closeLoading, loading } = useStateStore()
     const { links, addLink} = useDownloadLink()
@@ -36,7 +36,7 @@ export function useHistorySalesLogic(url: string, linkUrl: string, loadAtStart: 
             })();
         }
             // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [url, linkUrl, handleGet, loadAtStart]);
+    }, [url, linkUrl, loadAtStart]);
     
 
   return { history, handleGet, loading, links }

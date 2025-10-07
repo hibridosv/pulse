@@ -42,7 +42,7 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false,
     if (additionalFields) {
           const defaults: {[key: string]: any} = {};
           additionalFields?.forEach(field => {
-            if (field.type === 'select' && field.options && field.options.length > 0 && !additionalData[field.name]) {
+            if (field.type === 'select' && field.options && field.options.length > 0 && additionalData[field.name] === undefined) {
               defaults[field.name] = field.options[0].value;
             }
           });
@@ -50,7 +50,8 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false,
             setAdditionalData(prev => ({ ...defaults, ...prev }));
           }
     }
-  }, [additionalFields, setAdditionalData, additionalData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [additionalFields]);
 
   const handleAdditionalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

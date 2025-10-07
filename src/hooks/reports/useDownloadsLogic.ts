@@ -34,7 +34,7 @@ export function useDownloadsLogic(url: string) {
               type,
             }
             try {
-              const response = await createService(`document/zip/generate`, data);
+              const response = await createService(`downloads/zip/generate`, data);
               if (response.status === 200) {
                 handleGet(url);
               }

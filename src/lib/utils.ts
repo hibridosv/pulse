@@ -35,11 +35,6 @@ export const permissionExists = (permissions: any, permission: string) => {
 };
 
 
-export const urlConstructor = (data: any, url: string)=>{
-  let dir = encodeURI(`${url}?option=${data.option}${data.initialDate ? `&initialDate=${data.initialDate}` : ``}${data.finalDate ? `&finalDate=${data.finalDate}` : ``}${data.product_id ? `&product_id=${data.product_id}` : ``}${data.userId ? `&userId=${data.userId}` : ``}${data.clientId ? `&clientId=${data.clientId}` : ``}${data.referredId ? `&referredId=${data.referredId}` : ``}`)
-  return dir;
-}
-
 /// obtengo el nombre del tipo de pago 
 export const getPaymentTypeName = (type: PaymentType): string | undefined => {
   const typeName = Object.entries(PaymentType)
