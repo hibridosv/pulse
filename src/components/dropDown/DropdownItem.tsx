@@ -10,6 +10,7 @@ interface DropdownItemProps {
   href?: string; // Para enlaces externos (<a>)
   as?: string;   // Para enlaces internos de Next.js (<Link>)
   target?: string; // Para target="_blank" en enlaces externos
+  disabled?: boolean; // Propiedad para deshabilitar el item
 }
 
 /**
@@ -35,14 +36,20 @@ interface DropdownItemProps {
  * - href?: URL para enlaces externos (opcional).
  * - as?: Ruta interna de Next.js para navegación (opcional).
  * - target?: Atributo 'target' para enlaces (ej. "_blank" para nueva pestaña).
+ * - disabled?: Booleano para deshabilitar el item (opcional).
  *
  * Nota: Si se proporcionan 'href' y 'as', 'as' tendrá prioridad (Next.js Link).
  * Si se proporcionan 'href'/'as' y 'onClick', el 'onClick' se ejecutará antes de la navegación.
  */
-export const DropdownItem: FC<DropdownItemProps> = ({ children, onClick, href, as, target }) => {
+export const DropdownItem: FC<DropdownItemProps> = ({ children, onClick, href, as, target, disabled = false }) => {
   const context = useContext(DropdownContext);
 
   const handleClick = (event: React.MouseEvent) => {
+    if (disabled) {
+      event.preventDefault();
+      return;
+    }
+
     if (onClick) {
       onClick();
     }
@@ -52,7 +59,9 @@ export const DropdownItem: FC<DropdownItemProps> = ({ children, onClick, href, a
     }
   };
 
-  const commonClasses = "block w-full text-left px-4 py-2 text-sm text-text-base hover:bg-bg-subtle cursor-pointer";
+  const commonClasses = `block w-full text-left px-4 py-2 text-sm text-text-base hover:bg-bg-subtle ${
+    disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+  }`;
 
   if (as) {
     return (
@@ -61,6 +70,7 @@ export const DropdownItem: FC<DropdownItemProps> = ({ children, onClick, href, a
         onClick={handleClick}
         className={commonClasses}
         role="menuitem"
+        aria-disabled={disabled}
       >
         {children}
       </Link>
@@ -73,6 +83,7 @@ export const DropdownItem: FC<DropdownItemProps> = ({ children, onClick, href, a
         className={commonClasses}
         role="menuitem"
         target={target}
+        aria-disabled={disabled}
       >
         {children}
       </a>
@@ -84,6 +95,7 @@ export const DropdownItem: FC<DropdownItemProps> = ({ children, onClick, href, a
         onClick={handleClick}
         className={commonClasses}
         role="menuitem"
+        disabled={disabled}
       >
         {children}
       </button>
