@@ -13,8 +13,28 @@ export function useDownloadLink() {
 
     const addLink = useCallback((data: DateRangeValues, url: string, params?:any, maxLinks=3, nameLink="Descargar Documento" )=>{
       if (!remoteUrl) return;
-        const getParams = params ? params.map((param: any) => `${data.option ? '&' : '?' }${param.name}=${param.value}`).join('') : '';
-        const newUrl = `${remoteUrl}/download/${url}${data.option ? `?option=${data.option}` : ``}${data.initialDate ? `&initialDate=${data.initialDate}` : ``}${data.finalDate ? `&finalDate=${data.finalDate}` : ``}${getParams}` 
+
+        const queryParams = [];
+
+        if (data.option) {
+            queryParams.push(`option=${data.option}`);
+        }
+        if (data.initialDate) {
+            queryParams.push(`initialDate=${data.initialDate}`);
+        }
+        if (data.finalDate) {
+            queryParams.push(`finalDate=${data.finalDate}`);
+        }
+        if (params) {
+            params.forEach((param: any) => {
+                if (param.value !== undefined && param.value !== null) {
+                    queryParams.push(`${param.name}=${param.value}`);
+                }
+            });
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+        const newUrl = `${remoteUrl}/download/${url}${queryString}`; 
         
         const name = `${!data.option ? nameLink : data.option == '1' ?
                             `Fecha establecida ${formatDate(data.initialDate)}` : 

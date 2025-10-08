@@ -5,30 +5,25 @@ import { LinksList } from "@/components/button/LinkList";
 import { InvoicingCorrelativeTable } from "@/components/invoicing/InvoicingCorrelativeTable";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoiceTypesLogic } from "@/hooks/invoicing/useInvoiceTypesLogic";
-import { useInvoicingLogic } from "@/hooks/invoicing/useInvoicingLogic";
+import { useInvoicingCorrelativesLogic } from "@/hooks/invoicing/useInvoicingCorrelativesLogic";
 import { useRecalculateYearsLogic } from "@/hooks/invoicing/useRecalculateYearsLogic";
-import { useDownloadLink } from "@/hooks/useDownloadLink";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
 export default function Page() {
-  const { history, handleGet, loading } = useInvoicingLogic('documents/correlatives', 'excel/invoices/documents/', false);
+  const { history, handleGet, loading, links } = useInvoicingCorrelativesLogic('documents/correlatives', false);
   const { invoiceTypes, loading: loadingFields} =  useInvoiceTypesLogic();
   const { years, months, currentYear, currentMonth } =  useRecalculateYearsLogic();
   const isSending = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
   const { register, handleSubmit } = useForm();
-  const { links, addLink} = useDownloadLink()
   const [invoiceId, setinvoiceId] = useState("");
 
 
     const handleFormSubmit = async (data: DateRangeValues) => { 
-        await handleGet(data, 'documents/correlatives', 'excel/invoices/documents/');
-        addLink(data, 'excel/invoices/correlatives/', [{name: "invoiceId", value: data.invoiceId}, {name: "year", value: data.year}, {name: "month", value: data.month}], 2, "Descargar Excel");
-        addLink(data, 'pdf/invoices/correlatives/', [{name: "invoiceId", value: data.invoiceId}, {name: "year", value: data.year}, {name: "month", value: data.month}], 2, "Descargar PDF");
+        await handleGet(data, 'documents/correlatives');
         setinvoiceId(data.invoiceId)
-
     }
 
 
