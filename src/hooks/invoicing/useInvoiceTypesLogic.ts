@@ -4,15 +4,15 @@ import useStateStore from '@/stores/stateStorage';
 import { useEffect, useMemo, useState } from 'react'; // Import useMemo
 
 
-export function useInvoiceTypesLogic() {
+export function useInvoiceTypesLogic(url: string) {
     const [ invoiceTypes, setInvoiceTypes ] = useState(null) as any;
     const { openLoading, closeLoading, loading } = useStateStore()
 
     useEffect(() => {
-        const handleGet = async () => {
+        const handleGet = async (url: string) => {
             openLoading("invoiceTypes");
             try {
-                const response = await getServices('invoice/type?filterWhere[type]=!9&FilterWhereIn[status]==1,0');
+                const response = await getServices(url);
                 setInvoiceTypes(response.data.data);
             } catch (error) {
                 console.error(error);
@@ -22,7 +22,7 @@ export function useInvoiceTypesLogic() {
         }
 
         (async () => { 
-            await handleGet()
+            await handleGet(url)
         })();
     }, [openLoading, closeLoading]);
 

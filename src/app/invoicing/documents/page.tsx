@@ -9,7 +9,7 @@ import { useInvoicingLogic } from "@/hooks/invoicing/useInvoicingLogic";
 
 export default function Page() {
   const { history, handleGet, loading, links } = useInvoicingLogic('documents', 'excel/invoices/documents/');
-  const { fieldsFiltered, loading: loadingFields} =  useInvoiceTypesLogic();
+  const { fieldsFiltered, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9&FilterWhereIn[status]==1,0');
   const isLoading = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
 
@@ -24,7 +24,7 @@ export default function Page() {
     <div className="col-span-7 border-r md:border-primary">
         <ViewTitle text="REPORTE DOCUMENTOS EMITIDOS" />
         <div className="p-4">
-          <InvoicingListTable records={history} isLoading={false} />
+          <InvoicingListTable records={history} isLoading={isLoading} />
         </div>
     </div>
     <div className="col-span-3">
