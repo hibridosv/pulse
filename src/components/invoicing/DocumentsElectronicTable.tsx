@@ -62,10 +62,10 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
          <Dropdown label={<FaEdit size={18} /> }>
             <DropdownItem onClick={() => {  }}>Detalles del Documento</DropdownItem>
-            <DropdownItem onClick={() => { }}>Descargar PDF</DropdownItem>
-            <DropdownItem as={`/products//edit`}>Descargas JSON</DropdownItem>
-            <DropdownItem as={`/products//kardex`}>Reenviar Email</DropdownItem>
-            <DropdownItem as={`/products//kardex`}>Reenviar Documento</DropdownItem>
+            <DropdownItem target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
+            <DropdownItem target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
+            <DropdownItem onClick={() => {  }}>Reenviar Email</DropdownItem>
+            <DropdownItem onClick={() => {  }}>Reenviar Documento</DropdownItem>
           </Dropdown>
       </td>
     </tr>

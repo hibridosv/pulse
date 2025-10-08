@@ -24,10 +24,20 @@ export const Dropdown: FC<DropdownProps> = ({ label, children }) => {
   const calculatePosition = useCallback(() => {
     if (buttonRef.current && dropdownRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      const dropdownWidth = dropdownRef.current.offsetWidth; // Ancho real del menú
       const dropdownHeight = dropdownRef.current.offsetHeight; // Altura real del menú
+      const dropdownWidth = dropdownRef.current.offsetWidth; // Ancho real del menú
 
-      let newTop = rect.top + window.scrollY - dropdownHeight; // Posición exacta arriba del botón
+      let newTop;
+      const spaceAbove = rect.top;
+
+      // Si no hay espacio arriba para mostrar el dropdown, muéstralo debajo del botón.
+      if (spaceAbove < dropdownHeight) {
+        newTop = rect.bottom + window.scrollY;
+      } else {
+        // Si hay espacio, muéstralo arriba.
+        newTop = rect.top + window.scrollY - dropdownHeight;
+      }
+
       let newLeft = rect.right + window.scrollX - dropdownWidth; // Posición a la izquierda
 
       setPosition({
