@@ -7,7 +7,6 @@ import { useEffect, useMemo, useState } from 'react'; // Import useMemo
 export function useInvoiceTypesLogic() {
     const [ invoiceTypes, setInvoiceTypes ] = useState(null) as any;
     const { openLoading, closeLoading, loading } = useStateStore()
-    // Remove: const [ fieldsFiltered, setFieldsFiltered ] = useState<AdditionalField[]>([])
 
     useEffect(() => {
         const handleGet = async () => {
@@ -27,7 +26,7 @@ export function useInvoiceTypesLogic() {
         })();
     }, [openLoading, closeLoading]);
 
-    // Use useMemo to derive fieldsFiltered from invoiceTypes
+
     const fieldsFiltered: AdditionalField[] = useMemo(() => {
         if (!invoiceTypes) {
             return [];
@@ -41,7 +40,7 @@ export function useInvoiceTypesLogic() {
             type: 'select',
             options : [{ value: '', label: 'Mostrar Todos' }, ...typesFiltered]
         }];
-    }, [invoiceTypes]); // Recalculate only when invoiceTypes changes
+    }, [invoiceTypes]);
     
     return { invoiceTypes, loading, fieldsFiltered }
 }
