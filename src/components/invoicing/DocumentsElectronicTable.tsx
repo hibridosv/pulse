@@ -26,15 +26,15 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
   const listItems = records.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
-        { record?.fecha_procesamiento ? record?.fecha_procesamiento : "N/A" }
+        { record?.fecha_procesamiento ?? "N/A" }
       </td>
       <td className="px-3 py-2 whitespace-nowrap">
         { tipoDTE(record?.tipo_dte) }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
-        { record?.numero_control }
+        { record?.numero_control ?? "--" }
       </td>
-      <td className={`px-3 py-2 text-left whitespace-nowrap`}>
+      <td className={`px-3 py-2 text-left`}>
         { record?.receptor_nombre ?? "N/A" }
       </td>
       <td className={`px-3 py-2 text-left whitespace-nowrap`}>
