@@ -62,6 +62,16 @@ export default function Page() {
               :
               <div>
                 { loadingDownload ?
+                <div className="m-4 p-4 border-2 rounded-md animate-pulse">
+                      <div className="h-5 w-40 bg-gray-300 rounded mb-3"></div>
+                      <div className="h-4 w-full bg-gray-200 rounded mb-2"></div>
+                      <div className="h-4 w-5/6 bg-gray-200 rounded mb-4"></div>
+
+                      <div className="flex gap-4">
+                        <div className="h-10 w-36 bg-gray-300 rounded"></div>
+                      </div>
+                    </div> 
+                      :
                   <div className="m-4 p-4 border-2 rounded-md">
                       <p className="font-bold mb-2">Generar Documentos</p>
                       <p className="mb-2">No hay documentos disponibles para descargar. Puede generar los documentos en formato JSON si no se han generado previamente, esto puede tardar unos minutos dependiendo de la cantidad de documentos a procesar.</p>  
@@ -72,16 +82,7 @@ export default function Page() {
                         preset={creating ? Preset.saving : Preset.save}
                         />
                       </div>
-                    </div> :
-                    <div className="m-4 p-4 border-2 rounded-md animate-pulse">
-                      <div className="h-5 w-40 bg-gray-300 rounded mb-3"></div>
-                      <div className="h-4 w-full bg-gray-200 rounded mb-2"></div>
-                      <div className="h-4 w-5/6 bg-gray-200 rounded mb-4"></div>
-
-                      <div className="flex gap-4">
-                        <div className="h-10 w-36 bg-gray-300 rounded"></div>
-                      </div>
-                    </div>
+                    </div> 
                 }
               </div>      
             }

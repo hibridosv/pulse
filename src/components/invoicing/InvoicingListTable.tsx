@@ -3,7 +3,7 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
-import { getPaymentTypeName, getTotalOfItem, numberToMoney } from "@/lib/utils";
+import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { Indicator } from "../Indicators";
 
@@ -61,7 +61,7 @@ export function InvoicingListTable(props: InvoicingListTableI) {
             <tr>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Fecha </th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Tipo</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Numero</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">NO</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Estado</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cliente </th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Tipo Pago</th>
@@ -73,16 +73,6 @@ export function InvoicingListTable(props: InvoicingListTableI) {
             {listItems}
           </tbody>
         </table>
-          <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
-            <div>
-                <p className="text-sm text-text-muted">Total descuentos: </p>
-                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records, "discount"), system) }</p>
-            </div>
-            <div>
-                <p className="text-sm text-text-muted">Total de venta: </p>
-                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records, "total"), system) }</p>
-            </div>
-          </div>
       </div>
     </div>
   );
