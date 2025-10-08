@@ -13,8 +13,8 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-primary p-2 text-text-inverted shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
+      <nav className="bg-primary p-2 text-text-inverted shadow-md sticky top-0 z-50">
+        <div className="flex justify-between items-center px-4">
          
          <div className="flex items-center gap-4">
             <button

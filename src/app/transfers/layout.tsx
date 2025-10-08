@@ -5,14 +5,14 @@ import { Navbar } from "@/components/Navbar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mx-auto my-auto ">
-      <div>
-        <Navbar />
-      </div>
+    <div>
+      <Navbar />
       <div className="w-full h-full">
-        {children}
+        <Suspense fallback={<LoadingPage />}>
+          {children}
+        </Suspense>
       </div>
-  </div>
+    </div>
   );
 };
 

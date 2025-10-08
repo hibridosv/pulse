@@ -156,13 +156,13 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
         />
       </button>
       {isOpen && (
-        <ul className="pl-4 pt-2">
+        <ul className="pl-2 pt-2">
           {item.children?.map((child: any, index) => (
             <li key={index} className="mb-1">
               <Link
                 href={child.href}
                 onClick={onClose}
-                className="block p-1 rounded text-text-inverted/70 hover:bg-white/10 hover:text-text-inverted"
+                className="block p-2 rounded text-text-inverted/70 hover:bg-white/10 hover:text-text-inverted"
               >
                 {child.label}
               </Link>
@@ -188,7 +188,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-60 z-40 transition-opacity"
+      className="fixed inset-0 bg-black bg-opacity-60 z-50 transition-opacity"
       onClick={onClose}
     >
       <div
