@@ -36,7 +36,7 @@ export function useDownloadLink() {
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
         const newUrl = `${remoteUrl}/download/${url}${queryString}`; 
         
-        const name = `${!data.option ? nameLink : data.option == '1' ?
+        const name = `${nameLink ? nameLink : data.option == '1' ?
                             `Fecha establecida ${formatDate(data.initialDate)}` : 
                             `Del ${formatDate(data.initialDate)} al ${formatDate(data.finalDate)}`}`
 

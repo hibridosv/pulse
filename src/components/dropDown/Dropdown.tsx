@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback, FC } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, FC } from 'react';
 import ReactDOM from 'react-dom';
 import { FiChevronDown } from 'react-icons/fi'; // Cambiado a FiChevronDown para un botón de dropdown
 import { DropdownContext } from './dropdownContext';
@@ -54,7 +54,7 @@ export const Dropdown: FC<DropdownProps> = ({ label, children }) => {
   }, []);
 
   // Recalcula posición al abrir y al redimensionar la ventana
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isOpen) {
       calculatePosition();
       window.addEventListener('resize', calculatePosition);

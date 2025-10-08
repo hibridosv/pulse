@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
 
 
-export function useInvoicingLogic(url: string, linkUrl: string, loadAtStart: boolean = true) {
+export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAtStart: boolean = true) {
     const [ history, setHistory ] = useState(null);
     const { openLoading, closeLoading, loading } = useStateStore()
     const { links, addLink} = useDownloadLink()
@@ -19,7 +19,7 @@ export function useInvoicingLogic(url: string, linkUrl: string, loadAtStart: boo
             let urlScoped = urlConstructor(data, url);
             const response = await getServices(urlScoped);
             setHistory(response.data.data);
-            addLink(data, linkUrl, params);
+            addLink(data, linkUrl, params, 1, "Descargar Documento Excel");
         } catch (error) {
             console.error(error);
             setHistory(null);
