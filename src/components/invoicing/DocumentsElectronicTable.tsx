@@ -34,10 +34,10 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
         { record?.numero_control }
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
-        { record?.receptor_nombre }
+      <td className={`px-3 py-2 text-left whitespace-nowrap`}>
+        { record?.receptor_nombre ?? "N/A" }
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
+      <td className={`px-3 py-2 text-left whitespace-nowrap`}>
         { status(record?.status) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>

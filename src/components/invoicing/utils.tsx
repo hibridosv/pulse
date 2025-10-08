@@ -2,11 +2,11 @@ import { Indicator } from "../Indicators";
 
 export const status = (status: number)=>{
     switch (status) {
-        case 1: return <Indicator text="RECIBIDO" type="info" />;
-        case 2: return <Indicator text="FIRMADO" type="warning" />;
-        case 3: return <Indicator text="RECHAZADO" type="danger" />;
-        case 4: return <Indicator text="PROCESADO" type="success" />;
-        case 5: return <Indicator text="ANULADO" type="danger" />;
+        case 1: return <Indicator text="Recibido" type="info" />;
+        case 2: return <Indicator text="Firmado" type="warning" />;
+        case 3: return <Indicator text="Rechazado" type="danger" />;
+        case 4: return <Indicator text="Procesado" type="success" />;
+        case 5: return <Indicator text="Anulado" type="danger" />;
         }
     }
 
