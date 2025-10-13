@@ -3,6 +3,7 @@ import { urlConstructor } from '@/lib/urlConstructor';
 import { getServices, updateService } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useToastMessageStore from '@/stores/toastMessageStore';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
@@ -59,6 +60,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
         }
       } catch (error) {
         console.error(error);
+        useToastMessageStore.getState().setError(error);
       } finally {
         closeLoading("resendDocument");
         clearSelectedElement("resendDocument");
