@@ -35,6 +35,10 @@ The project uses NextAuth.js for authentication, configured with a `CredentialsP
 - **Linting**: ESLint with the `next` configuration is used to maintain code quality.
 - **Import Alias**: The project uses `@/*` to reference files from the `src` directory.
 
+## Agent Operational Rules
+
+- **No Inline Change Comments**: Do not add comments to the code explaining what was changed (e.g., `// Changed this line to fix bug X`). Explain changes in the chat, not in the code itself. The code should only contain comments that explain *why* the code is written a certain way if the logic is complex, following standard best practices.
+
 ---
 
 ## Theming and Styling System
@@ -167,6 +171,27 @@ Components are styled to be theme-aware and professional, following these patter
   - **Hover States**: `hover:bg-bg-subtle` on `<tr>`.
   - **Conditional Styling**: E.g., `bg-danger/10 text-danger` for status indicators (like out-of-stock products).
 - **Responsive Design**: Components like `Pagination` utilize `flex-wrap` and conditional visibility (`hidden sm:inline`) to adapt to different screen sizes.
+
+### 5. Modal Component
+
+The `Modal` component (`src/components/modal/Modal.tsx`) provides a flexible `size` prop to control its width.
+
+| Size Prop | Tailwind Class |
+| :-------- | :------------- |
+| `xs`      | `max-w-xs`     |
+| `sm`      | `max-w-sm`     |
+| `md`      | `max-w-md`     |
+| `lg`      | `max-w-lg`     |
+| `xl`      | `max-w-xl`     |
+| `xl2`     | `max-w-2xl`    |
+| `xl3`     | `max-w-3xl`    |
+| `xl4`     | `max-w-4xl`    |
+| `xl5`     | `max-w-5xl`    |
+| `xl6`     | `max-w-6xl`    |
+| `xl7`     | `max-w-7xl`    |
+| `full`    | `max-w-full`   |
+
+
 ## Cambios Recientes del Agente
 
 Esta sección documenta los cambios significativos realizados por el agente para mejorar la calidad del código, la coherencia de los estilos y la funcionalidad del proyecto.
