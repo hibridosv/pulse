@@ -51,10 +51,11 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
          setSelectedElement("resendDocument", invoice);
          openLoading("resendDocument");
         const response = await updateService(`electronic/documents/${invoice}`, {});
-        console.log("Respuesta: ", response);
         if (response.status === 200) {
            let data =  await getServices(lastUrl);
-           setHistory(data.data.data);
+           if (data.status === 200) {
+               setHistory(data.data.data);
+           }
         }
       } catch (error) {
         console.error(error);
