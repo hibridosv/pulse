@@ -10,10 +10,9 @@ export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
 
     useEffect(() => {
         const fetchData = async (url: string) => {
-            let urlSanitize = url.toLowerCase();
             openLoading("getOrder");
             try {
-                const response = await getServices(urlSanitize);
+                const response = await getServices(url);
                 setOrder(response.data.data);
             } catch (error) {
                 console.error('Error fetching data');
@@ -22,9 +21,10 @@ export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
                 closeLoading("getOrder");
             }
         }
-
+        
         if (isShow && productId) {
-            fetchData(`orders/find?filter[id]==${productId}&included=products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`);
+            let iden = productId.toLowerCase();
+            fetchData(`orders/find?filter[id]==${iden}&included=products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`);
         }
     }, [productId, isShow, openLoading, closeLoading]);
 
