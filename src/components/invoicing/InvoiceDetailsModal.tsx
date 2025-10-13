@@ -26,7 +26,7 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
     const { order } = useInvoiceDetailsLogic(documentId, isShow);
    
     const showCodeStatus = true; // Se mantiene la lógica original
-    const onElectronic = false; // Se mantiene la lógica original
+    const onElectronic = true; // Se mantiene la lógica original
     
   if (!isShow || !documentId) return null;
 
@@ -44,7 +44,7 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
   ));
 
   return (
-    <Modal show={isShow} onClose={onClose} size="xl4" headerTitle={`Detalles del Documento: #${order?.invoice_assigned?.num_string || ''}`}>
+    <Modal show={isShow} onClose={onClose} size="xl4" headerTitle={`Detalles del Documento: #${order?.invoice || ''}`}>
       <Modal.Body>
         <div className="p-4 bg-bg-base text-text-base space-y-6">
           {/* --- Tarjetas de Información --- */}
