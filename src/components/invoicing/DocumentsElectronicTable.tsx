@@ -31,7 +31,8 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
 
 
   const listItems = records.map((record: any) => {
-    const isDocumentVisible = (record?.tipo_dte == "01" || record?.tipo_dte == "03") ? true : false;
+    const visibleTypes = ["01", "03", "11", "14"];
+    const isDocumentVisible = visibleTypes.includes(record?.tipo_dte ?? "");
     const isRejected = record?.status == 3 ? true : false;
     const isDownloader =  (record?.status == 4 || record?.status == 5) ? true : false;
 
@@ -64,11 +65,11 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
          <Dropdown label={<FaEdit size={18} /> }>
-            <DropdownItem onClick={() => { setSelectedElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
+            <DropdownItem disabled={!isDocumentVisible} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
-            <DropdownItem onClick={() => { setSelectedElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
-            <DropdownItem onClick={() => { setSelectedElement('documentSelected', record); openModal('documentResend')  }}>Reenviar Documento</DropdownItem>
+            <DropdownItem disabled={isDownloader} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
+            <DropdownItem disabled={isRejected} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentResend')  }}>Reenviar Documento</DropdownItem>
           </Dropdown>
       </td>
     </tr>
