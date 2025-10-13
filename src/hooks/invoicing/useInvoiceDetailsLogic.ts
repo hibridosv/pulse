@@ -24,7 +24,7 @@ export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
         }
 
         if (isShow && productId) {
-            fetchData(`orders/find?filter[id]==${productId}&included=products,invoiceproducts,employee,client,referred,delivery,casheir,invoice_assigned`);
+            fetchData(`orders/find?filter[id]==${productId}&included=products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`);
         }
     }, [productId, isShow, openLoading, closeLoading]);
 
