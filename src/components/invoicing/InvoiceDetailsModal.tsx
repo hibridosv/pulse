@@ -5,6 +5,8 @@ import useConfigStore from "@/stores/configStore";
 import { Alert } from "../Alert/Alert";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
+import { NothingHere } from "../NothingHere";
+import { InvoiceDetailsSkeleton } from "../skeleton/InvoiceDetailsSkeleton";
 
 export interface InvoiceDetailsModalI {
   onClose: () => void;
@@ -12,7 +14,6 @@ export interface InvoiceDetailsModalI {
   documentId: string;
 }
 
-// Componente para las tarjetas de información
 const InfoCard = ({ title, value }: { title: string; value: string | undefined }) => (
   <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-3 flex flex-col items-center justify-center text-center">
     <span className="text-sm text-text-muted font-semibold uppercase tracking-wider">{title}</span>
@@ -48,7 +49,7 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
     <Modal show={isShow} onClose={onClose} size="xl4" headerTitle={`Detalles del Documento: #${order?.invoice || ''}`}>
       <Modal.Body>
         <div className="p-4 bg-bg-base text-text-base space-y-6">
-
+          { isLoading ? <InvoiceDetailsSkeleton /> : order ?  <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <InfoCard title="Cajero" value={order?.employee?.name} />
             <InfoCard title="Fecha" value={formatDateAsDMY(order?.charged_at)} />
@@ -94,14 +95,15 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
             <div className="space-y-3">
               {order?.invoice_assigned?.type === 9 && <Alert text="Este Documento tiene una numeración temporal." />}
               {order?.invoice_assigned?.is_electronic === 1 && <Alert text="Este Documento se envió electrónicamente." />}
-              {order?.status === 4 && <Alert text="Este Documento ha sido anulado." />}
-              {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
+              {order?.status === 4 && <Alert text="Este Documento ha sido anulado." type="danger" />}
+            </div>
+            {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
                 <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">
                   Si este documento no se envió electrónicamente, puede reintentarlo <button className="text-primary hover:underline font-semibold">aquí</button>.
                 </div>
               )}
-            </div>
           </div>
+          </> : <NothingHere text="No se encontraron datos del documento" /> }
         </div>
       </Modal.Body>
       <Modal.Footer>
