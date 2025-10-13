@@ -21,7 +21,6 @@ export default function Page() {
   const { modals, closeModal } = useModalStore();
   const documentSelected = getSelectedElement('documentSelected') ?? {};
 
-
     const handleFormSubmit = async (values: DateRangeValues) => { 
       if (values.invoiceId == 2) values.invoiceId = '01';
       if (values.invoiceId == 3) values.invoiceId = '03';
@@ -30,7 +29,6 @@ export default function Page() {
       if (values.invoiceId == 8) values.invoiceId = '04';
         await handleGet(values, 'electronic/documents', 'excel/electronic/');
     }
-
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
