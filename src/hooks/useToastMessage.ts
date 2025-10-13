@@ -1,14 +1,14 @@
 'use client'
+import useToastMessageStore from '@/stores/toastMessageStore'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
-import useToastMessageStore from '@/stores/toastMessageStore'
 
 export function useToastMessage() {
   const { message, clearMessage, error, clearError } = useToastMessageStore()
 
   useEffect(() => {
     if (message) {
-      toast.success(message.data.message || "Realizado!")
+      toast.success(message?.data?.message || message.message)
       clearMessage()
     }
     if (error) {
