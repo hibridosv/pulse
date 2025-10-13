@@ -97,12 +97,12 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
               {order?.invoice_assigned?.is_electronic === 1 && <Alert text="Este Documento se envió electrónicamente." />}
               {order?.status === 4 && <Alert text="Este Documento ha sido anulado." type="danger" />}
             </div>
-            {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
-                <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">
-                  Si este documento no se envió electrónicamente, puede reintentarlo <button className="text-primary hover:underline font-semibold">aquí</button>.
-                </div>
-              )}
           </div>
+          {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
+            <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">
+              Si este documento no se envió electrónicamente, puede reintentarlo <button className="text-primary hover:underline font-semibold">aquí</button>.
+            </div>
+          )}
           </> : <NothingHere text="No se encontraron datos del documento" /> }
         </div>
       </Modal.Body>

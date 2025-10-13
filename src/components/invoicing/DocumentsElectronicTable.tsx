@@ -58,7 +58,7 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
       <td className={`px-3 py-2 text-left`}>
         { record?.receptor_nombre ?? "N/A" }
       </td>
-      <td className={`px-3 py-2 text-left whitespace-nowrap`} title={record?.descripcion_msg} 
+      <td className={`px-3 py-2 text-left whitespace-nowrap ${isRejected && 'clickeable'}`} title={record?.descripcion_msg} 
         onClick={ isRejected ? ()=>{ setSelectedElement('documentSelected', record); openModal('documentErrors')  } : ()=>{} }>
         { status(record?.status) }
       </td>
