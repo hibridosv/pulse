@@ -51,13 +51,15 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
         <div title={record?.observaciones}>{ tipoDTE(record?.tipo_dte) }</div>
         }
       </td>
-      <td className={`px-3 py-2 text-left`} >
+      <td className={`px-3 py-2 text-left ${isDocumentVisible && 'clickeable'}`} 
+        onClick={ isDocumentVisible ? ()=> { setSelectedElement('documentSelected', record); openModal('documentDetail')  } : ()=>{}} >
         { record?.numero_control ?? "--" }
       </td>
       <td className={`px-3 py-2 text-left`}>
         { record?.receptor_nombre ?? "N/A" }
       </td>
-      <td className={`px-3 py-2 text-left whitespace-nowrap`}>
+      <td className={`px-3 py-2 text-left whitespace-nowrap`} title={record?.descripcion_msg} 
+        onClick={ isRejected ? ()=>{ setSelectedElement('documentSelected', record); openModal('documentErrors')  } : ()=>{} }>
         { status(record?.status) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
@@ -68,8 +70,8 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
             <DropdownItem disabled={!isDocumentVisible} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
-            <DropdownItem disabled={isDownloader} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
-            <DropdownItem disabled={isRejected} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentResend')  }}>Reenviar Documento</DropdownItem>
+            <DropdownItem disabled={!isDownloader} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
+            <DropdownItem disabled={!isRejected} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentResend')  }}>Reenviar Documento</DropdownItem>
           </Dropdown>
       </td>
     </tr>
