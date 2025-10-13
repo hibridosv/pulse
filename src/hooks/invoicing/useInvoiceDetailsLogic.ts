@@ -10,9 +10,10 @@ export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
 
     useEffect(() => {
         const fetchData = async (url: string) => {
+            let urlSanitize = url.toLowerCase();
             openLoading("getOrder");
             try {
-                const response = await getServices(url);
+                const response = await getServices(urlSanitize);
                 setOrder(response.data.data);
             } catch (error) {
                 console.error('Error fetching data');
