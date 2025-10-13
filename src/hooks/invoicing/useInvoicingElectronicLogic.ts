@@ -53,6 +53,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
          openLoading("resendDocument");
         const response = await updateService(`electronic/documents/${invoice}`, {});
         if (response.status === 200) {
+            useToastMessageStore.getState().setMessage({ message: "Actualizando documentos..."});
            let data =  await getServices(lastUrl);
            if (data.status === 200) {
                setHistory(data.data.data);
