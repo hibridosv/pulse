@@ -19,6 +19,7 @@ export default function Page() {
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
   const { getSelectedElement} = useTempSelectedElementStore();
   const { modals, closeModal } = useModalStore();
+  const documentSelected = getSelectedElement('documentSelected') ?? {};
 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
@@ -48,8 +49,8 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAR" />
           </div>
     </div> 
-    <SendEmailDocumentModal isShow={modals.documentEmail} onClose={() => closeModal('documentEmail')} document={getSelectedElement('documentSelected')} />
-    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={getSelectedElement('documentSelected').id} />
+    <SendEmailDocumentModal isShow={modals.documentEmail} onClose={() => closeModal('documentEmail')} document={documentSelected} />
+    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected.id} />
     <ToasterMessage />
 </div>
   );

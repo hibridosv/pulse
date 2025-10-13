@@ -24,7 +24,7 @@ export function useInvoiceTypesElectronicLogic(url: string) {
         (async () => { 
             await handleGet(url)
         })();
-    }, [openLoading, closeLoading]);
+    }, [openLoading, closeLoading, url]);
 
 
     const fieldsFiltered: AdditionalField[] = useMemo(() => {
