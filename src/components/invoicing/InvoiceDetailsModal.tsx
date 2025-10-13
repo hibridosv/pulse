@@ -12,6 +12,7 @@ export interface InvoiceDetailsModalI {
   onClose: () => void;
   isShow: boolean;
   documentId: string;
+  onElectronic?: boolean;
 }
 
 const InfoCard = ({ title, value }: { title: string; value: string | undefined }) => (
@@ -22,13 +23,12 @@ const InfoCard = ({ title, value }: { title: string; value: string | undefined }
 );
 
 export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
-    const { onClose, isShow, documentId } = props;
-    const { system } = useConfigStore();
+    const { onClose, isShow, documentId, onElectronic = false } = props;
+    const { system, activeConfig } = useConfigStore();
     const { order, loading } = useInvoiceDetailsLogic(documentId, isShow);
     const isLoading = loading.getOrder ?? false;
-   
-    const showCodeStatus = true; 
-    const onElectronic = true; 
+    const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
+
     
   if (!isShow || !documentId) return null;
 

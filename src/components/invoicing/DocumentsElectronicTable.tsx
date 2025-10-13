@@ -4,8 +4,9 @@ import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
+import useStateStore from "@/stores/stateStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaSpinner } from "react-icons/fa";
 import { Dropdown } from "../dropDown/Dropdown";
 import { DropdownItem } from "../dropDown/DropdownItem";
 import { status, tipoDTE } from "./utils";
@@ -13,15 +14,20 @@ import { status, tipoDTE } from "./utils";
 
 export interface DocumentsElectronicTableI {
   records: any;
-  isLoading?: boolean;
+  resendDocument: (invoiceId: string) => void;
 }
 
 export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
-  const { records, isLoading } = props;
+  const { records, resendDocument } = props;
   const { system } = useConfigStore();
   const API_URL = process.env.NEXT_PUBLIC_URL_API;
-  const { setSelectedElement} = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
   const { openModal } = useModalStore();
+  const {  loading } = useStateStore();
+  const isLoading = loading.history ?? false; 
+  const isReSending = loading.resendDocument ?? false;
+  const InvoiceResending = getSelectedElement('resendDocument');
+
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
@@ -66,13 +72,15 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
         { record?.email == 1 ? "Enviado" : "Sin Enviar" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-         <Dropdown label={<FaEdit size={18} /> }>
+         { isReSending && InvoiceResending == record?.codigo_generacion ? 
+            <FaSpinner className="animate-spin" size={20} />
+          : <Dropdown label={<FaEdit size={18} /> }>
             <DropdownItem disabled={!isDocumentVisible} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
             <DropdownItem disabled={!isDownloader} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
-            <DropdownItem disabled={!isRejected} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentResend')  }}>Reenviar Documento</DropdownItem>
-          </Dropdown>
+            <DropdownItem disabled={!isRejected} onClick={() => { resendDocument(record?.codigo_generacion) }}>Reenviar Documento</DropdownItem>
+          </Dropdown> }
       </td>
     </tr>
   )

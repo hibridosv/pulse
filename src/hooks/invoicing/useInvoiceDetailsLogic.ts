@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 
 
-export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
+export function useInvoiceDetailsLogic(invoiceId: string, isShow: boolean) {
     const [ order, setOrder ] = useState(null) as any;
     const { openLoading, closeLoading, loading } = useStateStore();
 
@@ -22,11 +22,11 @@ export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
             }
         }
         
-        if (isShow && productId) {
-            let iden = productId.toLowerCase();
+        if (isShow && invoiceId) {
+            let iden = invoiceId.toLowerCase();
             fetchData(`orders/find?filter[id]==${iden}&included=products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`);
         }
-    }, [productId, isShow, openLoading, closeLoading]);
+    }, [invoiceId, isShow, openLoading, closeLoading]);
 
     return { order, loading };
 }
