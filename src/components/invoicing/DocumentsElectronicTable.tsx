@@ -3,6 +3,8 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { FaEdit } from "react-icons/fa";
 import { Dropdown } from "../dropDown/Dropdown";
 import { DropdownItem } from "../dropDown/DropdownItem";
@@ -18,7 +20,8 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
   const API_URL = process.env.NEXT_PUBLIC_URL_API;
-
+  const { setSelectedElement} = useTempSelectedElementStore();
+  const { openModal } = useModalStore();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
@@ -61,11 +64,11 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
          <Dropdown label={<FaEdit size={18} /> }>
-            <DropdownItem onClick={() => {  }}>Detalles del Documento</DropdownItem>
+            <DropdownItem onClick={() => { setSelectedElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
-            <DropdownItem onClick={() => {  }}>Reenviar Email</DropdownItem>
-            <DropdownItem onClick={() => {  }}>Reenviar Documento</DropdownItem>
+            <DropdownItem onClick={() => { setSelectedElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
+            <DropdownItem onClick={() => { setSelectedElement('documentSelected', record); openModal('documentResend')  }}>Reenviar Documento</DropdownItem>
           </Dropdown>
       </td>
     </tr>

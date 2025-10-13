@@ -2,9 +2,14 @@
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
 import { DocumentsElectronicTable } from "@/components/invoicing/DocumentsElectronicTable";
+import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
+import { SendEmailDocumentModal } from "@/components/invoicing/SendEmailDocumentModal";
+import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoiceTypesElectronicLogic } from "@/hooks/invoicing/useInvoiceTypesElectronicLogic";
 import { useInvoicingElectronicLogic } from "@/hooks/invoicing/useInvoicingElectronicLogic";
+import useModalStore from "@/stores/modalStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
 export default function Page() {
@@ -12,7 +17,8 @@ export default function Page() {
   const { Additionalfields, loading: loadingFields} =  useInvoiceTypesElectronicLogic('invoice/type?filterWhere[type]=!9&filterWhere[is_electronic]==1&FilterWhereIn[status]==1,0');
   const isLoading = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
-
+  const { getSelectedElement} = useTempSelectedElementStore();
+  const { modals, closeModal } = useModalStore();
 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
@@ -42,6 +48,9 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAR" />
           </div>
     </div> 
+    <SendEmailDocumentModal isShow={modals.documentEmail} onClose={() => closeModal('documentEmail')} document={getSelectedElement('documentSelected')} />
+    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={getSelectedElement('documentSelected').id} />
+    <ToasterMessage />
 </div>
   );
 }

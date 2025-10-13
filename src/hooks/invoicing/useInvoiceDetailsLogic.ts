@@ -1,0 +1,30 @@
+import { getServices } from '@/services/services';
+import useStateStore from '@/stores/stateStorage';
+import { useEffect, useState } from 'react';
+
+
+
+export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
+    const [ order, setOrder ] = useState(null) as any;
+    const { openLoading, closeLoading } = useStateStore();
+
+    useEffect(() => {
+        const fetchData = async (url: string) => {
+            openLoading("getOrder");
+            try {
+                const response = await getServices(url);
+                setOrder(response.data.data);
+            } catch (error) {
+                console.error('Error fetching data');
+            } finally {
+                closeLoading("getOrder");
+            }
+        }
+
+        if (isShow && productId) {
+            fetchData(`orders/find?filter[id]==${productId}&included=products,invoiceproducts,employee,client,invoiceAssigned`);
+        }
+    }, [productId, isShow, openLoading, closeLoading]);
+
+    return { order };
+}

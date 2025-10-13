@@ -200,8 +200,8 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         <div className="absolute inset-0 bg-primary/80 z-0"></div>
 
         {/* Header */}
-        <div className="relative p-4 border-b border-white/10 flex-shrink-0 bg-primary/95 z-10">
-          <div className="w-full h-10">
+        <div className="relative m-2 p-4 border-b border-white/10 flex-shrink-0 z-10">
+          <div className="w-full h-8">
             <Image
                   src={`/img/${[1, 2].includes(tenant?.system) 
                     ? 'logo_hibrido_s' 
