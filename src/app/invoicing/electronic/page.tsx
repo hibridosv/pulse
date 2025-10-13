@@ -1,6 +1,7 @@
 'use client';
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
+import { DocumentErrorsModal } from "@/components/invoicing/DocumentErrorsModal";
 import { DocumentsElectronicTable } from "@/components/invoicing/DocumentsElectronicTable";
 import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { SendEmailDocumentModal } from "@/components/invoicing/SendEmailDocumentModal";
@@ -49,6 +50,7 @@ export default function Page() {
     </div> 
     <SendEmailDocumentModal isShow={modals.documentEmail} onClose={() => closeModal('documentEmail')} document={documentSelected} />
     <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.codigo_generacion} />
+    <DocumentErrorsModal isShow={modals.documentErrors} onClose={() => closeModal('documentErrors')} document={documentSelected} />
     <ToasterMessage />
 </div>
   );
