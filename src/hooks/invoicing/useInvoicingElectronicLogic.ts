@@ -9,7 +9,7 @@ import { useDownloadLink } from '../useDownloadLink';
 
 
 export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAtStart: boolean = true) {
-    const [ history, setHistory ] = useState(null);
+    const [ history, setHistory ] = useState(null) as any;
     const [ lastUrl, setLastUrl ] = useState("");
     const { openLoading, closeLoading } = useStateStore();
     const { links, addLink} = useDownloadLink();
