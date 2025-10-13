@@ -34,7 +34,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
         }
     }, [addLink, closeLoading, openLoading]);
 
-  useEffect(() => {
+    useEffect(() => {
         if (loadAtStart) {
             (async () => { 
             const actualDate = DateTime.now();
@@ -53,6 +53,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
         const response = await updateService(`electronic/documents/${invoice}`, {});
         if (response.data.status === 200) {
            let data =  await getServices(lastUrl);
+           console.log("Respuesta: ", data);
            setHistory(data.data.data);
         }
       } catch (error) {
