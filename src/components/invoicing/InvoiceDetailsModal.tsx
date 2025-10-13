@@ -23,10 +23,11 @@ const InfoCard = ({ title, value }: { title: string; value: string | undefined }
 export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
     const { onClose, isShow, documentId } = props;
     const { system } = useConfigStore();
-    const { order } = useInvoiceDetailsLogic(documentId, isShow);
+    const { order, loading } = useInvoiceDetailsLogic(documentId, isShow);
+    const isLoading = loading.getOrder ?? false;
    
-    const showCodeStatus = true; // Se mantiene la lógica original
-    const onElectronic = true; // Se mantiene la lógica original
+    const showCodeStatus = true; 
+    const onElectronic = true; 
     
   if (!isShow || !documentId) return null;
 
@@ -47,7 +48,7 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
     <Modal show={isShow} onClose={onClose} size="xl4" headerTitle={`Detalles del Documento: #${order?.invoice || ''}`}>
       <Modal.Body>
         <div className="p-4 bg-bg-base text-text-base space-y-6">
-          {/* --- Tarjetas de Información --- */}
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <InfoCard title="Cajero" value={order?.employee?.name} />
             <InfoCard title="Fecha" value={formatDateAsDMY(order?.charged_at)} />
@@ -55,7 +56,6 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
             <InfoCard title="Forma de Pago" value={getPaymentTypeName(order?.payment_type)} />
           </div>
 
-          {/* --- Tabla de Productos --- */}
           <div className="w-full overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
             <table className="w-full text-sm text-left">
               <thead className="text-xs text-text-base uppercase bg-bg-subtle/60">
@@ -72,7 +72,6 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
               </thead>
               <tbody className="divide-y divide-bg-subtle">
                 {listProducts}
-                {/* --- Fila de Totales --- */}
                 <tr className="border-t-2 border-bg-subtle bg-bg-subtle/60 font-bold">
                   <td colSpan={showCodeStatus ? 4 : 3} className="px-4 py-2 text-right uppercase">Totales</td>
                   <td className="px-4 py-2 text-right">{numberToMoney(order?.subtotal, system)}</td>
@@ -84,7 +83,6 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
             </table>
           </div>
 
-          {/* --- Sección de Información Adicional y Alertas --- */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 space-y-2 text-sm">
               <h3 className="font-bold text-text-base mb-2">Información Adicional</h3>

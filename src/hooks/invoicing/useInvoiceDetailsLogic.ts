@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
     const [ order, setOrder ] = useState(null) as any;
-    const { openLoading, closeLoading } = useStateStore();
+    const { openLoading, closeLoading, loading } = useStateStore();
 
     useEffect(() => {
         const fetchData = async (url: string) => {
@@ -27,5 +27,5 @@ export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
         }
     }, [productId, isShow, openLoading, closeLoading]);
 
-    return { order };
+    return { order, loading };
 }
