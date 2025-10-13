@@ -48,7 +48,7 @@ export default function Page() {
           </div>
     </div> 
     <SendEmailDocumentModal isShow={modals.documentEmail} onClose={() => closeModal('documentEmail')} document={documentSelected} />
-    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected.id} />
+    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.codigo_generacion} />
     <ToasterMessage />
 </div>
   );
