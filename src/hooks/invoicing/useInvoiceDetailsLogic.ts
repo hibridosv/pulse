@@ -16,6 +16,7 @@ export function useInvoiceDetailsLogic(productId: string, isShow: boolean) {
                 setOrder(response.data.data);
             } catch (error) {
                 console.error('Error fetching data');
+                setOrder(null);
             } finally {
                 closeLoading("getOrder");
             }
