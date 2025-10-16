@@ -14,16 +14,18 @@ import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { BiLoader } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { DeleteModal } from "../DeleteModal";
+import SkeletonTable from "../skeleton/skeleton-table";
 import { productTypeIcon, sortBySelected } from './utils';
 
 export interface ShowProductsTableProps {
   records: Product[];
   setSortBy: (sortBy: string) => void;
   sortBy: string;
+  loading?: boolean;
 }
 
 export function ShowProductsTable(props: ShowProductsTableProps) {
-  const { records, setSortBy, sortBy } = props;
+  const { records, setSortBy, sortBy, loading } = props;
   const { system, activeConfig } = useConfigStore();
   const { openModal, closeModal, modals } = useModalStore();
   const isLocation = activeConfig?.includes("product-brand");
@@ -32,6 +34,10 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
   const { getRequest, loading: loadingRequest } = useGetRequest();
   const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
   const elementSelected = getSelectedElement('productDetails');
+
+
+
+  if(loading) return <SkeletonTable rows={15} columns={8} />
 
   if (!records || records.length === 0) {
     return <NothingHere />;

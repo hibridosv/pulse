@@ -3,7 +3,8 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDateAsDMY } from "@/lib/date-formats";
-import useConfigStore from "@/stores/configStore";
+import { formatDuiWithAll } from "@/lib/utils";
+import { Indicator } from "../Indicators";
 
 
 export interface RemissionNoteTableI {
@@ -13,7 +14,6 @@ export interface RemissionNoteTableI {
 
 export function RemissionNoteTable(props: RemissionNoteTableI) {
   const { records, isLoading } = props;
-  const { system } = useConfigStore();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
@@ -22,22 +22,22 @@ export function RemissionNoteTable(props: RemissionNoteTableI) {
   }
 
 
-  const listItems = records.map((record: any) => (
+  const listItems = records && records.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { record?.invoice ?? "--" }
       </td>
-      <td className="px-3 py-2 whitespace-nowrap">
+      <td className="px-3 py-2 whitespace-nowrap font-bold">
         { record?.client?.name ?? "N/A" }
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
-        { record?.client?.document ?? "N/A" }
+      <td className={`px-3 py-2 whitespace-nowrap`}>
+        { record?.client?.document ? formatDuiWithAll(record?.client?.document) : "N/A" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        { formatDateAsDMY(record?.charged_at) }
+        { formatDateAsDMY(record?.created_at) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        { record?.status ?? "--" }
+        <Indicator text="Enviada" type="success" />
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         X

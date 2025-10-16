@@ -6,7 +6,6 @@ import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import { ShowProductsStatistics } from "@/components/products/ShowProductsStatistics";
 import { ShowProductsTable } from "@/components/products/ShowProductsTable";
 import { SearchInput } from "@/components/Search";
-import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductLogic } from "@/hooks/products/useProductsLogic";
@@ -41,7 +40,7 @@ export default function Page() {
     <div className="col-span-7 border-r md:border-primary">
         <ViewTitle text="Productos" />
         <div className="p-2">
-          { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTable records={products?.data} setSortBy={setSortBy} sortBy={sortBy} /> }
+          <ShowProductsTable records={products?.data} setSortBy={setSortBy} sortBy={sortBy} loading={loading} />
           <Pagination records={products} handlePageNumber={handlePageNumber } />
         </div>
     </div>

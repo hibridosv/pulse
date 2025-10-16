@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useGetRequest } from '../request/useGetRequest';
 
 export function useRemissionNoteLogic(currentPage: any, searchTerm: string) {
-  const { getRequest } = useGetRequest();
+  const { getRequest, responseData, loading } = useGetRequest();
   const [searchTermNew, setSearchTermNew] = useState("");
 
   useEffect(() => {
@@ -16,4 +16,6 @@ export function useRemissionNoteLogic(currentPage: any, searchTerm: string) {
         }
   }, [currentPage, searchTerm, searchTermNew])
 
+  return { loading, responseData };
+  
 }
