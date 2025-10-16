@@ -1,16 +1,12 @@
 'use client';
 import { InvoicingSearchTable } from "@/components/invoicing/InvoicingSearchTable";
-import { RemissionNoteModal } from "@/components/invoicing/RemissionNoteModal";
 import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
 import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useSearchDocumentLogic } from "@/hooks/invoicing/useSearchDocumentLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
-import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
 export default function Page() {
@@ -19,9 +15,6 @@ export default function Page() {
     const { responseData, loading } = useSearchDocumentLogic(currentPage, searchTerm);
     const data = responseData?.data;
     const quantity =  data?.total ?? 0;
-    const { getSelectedElement} = useTempSelectedElementStore();
-    const { modals, closeModal } = useModalStore();
-    const documentSelected = getSelectedElement('remissionNote') ?? {};
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
@@ -41,8 +34,6 @@ export default function Page() {
           <ShowTotal quantity={quantity} text="Cantidad de documentos" number={true} />
         </div>
     </div> 
-    <RemissionNoteModal isShow={modals.remissionNote} onClose={() => closeModal('remissionNote')} document={documentSelected} />
-    <ToasterMessage />
 </div>
   );
 }
