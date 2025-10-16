@@ -28,7 +28,7 @@ export default function Page() {
     <div className="col-span-7 border-r md:border-primary">
         <ViewTitle text="ULTIMOS DOCUMENTOS" />
         <div className="p-4">
-          <InvoicingSearchTable records={data} isLoading={loading} />
+          <InvoicingSearchTable records={data?.data} isLoading={loading} />
         </div>
         <Pagination records={data} handlePageNumber={handlePageNumber } />
     </div>
