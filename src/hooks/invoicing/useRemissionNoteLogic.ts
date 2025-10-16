@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useGetRequest } from '../request/useGetRequest';
 
-export function useCreditNoteLogic(currentPage: any, searchTerm: string) {
+export function useRemissionNoteLogic(currentPage: any, searchTerm: string) {
   const { getRequest } = useGetRequest();
   const [searchTermNew, setSearchTermNew] = useState("");
 
