@@ -16,7 +16,8 @@ export default function Page() {
     const { searchTerm, handleSearchTerm } = useSearchTerm(["client_name", "quote_number"], 500);
     useRemissionNoteLogic(currentPage, searchTerm);
     const { responseData, loading } = useGetRequest();
-    const quantity =  responseData?.length
+    const quantity =  responseData?.total ?? 0;
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">

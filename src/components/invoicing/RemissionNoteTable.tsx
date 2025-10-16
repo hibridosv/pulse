@@ -14,15 +14,16 @@ export interface RemissionNoteTableI {
 export function RemissionNoteTable(props: RemissionNoteTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
+  const data = records?.data;
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
-  if (!records || records.length === 0) {
+  if (!data || data.length === 0) {
     return <NothingHere />;
   }
 
 
-  const listItems = records.map((record: any) => (
+  const listItems = data.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { record?.invoice ?? "--" }
