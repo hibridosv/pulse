@@ -53,7 +53,7 @@ export function InvoicingSearchTable(props: InvoicingSearchTableI) {
         { numberToMoney(record?.total ? record?.total : 0, system) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        <Link href={`/invoices/search/${record?.id}`}><BiArrowFromRight size={24} color="green" /></Link>
+        <Link href={`/invoicing/search/${record?.id}`}><BiArrowFromRight size={24} color="green" /></Link>
       </td>
     </tr>
   ));

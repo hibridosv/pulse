@@ -11,10 +11,10 @@ export function useSearchDocumentLogic(currentPage: any, searchTerm: string) {
   useEffect(() => {
 
         if (searchTerm != searchTermNew ) {
-          setSearchTermNew(searchTerm);
-            getRequest(`order?filterWhere[status]==3&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15&page=1${searchTerm}`, false)
+            setSearchTermNew(searchTerm);
+            getRequest(`orders?filterWhere[status]==3&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15&page=1${searchTerm}`, false)
         } else {
-           getRequest(`order?filterWhere[status]==3&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15${currentPage}${searchTerm}`, false)
+           getRequest(`orders?filterWhere[status]==3&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15${currentPage}${searchTerm}`, false)
         }
   }, [currentPage, searchTerm, searchTermNew])
 
