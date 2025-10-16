@@ -11,7 +11,7 @@ import { useSearchTerm } from "@/hooks/useSearchTerm";
 
 export default function Page() {
     const {currentPage, handlePageNumber} = usePagination("&page=1");
-    const { searchTerm, handleSearchTerm } = useSearchTerm(["client_name", "quote_number"], 500);
+    const { searchTerm, handleSearchTerm } = useSearchTerm(["invoice"], 500);
     const { responseData, loading } = useSearchDocumentLogic(currentPage, searchTerm);
     const data = responseData?.data;
     const quantity =  data?.total ?? 0;

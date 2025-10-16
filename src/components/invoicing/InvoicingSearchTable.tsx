@@ -6,7 +6,7 @@ import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import Link from "next/link";
-import { BiArrowFromRight } from "react-icons/bi";
+import { BiArrowFromLeft } from "react-icons/bi";
 import { Indicator } from "../Indicators";
 
 
@@ -53,7 +53,7 @@ export function InvoicingSearchTable(props: InvoicingSearchTableI) {
         { numberToMoney(record?.total ? record?.total : 0, system) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        <Link href={`/invoicing/search/${record?.id}`}><BiArrowFromRight size={24} color="green" /></Link>
+        <Link href={`/invoicing/search/${record?.id}`}><BiArrowFromLeft size={24} color="green" /></Link>
       </td>
     </tr>
   ));
