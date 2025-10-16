@@ -1,10 +1,35 @@
 'use client'
+import { updateService } from '@/services/services';
+import useStateStore from '@/stores/stateStorage';
+import useToastMessageStore from '@/stores/toastMessageStore';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useGetRequest } from '../request/useGetRequest';
 
 export function useRemissionNoteLogic(currentPage: any, searchTerm: string) {
   const { getRequest, responseData, loading } = useGetRequest();
   const [searchTermNew, setSearchTermNew] = useState("");
+  const router = useRouter();
+  const { openLoading, closeLoading, loading: sending } = useStateStore()
+  const { setMessage, setError } = useToastMessageStore();
+   
+  
+  const sendRemissions = async (id: string) => {
+      openLoading("sendRemissions")
+      try {
+          const response = await updateService(`remissions/charge/${id}`, {});
+          if (response.status === 200) {
+            router.push("/sales/quick");
+          }
+      } catch (error) {
+          console.error(error);
+          setError(error)
+      } finally {
+        closeLoading("sendRemissions");
+      }
+    }
+
+
 
   useEffect(() => {
 
@@ -16,6 +41,6 @@ export function useRemissionNoteLogic(currentPage: any, searchTerm: string) {
         }
   }, [currentPage, searchTerm, searchTermNew])
 
-  return { loading, responseData };
-  
+  return { loading, responseData, sendRemissions, sending};
+
 }

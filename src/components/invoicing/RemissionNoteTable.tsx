@@ -4,7 +4,12 @@ import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { formatDuiWithAll } from "@/lib/utils";
+import useModalStore from "@/stores/modalStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { FaEdit } from "react-icons/fa";
 import { Indicator } from "../Indicators";
+import { Dropdown } from "../dropDown/Dropdown";
+import { DropdownItem } from "../dropDown/DropdownItem";
 
 
 export interface RemissionNoteTableI {
@@ -14,6 +19,9 @@ export interface RemissionNoteTableI {
 
 export function RemissionNoteTable(props: RemissionNoteTableI) {
   const { records, isLoading } = props;
+  const { setSelectedElement } = useTempSelectedElementStore();
+  const { openModal } = useModalStore();
+
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
@@ -40,7 +48,10 @@ export function RemissionNoteTable(props: RemissionNoteTableI) {
         <Indicator text="Enviada" type="success" />
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        X
+       <Dropdown label={<FaEdit size={18} /> }>
+          <DropdownItem  onClick={() => { setSelectedElement('remissionNote', record); openModal('remissionNote')  }}>Ver Nota de remisión</DropdownItem>
+          <DropdownItem disabled>Eliminar Nota de remisión</DropdownItem>
+        </Dropdown>
       </td>
     </tr>
   ));
