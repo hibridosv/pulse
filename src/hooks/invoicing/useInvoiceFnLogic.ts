@@ -51,7 +51,7 @@ export function useInvoiceFnLogic() {
   const deleteOrder = async (id: string, onSuccess?: () => void) => {
     openLoading("deleting");
     try {
-      const response = await createService(`invoices/delete`, { invoice: id });
+      const response = await createService(`documents/delete`, { invoice: id });
       if (response.status === 200 || response.status === 204) {
         setMessage({ message: "Orden anulada correctamente" });
         onSuccess?.();
