@@ -16,7 +16,7 @@ export function useSearchDocumentLogic(currentPage: any, searchTerm: string) {
         } else {
            getRequest(`orders?filterWhere[status]==3&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15${currentPage}${searchTerm}`, false)
         }
-  }, [currentPage, searchTerm, searchTermNew])
+  }, [currentPage, searchTerm, searchTermNew, getRequest])
 
   return { loading, responseData};
 

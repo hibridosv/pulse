@@ -25,7 +25,7 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex justify-end w-full gap-4">
-          <Link href={`/invoicing/search/${order?.id}`} className={Preset.accept} >Ver Opciones</Link>
+          <Link href={`/invoicing/search/${order?.id}`} className="button-href">Ver Opciones</Link>
           <Button onClick={onClose} preset={Preset.close} text="Cerrar" />
         </div>
       </Modal.Footer>

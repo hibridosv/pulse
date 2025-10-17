@@ -14,7 +14,7 @@ export function useRemissionNoteLogic(currentPage: any, searchTerm: string) {
         } else {
            getRequest(`remissions?sort=-created_at&included=products,client,employee,delivery,referred,invoiceAssigned&perPage=10${currentPage}${searchTerm}`, false)
         }
-  }, [currentPage, searchTerm, searchTermNew])
+  }, [currentPage, searchTerm, searchTermNew, getRequest])
 
   return { loading, responseData};
 
