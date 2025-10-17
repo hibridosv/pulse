@@ -1,10 +1,12 @@
 import { useInvoiceFnLogic } from "@/hooks/invoicing/useInvoiceFnLogic";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { FaPrint } from "react-icons/fa";
 import { MdCreditScore } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ButtonDownload } from "../button/button-download";
+import { DeleteModal } from "../DeleteModal";
 
 
 export interface InvoiceDetailsButtonsI {
@@ -15,9 +17,10 @@ export interface InvoiceDetailsButtonsI {
 
 export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const { order } = props;
-    const { system, activeConfig } = useConfigStore();
-    const { setMessage, setError } = useToastMessageStore();
-    const { printOrder, sending} = useInvoiceFnLogic();
+    const { activeConfig } = useConfigStore();
+    const { setError } = useToastMessageStore();
+    const { printOrder, sending, deleteOrder } = useInvoiceFnLogic();
+    const { modals, closeModal, openModal} = useModalStore();
     const isSending = sending.printing ?? false;
     const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2); 
     const isActive = order?.status == 3;
@@ -81,7 +84,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                     if (isDeleted) {
                       setError({ message: "Este documento ya se encuentra eliminado" });
                     } else {
-                      setError({ message: "Mostrando modal" }); // Placeholder for modal logic
+                      openModal('deleteOrder'); // Placeholder for modal logic
                     }
                   }}
                   disabled={isDeleted || isSending}
@@ -93,6 +96,11 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   <span className="text-xs font-medium">Anular</span>
                 </button>
               </div>
+              <DeleteModal
+                      isShow={modals.deleteOrder}
+                      text={`¿Estas seguro de eliminar este contacto?`}
+                      onDelete={() =>{ deleteOrder(order?.id) }}
+                      onClose={() => closeModal('deleteOrder')} />
             </div>
   )
 }

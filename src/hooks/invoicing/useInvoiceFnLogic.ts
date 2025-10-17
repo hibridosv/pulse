@@ -48,7 +48,18 @@ export function useInvoiceFnLogic() {
     }
   };
 
+  const deleteOrder = async (id: string) => {
+    openLoading("deleting")
+    try {
+      await createService(`invoices/delete`, {invoice: id});
+    } catch (error) {
+      setError(error)
+    } finally {
+      closeLoading("deleting");
+    }
+  };
 
-  return { sendRemissions, sending, printOrder};
+
+  return { sendRemissions, sending, printOrder, deleteOrder};
 
 }
