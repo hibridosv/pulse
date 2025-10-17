@@ -19,7 +19,7 @@ export function InvoicingSearchTable(props: InvoicingSearchTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
 
-  if(isLoading) return <SkeletonTable rows={5} columns={8} />
+  if(isLoading) return <SkeletonTable rows={15} columns={8} />
 
   if (!records || records.length === 0) {
     return <NothingHere />;
