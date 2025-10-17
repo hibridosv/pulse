@@ -1,4 +1,5 @@
 import { useInvoiceDetailsLogic } from "@/hooks/invoicing/useInvoiceDetailsLogic";
+import Link from "next/link";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
 import { InvoiceDetails } from "./InvoiceDetails";
@@ -23,7 +24,8 @@ export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
         <InvoiceDetails isLoading={isLoading} order={order} onElectronic={onElectronic} />
       </Modal.Body>
       <Modal.Footer>
-        <div className="flex justify-end w-full">
+        <div className="flex justify-end w-full gap-4">
+          <Link href={`/invoicing/search/${order?.id}`} className={Preset.accept} >Ver Opciones</Link>
           <Button onClick={onClose} preset={Preset.close} text="Cerrar" />
         </div>
       </Modal.Footer>
