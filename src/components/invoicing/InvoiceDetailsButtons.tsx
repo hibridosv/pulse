@@ -16,11 +16,12 @@ export interface InvoiceDetailsButtonsI {
 export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const { order } = props;
     const { system, activeConfig } = useConfigStore();
-  const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2); 
-  const isDeleted = order?.status == 3;
-  const { setMessage, setError } = useToastMessageStore();
-  const { printOrder, sending} = useInvoiceFnLogic();
-  const isSending = sending.printing ?? false;
+    const { setMessage, setError } = useToastMessageStore();
+    const { printOrder, sending} = useInvoiceFnLogic();
+    const isSending = sending.printing ?? false;
+    const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2); 
+    const isActive = order?.status == 3;
+    const isDeleted = order?.status == 4;
     
   if (!order) return null;
 
@@ -58,7 +59,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   <button
                     title="Crear nota de crédito"
                     onClick={() => {
-                      if (isDeleted) {
+                      if (isActive) {
                         setError({ message: "Este documento ya se encuentra eliminado" });
                       } else {
                         setError({ message: "Mostrando modal" }); // Placeholder for modal logic
