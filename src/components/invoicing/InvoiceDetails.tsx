@@ -24,7 +24,7 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
     const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
 
     
-  if (!order) return null;
+  if (!order) return <NothingHere text="No se encontro esta orden... " />;
 
   const listProducts = order?.products.map((record: any) => (
     <tr key={record.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">

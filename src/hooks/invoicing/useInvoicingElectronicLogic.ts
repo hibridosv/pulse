@@ -15,7 +15,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
     const { openLoading, closeLoading } = useStateStore();
     const { links, addLink} = useDownloadLink();
     const { setSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
-
+    const { setMessage, setError } = useToastMessageStore();
 
 
 
@@ -53,7 +53,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
          openLoading("resendDocument");
         const response = await updateService(`electronic/documents/${invoice}`, {});
         if (response.status === 200) {
-            useToastMessageStore.getState().setMessage({ message: "Actualizando documentos..."});
+            setMessage({ message: "Actualizando documentos..."});
            let data =  await getServices(lastUrl);
            if (data.status === 200) {
                setHistory(data.data.data);
@@ -61,7 +61,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
         }
       } catch (error) {
         console.error(error);
-        useToastMessageStore.getState().setError(error);
+        setError(error);
       } finally {
         closeLoading("resendDocument");
         clearSelectedElement("resendDocument");

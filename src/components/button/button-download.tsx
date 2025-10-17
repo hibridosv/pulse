@@ -10,16 +10,17 @@ export interface ButtonDownloadProps {
   titleText?: string;
   autoclass?: boolean;
   divider?: string;
+  style?: string;
 }
 
-export function ButtonDownload({ href, children, titleText = "Descargar", autoclass = true, divider = "?" }: ButtonDownloadProps) {
+export function ButtonDownload({ href, children, titleText = "Descargar", autoclass = true, divider = "?",style = ""}: ButtonDownloadProps) {
   const { data: session } = useSession();
   const remoteUrl = session?.url; 
 
   if (!href || !remoteUrl) return null;
 
   return (
-    <a target="_blank" href={encodeURI(`${remoteUrl}/${href}${divider}code=${md5(dateToNumberValidate())}`)} className={autoclass ? 'button-href' : "clickeable"} title={titleText}>
+    <a target="_blank" href={encodeURI(`${remoteUrl}/${href}${divider}code=${md5(dateToNumberValidate())}`)} className={`${autoclass ? 'button-href ' : "clickeable "} ${style}`} title={titleText}>
       {children}
     </a>
   );

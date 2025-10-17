@@ -1,4 +1,4 @@
-import { useRemissionNoteFnLogic } from "@/hooks/invoicing/useRemissionNoteFnLogic";
+import { useInvoiceFnLogic } from "@/hooks/invoicing/useInvoiceFnLogic";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
@@ -24,7 +24,7 @@ const InfoCard = ({ title, value }: { title: string; value: string | undefined }
 export function RemissionNoteModal(props: RemissionNoteModalI) {
     const { onClose, isShow, document, onElectronic = false } = props;
     const { system, activeConfig } = useConfigStore();
-    const { sendRemissions, sending } = useRemissionNoteFnLogic();
+    const { sendRemissions, sending } = useInvoiceFnLogic();
     const isSending = sending.sendRemissions ?? false;
     const order = document;
     const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
