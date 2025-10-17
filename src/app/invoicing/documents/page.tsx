@@ -1,10 +1,13 @@
 'use client';
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
+import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { InvoicingListTable } from "@/components/invoicing/InvoicingListTable";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoiceTypesLogic } from "@/hooks/invoicing/useInvoiceTypesLogic";
 import { useInvoicingLogic } from "@/hooks/invoicing/useInvoicingLogic";
+import useModalStore from "@/stores/modalStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
 export default function Page() {
@@ -12,7 +15,9 @@ export default function Page() {
   const { fieldsFiltered, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9&FilterWhereIn[status]==1,0');
   const isLoading = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
-
+  const { getSelectedElement} = useTempSelectedElementStore();
+  const { modals, closeModal } = useModalStore();
+  const documentSelected = getSelectedElement('documentSelected') ?? {};
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
         await handleGet(values, 'documents', 'excel/invoices/documents/');
@@ -36,6 +41,7 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAS" />
           </div>
     </div> 
+    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} />
 </div>
   );
 }
