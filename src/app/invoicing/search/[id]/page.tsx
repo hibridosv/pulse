@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const { order, loading } = useInvoiceDetailsLogic(id, true);
+  const { order, loading, refetchOrder } = useInvoiceDetailsLogic(id, true);
   const isLoading = loading.getOrder ?? false;
   const router = useRouter();
 
@@ -26,7 +26,7 @@ export default function Page({ params }: { params: { id: string } }) {
       <div className="col-span-3">
           <ViewTitle text="Detalles" />
           <div className="w-full p-4">
-            <InvoiceDetailsButtons order={order} />
+            <InvoiceDetailsButtons order={order} onUpdate={refetchOrder} />
           </div>
           <div className="w-full p-4 flex justify-end">
             <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   

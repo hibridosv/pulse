@@ -11,12 +11,13 @@ import { DeleteModal } from "../DeleteModal";
 
 export interface InvoiceDetailsButtonsI {
   order: any;
+  onUpdate?: () => void;
 }
 
 
 
 export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
-    const { order } = props;
+    const { order, onUpdate } = props;
     const { activeConfig } = useConfigStore();
     const { setError } = useToastMessageStore();
     const { printOrder, sending, deleteOrder } = useInvoiceFnLogic();
@@ -99,7 +100,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
               <DeleteModal
                       isShow={modals.deleteOrder}
                       text={`¿Estas seguro de eliminar este contacto?`}
-                      onDelete={() =>{ deleteOrder(order?.id) }}
+                      onDelete={() =>{ deleteOrder(order?.id, onUpdate) }}
                       onClose={() => closeModal('deleteOrder')} />
             </div>
   )
