@@ -115,12 +115,10 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
 
     try {
       setIsSending(true);
-      const response = await createService(`invoices/credit-note`, newData);
-      if (response.status === 201) {
+      const response = await createService(`documents/credit-note`, newData);
+      if (response.status === 200) {
         setMessage({ message: "Nota de crédito enviada correctamente"});
         onClose();
-      } else {
-        setError({ message: "Error al crear la nota de crédito" });
       }
     } catch (error) {
       console.error(error);
@@ -144,132 +142,130 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
   return (
     <Modal show={isShow} onClose={onClose} size="xl4" headerTitle="Crear nota de crédito">
       <Modal.Body>
-                  <form onSubmit={handleSubmit(handleNc)}>
-            <div className="mx-3">
-              <Alert
-                type="info"
-                text="Para enviar una Nota de Crédito del documento total haga click en el botón de Agregar Nota de Crédito. Para enviar una Nota de Crédito parcial cambie las cantidades de los productos en el formulario antes de enviar."
-                isDismissible={false}
-                className="mb-8"
-              />
-              <div className="w-full overflow-auto mt-4">
-                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                      <th className="py-3 px-4 border">Cant</th>
-                      <th className="py-3 px-4 border">Código</th>
-                      <th className="py-3 px-4 border w-full">Producto</th>
-                      <th className="py-3 px-4 border">Precio</th>
-                      <th className="py-3 px-4 border">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {formProducts.map((product: any) => (
-                      <tr key={product.id} className="border-b">
-                        <td className="py-2 px-6">
-                          <Controller
-                            name={`product-${product.id}`}
-                            control={control}
-                            defaultValue={product.quantity}
-                            render={({ field }) => (
-                              <input
-                                type="number"
-                                {...field}
-                                min={0}
-                                // max={product.quantity}
-                                className="w-20 bg-transparent border border-white rounded text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                onBlur={(e) => {
-                                  field.onBlur();
-                                  updateTotalAfterBlur();
-                                }}
-                              />
-                            )}
-                          />
-                        </td>
-                        <td className="py-2 px-6 truncate">{product.cod}</td>
-                        <td className="py-2 px-6">
-                          <Controller
-                            name={`name-${product.id}`}
-                            control={control}
-                            defaultValue={product.product}
-                            render={({ field }) => (
-                              <textarea
-                                rows={1}
-                                maxLength={250}
-                                {...field}
-                                className="w-full bg-transparent border border-white rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                              />
-                            )}
-                          />
-                        </td>
-                        <td className="py-2 px-6">
-                          <Controller
-                            name={`price-${product.id}`}
-                            control={control}
-                            defaultValue={product.unit_price}
-                            render={({ field }) => (
-                              <input
-                                type="number"
-                                {...field}
-                                className="w-24 bg-transparent border border-white rounded px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                onBlur={(e) => {
-                                  field.onBlur();
-                                  updateTotalAfterBlur();
-                                }}
-                              />
-                            )}
-                          />
-                        </td>
-                        <td className="py-2 px-6">
-                          {numberToMoney(
-                            getProductTotal(product.id),
-                            system
+        <form onSubmit={handleSubmit(handleNc)}>
+          <div className="p-4">
+            <Alert
+              type="info"
+              text="Para emitir una Nota de Crédito por el total del documento, haga clic directamente en 'Crear Nota de Crédito'. Para una nota parcial, modifique las cantidades de los productos antes de enviarla."
+              isDismissible={false}
+              className="mb-6"
+            />
+            <div className="w-full overflow-x-auto rounded-lg border border-bg-subtle">
+              <table className="w-full text-sm text-left text-text-base">
+                <thead className="text-xs text-text-base uppercase bg-bg-subtle/60">
+                  <tr>
+                    <th className="px-4 py-3 font-medium border-b-2 border-bg-subtle text-center">Cant</th>
+                    <th className="px-4 py-3 font-medium border-b-2 border-bg-subtle">Código</th>
+                    <th className="px-4 py-3 font-medium border-b-2 border-bg-subtle w-full">Producto</th>
+                    <th className="px-4 py-3 font-medium border-b-2 border-bg-subtle text-right">Precio</th>
+                    <th className="px-4 py-3 font-medium border-b-2 border-bg-subtle text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-bg-subtle">
+                  {formProducts.map((product: any) => (
+                    <tr key={product.id} className="hover:bg-bg-subtle/40">
+                      <td className="px-4 py-2">
+                        <Controller
+                          name={`product-${product.id}`}
+                          control={control}
+                          defaultValue={product.quantity}
+                          render={({ field }) => (
+                            <input
+                              type="number"
+                              {...field}
+                              min={0}
+                              className="w-20 bg-bg-content border border-bg-subtle rounded-md shadow-sm text-center focus:ring-primary focus:border-primary sm:text-sm"
+                              onBlur={() => {
+                                field.onBlur();
+                                updateTotalAfterBlur();
+                              }}
+                            />
                           )}
-                        </td>
-                      </tr>
-                    ))}
-                    <tr>
-                      <td colSpan={4} className="text-right font-bold py-3 px-4 border">TOTAL:</td>
-                      <td className="py-3 px-4 border font-bold">
-                        {numberToMoney(totalState, system)}
+                        />
+                      </td>
+                      <td className="px-4 py-2 truncate">{product.cod}</td>
+                      <td className="px-4 py-2">
+                        <Controller
+                          name={`name-${product.id}`}
+                          control={control}
+                          defaultValue={product.product}
+                          render={({ field }) => (
+                            <textarea
+                              rows={1}
+                              maxLength={250}
+                              {...field}
+                              className="w-full bg-bg-content border border-bg-subtle rounded-md shadow-sm px-2 py-1 focus:ring-primary focus:border-primary sm:text-sm"
+                            />
+                          )}
+                        />
+                      </td>
+                      <td className="px-4 py-2 text-right">
+                        <Controller
+                          name={`price-${product.id}`}
+                          control={control}
+                          defaultValue={product.unit_price}
+                          render={({ field }) => (
+                            <input
+                              type="number"
+                              {...field}
+                              className="w-24 bg-bg-content border border-bg-subtle rounded-md shadow-sm px-2 py-1 text-right focus:ring-primary focus:border-primary sm:text-sm"
+                              onBlur={() => {
+                                field.onBlur();
+                                updateTotalAfterBlur();
+                              }}
+                            />
+                          )}
+                        />
+                      </td>
+                      <td className="px-4 py-2 text-right font-medium">
+                        {numberToMoney(getProductTotal(product.id), system)}
                       </td>
                     </tr>
-                    <tr>
-                      <td colSpan={4} className="text-right font-bold py-3 px-4 border">RETORNAR PRODUCTOS AL INVENTARIO:</td>
-                      <td className="py-3 px-4 border font-bold">
-                          <Switch
-                            disabled={false}
-                            checked={isProductReturn}
-                            label={isProductReturn ? "Activo" : "Inactivo"}
-                            onChange={() => setIsProductReturn(!isProductReturn)}
-                          />
-                      </td>
-                    </tr>  
-                  </tbody>
-                </table>
-              </div>
-              { record?.invoice_assigned?.type != 3 ? (
-                <Alert
+                  ))}
+                </tbody>
+                <tfoot className="bg-bg-subtle/60">
+                  <tr>
+                    <td colSpan={4} className="text-right font-bold py-3 px-4 border-t-2 border-bg-subtle">TOTAL:</td>
+                    <td className="py-3 px-4 border-t-2 border-bg-subtle font-bold text-right">
+                      {numberToMoney(totalState, system)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={4} className="text-right font-bold py-3 px-4">RETORNAR PRODUCTOS AL INVENTARIO:</td>
+                    <td className="py-3 px-4 font-bold flex justify-end">
+                      <Switch
+                        disabled={false}
+                        checked={isProductReturn}
+                        label={isProductReturn ? "Sí" : "No"}
+                        onChange={() => setIsProductReturn(!isProductReturn)}
+                      />
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            {record?.invoice_assigned?.type !== 3 ? (
+              <Alert
                 type="warning"
-                text="No se puede crear una nota de credito en este documento."
+                text="No se puede crear una nota de crédito en este documento."
                 isDismissible={false}
                 className="my-8"
               />
-              ) : (
-                <div className="mt-6 flex justify-end">
-                  <Button
-                    type="submit"
-                    preset={Preset.save}
-                    text="Crear Nota de Crédito"
-                    disabled={isSending}
-                  />
+            ) : (
+              <div className="mt-6 flex justify-end">
+                <Button
+                  type="submit"
+                  preset={Preset.save}
+                  text="Crear Nota de Crédito"
+                  disabled={isSending}
+                />
               </div>
-              )}
-            </div>
-          </form>
+            )}
+          </div>
+        </form>
       </Modal.Body>
       <Modal.Footer>
-          <Button onClick={onClose} preset={Preset.close} text="Cerrar" />
+        <Button onClick={onClose} preset={Preset.close} text="Cerrar" />
       </Modal.Footer>
     </Modal>
   );
