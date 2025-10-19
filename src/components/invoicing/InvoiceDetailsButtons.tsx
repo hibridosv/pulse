@@ -1,4 +1,4 @@
-import { useInvoiceFnLogic } from "@/hooks/invoicing/useInvoiceFnLogic";
+import { useInvoiceDetailsLogic } from "@/hooks/invoicing/useInvoiceDetailsLogic";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
@@ -11,18 +11,17 @@ import { DeleteModal } from "../DeleteModal";
 
 export interface InvoiceDetailsButtonsI {
   order: any;
-  onUpdate?: () => void;
 }
 
 
 
 export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
-    const { order, onUpdate } = props;
+    const { order } = props;
     const { activeConfig } = useConfigStore();
     const { setError } = useToastMessageStore();
-    const { printOrder, sending, deleteOrder } = useInvoiceFnLogic();
+    const { printOrder, loading, deleteOrder } = useInvoiceDetailsLogic(order?.id, false);
     const { modals, closeModal, openModal} = useModalStore();
-    const isSending = sending.printing ?? false;
+    const isSending = loading.printing ?? false;
     const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2); 
     const isActive = order?.status == 3;
     const isDeleted = order?.status == 4;
@@ -100,7 +99,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
               <DeleteModal
                       isShow={modals.deleteOrder}
                       text={`¿Estas seguro de eliminar este contacto?`}
-                      onDelete={() =>{ deleteOrder(order?.id, onUpdate) }}
+                      onDelete={() =>{ deleteOrder(order?.id) }}
                       onClose={() => closeModal('deleteOrder')} />
             </div>
   )
