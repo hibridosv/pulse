@@ -1,3 +1,4 @@
+import { useGetRequest } from "@/hooks/request/useGetRequest";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
@@ -22,6 +23,7 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
     const { isLoading, order, onElectronic } = props;
     const { system, activeConfig } = useConfigStore();
     const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
+    const { getRequest, loading: loadingRequest } = useGetRequest();
 
     
   if (!order) return <NothingHere text="No se encontro esta orden... " />;
@@ -92,7 +94,11 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
           </div>
           {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
             <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">
-              Si este documento no se envió electrónicamente, puede reintentarlo <button className="text-primary hover:underline font-semibold">aquí</button>.
+              Si este documento no se envió electrónicamente, puede reintentarlo 
+              <button className="text-primary hover:underline font-semibold ml-2 clickeable" onClick={loadingRequest ? ()=>{} : ()=>getRequest(`electronic/send/${order.id}`)}>
+                aquí
+              </button>.
+              { loadingRequest && <span className="ml-2">Enviando...</span> }
             </div>
           )}
           </> : <NothingHere text="No se encontraron datos del documento" /> }
