@@ -58,14 +58,14 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   </button>
                 )}
 
-                {!isCreditNoteAvailable && (
+                {isCreditNoteAvailable && (
                   <button
                     title="Crear nota de crédito"
                     onClick={() => {
-                      if (isActive) {
+                      if (isDeleted) {
                         setError({ message: "Este documento ya se encuentra eliminado" });
                       } else {
-                        setError({ message: "Mostrando modal" }); // Placeholder for modal logic
+                        openModal('createCreditNote');
                       }
                     }}
                     disabled={isDeleted || isSending}
