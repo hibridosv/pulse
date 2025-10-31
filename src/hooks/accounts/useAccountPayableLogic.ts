@@ -11,7 +11,7 @@ export function useAccountPayableLogic(currentPage: any) {
 
   useEffect(() => {
 
-           getRequest(`accounts/payable?${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage}`, false)
+           getRequest(`accounts/payable?included=provider,employee,payments,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage}`, false)
 
   }, [currentPage, getRequest, contactSelected, selectedOption]);
 
