@@ -1,14 +1,14 @@
+import { DeleteButton } from "@/components/button/DeleteButton";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { useProductPricesEditLogic } from "@/hooks/products/useProductPricesEditLogic";
+import { numberToMoney4Digits } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
+import useStateStore from "@/stores/stateStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useForm } from "react-hook-form";
 import { RadioButton } from "../../button/RadioButton";
 import { Button, Preset } from "../../button/button";
-import useConfigStore from "@/stores/configStore";
-import { numberToMoney4Digits } from "@/lib/utils";
 import { usePriceTypes } from "./priceTypeToText";
-import { useProductPricesEditLogic } from "@/hooks/products/useProductPricesEditLogic";
-import useStateStore from "@/stores/stateStorage";
-import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { usePriceSelectedOptions } from "@/hooks/products/usePriceSelectedOptions";
-import { DeleteButton } from "@/components/button/DeleteButton";
 
 export interface MultiPrice {
   productId: string;
@@ -26,10 +26,12 @@ export function MultiPriceEdit(props: MultiPrice) {
   const { system } = useConfigStore();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
   const { options, priceTypeToText } = usePriceTypes();
-  const { selectedOption, setSelectedOption } = usePriceSelectedOptions(options);
+  const { getSelectedElement } = useTempSelectedElementStore();
+  const selectedOption = getSelectedElement("optionSelected");
   const { prices, addPrice, deletePrice } = useProductPricesEditLogic(productId, isShow, reset, selectedOption);
   const { loading } = useStateStore();
   const isLoading = loading["productPrices"] ? true : false;
+
   if (!isShow) {
     return null;
   }
@@ -39,10 +41,7 @@ export function MultiPriceEdit(props: MultiPrice) {
       <div className="mb-4 text-center">
         <h3 className="text-lg font-semibold text-text-base">{text}</h3>
         <div className="w-full flex justify-center">
-          <RadioButton
-            options={options}
-            onSelectionChange={setSelectedOption}
-          />
+          <RadioButton options={options} />
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from 'react';
+import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import React, { useEffect, useState } from 'react';
 
 export interface Option {
   id: number;
@@ -8,16 +9,24 @@ export interface Option {
 
 interface RadioButtonProps {
   options: Option[];
-  onSelectionChange: (option: Option) => void;
 }
 
-export const RadioButton: React.FC<RadioButtonProps> = ({ options, onSelectionChange }) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(options[0] ? options[0] : null);
+export const RadioButton: React.FC<RadioButtonProps> = ({ options }) => {
+  const [selectedOption, setSelectedOption] = useState<Option | null>(options[0] || null);
+  const { setSelectedElement } = useTempSelectedElementStore();
+
+  useEffect(() => {
+    if (options && options.length > 0) {
+      setSelectedElement("optionSelected", options[0]);
+    }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleOptionChange = (option: Option) => {
     setSelectedOption(option);
-    onSelectionChange(option);
+    setSelectedElement("optionSelected", option);
   };
+
 
   return (
     <div className="flex flex-wrap justify-center p-2 rounded-lg bg-bg-subtle/30">
