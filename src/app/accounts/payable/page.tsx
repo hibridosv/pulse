@@ -22,14 +22,14 @@ export default function Page() {
     const {currentPage, handlePageNumber} = usePagination("&page=1");
 
   const { loading, responseData } = useAccountPayableLogic(currentPage);
-
- console.log("responseData:", responseData);
+  const data = responseData?.data || [];
+ console.log("responseData:", data);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-7 border-r md:border-primary">
         <ViewTitle text="Cuentas por pagar" />
-        <AccountsPayableTable records={responseData?.data} isLoading={loading} />
+        <AccountsPayableTable records={data?.data} isLoading={loading} />
     </div>
     <div className="col-span-3">
         <ViewTitle text="Resumen" />
