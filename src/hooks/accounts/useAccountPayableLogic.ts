@@ -6,14 +6,13 @@ import { useGetRequest } from '../request/useGetRequest';
 export function useAccountPayableLogic(currentPage: any) {
   const { getRequest, responseData, loading } = useGetRequest();
   const { getSelectedElement } = useTempSelectedElementStore();
-  const selectedOption = getSelectedElement("optionSelected");
+  const selectedOption = getSelectedElement("optionSelected") || {id: 2};
   const contactSelected = getSelectedElement('clientSelectedBySearch');
 
   useEffect(() => {
-
-           getRequest(`accounts/payable?included=provider,employee,payments,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage}`, false)
-
+       getRequest(`accounts/payable?included=provider,employee,payments,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage}`, false)
   }, [currentPage, getRequest, contactSelected, selectedOption]);
+
 
   return { loading, responseData};
 

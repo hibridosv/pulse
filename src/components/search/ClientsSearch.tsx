@@ -12,11 +12,12 @@ export interface ClientsSearchI {
   param: 'customers' | 'suppliers' | 'drivers' | 'referrals';
   placeholder?: string;
   pagination?: number;
+  tempSelectedName?: string;
 }
 
 
 export function ClientsSearch(props: ClientsSearchI) {
-    const { param, placeholder = "Buscar Cliente", pagination = 10 } = props;
+    const { param, placeholder = "Buscar Cliente", pagination = 10, tempSelectedName = "clientSelectedBySearch" } = props;
     const { contacts, loading } = useContactStore();
     const { setSelectedElement} = useTempSelectedElementStore();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number"], 500);
@@ -26,7 +27,7 @@ export function ClientsSearch(props: ClientsSearchI) {
 
 
     const handleSelectContact = (client: Contact) => {
-        setSelectedElement('clientSelectedBySearch', client);
+        setSelectedElement(tempSelectedName, client);
         handleSearchTerm('');
     };
 

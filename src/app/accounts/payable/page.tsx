@@ -1,13 +1,19 @@
 'use client';
 import { AccountsPayableTable } from "@/components/accounts/AccountsPayableTable";
+import { AddPayableAddModal } from "@/components/accounts/AddPayableAddModal";
+import { AddPayableModal } from "@/components/accounts/AddPayableModal";
 import { Option, RadioButton } from "@/components/button/RadioButton";
+import { Pagination } from "@/components/Pagination";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
 import { ShowTotal } from "@/components/ShowTotal";
+import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useAccountPayableLogic } from "@/hooks/accounts/useAccountPayableLogic";
 import { usePagination } from "@/hooks/usePagination";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { getTotalOfItem } from "@/lib/utils";
+import useModalStore from "@/stores/modalStorage";
+import { BiPlusCircle } from "react-icons/bi";
 
 
 export default function Page() {
@@ -17,9 +23,8 @@ export default function Page() {
     { id: 1, name: "Pendientes" },
   ];
 
-  const { getSelectedElement } = useTempSelectedElementStore();
-  const selectedOption = getSelectedElement("optionSelected");
-    const {currentPage, handlePageNumber} = usePagination("&page=1");
+  const {currentPage, handlePageNumber} = usePagination("&page=1");
+  const { modals, closeModal, openModal} = useModalStore();
 
   const { loading, responseData } = useAccountPayableLogic(currentPage);
   const data = responseData?.data || [];
@@ -28,8 +33,14 @@ export default function Page() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-7 border-r md:border-primary">
-        <ViewTitle text="Cuentas por pagar" />
-        <AccountsPayableTable records={data?.data} isLoading={loading} />
+        <div className="flex justify-between">
+          <ViewTitle text="Cuentas por pagar" />
+          <BiPlusCircle size={28} className="clickeable text-primary mt-3 mr-4" onClick={()=>{openModal('payableAdd'); }} />
+        </div>
+        <div className="p-4">
+          <AccountsPayableTable records={data?.data} isLoading={loading} />
+          <Pagination records={data} handlePageNumber={handlePageNumber } />
+        </div>
     </div>
     <div className="col-span-3">
         <ViewTitle text="Resumen" />
@@ -39,12 +50,15 @@ export default function Page() {
             </div>
             <RadioButton options={optionsRadioButton} />
             <div className="p-4">
-              <ShowTotal quantity={10} text="Creditos Pendientes" number={true} />
+              <ShowTotal quantity={data?.total} text="Creditos Pendientes" number={true} />
             </div>
             <div className="p-4">
-              <ShowTotal quantity={10} text="Total Pendiente" number={false} />
+              <ShowTotal quantity={getTotalOfItem(data?.data, "balance")} text="Total Pendiente" number={false} />
             </div>
     </div> 
+    <AddPayableModal onClose={() => closeModal('payableAdd')} isShow={modals.payableAdd} />
+    <AddPayableAddModal onClose={() => closeModal('paymentPayableAdd')} isShow={modals.paymentPayableAdd} />
+    <ToasterMessage />
 </div>
   );
 }
