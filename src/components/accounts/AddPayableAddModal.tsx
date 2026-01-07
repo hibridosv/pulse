@@ -61,12 +61,12 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
                               {...register("payment_type", {disabled: payableRecord?.payments?.balance == 0 ? true : false})}
                               className="input-select"
                             >
-                            <option value="1">Efectivo</option>
-                            <option value="2">Tarjeta</option>
-                            <option value="3">Transferencia</option>
-                            <option value="4">Cheque</option>
-                            <option value="6">BTC</option>
-                            <option value="0">Otro</option>
+                            <option value={1}>Efectivo</option>
+                            <option value={2}>Tarjeta</option>
+                            <option value={3}>Transferencia</option>
+                            <option value={4}>Cheque</option>
+                            <option value={6}>BTC</option>
+                            <option value={0}>Otro</option>
                         </select>
                     </div>
                 </div>
