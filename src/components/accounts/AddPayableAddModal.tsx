@@ -40,11 +40,11 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
                 <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
                         <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Abonos</div>
-                        <div className="text-2xl font-bold text-text-base">{ numberToMoney(payableRecord?.payments?.total ? payableRecord?.payments?.total :0, system) }</div>
+                        <div className="text-2xl font-bold text-text-base">{ numberToMoney((payableRecord?.quantity - payableRecord?.balance), system) }</div>
                     </div>
                     <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
                         <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Saldo</div>
-                        <div className="text-2xl font-bold text-text-base">{numberToMoney(payableRecord?.payments?.balance ? payableRecord?.payments?.balance : 0, system)}</div>
+                        <div className="text-2xl font-bold text-text-base">{numberToMoney(payableRecord?.balance ?? 0, system)}</div>
                     </div>
                 </div>
                 <div>
