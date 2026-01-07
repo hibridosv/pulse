@@ -6,6 +6,7 @@ import { documentType, numberToMoney } from "@/lib/utils";
 import cashAccountStore from "@/stores/cash/cashAccountStore";
 import useConfigStore from "@/stores/configStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
@@ -31,6 +32,12 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
   const onSubmit = async (data: any) => {
     console.log("Submitting data:", data);
   }
+
+  useEffect(() => {
+    if (isShow) {
+      setValue("payment_type", 1);
+    }
+  }, [isShow, setValue]);
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl3" headerTitle="AGREGAR ABONO">
