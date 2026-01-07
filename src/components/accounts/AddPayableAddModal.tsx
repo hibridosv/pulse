@@ -1,7 +1,9 @@
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
+import { useCashAccountLogic } from "@/hooks/cash/useCashAccountLogic";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { documentType, numberToMoney } from "@/lib/utils";
+import cashAccountStore from "@/stores/cash/cashAccountStore";
 import useConfigStore from "@/stores/configStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useForm } from "react-hook-form";
@@ -19,10 +21,12 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
 
         const { register, handleSubmit, reset, setValue, watch } = useForm();
         const payableRecord = getSelectedElement('paymentPayableAdd');
+        useCashAccountLogic();
+        const { accounts, loading } = cashAccountStore();
         const isSending = false;
 
         console.log("payableRecord:", payableRecord);
-        console.log("cashdrawer:", cashdrawer);
+        console.log("accounts:", accounts);
 
   const onSubmit = async (data: any) => {
     console.log("Submitting data:", data);
@@ -31,61 +35,64 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
   return (
     <Modal show={isShow} onClose={onClose} size="xl3" headerTitle="AGREGAR ABONO">
       <Modal.Body>
-        <div className="grid grid-cols-1 md:grid-cols-10 mx-4">
-            <div className="col-span-5">
-                <div className="flex justify-between mb-6">
-                    <div className="mx-4 border-2 border-slate-600 shadow-lg shadow-teal-500 rounded-md w-full">
-                        <div className="w-full text-center">Abonos</div>
-                        <div className="w-full text-center text-2xl">{ numberToMoney(payableRecord?.payments?.total ? payableRecord?.payments?.total :0, system) }</div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mx-1">
+            <div className="md:col-span-7">
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
+                        <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Abonos</div>
+                        <div className="text-2xl font-bold text-text-base">{ numberToMoney(payableRecord?.payments?.total ? payableRecord?.payments?.total :0, system) }</div>
                     </div>
-                    <div className="mx-4 border-2 border-slate-600 shadow-lg shadow-red-500 rounded-md w-full">
-                        <div className="w-full text-center">Saldo</div>
-                        <div className="w-full text-center text-2xl">{numberToMoney(payableRecord?.payments?.balance ? payableRecord?.payments?.balance : 0, system)}</div>
+                    <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
+                        <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Saldo</div>
+                        <div className="text-2xl font-bold text-text-base">{numberToMoney(payableRecord?.payments?.balance ? payableRecord?.payments?.balance : 0, system)}</div>
                     </div>
                 </div>
                 <div>
-                    {/* Aqui va el formulario */}
               { cashdrawer ? (
-                    <form onSubmit={handleSubmit(onSubmit)} className="pb-4 mx-3 border-2 shadow-lg rounded-md">
-              <div className="flex flex-wrap mx-3 mb-2 ">
+                    <form onSubmit={handleSubmit(onSubmit)} className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4">
+              <div className="flex flex-wrap -mx-3 mb-2">
 
-              <div className="w-full md:w-full px-3 mb-2">
-                    <label htmlFor="payment_type" className="input-label"> Tipo de pago </label>
-                    <select
-                          defaultValue={1}
-                          id="payment_type"
-                          {...register("payment_type", {disabled: payableRecord?.payments?.balance == 0 ? true : false})}
-                          className="input"
-                        >
-                        <option value="1">Efectivo</option>
-                        <option value="2">Tarjeta</option>
-                        <option value="3">Transferencia</option>
-                        <option value="4">Cheque</option>
-                        <option value="6">BTC</option>
-                        <option value="0">Otro</option>
-                    </select>
+              <div className="w-full px-3 mb-4">
+                    <label htmlFor="payment_type" className="input-label mb-2"> Tipo de pago </label>
+                    <div className="relative">
+                        <select
+                              defaultValue={1}
+                              id="payment_type"
+                              {...register("payment_type", {disabled: payableRecord?.payments?.balance == 0 ? true : false})}
+                              className="input-select"
+                            >
+                            <option value="1">Efectivo</option>
+                            <option value="2">Tarjeta</option>
+                            <option value="3">Transferencia</option>
+                            <option value="4">Cheque</option>
+                            <option value="6">BTC</option>
+                            <option value="0">Otro</option>
+                        </select>
+                    </div>
                 </div>
 
 
-                { watch("payment_type") != 1 && payableRecord?.payments?.balance != 0 && <div className="w-full md:w-full px-3 mb-2">
-                    <label htmlFor="cash_accounts_id" className="input-label"> Cuenta de tranferencia </label>
-                    <select
-                          defaultValue={payableRecord?.accounts && payableRecord?.accounts.data && payableRecord?.accounts.data.length > 0 ? payableRecord?.accounts.data[0].id : 0}
-                          id="cash_accounts_id"
-                          {...register("cash_accounts_id", {disabled: payableRecord?.payments?.balance == 0 ? true : false})}
-                          className="input"
-                        >
-                        {payableRecord?.accounts?.data?.map((value: any) => {
-                          return (
-                            <option key={value.id} value={value.id}> {value.account}{" | "}{value.bank}{" | $"}{value.balance}</option>
-                          );
-                        })}
-                    </select>
+                { watch("payment_type") != 1 && payableRecord?.payments?.balance != 0 && <div className="w-full px-3 mb-4">
+                    <label htmlFor="cash_accounts_id" className="input-label mb-2"> Cuenta de tranferencia </label>
+                    <div className="relative">
+                        <select
+                              defaultValue={accounts && accounts.length > 0 ? accounts[0].id : 0}
+                              id="cash_accounts_id"
+                              {...register("cash_accounts_id", {disabled: payableRecord?.payments?.balance == 0 ? true : false})}
+                              className="input-select"
+                            >
+                            {accounts?.map((value: any) => {
+                              return (
+                                <option key={value.id} value={value.id}> {value.account}{" | "}{value.bank}{" | $"}{value.balance}</option>
+                              );
+                            })}
+                        </select>
+                    </div>
                 </div> }
 
 
-                <div className="w-full md:w-full px-3 mb-2">
-                    <label htmlFor="quantity" className="input-label"> Cantidad *</label>
+                <div className="w-full px-3 mb-4">
+                    <label htmlFor="quantity" className="input-label mb-2"> Cantidad *</label>
                     <input
                           type="number"
                           id="quantity"
@@ -98,7 +105,7 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
                
               </div>
 
-              <div className="flex justify-center">
+              <div className="flex justify-end mt-4">
               <Button type="submit" disabled={isSending || payableRecord?.payments?.balance == 0} preset={isSending ? Preset.saving : Preset.save} />
               </div>
 
@@ -113,26 +120,56 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
                 </>}
                 </div>
             </div>
-            <div className="col-span-5 ">
+            <div className="md:col-span-5">
 
-                    <div className="w-full flex justify-center  mb-6">
-                        <div className="w-1/2 mx-4 border-2 border-slate-600 shadow-lg shadow-lime-500 rounded-md">
-                            <div className="text-center">Total</div>
-                            <div className="text-center text-2xl">{ numberToMoney(payableRecord?.quantity ? payableRecord?.quantity : 0, system) }</div>
+                    <div className="w-full mb-6">
+                        <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
+                            <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Total</div>
+                            <div className="text-2xl font-bold text-text-base">{ numberToMoney(payableRecord?.quantity ? payableRecord?.quantity : 0, system) }</div>
                         </div>
                     </div>
-               <div className="pb-4 mx-3 border-2 shadow-lg rounded-md"> 
+               <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-5 grid grid-cols-2 gap-4"> 
 
-                    <div className="ml-3 text-xl mt-2 font-semibold ">{ payableRecord?.name }</div>
-                    <div className="ml-3 text-sm">{ payableRecord?.description }</div>
-                    <div className="ml-3 text-lg mt-1">Expira: { payableRecord?.expiration ? formatDateAsDMY(payableRecord?.expiration) : "N/A" }</div>
-                    <div className="ml-3 text-lg mt-1">{documentType(payableRecord?.invoice)}: { payableRecord?.invoice_number}</div>
-                    <div className="ml-3 text-lg mt-1">Usuario: { payableRecord?.employee?.name}</div>
-                    <div className="ml-3 text-lg mt-1">Proveedor: { payableRecord?.provider?.name}</div>
+                    <div className="col-span-2">
+                        <div className="text-xs text-text-muted uppercase tracking-wider font-semibold">Nombre</div>
+                        <div className="text-lg font-medium text-text-base">{ payableRecord?.name }</div>
+                    </div>
+                    
+                    {payableRecord?.description && (
+                        <div className="col-span-2">
+                            <div className="text-xs text-text-muted uppercase tracking-wider font-semibold">Descripción</div>
+                            <div className="text-sm text-text-base">{ payableRecord?.description }</div>
+                        </div>
+                    )}
+
+                    <div>
+                        <div className="text-xs text-text-muted uppercase tracking-wider font-semibold">Expira</div>
+                        <div className="text-base text-text-base">{ payableRecord?.expiration ? formatDateAsDMY(payableRecord?.expiration) : "N/A" }</div>
+                    </div>
+
+                    <div>
+                         <div className="text-xs text-text-muted uppercase tracking-wider font-semibold">{documentType(payableRecord?.invoice)}</div>
+                         <div className="text-base text-text-base">{ payableRecord?.invoice_number}</div>
+                    </div>
+
+                    <div>
+                        <div className="text-xs text-text-muted uppercase tracking-wider font-semibold">Usuario</div>
+                        <div className="text-base text-text-base">{ payableRecord?.employee?.name}</div>
+                    </div>
+
+                    <div>
+                        <div className="text-xs text-text-muted uppercase tracking-wider font-semibold">Proveedor</div>
+                        <div className="text-base text-text-base">{ payableRecord?.provider?.name}</div>
+                    </div>
                </div>
             </div>
         </div>
-        
+        {payableRecord?.payments &&
+        <div className="mt-3">
+                { payableRecord?.payments?.length == 0 && <Button preset={Preset.danger}  text="ELIMINAR CUENTA" style="mt-2" isFull />}
+                {/* <CredistPaymentsTable records={payableRecord?.payments?.accounts} onDelete={onDeletePayment}  isDisabled={!cashDrawer} isPrint={()=>{}} /> */}
+                <div>Listado de pagos</div>
+        </div>}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} preset={Preset.close} disabled={false} />
