@@ -32,7 +32,6 @@ const useAccountPayableStore = create<AccountPayableStoreState>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      console.log("Fetched accounts payable:", response.data.data);
       set({ accounts: response.data.data, error: null });
     } catch (error) {
       set({ accounts: null });
@@ -69,7 +68,6 @@ const useAccountPayableStore = create<AccountPayableStoreState>((set) => ({
     },
 
   deleteAccount: async (url: string, id: string) => {
-    console.log("Deleting account payable with ID:", id);
     set({ deleting: true });
     try {
       const response = await deleteService(url); 

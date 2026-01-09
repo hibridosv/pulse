@@ -31,7 +31,6 @@ export default function Page() {
   const { accounts, loading } = useAccountPayableStore();
 
   const data = accounts?.data || [];
- console.log("responseData:", data);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
