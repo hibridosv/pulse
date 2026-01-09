@@ -1,15 +1,19 @@
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
+import { useAccountPayableLogic } from "@/hooks/accounts/useAccountPayableLogic";
 import { useCashAccountLogic } from "@/hooks/cash/useCashAccountLogic";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { documentType, numberToMoney } from "@/lib/utils";
+import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
 import cashAccountStore from "@/stores/cash/cashAccountStore";
 import useConfigStore from "@/stores/configStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
+import { AccountsPayablePaymentsTable } from "./AccountsPayablePaymentsTable";
 
 export interface AddPayableModal {
   onClose: () => void;
@@ -23,14 +27,21 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
         const { register, handleSubmit, reset, setValue, watch } = useForm();
         const payableRecord = getSelectedElement('paymentPayableAdd');
         useCashAccountLogic();
-        const { accounts, loading } = cashAccountStore();
-        const isSending = false;
+        const { accounts } = cashAccountStore();
+        const { savePayment, deletePayableAccount } = useAccountPayableLogic();
+        const { sending, deleting } = useAccountPayableStore();
+        const { setError } = useToastMessageStore();
 
-        console.log("payableRecord:", payableRecord);
-        console.log("accounts:", accounts);
+
 
   const onSubmit = async (data: any) => {
-    console.log("Submitting data:", data);
+      if (payableRecord?.balance < data.quantity) {
+      setError({ message: "No puede ingresar una cantidad mayor al saldo pendiente"});
+      return;
+      }
+      await savePayment(data);
+      reset();
+      setValue("payment_type", 1);
   }
 
   useEffect(() => {
@@ -65,7 +76,7 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
                         <select
                               defaultValue={1}
                               id="payment_type"
-                              {...register("payment_type", {disabled: payableRecord?.payments?.balance == 0 ? true : false})}
+                              {...register("payment_type", {disabled: payableRecord?.balance == 0 ? true : false})}
                               className="input-select"
                             >
                             <option value={1}>Efectivo</option>
@@ -79,13 +90,13 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
                 </div>
 
 
-                { watch("payment_type") != 1 && payableRecord?.payments?.balance != 0 && <div className="w-full px-3 mb-4">
+                { watch("payment_type") != 1 && <div className="w-full px-3 mb-4">
                     <label htmlFor="cash_accounts_id" className="input-label mb-2"> Cuenta de tranferencia </label>
                     <div className="relative">
                         <select
                               defaultValue={accounts && accounts.length > 0 ? accounts[0].id : 0}
                               id="cash_accounts_id"
-                              {...register("cash_accounts_id", {disabled: payableRecord?.payments?.balance == 0 ? true : false})}
+                              {...register("cash_accounts_id", {disabled: payableRecord?.balance == 0 ? true : false})}
                               className="input-select"
                             >
                             {accounts?.map((value: any) => {
@@ -103,7 +114,7 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
                     <input
                           type="number"
                           id="quantity"
-                          {...register("quantity", {disabled: payableRecord?.payments?.balance == 0 ? true : false})}
+                          {...register("quantity", {disabled: payableRecord?.balance == 0 ? true : false})}
                           className="input"
                           step="any"
                           min={0}
@@ -113,7 +124,7 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
               </div>
 
               <div className="flex justify-end mt-4">
-              <Button type="submit" disabled={isSending || payableRecord?.payments?.balance == 0} preset={isSending ? Preset.saving : Preset.save} />
+              <Button type="submit" disabled={sending || payableRecord?.payments?.balance == 0} preset={sending ? Preset.saving : Preset.save} />
               </div>
 
             </form>) : 
@@ -173,13 +184,15 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
         </div>
         {payableRecord?.payments &&
         <div className="mt-3">
-                { payableRecord?.payments?.length == 0 && <Button preset={Preset.danger}  text="ELIMINAR CUENTA" style="mt-2" isFull />}
-                {/* <CredistPaymentsTable records={payableRecord?.payments?.accounts} onDelete={onDeletePayment}  isDisabled={!cashDrawer} isPrint={()=>{}} /> */}
-                <div>Listado de pagos</div>
+                <AccountsPayablePaymentsTable records={payableRecord?.payments} />
         </div>}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} disabled={false} />
+        <div className="flex justify-end">
+        { payableRecord?.payments?.length == 0 && 
+        <Button preset={deleting ? Preset.loading : Preset.danger}  text="ELIMINAR CUENTA" style="mr-2" onClick={deletePayableAccount} disabled={deleting} />}
+        <Button onClick={onClose} preset={Preset.close} disabled={deleting} />
+        </div>
       </Modal.Footer>
     </Modal>
   );

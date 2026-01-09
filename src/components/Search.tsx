@@ -1,6 +1,6 @@
 'use client'; 
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface SearchInputProps {
     handleSearchTerm: (term: string) => void;

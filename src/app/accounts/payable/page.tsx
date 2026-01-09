@@ -12,6 +12,7 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { useAccountPayableLogic } from "@/hooks/accounts/useAccountPayableLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { getTotalOfItem } from "@/lib/utils";
+import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
 import useModalStore from "@/stores/modalStorage";
 import { BiPlusCircle } from "react-icons/bi";
 
@@ -26,8 +27,10 @@ export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { modals, closeModal, openModal} = useModalStore();
 
-  const { loading, responseData } = useAccountPayableLogic(currentPage);
-  const data = responseData?.data || [];
+  useAccountPayableLogic(currentPage);
+  const { accounts, loading } = useAccountPayableStore();
+
+  const data = accounts?.data || [];
  console.log("responseData:", data);
 
   return (
@@ -38,8 +41,8 @@ export default function Page() {
           <BiPlusCircle size={28} className="clickeable text-primary mt-3 mr-4" onClick={()=>{openModal('payableAdd'); }} />
         </div>
         <div className="p-4">
-          <AccountsPayableTable records={data?.data} isLoading={loading} />
-          <Pagination records={data} handlePageNumber={handlePageNumber } />
+          <AccountsPayableTable records={data} isLoading={loading} />
+          <Pagination records={accounts} handlePageNumber={handlePageNumber } />
         </div>
     </div>
     <div className="col-span-3">
@@ -53,7 +56,7 @@ export default function Page() {
               <ShowTotal quantity={data?.total} text="Creditos Pendientes" number={true} />
             </div>
             <div className="p-4">
-              <ShowTotal quantity={getTotalOfItem(data?.data, "balance")} text="Total Pendiente" number={false} />
+              <ShowTotal quantity={getTotalOfItem(data, "balance")} text="Total Pendiente" number={false} />
             </div>
     </div> 
     <AddPayableModal onClose={() => closeModal('payableAdd')} isShow={modals.payableAdd} />

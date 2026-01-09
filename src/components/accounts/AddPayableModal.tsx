@@ -1,6 +1,7 @@
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
-import { useAccountPayableSaveLogic } from "@/hooks/accounts/useAccountPayableSaveLogic";
+import { useAccountPayableLogic } from "@/hooks/accounts/useAccountPayableLogic";
+import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
 import { useForm } from "react-hook-form";
 import { ClientsSearch } from "../search/ClientsSearch";
 import { ShowClientSearched } from "../search/ShowClientSearched";
@@ -11,8 +12,9 @@ export interface AddPayableModal {
 }
 
 export function AddPayableModal({ onClose, isShow }: AddPayableModal) {
-        const { savePayable, loading: isSending } = useAccountPayableSaveLogic();
+        const { savePayable } = useAccountPayableLogic();
         const { register, handleSubmit, reset, setValue, watch } = useForm();
+        const { sending } = useAccountPayableStore();
 
 
   const onSubmit = async (data: any) => {
@@ -93,14 +95,14 @@ export function AddPayableModal({ onClose, isShow }: AddPayableModal) {
               </div>
 
               <div className="flex justify-center">
-              <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
+              <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
               </div>
 
             </form>
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} disabled={isSending} />
+        <Button onClick={onClose} preset={Preset.close} disabled={sending} />
       </Modal.Footer>
     </Modal>
   );
