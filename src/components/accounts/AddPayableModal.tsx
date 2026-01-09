@@ -2,6 +2,7 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useAccountPayableLogic } from "@/hooks/accounts/useAccountPayableLogic";
 import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ClientsSearch } from "../search/ClientsSearch";
 import { ShowClientSearched } from "../search/ShowClientSearched";
@@ -22,6 +23,13 @@ export function AddPayableModal({ onClose, isShow }: AddPayableModal) {
     reset();
     onClose();
   }
+
+
+  useEffect(() => {
+    if (isShow) {
+      setValue("invoice", 1);
+    }
+  }, [isShow, setValue]);
 
   return (
     <Modal show={isShow} onClose={onClose} size="md" headerTitle="Agregar Cuenta por Pagar">
