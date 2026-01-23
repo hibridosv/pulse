@@ -155,6 +155,20 @@ export const getTotalOfItem = (datos: any, item: string = 'total'): any => {
   return totalSuma;
 }
 
+// cuenta los elementos de un arreglo con algun estado
+export const countItemsWithStatus = (datos: any, filter: string =  "status", status: any =  1): any => {
+  if (!datos) return 0; 
+  let count = 0;
+  datos?.forEach((elemento: any) => {
+    if (elemento[filter] == status) {
+      count += 1;
+    }
+  });
+
+  return count;
+}
+
+
 // obtiene el ultimo elemento de un arreglo
 export const getLastElement = (items: any, row = "status", status = 1)=> {
   if(!items) return null;

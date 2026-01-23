@@ -11,7 +11,7 @@ import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useAccountPayableLogic } from "@/hooks/accounts/useAccountPayableLogic";
 import { usePagination } from "@/hooks/usePagination";
-import { getTotalOfItem } from "@/lib/utils";
+import { countItemsWithStatus, getTotalOfItem } from "@/lib/utils";
 import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
 import useModalStore from "@/stores/modalStorage";
 import { BiPlusCircle } from "react-icons/bi";
@@ -27,7 +27,7 @@ export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { modals, closeModal, openModal} = useModalStore();
 
-  useAccountPayableLogic(currentPage);
+  useAccountPayableLogic(currentPage, true);
   const { accounts, loading } = useAccountPayableStore();
 
   const data = accounts?.data || [];
@@ -52,7 +52,7 @@ export default function Page() {
             </div>
             <RadioButton options={optionsRadioButton} />
             <div className="p-4">
-              <ShowTotal quantity={data?.total} text="Creditos Pendientes" number={true} />
+              <ShowTotal quantity={countItemsWithStatus(data, "status", 1)} text="Creditos Pendientes" number={true} />
             </div>
             <div className="p-4">
               <ShowTotal quantity={getTotalOfItem(data, "balance")} text="Total Pendiente" number={false} />

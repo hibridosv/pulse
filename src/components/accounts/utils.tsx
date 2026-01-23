@@ -12,3 +12,7 @@ import { Indicator } from "../Indicators";
     <Indicator text="Pagado" type="success" /> : 
     <Indicator text="Eliminado" type="danger" />;
   }
+
+  export function calculateNewBalance( total: number, balance: number, quantity: number ): number {
+    return (Number(total) - Number(balance) + Number(quantity));
+  }

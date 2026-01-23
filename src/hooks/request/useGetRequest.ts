@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
 import { get } from '@/services/httpService'; // Asegúrate de que la ruta sea correcta
 import useToastMessageStore from '@/stores/toastMessageStore';
+import { useCallback, useState } from 'react';
 
 
 
@@ -16,8 +16,8 @@ export function useGetRequest() {
       setResponseData(response.data);
       if (showMessage) setMessage(response);
     } catch (err: any) {
-      if (showMessage) setErrorMessage(err);
       setResponseData(null);
+      if (showMessage) setErrorMessage(err);
     } finally {
       setLoading(false);
     }

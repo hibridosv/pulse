@@ -1,18 +1,20 @@
-import { post } from '@/services/httpService'; // Asegúrate de que la ruta sea correcta
+import { put } from '@/services/httpService'; // Asegúrate de que la ruta sea correcta
 import useToastMessageStore from '@/stores/toastMessageStore';
 import { useCallback, useState } from 'react';
 
 
 
-export function usePostRequest() {
+export function usePutRequest() {
   const [responseData, setResponseData] = useState(null);
   const [loading, setLoading] = useState(false);
   const { setMessage, setError: setErrorMessage } = useToastMessageStore();
 
-  const postRequest = useCallback(async (url: string, data: any, showMessage: boolean = true) => {
+
+
+  const putRequest = useCallback(async (url: string, data: any, showMessage: boolean = true) => {
     setLoading(true);
     try {
-      const response = await post(url, data);
+      const response = await put(url, data);
       setResponseData(response.data);
       if (showMessage) setMessage(response);
     } catch (err: any) {
@@ -23,6 +25,5 @@ export function usePostRequest() {
     }
   }, [setErrorMessage, setMessage]);
 
-
-  return { responseData, loading, postRequest };
+  return { responseData, loading, putRequest };
 }

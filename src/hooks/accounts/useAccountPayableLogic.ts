@@ -3,7 +3,7 @@ import useAccountPayableStore from '@/stores/accounts/accountPayableStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import { useEffect } from 'react';
 
-export function useAccountPayableLogic(currentPage?: any) {
+export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createAccount, createPayment, error, deleteAccount } = useAccountPayableStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const selectedOption = getSelectedElement("optionSelected") || {id: 2};
@@ -13,8 +13,10 @@ export function useAccountPayableLogic(currentPage?: any) {
 
 
   useEffect(() => {
-       loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage}`)
-  }, [currentPage, loadAccounts, contactSelected, selectedOption]);
+     if (initialLoad) {
+       loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
+      }
+  }, [currentPage, loadAccounts, contactSelected, selectedOption, initialLoad]);
 
 
     const savePayable = async (data: any) => {
@@ -25,7 +27,7 @@ export function useAccountPayableLogic(currentPage?: any) {
 
       await createAccount("accounts/payable", data);
         if (!error) {
-            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage}`)
+            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
         }
   }
 
@@ -37,7 +39,7 @@ export function useAccountPayableLogic(currentPage?: any) {
       data.creditSelected = payableRecord?.id;
       await createPayment("accounts/payment", data); 
       if (!error) {
-            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage}`)
+            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
     }
   }
 
