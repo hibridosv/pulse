@@ -6,7 +6,7 @@ import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { getFirstElement, numberToMoney } from "@/lib/utils";
 import accountReceivableStore from "@/stores/accounts/accountReceivableStore";
 import useConfigStore from "@/stores/configStore";
-import { FaInfoCircle, FaPrint } from "react-icons/fa";
+import { FaPrint } from "react-icons/fa";
 import { Button, Preset } from "../button/button";
 import { ButtonDownload } from "../button/button-download";
 import { DeleteButton } from "../button/DeleteButton";
@@ -42,7 +42,7 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
       <td className="px-2 text-left whitespace-nowrap" >
        { record?.employee?.name }
       </td>
-      <td className={`px-2 text-center whitespace-nowrap`}>
+      <td className={`px-2 text-center whitespace-nowrap ${record?.status == 0 && 'cursor-help' }`} title={`${record?.status == 0 && `Borrada por: ${record?.deleted_by?.name} el dia ${formatDateAsDMY(record?.deleted_at)}`}`}>
         { statusPayment(record?.status) }
       </td>
       <td className={`px-2 flex justify-start whitespace-nowrap`}>
@@ -62,9 +62,6 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
         </ButtonDownload> :          
         <Button preset={Preset.smallPrint} noText onClick={isPrint} style="ml-2" />)
         } 
-        {
-          record?.status == 0 && <FaInfoCircle title={`Borrada por: ${record?.deleted_by?.name}`} size={20} color="red" className="ml-2" />
-        }
       </td>
     </tr>
   ));
