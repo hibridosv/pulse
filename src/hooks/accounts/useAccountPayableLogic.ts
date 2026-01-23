@@ -1,12 +1,13 @@
 'use client'
 import useAccountPayableStore from '@/stores/accounts/accountPayableStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createAccount, createPayment, error, deleteAccount, createCreditNote, deleteCreditNote} = useAccountPayableStore();
   const { getSelectedElement } = useTempSelectedElementStore();
-  const selectedOption = getSelectedElement("optionSelected") || {id: 2};
+  const rawSelectedOption = getSelectedElement("optionSelected");
+  const selectedOption = useMemo(() => rawSelectedOption || {id: 2}, [rawSelectedOption]);
   const contactSelected = getSelectedElement('clientSelectedBySearch');
   const elementSelected = getSelectedElement('clientSelectedBySearchModal');
   const payableRecord = getSelectedElement('paymentPayableAdd');

@@ -37,26 +37,31 @@ export function AddPayableCreditNoteModal({ onClose, isShow }: AddPayableCreditN
         <div className="p-6">
               {
                     payableRecord?.note ? 
-                    <div className="flex flex-wrap mx-3 mb-2 ">
-                        <div className="w-full md:w-full px-3 mb-2">
-                            <div className="input-label"> Numero de Nota de credito *</div>
-                            <div className="input">{payableRecord?.note?.number}</div>
-                        </div>
-                        <div className="w-full md:w-full px-3 mb-2">
-                            <div className="input-label"> Factura afectada *</div>
-                            <div className="input">{payableRecord?.note?.invoice}</div>
-                        </div>
-                        <div className="w-full md:w-full px-3 mb-2">
-                            <div  className="input-label"> Fecha emisión *</div>
-                            <div className="input">{formatDateAsDMY(payableRecord?.note?.emited_at)}</div>
-                        </div>
-                        <div className="w-full md:w-full px-3 mb-2">
-                            <div  className="input-label"> Fecha Ingreso *</div>
-                            <div className="input">{formatDateAsDMY(payableRecord?.note?.created_at)}</div>
-                        </div>
-                        <div className="w-full md:w-full px-3 mb-2">
-                            <div  className="input-label"> Cantidad *</div>
-                            <div className="input">{numberToMoney(payableRecord?.note?.quantity, system)}</div>
+                    <div className="bg-bg-content/50 p-4 rounded-lg border border-bg-subtle shadow-sm">
+                        <h3 className="text-lg font-semibold text-text-base mb-4 border-b border-bg-subtle pb-2">
+                            Información de la Nota de Crédito
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div>
+                                <div className="text-sm font-medium text-text-muted">Número de Nota</div>
+                                <div className="text-base font-semibold text-text-base">{payableRecord?.note?.number}</div>
+                            </div>
+                            <div>
+                                <div className="text-sm font-medium text-text-muted">Factura Afectada</div>
+                                <div className="text-base font-semibold text-text-base">{payableRecord?.note?.invoice}</div>
+                            </div>
+                            <div>
+                                <div className="text-sm font-medium text-text-muted">Fecha de Emisión</div>
+                                <div className="text-base font-semibold text-text-base">{formatDateAsDMY(payableRecord?.note?.emited_at)}</div>
+                            </div>
+                            <div>
+                                <div className="text-sm font-medium text-text-muted">Fecha de Ingreso</div>
+                                <div className="text-base font-semibold text-text-base">{formatDateAsDMY(payableRecord?.note?.created_at)}</div>
+                            </div>
+                            <div className="md:col-span-2">
+                                <div className="text-sm font-medium text-text-muted">Monto</div>
+                                <div className="text-lg font-bold text-primary">{numberToMoney(payableRecord?.note?.quantity, system)}</div>
+                            </div>
                         </div>
                     </div>
                     :

@@ -30,7 +30,6 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      console.log("account receivable store loadAccounts response:", response);
       set({ accounts: response.data.data, error: null });
     } catch (error) {
       set({ accounts: null });

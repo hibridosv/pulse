@@ -2,14 +2,15 @@
 import accountReceivableStore from '@/stores/accounts/accountReceivableStore';
 import useConfigStore from '@/stores/configStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { usePostRequest } from '../request/usePostRequest';
 import { usePutRequest } from '../request/usePutRequest';
 
 export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createPayment, error, checkIn } = accountReceivableStore();
   const { getSelectedElement } = useTempSelectedElementStore();
-  const selectedOption = getSelectedElement("optionSelected") || {id: 2};
+  const rawSelectedOption = getSelectedElement("optionSelected");
+  const selectedOption = useMemo(() => rawSelectedOption || {id: 2}, [rawSelectedOption]);
   const contactSelected = getSelectedElement('clientSelectedBySearch');
   const elementSelected = getSelectedElement('clientSelectedBySearchModal');
   const receivableRecord = getSelectedElement('paymentReceivableAdd');
@@ -19,7 +20,8 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
   const { activeConfig, system } = useConfigStore();
 
 
-  useEffect(() => { if (initialLoad) {
+  useEffect(() => { 
+          if (initialLoad) {
             loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`);
             }
   }, [currentPage, loadAccounts, contactSelected, selectedOption, initialLoad]);
