@@ -18,6 +18,8 @@ interface AccountPayableStoreStateI {
   deleteAccount: (url: string, id: string) => Promise<void>;
   createPayment: (url: string, data: any) => Promise<void>;
   deletePayment: (url: string) => Promise<void>;
+  createCreditNote: (url: string, data: any) => Promise<void>;
+  deleteCreditNote: (url: string) => Promise<void>;
 }
 
 const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
@@ -110,6 +112,34 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
       useTempSelectedElementStore.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ deleting: false });
+    }
+  },
+  
+
+    createCreditNote: async (url, data) => {
+        set({ sending: true });
+        try {
+            const response = await createService(url, data);
+            useToastMessageStore.getState().setMessage(response);
+            useTempSelectedElementStore.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+        } finally {
+            set({ sending: false });
+        }
+    },
+
+  deleteCreditNote: async (url: string) => {
+    set({ deleting: true });
+    try {
+      const response = await deleteService(url); 
+      useToastMessageStore.getState().setMessage(response);
+      useTempSelectedElementStore.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+      useModalStore.getState().closeModal("creditNoteAdd");
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {

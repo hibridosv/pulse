@@ -7,6 +7,7 @@ import { documentType, numberToMoney } from "@/lib/utils";
 import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
 import cashAccountStore from "@/stores/cash/cashAccountStore";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { useEffect } from "react";
@@ -22,7 +23,7 @@ export interface AddPayableModal {
 
 export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
         const { getSelectedElement } = useTempSelectedElementStore();
-        const { cashdrawer, system } = useConfigStore();
+        const { cashdrawer, system, activeConfig } = useConfigStore();
 
         const { register, handleSubmit, reset, setValue, watch } = useForm();
         const payableRecord = getSelectedElement('paymentPayableAdd');
@@ -31,7 +32,7 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
         const { savePayment, deletePayableAccount } = useAccountPayableLogic();
         const { sending, deleting } = useAccountPayableStore();
         const { setError } = useToastMessageStore();
-
+        const { openModal, closeModal } = useModalStore();
 
 
   const onSubmit = async (data: any) => {
@@ -188,7 +189,12 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
         </div>}
       </Modal.Body>
       <Modal.Footer>
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-4">
+        {
+          activeConfig && activeConfig.includes("payable-credit-notes") && 
+          <Button preset={payableRecord?.note ? Preset.accept : Preset.add} text={payableRecord?.note ? "Ver nota de credito" : "Agregar Nota de credito"} 
+          onClick={()=>{openModal('creditNoteAdd'); }} /> 
+        }
         { payableRecord?.payments?.length == 0 && 
         <Button preset={deleting ? Preset.loading : Preset.danger}  text="ELIMINAR CUENTA" style="mr-2" onClick={deletePayableAccount} disabled={deleting} />}
         <Button onClick={onClose} preset={Preset.close} disabled={deleting} />

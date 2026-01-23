@@ -4,7 +4,7 @@ import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import { useEffect } from 'react';
 
 export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean = false) {
-  const { loadAccounts, createAccount, createPayment, error, deleteAccount } = useAccountPayableStore();
+  const { loadAccounts, createAccount, createPayment, error, deleteAccount, createCreditNote, deleteCreditNote} = useAccountPayableStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const selectedOption = getSelectedElement("optionSelected") || {id: 2};
   const contactSelected = getSelectedElement('clientSelectedBySearch');
@@ -31,7 +31,6 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
         }
   }
 
-
     const savePayment = async (data: any) => {
 
       data.status = 1;
@@ -47,5 +46,19 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
       await deleteAccount(`accounts/payable/${payableRecord?.id}`, payableRecord?.id);
   }
 
-  return { savePayable, savePayment, deletePayableAccount };  
+
+  const saveCreditNote = async (data: any) => {
+      data.credits_payable_id = payableRecord?.id;
+      await createCreditNote("accounts/notes", data);
+      if (!error) {
+            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
+    }
+  }
+
+  const delCreditNote = async () => {
+      await deleteCreditNote(`accounts/notes/${payableRecord?.note?.id}`);
+  }
+
+
+  return { savePayable, savePayment, deletePayableAccount, saveCreditNote, delCreditNote };  
 }

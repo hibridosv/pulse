@@ -1,6 +1,7 @@
 'use client';
 import { AccountsPayableTable } from "@/components/accounts/AccountsPayableTable";
 import { AddPayableAddModal } from "@/components/accounts/AddPayableAddModal";
+import { AddPayableCreditNoteModal } from "@/components/accounts/AddPayableCreditNoteModal";
 import { AddPayableModal } from "@/components/accounts/AddPayableModal";
 import { Option, RadioButton } from "@/components/button/RadioButton";
 import { Pagination } from "@/components/Pagination";
@@ -60,6 +61,7 @@ export default function Page() {
     </div> 
     <AddPayableModal onClose={() => closeModal('payableAdd')} isShow={modals.payableAdd} />
     <AddPayableAddModal onClose={() => closeModal('paymentPayableAdd')} isShow={modals.paymentPayableAdd} />
+    <AddPayableCreditNoteModal onClose={() =>closeModal('creditNoteAdd')} isShow={modals.creditNoteAdd} />
     <ToasterMessage />
 </div>
   );
