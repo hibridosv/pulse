@@ -2,17 +2,15 @@
 import accountReceivableStore from '@/stores/accounts/accountReceivableStore';
 import useConfigStore from '@/stores/configStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { usePostRequest } from '../request/usePostRequest';
 import { usePutRequest } from '../request/usePutRequest';
 
 export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createPayment, error, checkIn } = accountReceivableStore();
   const { getSelectedElement } = useTempSelectedElementStore();
-  const rawSelectedOption = getSelectedElement("optionSelected");
-  const selectedOption = useMemo(() => rawSelectedOption || {id: 2}, [rawSelectedOption]);
+  const selectedOption = getSelectedElement("optionSelected");
   const contactSelected = getSelectedElement('clientSelectedBySearch');
-  const elementSelected = getSelectedElement('clientSelectedBySearchModal');
   const receivableRecord = getSelectedElement('paymentReceivableAdd');
   const { responseData: postData, loading: postLoading, postRequest } = usePostRequest() as { responseData: any; loading: boolean; postRequest: any };
   const { responseData: putData, loading: putLoading, putRequest } = usePutRequest() as { responseData: any; loading: boolean; putRequest: any };
@@ -21,7 +19,7 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
 
 
   useEffect(() => { 
-          if (initialLoad) {
+          if (initialLoad && selectedOption) {
             loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`);
             }
   }, [currentPage, loadAccounts, contactSelected, selectedOption, initialLoad]);

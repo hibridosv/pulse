@@ -1,5 +1,8 @@
 'use client';
+import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
+import { QuotesDetailsModal } from "@/components/tools/QuotesDetailsModal";
+import { QuotesTable } from "@/components/tools/QuotesTable";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useQuotesLogic } from "@/hooks/tools/useQuotesLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -10,20 +13,22 @@ import quotesStore from "@/stores/tools/quotesStore";
 
 export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
-  const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
+  const { searchTerm, handleSearchTerm } = useSearchTerm(["client_name", "quote_number"], 500);
   const { modals, closeModal } = useModalStore();
   const { getSelectedElement } =useTempSelectedElementStore();
-  useQuotesLogic(currentPage, searchTerm);
+  useQuotesLogic(currentPage, searchTerm, true);
   const { quotes, loading } = quotesStore();
 
-
-console.log({quotes});
+  const data = quotes?.data || [];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
     <div className="col-span-7 border-r md:border-primary">
         <ViewTitle text="LISTA DE COTIZACIONES" />
-
+        <div className="p-4">
+          <QuotesTable records={data} isLoading={loading} />
+          <Pagination records={quotes} handlePageNumber={handlePageNumber } />
+        </div>
     </div>
     <div className="col-span-3">
         <ViewTitle text="DETALLES" />
@@ -31,6 +36,7 @@ console.log({quotes});
           <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar cotización" />
         </div>
     </div> 
+    <QuotesDetailsModal isShow={modals.quoteDetail} onClose={() => closeModal('quoteDetail')} />
 </div>
   );
 }

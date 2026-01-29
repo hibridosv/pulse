@@ -7,3 +7,5 @@ Crear estado de facturado o no para notas de remision tambien los campos para la
 Cuentas por cobrar descargar los excel por fechas
 
 verificar si se actualizan las cuentas bancarias despues de usarlas, en cuentas por cobrar y por pagar
+
+Pasar a otro componente los productos sin existencia en las cotizaciones

@@ -1,4 +1,4 @@
-import { getServices } from '@/services/services';
+import { deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
 
@@ -8,8 +8,10 @@ interface quotesStoreI {
   quote: any | null;
   error: Error | null;
   loading: boolean;
+  deleting?: boolean;
   loadQuotes: (url: string) => Promise<void>;
   loadQuote: (url: string) => Promise<void>;
+  deleteQuote: (url: string) => Promise<void>;
 }
 
 const quotesStore = create<quotesStoreI>((set) => ({
@@ -17,6 +19,7 @@ const quotesStore = create<quotesStoreI>((set) => ({
   quote: null,
   error: null,
   loading: false,
+  deleting: false,
 
   loadQuotes: async (url: string) => {
     set({ loading: true });
@@ -39,6 +42,18 @@ const quotesStore = create<quotesStoreI>((set) => ({
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });
+    }
+  },
+
+  deleteQuote: async (url: string) => {
+    set({ deleting: true });
+    try {
+      const response = await deleteService(url); 
+      useToastMessageStore.getState().setMessage(response);
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ deleting: false });
     }
   },
 

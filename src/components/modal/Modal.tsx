@@ -10,12 +10,14 @@ interface ModalProps {
   closeOnOverlayClick?: boolean; 
   headerTitle: string; // New prop for header title
   hideCloseButton?: boolean; // Moved from ModalHeaderProps
+  removeTitle?: boolean; // New prop to optionally remove title
 }
 
 interface ModalHeaderProps {
   title: string;
   onClose: () => void;
   hideCloseButton?: boolean;
+  removeTitle?: boolean;
 }
 
 interface ModalSubComponentProps {
@@ -26,7 +28,7 @@ const Modal: FC<ModalProps> & {
   Header: FC<ModalHeaderProps>;
   Body: FC<ModalSubComponentProps>;
   Footer: FC<ModalSubComponentProps>;
-} = ({ show, onClose, children, size = "md", closeOnOverlayClick = true, headerTitle, hideCloseButton = false }) => {
+} = ({ show, onClose, children, size = "md", closeOnOverlayClick = true, headerTitle, hideCloseButton = false, removeTitle = false }) => {
   if (!show) return null;
 
   const maxWidthClass = {
@@ -54,7 +56,7 @@ const Modal: FC<ModalProps> & {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <ModalHeader title={headerTitle} onClose={onClose} hideCloseButton={hideCloseButton} />
+        <ModalHeader title={headerTitle} onClose={onClose} hideCloseButton={hideCloseButton} removeTitle={removeTitle} />
 
         {children}
       </div>
@@ -62,7 +64,12 @@ const Modal: FC<ModalProps> & {
   );
 };
 
-const ModalHeader: FC<ModalHeaderProps> = ({ title, onClose, hideCloseButton }) => (
+const ModalHeader: FC<ModalHeaderProps> = ({ title, onClose, hideCloseButton, removeTitle }) => {
+  if (removeTitle) {
+    return null;
+  }
+
+  return (
   <div className="flex-shrink-0 flex items-center justify-between pb-3 mb-4 border-b border-gray-200 ">
     <h3 className="text-xl font-semibold text-gray-900 uppercase">
       {title}
@@ -79,6 +86,7 @@ const ModalHeader: FC<ModalHeaderProps> = ({ title, onClose, hideCloseButton }) 
     )}
   </div>
 );
+} 
 
 const ModalBody: FC<ModalSubComponentProps> = ({ children }) => (
   <div className="overflow-y-auto">{children}</div>

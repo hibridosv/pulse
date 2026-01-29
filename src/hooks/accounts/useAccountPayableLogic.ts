@@ -1,20 +1,20 @@
 'use client'
 import useAccountPayableStore from '@/stores/accounts/accountPayableStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createAccount, createPayment, error, deleteAccount, createCreditNote, deleteCreditNote} = useAccountPayableStore();
   const { getSelectedElement } = useTempSelectedElementStore();
-  const rawSelectedOption = getSelectedElement("optionSelected");
-  const selectedOption = useMemo(() => rawSelectedOption || {id: 2}, [rawSelectedOption]);
+  const selectedOption = getSelectedElement("optionSelected");
   const contactSelected = getSelectedElement('clientSelectedBySearch');
   const elementSelected = getSelectedElement('clientSelectedBySearchModal');
   const payableRecord = getSelectedElement('paymentPayableAdd');
 
 
   useEffect(() => {
-     if (initialLoad) {
+    console.log('Selected Option changed:', selectedOption);
+     if (initialLoad && selectedOption) {
        loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
       }
   }, [currentPage, loadAccounts, contactSelected, selectedOption, initialLoad]);
