@@ -8,14 +8,12 @@ import { useQuotesLogic } from "@/hooks/tools/useQuotesLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import quotesStore from "@/stores/tools/quotesStore";
 
 export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { searchTerm, handleSearchTerm } = useSearchTerm(["client_name", "quote_number"], 500);
   const { modals, closeModal } = useModalStore();
-  const { getSelectedElement } =useTempSelectedElementStore();
   useQuotesLogic(currentPage, searchTerm, true);
   const { quotes, loading } = quotesStore();
 
