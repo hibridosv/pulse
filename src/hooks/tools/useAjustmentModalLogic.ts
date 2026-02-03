@@ -11,7 +11,6 @@ export function useAjustmentModalLogic(currentPage?: any, isShow: boolean = fals
 
   useEffect(() => {
       if (isShow && record) {
-          console.log("Loading adjustment details for record:", record);
           loadAdjustment(`tools/adjust/${record.id}/products?perPage=25${currentPage}`)
       }
   }, [loadAdjustment, currentPage, isShow, record])

@@ -13,7 +13,6 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
 
 
   useEffect(() => {
-    console.log('Selected Option changed:', selectedOption);
      if (initialLoad && selectedOption) {
        loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
       }

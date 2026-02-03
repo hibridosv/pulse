@@ -24,7 +24,6 @@ export function QuotesDetailsModal({ onClose, isShow }: QuotesDetailsModalI) {
         const isSending = sending["sendQuote"] || false;
         const { checks, loading } = useQuoteCheckLogic(`tools/quotes/${quote?.id}/check`, isShow);
         
-        console.log("checks", checks);
 
 
           const listItems = quote?.products?.map((record: any, key: any) => (

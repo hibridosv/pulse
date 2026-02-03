@@ -2,53 +2,72 @@
 import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import { Pagination } from "@/components/Pagination";
+import { SearchInput } from "@/components/Search";
+import { ToasterMessage } from "@/components/toaster-message";
 import { AdjustmentsDetailsModal } from "@/components/tools/AdjustmentsDetailsModal";
+import { AdjustmentSetModal } from "@/components/tools/AdjustmentSetModal";
+import { AdjustmentsProductsToChangeTable } from "@/components/tools/AdjustmentsProductsToChangeTable";
 import { AdjustmentsTable } from "@/components/tools/AdjustmentsTable";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useAjustmentLogic } from "@/hooks/tools/useAjustmentLogic";
+import { useAjustmentProductsLogic } from "@/hooks/tools/useAjustmentProductsLogic";
 import { usePagination } from "@/hooks/usePagination";
+import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useModalStore from "@/stores/modalStorage";
 import adjustStore from "@/stores/tools/adjustStore";
 
 
 export default function Page() {
     const {currentPage, handlePageNumber} = usePagination("&page=1");
-    useAjustmentLogic(currentPage, true);
-    const { adjustments, loading } = adjustStore();
+    const {currentPage: currentPageProducts, handlePageNumber: handlePageNumberProducts} = usePagination("&page=1");
+    const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "name"], 500);
+    const { start, end } = useAjustmentLogic(currentPage, true);
+    const { sendAdjustment } = useAjustmentProductsLogic(currentPageProducts, searchTerm, true);
+    const { adjustments, loading, adjustmentActive, sending } = adjustStore();
     const { modals, closeModal } = useModalStore();
     const data = adjustments?.data || [];
-
-
-  const isSending = false;
-  const startAdjustment = () => {
-    console.log("Iniciar ajuste de inventario");
-  }
-
-  console.log("adjustments", adjustments);
+    const products = adjustmentActive?.data || [];
 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-6 border-r md:border-primary">
+    <div className={`${adjustmentActive ? 'col-span-7' : 'col-span-6'} border-r md:border-primary`}>
         <ViewTitle text="Ajustar Inventario" />
-        <div className="p-4">
+        { adjustmentActive ? 
+        (<div className="p-4">
+          <AdjustmentsProductsToChangeTable records={products} isLoading={loading} isSending={sending} sendAdjustment={sendAdjustment} />
+          { !loading && <Pagination records={adjustmentActive} handlePageNumber={handlePageNumberProducts } /> }
+        </div>) 
+        : 
+        (<div className="p-4">
           <AdjustmentsTable records={data} isLoading={loading} />
-          <Pagination records={adjustments} handlePageNumber={handlePageNumber } />
-        </div>
+          { !loading && <Pagination records={adjustments} handlePageNumber={handlePageNumber } /> }
+        </div>) 
+        }
     </div>
-    <div className="col-span-4">
+    <div className={`${adjustmentActive ? 'col-span-3' : 'col-span-4'}`}>
         <ViewTitle text="Iniciar Ajuste" />
 
-          <div className="my-4">
+          <div className="m-4">
+            { adjustmentActive ? 
+            <div>
+            <div className="mt-2 p-2 mb-4">
+              <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar producto" />
+            </div>
+            <Button onClick={end} isFull={true} preset={loading ? Preset.saving : Preset.save} text="Finalizar ajuste de inventario" />
+            </div> :
+            <div>
             <div className="flex justify-center m-8">
               <Alert type={Preset.info} text="No se ha iniciado el ajuste de inventario. Con esta herramienta podrá ajustar su inventario con los datos existentes reales" />
             </div>
-            <div className="m-8">
-              <Button onClick={startAdjustment} isFull={true} preset={isSending? Preset.saving : Preset.save} text="Iniciar ajuste de inventario" />
+            <Button onClick={start} isFull={true} preset={loading ? Preset.saving : Preset.save} text="Iniciar ajuste de inventario" />
             </div>
+          }
           </div>
     </div> 
     <AdjustmentsDetailsModal isShow={modals.adjustmentDetails} onClose={() => closeModal('adjustmentDetails')} />
+    <AdjustmentSetModal isShow={modals.setAdjustment} onClose={() => closeModal('setAdjustment')} sending={sending} sendAdjustment={sendAdjustment} />
+    <ToasterMessage />
 </div>
   );
 }
