@@ -31,7 +31,13 @@ const handler = NextAuth({
 
         if (res.ok && user) {
           // console.log("Authorization successful.");
-          return { ...user, accessToken: user.access_token, refreshToken: user.refresh_token, expiresAt: user.expires_at, url: user.url }
+            return { 
+              ...user, 
+              accessToken: user.access_token, 
+              refreshToken: user.refresh_token, 
+              expiresAt: user.expires_at, 
+              url: user.url 
+            }
         }
         // console.log("Authorization failed.");
         return null
@@ -66,3 +72,4 @@ const handler = NextAuth({
 })
 
 export { handler as GET, handler as POST }
+
