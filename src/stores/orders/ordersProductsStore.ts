@@ -11,10 +11,12 @@ interface ordersProductsStoreI {
   error: Error | null;
   loading: boolean;
   sending: boolean;
+  saving: boolean;
   deleting: boolean;
   loadOrders: (url: string) => Promise<void>;
   loadOrder: (url: string) => Promise<void>;
   createOrder: (url: string, data: any) => Promise<void>;
+  saveOrder: (url: string, data: any) => Promise<void>;
   deleteOrder: (url: string, id: string) => Promise<void>;
 
 }
@@ -25,6 +27,7 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
   error: null, 
   loading: false,
   sending: false,
+  saving: false,
   deleting: false,
 
   loadOrders: async (url: string) => {
@@ -44,7 +47,6 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      console.log(response)
       set({ order: response.data.data, error: null });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -65,6 +67,19 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
             useToastMessageStore.getState().setError(error);
         } finally {
             set({ sending: false });
+        }
+    },
+
+    saveOrder: async (url, data) => {
+        set({ saving: true });
+        try {
+            const response = await createService(url, data);
+            set({ order: null, error: null});
+            useToastMessageStore.getState().setMessage(response);
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+        } finally {
+            set({ saving: false });
         }
     },
 

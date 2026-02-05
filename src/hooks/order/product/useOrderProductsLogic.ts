@@ -14,7 +14,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   const { activeConfig } = useConfigStore();
   const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
   const typeOfSearch = getSelectedElement('typeOfSearch');
-  const { loadOrder} = ordersProductsStore();
+  const { loadOrder, loadOrders } = ordersProductsStore();
   const { user } =  useConfigStore();
 
   useEffect(() => {
@@ -29,10 +29,16 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
 
   useEffect(() => {
     if (user && initialLoad) {
-      console.log(user, "user desde useOrderProductsLogic");
      loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`);
     }
    }, [initialLoad, user]);
+
+
+  useEffect(() => {
+    if (initialLoad) {
+     loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`);
+    }
+   }, [initialLoad]);
 
    
 }

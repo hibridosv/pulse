@@ -13,8 +13,6 @@ export default function Page() {
   useOrderProductsLogic(true);
   const { order } = ordersProductsStore();
 
-  console.log("order: ", order);
-
  
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">

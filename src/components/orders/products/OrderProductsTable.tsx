@@ -22,7 +22,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
 
 
   if (!data || data.length === 0) {
-    return <NothingHere text="Agregue un producto" />;
+    return <NothingHere width="150" height="150" text="Agregue un producto" />;
   }
 
 
