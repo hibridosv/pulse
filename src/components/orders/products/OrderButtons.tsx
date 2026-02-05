@@ -1,8 +1,6 @@
 'use client';
 
 import { Alert } from '@/components/Alert/Alert';
-import { Dropdown } from '@/components/dropDown/Dropdown';
-import { DropdownItem } from '@/components/dropDown/DropdownItem';
 import { Order } from '@/interfaces/order';
 import { requiredFieldsCCF, validateInvoiceFields } from '@/lib/validator-functions';
 import useConfigStore from '@/stores/configStore';
@@ -90,14 +88,8 @@ export function OrderButtons(props: OrderButtonsI) {
                 <div className='button-options-sales' onClick={()=>onClick(OptionsClickOrder.remission)}> Crear Nota de Remisión</div> }
                 <div className='button-options-sales' onClick={()=>onClick(OptionsClickOrder.renta)}> Agregar Retención Renta</div>?
                 </div> */}
-              <Dropdown label={<div className='button-left-grey clickeable'><IoMdOptions className='mr-1' /> Opciones</div> }>
-                {/* <DropdownItem disabled={!isDocumentVisible} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
-                <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
-                <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
-                <DropdownItem disabled={!isDownloader} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem> */}
-                <DropdownItem disabled={false} onClick={() => {  }}>Reenviar Documento</DropdownItem>
-            </Dropdown>
-            
+              
+            <div className='button-left-grey clickeable'><IoMdOptions className='mr-1' /> Opciones</div>
             <div className='button-cyan clickeable' onClick={()=>{}}> <AiFillSave className='mr-1' /> Guardar </div>
             <div className={`button-lime ${payDisabled ? 'cursor-not-allowed' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{}}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar </div>
               <div className='button-red rounded-r-lg clickeable' onClick={()=>{}}><GiCancel className='mr-1' /> Cancelar </div>
