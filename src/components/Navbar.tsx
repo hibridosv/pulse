@@ -32,7 +32,7 @@ export const Navbar = () => {
           </div>
 
           <div>
-            <Link href="/dashboard" className="text-text-inverted hover:text-secondary">
+            <Link href="/orders/products" className="text-text-inverted hover:text-secondary">
               <IoHome size={26} />
             </Link>
           </div>

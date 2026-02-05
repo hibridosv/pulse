@@ -1,0 +1,115 @@
+import { getTotalPercentage } from "@/lib/utils";
+
+export const sumarDiscount = (datos: any): number => {
+  let totalSuma = 0;
+
+  datos?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty('discount')) {
+      totalSuma += elemento.discount;
+    }
+  });
+
+  return totalSuma;
+}
+
+  export const commissionTotal = (records: any)=>{
+    let commission = 0;
+        records.forEach((element: any) => {
+          let comissionPercentage = getTotalPercentage(element?.subtotal, element?.commission)
+        commission = commission + comissionPercentage;
+      });
+    return commission;
+  }
+
+  export const sumarTotales = (datos: any): number => {
+  let totalSuma = 0;
+
+  datos?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty('total')) {
+      totalSuma += elemento.total;
+    }
+  });
+
+  return totalSuma;
+}
+
+
+
+export const sumarSubtotal = (datos: any): number => {
+  let totalSuma = 0;
+
+  datos?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty('subtotal')) {
+      totalSuma += elemento.subtotal;
+    }
+  });
+
+  return totalSuma;
+}
+
+
+export const sumarCantidad = (datos: any): number => {
+  let totalSuma = 0;
+
+  datos?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty('total')) {
+      totalSuma += elemento.total;
+    }
+  });
+
+  return totalSuma;
+}
+
+/**
+ * 
+ * @param records (datos de la factura)
+ * @returns 
+ */
+export const sumarSalesTotal = (records: any): number => {
+  const total = sumarCantidad(records?.invoiceproducts);
+  const subtotal = sumarSubtotal(records?.invoiceproducts);
+
+  if (records?.client?.taxpayer_type == 2 && subtotal >= 100) { // gran contribuyente
+    let retention = subtotal * 0.01;
+    return (total - retention)
+  }
+
+  if (records?.invoice_assigned?.type == 4) { // sujeto excluido
+    let retention = sumarTotalRetentionSujetoExcluido(records);
+    return (total - retention)
+  }
+  return total;
+}
+
+
+export const sumarTotalRetentionRenta = (datos: any): number => {
+  let totalSuma = 0;
+
+  datos?.invoiceproducts?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty('subtotal')) {
+        if (elemento.operation_type == 1 && elemento.product_type == 2) {
+          totalSuma += elemento.subtotal;
+        } 
+    }
+  });
+
+  return totalSuma * 0.10;
+}
+
+export const sumarTotalRetentionSujetoExcluido= (datos: any): number => {
+  let totalSuma = 0;
+
+  datos?.invoiceproducts?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty('total')) {
+      if (datos?.invoice_assigned?.type == 4) { // sujeto excluido
+        if (elemento.operation_type == 1 && elemento.product_type ==2) {
+          totalSuma += elemento.total;
+        }
+      } else {
+        totalSuma += elemento.total;
+      }
+    }
+  });
+
+  return totalSuma * 0.10;
+}

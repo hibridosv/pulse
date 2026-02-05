@@ -3,7 +3,7 @@ import { User } from "./user";
 export interface Contact {
     id:              string;
     name:            string;
-    id_number?:       string;
+    id_number?:       any;
     address?:         string;
     code?:            string;
     email?:           string;

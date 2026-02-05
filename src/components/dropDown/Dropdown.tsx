@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, FC } from 'react';
+import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { FiChevronDown } from 'react-icons/fi'; // Cambiado a FiChevronDown para un botón de dropdown
 import { DropdownContext } from './dropdownContext';

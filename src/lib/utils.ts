@@ -201,3 +201,8 @@ export const percentage = (totalCost: number, totalPrice: number): number => {
   if (totalCost === 0) return 0; 
   return ((totalPrice - totalCost) / totalCost) * 100;
 };
+
+// calcula el valor segun porcentaje
+export const getTotalPercentage = (porcentaje: number, total: number ) :number => {
+  return (porcentaje / 100) * total;
+}
