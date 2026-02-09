@@ -1,12 +1,12 @@
+import { getServices } from '@/services/services';
 import { create } from 'zustand';
-import {  getServices } from '@/services/services';
 import useToastMessageStore from './toastMessageStore';
 
 
 interface UserStoreProps {
   users: any; 
   user: any; 
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   saving: boolean;
   loadUsers: (url: string) => Promise<void>;
@@ -16,7 +16,7 @@ interface UserStoreProps {
 const useUserStore = create<UserStoreProps>((set) => ({
   users: null,
   user: null,
-  error: null,
+  error: false,
   loading: false,
   saving: false,
  
@@ -24,9 +24,10 @@ const useUserStore = create<UserStoreProps>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ users: response.data.data, error: null });
+      set({ users: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loading: false });
     }

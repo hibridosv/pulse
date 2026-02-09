@@ -5,7 +5,7 @@ import useToastMessageStore from '../toastMessageStore';
 
 interface ProductLinkedStoreState {
   products: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   productId: string | null;
   loadProducts: (url: string) => Promise<void>;
@@ -14,16 +14,17 @@ interface ProductLinkedStoreState {
 const useProductLinkedStore = create<ProductLinkedStoreState>((set) => ({
   products: null,
   loading: false,
-  error: null,
+  error: false,
   productId: null,
   loadProducts: async (id: string) => {
     let url = `products/${id}/linked`;
     set({ loading: true });
     try {
         const response = await getServices(url);
-        set({ products: response.data.data, error: null });
+        set({ products: response.data.data, error: false });
         set({ productId: id });
     } catch (error) {
+      set({ error: true });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });

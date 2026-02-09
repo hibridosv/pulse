@@ -9,7 +9,7 @@ interface ProductStoreState {
   statistics: any | null;
   kardex: any | null;
   kardexDetails: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   loadingStat: boolean;
   deleting: boolean;
@@ -27,7 +27,7 @@ const useProductStore = create<ProductStoreState>((set) => ({
   statistics: null,
   kardex: null,
   kardexDetails: null,
-  error: null,
+  error: false,
   loading: false,
   loadingStat: false,
   deleting: false,
@@ -36,8 +36,9 @@ const useProductStore = create<ProductStoreState>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ products: response.data.data, error: null });
+      set({ products: response.data.data, error: false });
     } catch (error) {
+      set({ error: true });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });
@@ -48,8 +49,9 @@ const useProductStore = create<ProductStoreState>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ product: response.data.data, error: null });
+      set({ product: response.data.data, error: false });
     } catch (error) {
+      set({ error: true });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });
@@ -60,8 +62,9 @@ const useProductStore = create<ProductStoreState>((set) => ({
     set({ loadingStat: true });
     try {
       const response = await getServices(url);
-      set({ statistics: response.data.data, error: null });
+      set({ statistics: response.data.data, error: false });
     } catch (error) {
+      set({ error: true });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loadingStat: false });
@@ -81,8 +84,10 @@ const useProductStore = create<ProductStoreState>((set) => ({
           }
         };
       });
+      set({error: false})
       useToastMessageStore.getState().setMessage(response);
     } catch (error) {
+      set({ error: true });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ deleting: false });
@@ -93,8 +98,9 @@ const useProductStore = create<ProductStoreState>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ kardex: response.data.data, error: null });
+      set({ kardex: response.data.data, error: false });
     } catch (error) {
+      set({ error: true });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });
@@ -105,8 +111,9 @@ const useProductStore = create<ProductStoreState>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ kardexDetails: response.data.data, error: null });
+      set({ kardexDetails: response.data.data, error: false });
     } catch (error) {
+      set({ error: true });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });

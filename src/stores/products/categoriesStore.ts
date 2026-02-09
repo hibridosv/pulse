@@ -6,7 +6,7 @@ import useToastMessageStore from '../toastMessageStore';
 interface CategoryStoreState {
   categories: any; 
   category: any;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   loadCategories: (url: string) => Promise<void>;
 }
@@ -14,14 +14,15 @@ interface CategoryStoreState {
 const useCategoriesStore = create<CategoryStoreState>((set) => ({
   categories: null,
   category: null,
-  error: null,
+  error: false,
   loading: false,
   loadCategories: async (url: string) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ categories: response.data.data, error: null });
+      set({ categories: response.data.data, error: false });
     } catch (error) {
+      set({ error: true });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });

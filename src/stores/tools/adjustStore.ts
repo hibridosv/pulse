@@ -7,7 +7,7 @@ interface adjustStoreI {
   adjustments: any | null;
   adjustment: any | null;
   adjustmentActive: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   searching: boolean;
   sending: boolean;
@@ -24,7 +24,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
   adjustments: null,
   adjustment: null,
   adjustmentActive: null,
-  error: null,
+  error: false,
   loading: false,
   sending: false,
   searching: false,
@@ -35,9 +35,10 @@ const adjustStore = create<adjustStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ adjustments: response.data.data, error: null });
+      set({ adjustments: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loading: false });
     }
@@ -48,9 +49,10 @@ const adjustStore = create<adjustStoreI>((set) => ({
     set({ loadingAdjustment: true });
     try {
       const response = await getServices(url);
-      set({ adjustment: response.data.data, error: null });
+      set({ adjustment: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loadingAdjustment: false });
     }
@@ -60,10 +62,11 @@ const adjustStore = create<adjustStoreI>((set) => ({
         set({ loading: true });
         try {
             const response = await createService(url, data);
-            set({ adjustmentActive: response.data.data, error: null });
+            set({ adjustmentActive: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ loading: false });
         }
@@ -73,9 +76,10 @@ const adjustStore = create<adjustStoreI>((set) => ({
     set({ searching: true });
     try {
       const response = await getServices(url);
-      set({ adjustmentActive: response.data.data, error: null });
+      set({ adjustmentActive: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ searching: false });
     }
@@ -86,8 +90,10 @@ const adjustStore = create<adjustStoreI>((set) => ({
         try {
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
+            set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ sending: false });
         }

@@ -6,7 +6,7 @@ import useToastMessageStore from '../toastMessageStore';
 interface quotesStoreI {
   quotes: any | null;
   quote: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   deleting?: boolean;
   loadQuotes: (url: string) => Promise<void>;
@@ -17,7 +17,7 @@ interface quotesStoreI {
 const quotesStore = create<quotesStoreI>((set) => ({
   quotes: null,
   quote: null,
-  error: null,
+  error: false,
   loading: false,
   deleting: false,
 
@@ -25,9 +25,10 @@ const quotesStore = create<quotesStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ quotes: response.data.data, error: null });
+      set({ quotes: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loading: false });
     }
@@ -37,9 +38,10 @@ const quotesStore = create<quotesStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ quote: response.data.data, error: null });
+      set({ quote: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loading: false });
     }
@@ -50,8 +52,10 @@ const quotesStore = create<quotesStoreI>((set) => ({
     try {
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
+      set({ error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ deleting: false });
     }

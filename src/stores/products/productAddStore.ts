@@ -6,7 +6,7 @@ import useToastMessageStore from '../toastMessageStore';
 interface ProductAddStoreState {
   products: any | null;
   product: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   deleting: boolean;
   saving: boolean;
@@ -23,14 +23,15 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
     product: null,
     loading: false,
     saving: false,
-    error: null,
+    error: false,
     deleting: false,
     loadProducts: async (url: string) => {
         set({ loading: true });
         try {
             const response = await getServices(url);
-            set({ products: response.data.data, error: null });
+            set({ products: response.data.data, error: false });
         } catch (error) {
+            set({ error: true });
             console.error('Error fetching data:', error);
         } finally {
             set({ loading: false });
@@ -41,8 +42,9 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
         set({ loading: true });
         try {
             const response = await getServices(url);
-            set({ product: response.data.data, error: null });
+            set({ product: response.data.data, error: false });
         } catch (error) {
+            set({ error: true });
             console.error('Error fetching data:', error);
         } finally {
             set({ loading: false });
@@ -54,9 +56,10 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
         set({ loading: true });
         try {
             const response = await createService("registers/principal", data);
-            set({ product: response.data.data, error: null });
+            set({ product: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
+            set({ error: true });
             useToastMessageStore.getState().setError(error);
         } finally {
             set({ loading: false });
@@ -67,9 +70,10 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
         set({ loading: true });
         try {
             const response = await createService("registers", data);
-            set({ product: response.data.data, error: null });
+            set({ product: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
+            set({ error: true });
             useToastMessageStore.getState().setError(error);
         } finally {
             set({ loading: false });
@@ -80,9 +84,10 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
         set({ deleting: true });
         try {
             const response = await deleteService(url); 
-            set({ product: response.data.data, error: null });
+            set({ product: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
+            set({ error: true });
             useToastMessageStore.getState().setError(error);
         } finally {
             set({ deleting: false });
@@ -93,10 +98,11 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
         set({ saving: true });
         try {
             const response = await updateService(url, {}); 
-            set({ product: null, error: null });
+            set({ product: null, error: false });
             useToastMessageStore.getState().setMessage(response);
             await productAddStore.getState().loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]=1&perPage=10`);
         } catch (error) {
+            set({ error: true });
             useToastMessageStore.getState().setError(error);
         } finally {
             set({ saving: false });

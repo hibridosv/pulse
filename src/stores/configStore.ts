@@ -21,7 +21,7 @@ interface ConfigStoreState {
   invoiceTypes: any;
   isLoaded: boolean;
   loading: boolean;
-  error: Error | null;
+  error: boolean;
   loadConfig: () => Promise<void>;
   setActiveConfig: (activeConfig: any) => void;
   clearConfig: () => void;
@@ -45,7 +45,7 @@ const useConfigStore = create(
       invoiceTypes: null,
       isLoaded: false,
       loading: false,
-      error: null,
+      error: false,
 
       loadConfig: async () => {
         set({ loading: true });
@@ -65,8 +65,10 @@ const useConfigStore = create(
           set({ tenant: data.tenant });
           set({ invoiceTypes: data.invoiceTypes });
           set({ isLoaded: true });
+          set({ error: false });
         } catch (error) {
           useToastMessageStore.getState().setError(error);
+          set({ error: true });
         } finally {
           set({ loading: false });
         }
@@ -93,7 +95,7 @@ const useConfigStore = create(
             invoiceTypes: null,
             isLoaded: false,
             loading: false,
-            error: null,
+            error: false,
          });
       },
 
