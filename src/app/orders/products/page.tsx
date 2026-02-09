@@ -34,9 +34,8 @@ export default function Page() {
                 <OrderButtons order={order} />
             </div>
           </div>
-        <PayModal isShow={modals.payOrder} onClose={()=>{ closeModal('payOrder')}} />
-        {/* <PayedModal isShow={true} onClose={()=>{}} /> */}
         <PayedModal isShow={modals.paymentSuccess} onClose={()=>{ closeModal('paymentSuccess')}} />
+        <PayModal isShow={modals.payOrder} onClose={()=>{ closeModal('payOrder')}} />
         <ToasterMessage />
     </div>
   );

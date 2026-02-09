@@ -1,5 +1,6 @@
 "use client";
 import { Button, Preset } from "@/components/button/button";
+import { ButtonDownload } from "@/components/button/button-download";
 import Modal from "@/components/modal/Modal";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
@@ -14,42 +15,53 @@ export interface PayedModal {
 
 export function PayedModal(props: PayedModal) {
   const { onClose, isShow } = props;
-  const { system } = useConfigStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { system, activeConfig } = useConfigStore();
+  const { getSelectedElement, clearSelectedElement  } = useTempSelectedElementStore();
   const orderPayed = getSelectedElement('paymentSuccess') ?? null;
   const paymentType = getSelectedElement('paymentType') ?? 1;
   const { sending } = ordersProductsStore();
 
   if (!isShow || !orderPayed) return null;
 
-    console.log(orderPayed);
-
+  const handleClose = () => {
+    clearSelectedElement('paymentSuccess');
+    onClose();
+  }
 
 
   return (
-    <Modal show={isShow} onClose={onClose} size="md" headerTitle="" closeOnOverlayClick={false} removeTitle={true}>
+    <Modal show={isShow} onClose={handleClose} size="md" headerTitle="" closeOnOverlayClick={false} removeTitle={true}>
       <Modal.Body>
-        <div className="p-4 space-y-6">
-        <div onClick={()=>console.log('click')} className='cursor-pointer'>
-        <div className="w-full my-4">
+        <div className="p-6">
+        <div>
+        <div className="w-full my-4 clickeable" onClick={handleClose}>
           { orderPayed?.invoice_assigned?.type != 8 &&
-          <div  className='flex justify-between  border-y-4'>
-            <div><span className="flex justify-center">Descuentos</span> <span className="flex justify-center">{numberToMoney(orderPayed?.discount, system)}</span></div>
-            <div><span className="flex justify-center">Impuestos</span> <span className="flex justify-center">{numberToMoney(orderPayed?.taxes, system)}</span></div>
-            <div><span className="flex justify-center">Sub Total</span> <span className="flex justify-center">{numberToMoney(orderPayed?.subtotal, system)}</span></div>
+          <div  className='flex justify-between py-2 border-y border-bg-subtle text-text-base'>
+            <div className="flex flex-col items-center">
+              <span className="text-sm text-text-muted">Descuentos</span>
+              <span className="text-base font-semibold">{numberToMoney(orderPayed?.discount, system)}</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-sm text-text-muted">Impuestos</span>
+              <span className="text-base font-semibold">{numberToMoney(orderPayed?.taxes, system)}</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-sm text-text-muted">Sub Total</span>
+              <span className="text-base font-semibold">{numberToMoney(orderPayed?.subtotal, system)}</span>
+            </div>
           </div>
           }
 
-          <div className="flex justify-center mt-4">TOTAL</div>
-          <div className="flex justify-center text-7xl mb-4 font-bold">{numberToMoney(orderPayed?.total - orderPayed?.retention, system)}</div>
+          <div className="flex justify-center mt-6 text-text-muted text-lg">TOTAL</div>
+          <div className="flex justify-center text-7xl mb-6 font-bold text-primary">{numberToMoney(orderPayed?.total - orderPayed?.retention, system)}</div>
           { paymentType === 1 && orderPayed?.invoice_assigned?.type != 8 ? <>
-          <div className="flex justify-center">CAMBIO</div>
-          <div className="flex justify-center text-7xl mb-4 text-red-600 font-bold">{numberToMoney(orderPayed?.change, system)}
+          <div className="flex justify-center text-text-muted text-lg">CAMBIO</div>
+          <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(orderPayed?.change, system)}
           </div></> : 
-          <div className='flex justify-center text-lg font-semibold uppercase text-blue-600'>
+          <div className='flex justify-center text-xl font-semibold uppercase text-info'>
             { paymentType === 5 ? 
-            <span>Credito Otorgado correctamente</span> : orderPayed?.invoice_assigned?.type == 8 ? <span>Nota de envío realizada</span> :
-            <span>Pago realizado con {nameOfPaymentType(paymentType)}</span> }
+            <span>Crédito Otorgado Correctamente</span> : orderPayed?.invoice_assigned?.type == 8 ? <span>Nota de Envío Realizada</span> :
+            <span>Pago Realizado con {nameOfPaymentType(paymentType)}</span> }
           </div>}
         
         </div>
@@ -57,7 +69,8 @@ export function PayedModal(props: PayedModal) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} isFull disabled={sending} /> 
+       { activeConfig && activeConfig.includes("print-link") && <ButtonDownload autoclass={false} href={`download/pdf/invoice/${orderPayed.id}`}><Button text="Imprimir" preset={Preset.primary} isFull disabled={sending} /></ButtonDownload>  }
+        <Button onClick={handleClose} preset={Preset.close} isFull disabled={sending} /> 
       </Modal.Footer>
     </Modal>
   );

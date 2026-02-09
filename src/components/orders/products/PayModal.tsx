@@ -6,6 +6,7 @@ import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import useConfigStore from "@/stores/configStore";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { OrderTotal } from "./OrderTotal";
 
@@ -28,10 +29,17 @@ export function PayModal(props: PayModalI) {
   const { onClose, isShow } = props;
   const { payMethods } = useConfigStore();
   const { order, sending } = ordersProductsStore();
-  const { register, handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
   const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
   const paymentType = getSelectedElement('paymentType') ?? 1;
   const { pay } = useOrderFnLogic();
+
+  useEffect(() => {
+    if (isShow) {
+      setFocus('cash');
+      setValue('cash', '');
+    }
+  }, [setFocus, isShow, paymentType, setValue])
 
 
   if (!isShow || !order) return null;

@@ -26,9 +26,9 @@ export function useOrderFnLogic() {
         };
       await payOrder(`orders/${order?.id}/pay`, values);
       if (!error) {
+        openModal('paymentSuccess');
         await loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`);
         closeModal('payOrder');
-        openModal('paymentSuccess');
       }
   }
 
