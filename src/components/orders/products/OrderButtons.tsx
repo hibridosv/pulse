@@ -1,11 +1,13 @@
 'use client';
 
 import { Alert } from '@/components/Alert/Alert';
+import { DeleteModal } from '@/components/DeleteModal';
 import { Popper } from '@/components/popper/Popper';
 import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
 import { Order } from '@/interfaces/order';
 import { requiredFieldsCCF, validateInvoiceFields } from '@/lib/validator-functions';
 import useConfigStore from '@/stores/configStore';
+import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import { LoaderIcon } from 'react-hot-toast';
 import { AiFillSave } from 'react-icons/ai';
@@ -21,8 +23,10 @@ export interface OrderButtonsI {
 export function OrderButtons(props: OrderButtonsI) {
   const { order } = props
   const { cashdrawer } = useConfigStore();
-  const { save } = useOrderFnLogic();
+  const { save, pay, cancel } = useOrderFnLogic();
   const { saving } = ordersProductsStore();
+  const { modals, closeModal, openModal} = useModalStore();
+
   const invoice = order;
 
   if(!order) return null;
@@ -50,9 +54,14 @@ export function OrderButtons(props: OrderButtonsI) {
           <Popper label={ <div className='button-grey rounded-l-lg clickeable'><IoMdOptions className='mr-1' /> Opciones</div>} >
             <Buttons order={order} />
           </Popper>
-        <div className='button-cyan clickeable' onClick={saving ? ()=>{} : ()=>save(order)}>{ saving ? <LoaderIcon className='mr-1' /> : <AiFillSave className='mr-1' />}  Guardar </div>
+        <div className='button-cyan clickeable' onClick={saving ? ()=>{} : ()=>save(order.id)}>{ saving ? <LoaderIcon className='mr-1' /> : <AiFillSave className='mr-1' />}  Guardar </div>
         <div className={`button-lime ${payDisabled ? 'cursor-not-allowed' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{}}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar </div>
-        <div className='button-red rounded-r-lg clickeable' onClick={()=>{}}><GiCancel className='mr-1' /> Cancelar </div>
-        </div>
+        <div className='button-red rounded-r-lg clickeable' onClick={()=>{openModal('deleteOrder')}}><GiCancel className='mr-1' /> Cancelar </div>
+      </div>
+      <DeleteModal
+              isShow={modals.deleteOrder}
+              text={`¿Estas seguro de eliminar esta orden?`}
+              onDelete={() =>{ cancel(order?.id); closeModal('deleteOrder'); }}
+              onClose={() => closeModal('deleteOrder')} />
     </div>);
 }

@@ -3,6 +3,7 @@
 import { OrderProductsSearchPrincipal } from "@/components/orders/common/OrderProductsSearchPrincipal";
 import { OrderButtons } from "@/components/orders/products/OrderButtons";
 import { OrderProductsTable } from "@/components/orders/products/OrderProductsTable";
+import { PayModal } from "@/components/orders/products/PayModal";
 import { ShowOrders } from "@/components/orders/products/ShowOrders";
 import { ShowTotal } from "@/components/orders/products/ShowTotal";
 import { ToasterMessage } from "@/components/toaster-message";
@@ -31,6 +32,7 @@ export default function Page() {
                 <OrderButtons order={order} />
             </div>
           </div>
+        <PayModal isShow={true} onClose={()=>{}} />
         <ToasterMessage />
     </div>
   );
