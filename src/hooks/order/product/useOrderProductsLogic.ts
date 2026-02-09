@@ -29,7 +29,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
 
   useEffect(() => {
     if (user && initialLoad) {
-     loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`);
+     loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
     }
    }, [initialLoad, user]);
 

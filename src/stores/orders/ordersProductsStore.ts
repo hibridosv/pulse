@@ -13,7 +13,7 @@ interface ordersProductsStoreI {
   saving: boolean;
   deleting: boolean;
   loadOrders: (url: string) => Promise<void>;
-  loadOrder: (url: string) => Promise<void>;
+  loadOrder: (url: string, showToast?: boolean) => Promise<void>;
   payOrder: (url: string, data: any) => Promise<void>;
   saveOrder: (url: string, data: any) => Promise<void>;
   deleteOrder: (url: string, id: string) => Promise<void>;
@@ -42,13 +42,15 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
     }
   },
 
-    loadOrder: async (url: string) => {
+    loadOrder: async (url: string, showToast: boolean = true) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
       set({ order: response.data.data, error: null });
     } catch (error) {
-      useToastMessageStore.getState().setError(error);
+      if (showToast) {
+        useToastMessageStore.getState().setError(error);
+      }
       set({ order: null });
     } finally {
       set({ loading: false });

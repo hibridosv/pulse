@@ -17,7 +17,7 @@ const options = {
 
 interface DayData {
     hour: string;
-    total_sales: number;
+    total_sales: string; // Corrected type, as it comes as a formatted string
 }
 
 export function CharBarDay(){
@@ -26,12 +26,15 @@ export function CharBarDay(){
   if (loading) return <div className="bg-gray-200 rounded-lg animate-pulse h-full w-full"></div>;
   if (!Array.isArray(chartDay) || chartDay.length === 0) return null;
   
+  // Sort the data by hour to ensure chronological order
+  const sortedChartDay = [...chartDay].sort((a, b) => a.hour.localeCompare(b.hour));
+
   const data = {
-    labels: chartDay.map((item: DayData) => item.hour),
+    labels: sortedChartDay.map((item: DayData) => item.hour),
     datasets: [
       {
         label: 'MOVIMIENTOS DEL DIA',
-        data: chartDay.map((item: DayData) => item.total_sales),
+        data: sortedChartDay.map((item: DayData) => parseFloat(item.total_sales.replace(/,/g, ''))),
         backgroundColor: 'rgba(64, 212, 50, 0.5)',
       }
     ],
