@@ -3,20 +3,26 @@ import { Button, Preset } from "../button/button";
 
 export interface ShowClientSearchedI {
   tempSelectedName?: string;
+  onClose?: () => void;
 }
 
 export function ShowClientSearched(props: ShowClientSearchedI) {
-  const { tempSelectedName = "clientSelectedBySearch" } = props;
+  const { tempSelectedName = "clientSelectedBySearch", onClose } = props;
   const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const elementSelected = getSelectedElement(tempSelectedName);
 
     if (!elementSelected) return null;
 
+    const handleClose = () => {
+      clearSelectedElement(tempSelectedName);
+      onClose && onClose();
+    }
+
 
     return (
           <div className="mt-2 p-3 flex justify-between text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
             <span className="font-semibold uppercase">{ elementSelected?.name}</span> 
-            <Button preset={Preset.smallClose} onClick={()=> clearSelectedElement(tempSelectedName)} />
+            <Button preset={Preset.smallClose} onClick={handleClose} />
           </div>         
     );
 }

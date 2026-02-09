@@ -1,11 +1,13 @@
 'use client';
 
+import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { OrderProductsSearchPrincipal } from "@/components/orders/common/OrderProductsSearchPrincipal";
 import { InvoiceTypesModal } from "@/components/orders/products/InvoiceTypesModal";
 import { OrderButtons } from "@/components/orders/products/OrderButtons";
 import { OrderProductsTable } from "@/components/orders/products/OrderProductsTable";
 import { PayedModal } from "@/components/orders/products/PayedModal";
 import { PayModal } from "@/components/orders/products/PayModal";
+import { SearchContactModal } from "@/components/orders/products/SearchContactModal";
 import { ShowOrders } from "@/components/orders/products/ShowOrders";
 import { ShowTotal } from "@/components/orders/products/ShowTotal";
 import { ToasterMessage } from "@/components/toaster-message";
@@ -32,10 +34,11 @@ export default function Page() {
             <ShowOrders />
             <ShowTotal order={order} />
             <div className="absolute bottom-2 ">
-            <div onClick={() => openModal('invoiceType')}>click</div>
                 <OrderButtons order={order} />
             </div>
           </div>
+        <SearchContactModal isShow={modals.searchContact} onClose={()=>{ closeModal('searchContact')}} />
+        <AddContactModal isShow={modals.contactAdd} onClose={()=>closeModal('contactAdd')} record={null} />
         <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
         <PayedModal isShow={modals.paymentSuccess} onClose={()=>{ closeModal('paymentSuccess')}} />
         <PayModal isShow={modals.payOrder} onClose={()=>{ closeModal('payOrder')}} />

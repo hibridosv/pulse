@@ -13,11 +13,12 @@ export interface ClientsSearchI {
   placeholder?: string;
   pagination?: number;
   tempSelectedName?: string;
+  onSelect?: () => void; // funcion que se ejecuta al seleccionar contacto
 }
 
 
 export function ClientsSearch(props: ClientsSearchI) {
-    const { param, placeholder = "Buscar Cliente", pagination = 10, tempSelectedName = "clientSelectedBySearch" } = props;
+    const { param, placeholder = "Buscar Cliente", pagination = 10, tempSelectedName = "clientSelectedBySearch", onSelect } = props;
     const { contacts, loading } = useContactStore();
     const { setSelectedElement} = useTempSelectedElementStore();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number"], 500);
@@ -29,6 +30,7 @@ export function ClientsSearch(props: ClientsSearchI) {
     const handleSelectContact = (client: Contact) => {
         setSelectedElement(tempSelectedName, client);
         handleSearchTerm('');
+        onSelect && onSelect();
     };
 
 
