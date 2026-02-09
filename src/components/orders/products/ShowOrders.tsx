@@ -56,7 +56,7 @@ export function ShowOrders() {
 
   
     return (
-    <div className="sm:mt-3">
+    <div className="sm:mt-3 w-full m-1">
       { !orders || orders.length === 0 ? 
         <div className="w-full flex justify-center p-4">
           { system && remoteUrl && <Image loader={imageLoader} src={system?.logo} alt="Hibrido" width={500} height={500} /> }

@@ -55,7 +55,7 @@ export function OrderButtons(props: OrderButtonsI) {
             <Buttons order={order} />
           </Popper>
         <div className='button-cyan clickeable' onClick={saving ? ()=>{} : ()=>save(order.id)}>{ saving ? <LoaderIcon className='mr-1' /> : <AiFillSave className='mr-1' />}  Guardar </div>
-        <div className={`button-lime ${payDisabled ? 'cursor-not-allowed' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{}}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar </div>
+        <div className={`button-lime ${payDisabled ? 'cursor-not-allowed' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{ openModal('payOrder') }}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar </div>
         <div className='button-red rounded-r-lg clickeable' onClick={()=>{openModal('deleteOrder')}}><GiCancel className='mr-1' /> Cancelar </div>
       </div>
       <DeleteModal

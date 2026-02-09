@@ -1,5 +1,6 @@
 import { createService, getServices } from '@/services/services';
 import { create } from 'zustand';
+import useTempSelectedElementStore from '../tempSelectedElementStore';
 import useToastMessageStore from '../toastMessageStore';
 
 
@@ -13,7 +14,7 @@ interface ordersProductsStoreI {
   deleting: boolean;
   loadOrders: (url: string) => Promise<void>;
   loadOrder: (url: string) => Promise<void>;
-  createOrder: (url: string, data: any) => Promise<void>;
+  payOrder: (url: string, data: any) => Promise<void>;
   saveOrder: (url: string, data: any) => Promise<void>;
   deleteOrder: (url: string, id: string) => Promise<void>;
 
@@ -55,17 +56,18 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
   },
 
 
-    createOrder: async (url, data) => {
-        // set({ sending: true });
-        // try {
-        //     const response = await createService(url, data);
-        //     // set({ accounts: response.data.data, error: null });
-        //     useToastMessageStore.getState().setMessage(response);
-        // } catch (error) {
-        //     useToastMessageStore.getState().setError(error);
-        // } finally {
-        //     set({ sending: false });
-        // }
+    payOrder: async (url, data) => {
+        set({ sending: true });
+        try {
+            const response = await createService(url, data);
+            set({ order: null });
+            useTempSelectedElementStore.getState().setSelectedElement("paymentSuccess", response.data.data);
+            useToastMessageStore.getState().setMessage(response);
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+        } finally {
+            set({ sending: false });
+        }
     },
 
     saveOrder: async (url, data) => {
