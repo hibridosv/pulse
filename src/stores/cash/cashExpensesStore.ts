@@ -1,5 +1,5 @@
+import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
-import { getServices, createService, deleteService, updateService } from '@/services/services';
 import useToastMessageStore from '../toastMessageStore';
 
 
@@ -7,7 +7,7 @@ import useToastMessageStore from '../toastMessageStore';
 interface cashExpensesStoreProps {
   expenses: any | null;
   expensesCategories: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   sending: boolean;
   deleting: boolean;
@@ -21,7 +21,7 @@ interface cashExpensesStoreProps {
 const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
     expenses: null,
     expensesCategories: null,
-    error: null,
+    error: false,
     loading: false,
     sending: false,
     deleting: false,
@@ -29,9 +29,10 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
         set({ loading: true });
         try {
             const response = await getServices(url);
-            set({ expenses: response.data.data, error: null });
+            set({ expenses: response.data.data, error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ loading: false });
         }
@@ -41,9 +42,10 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
         set({ loading: true });
         try {
             const response = await getServices(url);
-            set({ expensesCategories: response.data.data, error: null });
+            set({ expensesCategories: response.data.data, error: false });
         } catch (error) {
             console.error('Error fetching data:', error);
+            set({ error: true });
         } finally {
             set({ loading: false });
         }
@@ -54,10 +56,11 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
         set({ sending: true });
         try {
             const response = await createService("cash/expenses", data);
-            set({ expenses: response.data.data, error: null });
+            set({ expenses: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ sending: false });
         }
@@ -67,10 +70,11 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
         set({ loading: true });
         try {
             const response = await createService("cash/categories", data);
-            set({ expensesCategories: response.data.data, error: null });
+            set({ expensesCategories: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ loading: false });
         }
@@ -80,10 +84,11 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
         set({ deleting: true });
         try {
             const response = await deleteService(url); 
-            set({ expenses: response.data.data, error: null });
+            set({ expenses: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ deleting: false });
         }

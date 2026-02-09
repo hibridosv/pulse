@@ -1,10 +1,11 @@
 'use client'
+import { UpdateServiceInterface } from '@/services/Interfaces';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 
 export function useOrderFnLogic() {
-  const { saveOrder, loadOrder, order, payOrder, error, loadOrders} = ordersProductsStore();
+  const { saveOrder, loadOrder, order, payOrder, error, loadOrders, updateOrder} = ordersProductsStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const paymentType = getSelectedElement('paymentType') ?? 1;
   const { closeModal, openModal} = useModalStore();
@@ -15,7 +16,7 @@ export function useOrderFnLogic() {
   }
    
   const select = async (id: string) => {
-    await loadOrder(`order/${id}/select`);
+    await loadOrder(`orders/${id}/select`);
   }
 
   const pay = async (data: any) => {
@@ -36,7 +37,12 @@ export function useOrderFnLogic() {
       console.log(id);
   }
 
+  
+  const update = async (id: string, values: UpdateServiceInterface) => {
+      await updateOrder(`orders/${id}/update`, values);
+  }
 
-  return { save, select, pay, cancel }
+
+  return { save, select, pay, cancel, update }
 
 }

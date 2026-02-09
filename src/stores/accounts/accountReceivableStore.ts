@@ -7,7 +7,7 @@ import useToastMessageStore from '../toastMessageStore';
 interface accountReceivableStoreI {
   accounts: any | null;
   account: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   sending: boolean;
   deleting: boolean;
@@ -21,7 +21,7 @@ interface accountReceivableStoreI {
 const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
   accounts: null,
   account: null,
-  error: null, 
+  error: false, 
   loading: false,
   sending: false,
   deleting: false,
@@ -30,9 +30,10 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ accounts: response.data.data, error: null });
+      set({ accounts: response.data.data, error: false});
     } catch (error) {
       set({ accounts: null });
+      set({ error: true });
     } finally {
       set({ loading: false });
     }
@@ -42,9 +43,10 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ account: response.data.data, error: null });
+      set({ account: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loading: false });
     }
@@ -57,8 +59,10 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
             useTempSelectedElementStore.getState().setSelectedElement("paymentReceivableAdd", response.data.data);
+            set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ sending: false });
         }
@@ -71,8 +75,10 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
       useTempSelectedElementStore.getState().setSelectedElement("paymentReceivableAdd", response.data.data);
+      set({ error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ deleting: false });
     }
@@ -84,8 +90,10 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
             useTempSelectedElementStore.getState().setSelectedElement("paymentReceivableAdd", response.data.data);
+            set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ sending: false });
         }

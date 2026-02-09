@@ -1,12 +1,12 @@
+import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
-import { getServices, createService, deleteService, updateService } from '@/services/services';
 import useToastMessageStore from '../toastMessageStore';
 
 
 
 interface cashAccountStoreProps {
   accounts: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   sending: boolean;
   deleting: boolean;
@@ -19,7 +19,7 @@ interface cashAccountStoreProps {
 
 const cashAccountStore = create<cashAccountStoreProps>((set) => ({
     accounts: null,
-    error: null,
+    error: false,
     loading: false,
     sending: false,
     deleting: false,
@@ -28,9 +28,10 @@ const cashAccountStore = create<cashAccountStoreProps>((set) => ({
         set({ loading: true });
         try {
             const response = await getServices(url);
-            set({ accounts: response.data.data, error: null });
+            set({ accounts: response.data.data, error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ loading: false });
         }
@@ -40,10 +41,11 @@ const cashAccountStore = create<cashAccountStoreProps>((set) => ({
         set({ sending: true });
         try {
             const response = await createService("cash/accounts", data);
-            set({ accounts: response.data.data, error: null });
+            set({ accounts: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ sending: false });
         }
@@ -54,10 +56,11 @@ const cashAccountStore = create<cashAccountStoreProps>((set) => ({
         set({ deleting: true });
         try {
             const response = await deleteService(url); 
-            set({ accounts: response.data.data, error: null });
+            set({ accounts: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ deleting: false });
         }
@@ -67,10 +70,11 @@ const cashAccountStore = create<cashAccountStoreProps>((set) => ({
         set({ transfering: true });
         try {
             const response = await createService("cash/accounts/transfer", data);
-            set({ accounts: response.data.data, error: null });
+            set({ accounts: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ transfering: false });
         }

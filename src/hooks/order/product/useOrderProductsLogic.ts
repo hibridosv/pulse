@@ -1,4 +1,5 @@
 'use client'
+import { getFirstElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
@@ -11,9 +12,11 @@ import { useEffect } from 'react';
  */
 
 export function useOrderProductsLogic(initialLoad: boolean = false) {
-  const { activeConfig } = useConfigStore();
+  const { activeConfig, invoiceTypes } = useConfigStore();
   const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
   const typeOfSearch = getSelectedElement('typeOfSearch');
+  const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
+
   const { loadOrder, loadOrders } = ordersProductsStore();
   const { user } =  useConfigStore();
 
@@ -23,6 +26,10 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
             setSelectedElement('typeOfSearch', true);
            } else {
             setSelectedElement('typeOfSearch', false);
+           }
+
+           if (!invoiceTypeSelected) {
+              setSelectedElement('invoiceTypeSelected', getFirstElement(invoiceTypes, 'status', 1));
            }
         }
   }, [initialLoad, activeConfig])
@@ -36,7 +43,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
 
   useEffect(() => {
     if (initialLoad) {
-     loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`);
+     loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
     }
    }, [initialLoad]);
 

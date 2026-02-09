@@ -1,12 +1,12 @@
+import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
-import { getServices, createService, deleteService } from '@/services/services';
 import useToastMessageStore from '../toastMessageStore';
 
 
 
 interface cashRemittancesStoreProps {
   remittances: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   sending: boolean;
   deleting: boolean;
@@ -17,7 +17,7 @@ interface cashRemittancesStoreProps {
 
 const cashRemittancesStore = create<cashRemittancesStoreProps>((set) => ({
     remittances: null,
-    error: null,
+    error: false,
     loading: false,
     sending: false,
     deleting: false,
@@ -25,9 +25,10 @@ const cashRemittancesStore = create<cashRemittancesStoreProps>((set) => ({
         set({ loading: true });
         try {
             const response = await getServices(url);
-            set({ remittances: response.data.data, error: null });
+            set({ remittances: response.data.data, error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ loading: false });
         }
@@ -37,10 +38,11 @@ const cashRemittancesStore = create<cashRemittancesStoreProps>((set) => ({
         set({ sending: true });
         try {
             const response = await createService("cash/remittances", data);
-            set({ remittances: response.data.data, error: null });
+            set({ remittances: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ sending: false });
         }
@@ -50,10 +52,11 @@ const cashRemittancesStore = create<cashRemittancesStoreProps>((set) => ({
         set({ deleting: true });
         try {
             const response = await deleteService(url); 
-            set({ remittances: response.data.data, error: null });
+            set({ remittances: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ deleting: false });
         }

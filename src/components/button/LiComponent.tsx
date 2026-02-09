@@ -8,6 +8,7 @@ export interface LiComponentI {
   text?: string;
   content?: React.ReactNode;
   target?: string;
+  style?: string;
 }
 
 export const iconSvg = (
@@ -17,7 +18,7 @@ export const iconSvg = (
 );
 
 export function LiComponent(props: LiComponentI) {
-  const { text, onClick, href, link, target="_blank", content } = props;
+  const { text, onClick, href, link, target="_blank", content, style } = props;
 
   const commonClasses = "flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150";
 
@@ -25,7 +26,7 @@ export function LiComponent(props: LiComponentI) {
   if (href) {
     return (
       <li>
-        <a href={href} className={`${commonClasses} clickeable`} target={target}>
+        <a href={href} className={`${commonClasses} clickeable ${style}`} target={target}>
           <span className="font-medium text-text-base">{text}{content}</span>
           {iconSvg}
         </a>
@@ -36,7 +37,7 @@ export function LiComponent(props: LiComponentI) {
   if (link) {
     return (
       <li>
-        <Link href={link} className={`${commonClasses} clickeable`}>
+        <Link href={link} className={`${commonClasses} clickeable ${style}`}>
           <span className="font-medium text-text-base">{text}{content}</span>
           {iconSvg}
         </Link>
@@ -47,7 +48,7 @@ export function LiComponent(props: LiComponentI) {
   if (onClick) {
     return (
       <li>
-        <button type="button" onClick={onClick} className={`${commonClasses} w-full text-left clickeable`}>
+        <button type="button" onClick={onClick} className={`${commonClasses} w-full text-left clickeable ${style}`}>
           <span className="font-medium text-text-base">{text}{content}</span>
           {iconSvg}
         </button>
@@ -58,7 +59,7 @@ export function LiComponent(props: LiComponentI) {
   // Default case if neither href nor onClick is provided
   return (
     <li>
-      <div className={commonClasses}>
+      <div className={`${commonClasses} ${style}`}>
         <span className="font-medium text-text-base">{text}{content}</span>
         {iconSvg}
       </div>

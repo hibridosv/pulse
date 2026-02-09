@@ -8,7 +8,7 @@ import useCutStore from './cutStore';
 
 interface CashDrawerState {
   cashDrawers: any | null; // Consider defining a more specific type for cashDrawers
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   loadCashDrawers: () => Promise<void>;
   openCashDrawer: (url: string, data: any) => Promise<void>;
@@ -17,15 +17,16 @@ interface CashDrawerState {
 
 const useCashDrawerStore = create<CashDrawerState>((set) => ({
   cashDrawers: null,
-  error: null,
+  error: false,
   loading: false,
   loadCashDrawers: async () => {
     set({ loading: true });
     try {
       const response = await getServices("cashdrawers?included=employee&filterWhere[status]=!0");
-      set({ cashDrawers: response.data, error: null });
+      set({ cashDrawers: response.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loading: false });
     }
@@ -41,6 +42,7 @@ const useCashDrawerStore = create<CashDrawerState>((set) => ({
       useToastMessageStore.getState().setMessage(response);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loading: false });
       useModalStore.getState().closeModal('cashDrawerOpen');
@@ -59,6 +61,7 @@ const useCashDrawerStore = create<CashDrawerState>((set) => ({
       useModalStore.getState().openModal('cashDrawerDetails');
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      set({ error: true });
     } finally {
       set({ loading: false });
       useModalStore.getState().closeModal('cashDrawerOpen');

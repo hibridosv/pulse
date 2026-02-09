@@ -1,4 +1,4 @@
-import { createService, getServices } from '@/services/services';
+import { createService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useTempSelectedElementStore from '../tempSelectedElementStore';
 import useToastMessageStore from '../toastMessageStore';
@@ -7,36 +7,39 @@ import useToastMessageStore from '../toastMessageStore';
 interface ordersProductsStoreI {
   orders: any | null;
   order: any | null;
-  error: Error | null;
+  error: boolean;
   loading: boolean;
   sending: boolean;
   saving: boolean;
   deleting: boolean;
-  loadOrders: (url: string) => Promise<void>;
+  loadOrders: (url: string, showToast?: boolean) => Promise<void>;
   loadOrder: (url: string, showToast?: boolean) => Promise<void>;
   payOrder: (url: string, data: any) => Promise<void>;
   saveOrder: (url: string, data: any) => Promise<void>;
   deleteOrder: (url: string, id: string) => Promise<void>;
-
+  updateOrder: (url: string, data: any) => Promise<void>;
 }
 
 const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
   orders: null,
   order: null,
-  error: null, 
+  error: false, 
   loading: false,
   sending: false,
   saving: false,
   deleting: false,
 
-  loadOrders: async (url: string) => {
+  loadOrders: async (url: string, showToast: boolean = true) => {
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ orders: response.data.data, error: null });
+      set({ orders: response.data.data, error: false });
     } catch (error) {
       set({ orders: null });
+      if (showToast) {
       useToastMessageStore.getState().setError(error);
+      }
+      set({ error: true });
     } finally {
       set({ loading: false });
     }
@@ -46,12 +49,13 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ order: response.data.data, error: null });
+      set({ order: response.data.data, error: false });
     } catch (error) {
       if (showToast) {
         useToastMessageStore.getState().setError(error);
       }
       set({ order: null });
+      set({ error: true });
     } finally {
       set({ loading: false });
     }
@@ -62,11 +66,12 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
         set({ sending: true });
         try {
             const response = await createService(url, data);
-            set({ order: null });
+            set({ order: null, error: false });
             useTempSelectedElementStore.getState().setSelectedElement("paymentSuccess", response.data.data);
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ sending: false });
         }
@@ -76,10 +81,11 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
         set({ saving: true });
         try {
             const response = await createService(url, data);
-            set({ order: null, error: null});
+            set({ order: null, error: false});
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
+            set({ error: true });
         } finally {
             set({ saving: false });
         }
@@ -108,7 +114,20 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
     // }
   },
 
-  
+  updateOrder: async (url, data) => {
+        set({ sending: true });
+        try {
+            const response = await updateService(url, data);
+            set({ order: response.data.data, error: false });
+            useToastMessageStore.getState().setMessage(response);
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            set({ error: true });
+        } finally {
+            set({ sending: false });
+        }
+    },
+
 
 }));
 

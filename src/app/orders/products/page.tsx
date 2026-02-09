@@ -1,6 +1,7 @@
 'use client';
 
 import { OrderProductsSearchPrincipal } from "@/components/orders/common/OrderProductsSearchPrincipal";
+import { InvoiceTypesModal } from "@/components/orders/products/InvoiceTypesModal";
 import { OrderButtons } from "@/components/orders/products/OrderButtons";
 import { OrderProductsTable } from "@/components/orders/products/OrderProductsTable";
 import { PayedModal } from "@/components/orders/products/PayedModal";
@@ -15,7 +16,7 @@ import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 export default function Page() {
   useOrderProductsLogic(true);
   const { order } = ordersProductsStore();
-  const { modals, closeModal} = useModalStore();
+  const { modals, closeModal, openModal} = useModalStore();
  
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
@@ -31,9 +32,11 @@ export default function Page() {
             <ShowOrders />
             <ShowTotal order={order} />
             <div className="absolute bottom-2 ">
+            <div onClick={() => openModal('invoiceType')}>click</div>
                 <OrderButtons order={order} />
             </div>
           </div>
+        <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
         <PayedModal isShow={modals.paymentSuccess} onClose={()=>{ closeModal('paymentSuccess')}} />
         <PayModal isShow={modals.payOrder} onClose={()=>{ closeModal('payOrder')}} />
         <ToasterMessage />

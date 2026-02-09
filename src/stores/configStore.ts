@@ -1,9 +1,9 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { getServices } from '@/services/services';
-import useToastMessageStore from './toastMessageStore';
-import { User } from '@/interfaces/user';
 import { CashDrawer } from '@/interfaces/cashdrawers';
+import { User } from '@/interfaces/user';
+import { getServices } from '@/services/services';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import useToastMessageStore from './toastMessageStore';
 
 interface ConfigStoreState {
   configurations: any;
@@ -18,6 +18,7 @@ interface ConfigStoreState {
   cashdrawer: CashDrawer | null;
   client: any | null;
   tenant: any;
+  invoiceTypes: any;
   isLoaded: boolean;
   loading: boolean;
   error: Error | null;
@@ -41,6 +42,7 @@ const useConfigStore = create(
       cashdrawer: null,
       client: null,
       tenant: null,
+      invoiceTypes: null,
       isLoaded: false,
       loading: false,
       error: null,
@@ -61,6 +63,7 @@ const useConfigStore = create(
           set({ cashdrawer: data.cashdrawer });
           set({ client: data.client });
           set({ tenant: data.tenant });
+          set({ invoiceTypes: data.invoiceTypes });
           set({ isLoaded: true });
         } catch (error) {
           useToastMessageStore.getState().setError(error);
@@ -87,6 +90,7 @@ const useConfigStore = create(
             cashdrawer: null,
             client: null,
             tenant: null,
+            invoiceTypes: null,
             isLoaded: false,
             loading: false,
             error: null,
