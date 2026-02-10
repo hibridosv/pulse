@@ -15,10 +15,10 @@ export function useInvoiceFnLogic() {
   const sendRemissions = async (id: string) => {
       openLoading("sendRemissions")
       try {
-          const response = await updateService(`remissions/${id}/charge`, {});
+          const response = await updateService(`remissions/${id}`, {});
           if (response.status === 200) {
             clearSelectedElement("remissionNote");
-            router.push("/dashboard");
+            router.push("/orders");
           }
       } catch (error) {
           setError(error)

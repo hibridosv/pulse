@@ -9,6 +9,7 @@ import { PayedModal } from "@/components/orders/products/PayedModal";
 import { PayModal } from "@/components/orders/products/PayModal";
 import { SearchContactModal } from "@/components/orders/products/SearchContactModal";
 import { SelectUserModal } from "@/components/orders/products/SelectUserModal";
+import { SetRemissionNoteModal } from "@/components/orders/products/SetRemissionNoteModal";
 import { ShowOrders } from "@/components/orders/products/ShowOrders";
 import { ShowTotal } from "@/components/orders/products/ShowTotal";
 import { ToasterMessage } from "@/components/toaster-message";
@@ -38,6 +39,7 @@ export default function Page() {
                 <OrderButtons order={order} />
             </div>
           </div>
+        <SetRemissionNoteModal isShow={modals.setRemissionNote} onClose={()=>{ closeModal('setRemissionNote')}} />
         <SelectUserModal isShow={modals.setUser} onClose={()=>{ closeModal('setUser')}} />
         <SearchContactModal isShow={modals.searchContact} onClose={()=>{ closeModal('searchContact')}} />
         <AddContactModal isShow={modals.contactAdd} onClose={()=>closeModal('contactAdd')} record={null} />

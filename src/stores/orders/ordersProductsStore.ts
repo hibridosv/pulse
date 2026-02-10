@@ -1,4 +1,4 @@
-import { createService, getServices, updateService } from '@/services/services';
+import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useTempSelectedElementStore from '../tempSelectedElementStore';
 import useToastMessageStore from '../toastMessageStore';
@@ -16,8 +16,9 @@ interface ordersProductsStoreI {
   loadOrder: (url: string, showToast?: boolean) => Promise<void>;
   payOrder: (url: string, data: any) => Promise<void>;
   saveOrder: (url: string, data: any) => Promise<void>;
-  deleteOrder: (url: string, id: string) => Promise<void>;
+  deleteOrder: (url: string) => Promise<void>;
   updateOrder: (url: string, data: any) => Promise<void>;
+  saveAs: (url: string, data: any) => Promise<void>;
 }
 
 const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
@@ -91,27 +92,18 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
         }
     },
 
-  deleteOrder: async (url: string, id: string) => {
-    // set({ deleting: true });
-    // try {
-    //   const response = await deleteService(url); 
-    //   set((state: any) => {
-    //     const updated = state.orders.data.filter((order: any) => order.id !== id);
-    //     return {
-    //       orders: {
-    //         ...state.orders,
-    //         data: updated,
-    //       }
-    //     };
-    //   });
-    //   useToastMessageStore.getState().setMessage(response);
-    //   useTempSelectedElementStore.getState().clearSelectedElement("paymentPayableAdd");
-    //   useModalStore.getState().closeModal("paymentPayableAdd");
-    // } catch (error) {
-    //   useToastMessageStore.getState().setError(error);
-    // } finally {
-    //   set({ deleting: false });
-    // }
+  deleteOrder: async (url: string) => {
+    set({ deleting: true });
+    try {
+      const response = await deleteService(url); 
+      set({ order: null, error: false});
+      useToastMessageStore.getState().setMessage(response);
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      set({ error: true });
+    } finally {
+      set({ deleting: false });
+    }
   },
 
   updateOrder: async (url, data) => {
@@ -128,6 +120,19 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
         }
     },
 
+    saveAs: async (url, data) => {
+        set({ sending: true });
+        try {
+            const response = await updateService(url, data);
+            set({ order: null, error: false });
+            useToastMessageStore.getState().setMessage(response);
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            set({ error: true });
+        } finally {
+            set({ sending: false });
+        }
+    },
 
 }));
 

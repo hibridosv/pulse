@@ -12,3 +12,5 @@ Pasar a otro componente los productos sin existencia en las cotizaciones
 
 // en orders o ventas
 * Cambiar en connect pay_method_types ( dejar solo los que se usaran y renombrar los que tiene nombre largo)
+decidir si se muestran las retenciones de sujeto excluido y renta aunque esten a cero o no src\components\orders\products\ShowTotal.tsx
+Falta cambiar en el back end que si se selecciona el cliente debe cambiar a credito fiscal

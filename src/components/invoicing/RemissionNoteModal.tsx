@@ -30,9 +30,9 @@ export function RemissionNoteModal(props: RemissionNoteModalI) {
     const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
 
     
-  if (!isShow || !document) return null;
+  if (!isShow || !document || !order) return null;
 
-  const listProducts = order?.products.map((record: any) => (
+  const listProducts = order.products && order?.products.map((record: any) => (
     <tr key={record.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
       <td className="px-4 py-2 text-center">{record?.quantity}</td>
       {showCodeStatus && <td className="px-4 py-2">{record?.cod}</td>}

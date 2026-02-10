@@ -11,6 +11,8 @@ export interface ShowTotalI {
   order: Order;
 }
 
+/* decidir si se muestran las retenciones de sujeto excluido y renta aunque esten a cero o no */
+
 export function ShowTotal(props: ShowTotalI) {
   const { order } = props;
   const { system, activeConfig } = useConfigStore();
@@ -22,8 +24,8 @@ export function ShowTotal(props: ShowTotalI) {
   const retentionSujetoExcluido = sumarTotalRetentionSujetoExcluido(order);
   const retentionRenta = sumarTotalRetentionRenta(order);
 
-    if (!order || order?.invoiceproducts.length == 0) return null
-
+  if (!order || order?.invoiceproducts.length == 0) return null
+    
   return (
     <div className='w-full space-y-4 rounded-lg border border-bg-subtle bg-bg-content p-4 shadow-sm'>
       <OrderTotal />

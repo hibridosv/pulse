@@ -40,7 +40,7 @@ export function useQuotesLogic(currentPage?: any, searchTerm?: any, initialLoad:
       try {
           const response = await updateService(`tools/quotes/${id}/charge`, {});
           if (response.status === 200) {
-            router.push("/dashboard");
+            router.push("/orders");
           }
         } catch (error) {
           setError(error)

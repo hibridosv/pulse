@@ -19,9 +19,12 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
 
   const { loadOrder, loadOrders } = ordersProductsStore();
   const { user } =  useConfigStore();
+  const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1);
+
 
   useEffect(() => {
         if (initialLoad && activeConfig) {
+           console.log("Load Config and dependences"); 
            if (activeConfig.includes('sales-by-name') && typeOfSearch === undefined) {
             setSelectedElement('typeOfSearch', true);
            } else {
@@ -29,23 +32,25 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
            }
 
            if (!invoiceTypeSelected) {
-              setSelectedElement('invoiceTypeSelected', getFirstElement(invoiceTypes, 'status', 1));
+              setSelectedElement('invoiceTypeSelected', invoiceSelected);
            }
         }
-  }, [initialLoad, activeConfig])
+  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, typeOfSearch])
 
   useEffect(() => {
     if (user && initialLoad) {
+    console.log("Load order");
      loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
     }
-   }, [initialLoad, user]);
+   }, [initialLoad, user, loadOrder]);
 
 
   useEffect(() => {
     if (initialLoad) {
+      console.log("Load orders");
      loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
     }
-   }, [initialLoad]);
+   }, [initialLoad, loadOrders]);
 
    
 }
