@@ -34,7 +34,6 @@ export function OrderProductsSearch() {
                 <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
                   <ul className="divide-y divide-bg-subtle max-h-screen overflow-y-auto custom-scrollbar">
                     {products.data.map((item: any) => {
-                      console.log(item);
                         return (
                            <li key={item.id} onClick={() => handleSelectProduct(item)}>
                             <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>

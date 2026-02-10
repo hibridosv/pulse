@@ -13,7 +13,7 @@ export interface ClientsSearchI {
   placeholder?: string;
   pagination?: number;
   tempSelectedName?: string;
-  onSelect?: () => void; // funcion que se ejecuta al seleccionar contacto
+  onSelect?: (item: any) => void; // funcion que se ejecuta al seleccionar contacto
 }
 
 
@@ -30,7 +30,7 @@ export function ClientsSearch(props: ClientsSearchI) {
     const handleSelectContact = (client: Contact) => {
         setSelectedElement(tempSelectedName, client);
         handleSearchTerm('');
-        onSelect && onSelect();
+        onSelect && onSelect(client);
     };
 
 

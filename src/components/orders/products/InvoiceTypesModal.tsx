@@ -45,7 +45,6 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
           <ul className="p-4" >
             {
                 invoiceTypes && invoiceTypes.length > 0 && invoiceTypes.map((type: any) => {
-                    console.log(type);
                     return (
                           <LiComponent 
                             key={type.id} 

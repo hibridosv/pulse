@@ -1,54 +1,56 @@
 "use client";
+import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
+import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
+import { UpdateServiceInterface } from "@/services/Interfaces";
 import useModalStore from "@/stores/modalStorage";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { setNameContact, setParam, setRowToChange } from "../functions";
 
 export interface SearchContactModalI {
   onClose: () => void;
   isShow: boolean;
 }
 
-const setNameContact = (tempSelectedName: string) => {
-  switch (tempSelectedName) {
-    case "customerSearch": return "cliente";
-    case "supplierSearch": return "proveedor";
-    case "driverSearch": return "repartidor";
-    case "referralSearch": return "referido"
-  }
-}
-
-const setParam = (tempSelectedName: string) => {
-  switch (tempSelectedName) {
-    case "customerSearch": return "customers";
-    case "supplierSearch": return "suppliers";
-    case "driverSearch": return "drivers";
-    case "referralSearch": return "referrals"
-    default: return "customers";
-  }
-}
-
-
 export function SearchContactModal(props: SearchContactModalI) {
   const { onClose, isShow } = props;
-  const { order, sending } = ordersProductsStore();
-  const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
+  const { order, sending, error } = ordersProductsStore();
+  const { getSelectedElement } = useTempSelectedElementStore();
   const tempSelectedName = getSelectedElement('contactSearch');
-  const { modals, closeModal, openModal} = useModalStore();
+  const { openModal, closeModal} = useModalStore();
+  const { update } = useOrderFnLogic();
 
   if (!isShow || !order) return null;
-
-  const clearContact = () => {
-    console.log('clear');
+  
+  const clearContact = (item: any) => {
+    if (!item || !tempSelectedName || !order) return;
+    let values: UpdateServiceInterface = {
+      row: setRowToChange(tempSelectedName),
+      value: null
+    }
+    update(order.id, values);
+    if (!error && !sending) {
+      closeModal('searchContact');
+    }
   }
-
-  const updateContact = () => {
-    console.log('tempSelectedName', tempSelectedName);
+  
+  const updateContact = (item: any) => {
+    if (!item || !tempSelectedName || !order) return;
+    let values: UpdateServiceInterface = {
+      row: setRowToChange(tempSelectedName),
+      value: item.id
+    }
+    update(order.id, values);
+    if (!error && !sending) {
+      closeModal('searchContact');
+    }
   }
-
+  
+  
 
   return (
     <Modal show={isShow} onClose={onClose} size="md" headerTitle={`Asignar ${setNameContact(tempSelectedName)}`} >
@@ -56,6 +58,9 @@ export function SearchContactModal(props: SearchContactModalI) {
         <div className="h-96">
           <ClientsSearch param={setParam(tempSelectedName)} placeholder={`Buscar ${setNameContact(tempSelectedName)}`} onSelect={updateContact} tempSelectedName={tempSelectedName} />
           <ShowClientSearched onClose={clearContact} tempSelectedName={tempSelectedName} />
+          { error && 
+          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el ${setNameContact(tempSelectedName)}. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
+          }
         </div>
       </Modal.Body>
       <Modal.Footer>

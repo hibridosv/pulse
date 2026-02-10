@@ -3,7 +3,7 @@ import { Button, Preset } from "../button/button";
 
 export interface ShowClientSearchedI {
   tempSelectedName?: string;
-  onClose?: () => void;
+  onClose?: (item: any) => void;
 }
 
 export function ShowClientSearched(props: ShowClientSearchedI) {
@@ -15,7 +15,7 @@ export function ShowClientSearched(props: ShowClientSearchedI) {
 
     const handleClose = () => {
       clearSelectedElement(tempSelectedName);
-      onClose && onClose();
+      onClose && onClose(elementSelected);
     }
 
 
