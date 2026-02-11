@@ -7,8 +7,9 @@ import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { FaBox, FaCheckCircle, FaTag, FaTimesCircle, FaUserTie } from "react-icons/fa";
 import { MdOutlineAttachMoney, MdOutlineBrandingWatermark, MdOutlineCategory, MdOutlineHomeRepairService, MdOutlineInfo, MdOutlineInventory, MdOutlineLocationOn, MdProductionQuantityLimits } from "react-icons/md"; // Icons
 import { Button, Preset } from "../button/button";
-import { Loader } from "../Loader";
 import Modal from "../modal/Modal";
+import { NothingHere } from "../NothingHere";
+import { ProductDetailsSkeleton } from "../skeleton/ProductDetailsSkeleton";
 import { ProductLinked } from "./ProductLinked";
 // Obtiene el producto a travez del id
 // El id pasa desde el storage
@@ -25,7 +26,7 @@ export interface ProductDetailsGetModalI {
 export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   const { onClose, isShow, row = "id" } = props;
   const { system } = useConfigStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const productId = getSelectedElement('productDetails');
   
   const {responseData: data, loading: loadingRecord } = useGetProductLogic(productId, isShow, row);
@@ -34,7 +35,13 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   const { responseData, loading } = useProductDetailsLogic(record, isShow);
   const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
 
-    if (!isShow) { return null; }
+  if (!isShow) { return null; }
+
+  const handleClose = () => {
+    clearSelectedElement('productDetails');
+    onClose();
+  };
+
 
   // Helper para renderizar una fila de detalle
   const DetailRow = ({ label, value, icon }: { label: string; value: React.ReactNode; icon?: React.ReactNode }) => (
@@ -78,9 +85,9 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
 
 
   return (
-    <Modal show={isShow} onClose={onClose} size="xl2" headerTitle={`Detalles: ${record.description}`} closeOnOverlayClick={false} hideCloseButton={false}>
+    <Modal show={isShow} onClose={handleClose} size="xl2" headerTitle={`${loadingRecord ? 'Cargando...' : `Detalles del producto`}`} closeOnOverlayClick={false} hideCloseButton={false}>
       <Modal.Body>
-          { loadingRecord ? <div className="h-60"><Loader /></div> : 
+          { loadingRecord ? <ProductDetailsSkeleton /> :  !record ? <NothingHere /> : 
         <div className="p-2 space-y-4 text-text-base"> 
           <div className="grid grid-cols-10 gap-4 pb-4 border-b border-bg-subtle">
             <div className="col-span-9">
@@ -175,7 +182,7 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
         }
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} disabled={false} />
+        <Button onClick={handleClose} preset={Preset.close} disabled={loadingRecord} />
       </Modal.Footer>
     </Modal>
   );

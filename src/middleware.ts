@@ -9,8 +9,21 @@ export async function middleware(req: NextRequest) {
   const protectedRoutes = [
                           "/dashboard", 
                           "/protected", 
+                          "/protected-ssr",
+                          "/accounts", 
+                          "/cash", 
+                          "/cashdrawers", 
+                          "/contacts", 
+                          "/dashboard", 
+                          "/history", 
+                          "/invoicing", 
+                          "/orders", 
                           "/products", 
-                          "/protected-ssr"];
+                          "/reports", 
+                          "/settings", 
+                          "/tools", 
+                          "/transfers", 
+                        ];
 
   const publicOnlyRoutes = ["/"]; // The login page
 

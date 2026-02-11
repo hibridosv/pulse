@@ -8,6 +8,8 @@ import { getTotalPercentage, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { FaPen } from "react-icons/fa";
+import { MdBallot } from "react-icons/md";
 import { commissionTotal, sumarDiscount, sumarTotales } from "../utils";
 
 
@@ -26,7 +28,11 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   
   const isShowCode = activeConfig && activeConfig.includes("sales-show-code");
   const isDefaultCommission = activeConfig && activeConfig.includes("product-default-commission");
-  
+  const isChangeName = activeConfig && activeConfig.includes("sales-change-name");
+  const isChangeComment = activeConfig && activeConfig.includes("sales-change-comment");
+  const isChangeLot = activeConfig && activeConfig.includes("sales-change-lot");
+
+
   if (!data || data.length === 0) {
     return <NothingHere width="150" height="150" text="Agregue un producto" />;
   }
@@ -50,12 +56,18 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           <td className={`px-2 py-1 whitespace-nowrap font-medium ${ !isShowCode && 'hidden'}`}>
           { record.cod }
           </td>
-          <td className="px-2 py-1 text-left whitespace-nowrap" >
+          <td className="px-2 py-1 text-left whitespace-nowrap flex" >
             {/* { record.product.slice(0, 50) } */}
-            <span className={`${!isOtherSales && 'clickeable ' } w-full bg-orange-500`} 
-            onClick={()=> { openModal('productDetails'); setSelectedElement('productDetails', record.cod); console.log(record.id); }}>
+            <span className={`${!isOtherSales && 'clickeable ' } w-full`} 
+            onClick={()=> { openModal('productDetails'); setSelectedElement('productDetails', record.cod); }}>
             { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
             </span>
+            { !isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
+            onClick={()=> {}}><FaPen color="black" /></span> }
+            { !isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
+            onClick={()=> {}}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
+            { !isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
+            onClick={()=> {}}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold`}>
             { numberToMoney(record.unit_price ?? 0, system) }
