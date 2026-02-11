@@ -72,25 +72,27 @@ export function SelectUserModal(props: SelectUserModalI) {
   return (
     <Modal show={isShow} onClose={onClose} size="md" headerTitle={`Asignar ${setNameUser(tempSelectedName)}`} >
       <Modal.Body>
-        <div className="p-4 space-y-6">
-          <ul className="p-4" >
-            {
-                users && users.length > 0 && users.map((user: any) => {
-                    return (
-                          <LiComponent
-                            key={user.id} 
-                            content={user.name} 
-                            onClick={user.id == userSelected?.id ? ()=>{} :  ()=> updateUser(user)}
-                            style={`${user.id == userSelected?.id && 'font-bold bg-red-100 text-white hover:bg-red-200'} cur`}
-                          />
-                        );
-                })
-            }
+        <div className="flex flex-col gap-4">
+          <div className="bg-bg-base rounded-lg border border-bg-subtle/80">
+            <ul className="divide-y divide-bg-subtle max-h-72 overflow-y-auto custom-scrollbar">
+              {
+                  users && users.length > 0 && users.map((user: any) => {
+                      return (
+                            <LiComponent
+                              key={user.id}
+                              content={user.name}
+                              onClick={user.id == userSelected?.id ? ()=>{} :  ()=> updateUser(user)}
+                              style={`${user.id == userSelected?.id && 'font-bold bg-primary/10 text-primary hover:bg-primary/20'}`}
+                            />
+                          );
+                  })
+              }
             </ul>
-        <ShowClientSearched onClose={clearUser} tempSelectedName={tempSelectedName} />
-        { error && 
-        <Alert type="danger" text={`Existe un error, No se actualizo correctamente el ${setNameUser(tempSelectedName)}. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
-        }
+          </div>
+          <ShowClientSearched onClose={clearUser} tempSelectedName={tempSelectedName} />
+          { error &&
+          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el ${setNameUser(tempSelectedName)}. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
+          }
         </div>
       </Modal.Body>
       <Modal.Footer>

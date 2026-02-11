@@ -1,28 +1,40 @@
 'use client';
+import { useGetProductLogic } from "@/hooks/products/useGetProductLogic";
 import { useProductDetailsLogic } from "@/hooks/products/useProductDetailsLogic";
-import { Product } from "@/interfaces/products";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { FaBox, FaCheckCircle, FaTag, FaTimesCircle, FaUserTie } from "react-icons/fa";
 import { MdOutlineAttachMoney, MdOutlineBrandingWatermark, MdOutlineCategory, MdOutlineHomeRepairService, MdOutlineInfo, MdOutlineInventory, MdOutlineLocationOn, MdProductionQuantityLimits } from "react-icons/md"; // Icons
 import { Button, Preset } from "../button/button";
+import { Loader } from "../Loader";
 import Modal from "../modal/Modal";
 import { ProductLinked } from "./ProductLinked";
+// Obtiene el producto a travez del id
+// El id pasa desde el storage
 
-export interface ProductDetailsModalProps {
+export type RowType = 'cod' | 'id';
+
+
+export interface ProductDetailsGetModalI {
   onClose: () => void;
   isShow: boolean;
-  record: Product; 
+  row?: RowType;
 }
 
-export function ProductDetailsModal(props: ProductDetailsModalProps) {
-  const { onClose, isShow, record } = props;
+export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
+  const { onClose, isShow, row = "id" } = props;
   const { system } = useConfigStore();
+  const { getSelectedElement } = useTempSelectedElementStore();
+  const productId = getSelectedElement('productDetails');
+  
+  const {responseData: data, loading: loadingRecord } = useGetProductLogic(productId, isShow, row);
+  const record = data?.data;
+  
   const { responseData, loading } = useProductDetailsLogic(record, isShow);
   const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
 
-
-    if (!isShow || !record) { return null; }
+    if (!isShow) { return null; }
 
   // Helper para renderizar una fila de detalle
   const DetailRow = ({ label, value, icon }: { label: string; value: React.ReactNode; icon?: React.ReactNode }) => (
@@ -68,9 +80,8 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
   return (
     <Modal show={isShow} onClose={onClose} size="xl2" headerTitle={`Detalles: ${record.description}`} closeOnOverlayClick={false} hideCloseButton={false}>
       <Modal.Body>
-        <div className="p-2 space-y-4 text-text-base"> {/* Main padding and spacing */}
-
-          {/* Sección 1: Información Básica y Estado */}
+          { loadingRecord ? <div className="h-60"><Loader /></div> : 
+        <div className="p-2 space-y-4 text-text-base"> 
           <div className="grid grid-cols-10 gap-4 pb-4 border-b border-bg-subtle">
             <div className="col-span-9">
               <div className="text-lg font-bold text-text-base mb-1">{record.description}</div>
@@ -94,8 +105,8 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
                 <div className="absolute left-0 top-full mt-2 w-48 bg-bg-content border border-bg-subtle rounded-lg shadow-xl ring-2 ring-primary z-20 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <div className="p-2">
                     <p className="text-sm font-semibold text-text-base mb-1">Listado de Precios:</p>
-                    {record.prices.map((priceItem, index) => (
-                      <div key={index} className="flex justify-between text-sm text-text-muted">
+                    {record.prices.map((priceItem: any) => (
+                      <div key={priceItem.id} className="flex justify-between text-sm text-text-muted">
                         <span>Cant. {priceItem.qty}:</span>
                         <span>{numberToMoney(priceItem.price, system)}</span>
                       </div>
@@ -160,8 +171,8 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
           </>)}
 
           <ProductLinked record={record} isShow={isShow} />
-
         </div>
+        }
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} preset={Preset.close} disabled={false} />

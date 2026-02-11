@@ -17,14 +17,15 @@ export interface OrderProductsTableI {
 
 export function OrderProductsTable(props: OrderProductsTableI) {
   const { order } = props;
-  const { system } = useConfigStore();
+  const { system, activeConfig } = useConfigStore();
   const { addNew, del} = useOrderFnLogic();
   const { setSelectedElement } = useTempSelectedElementStore();
   const { openModal} = useModalStore();
   
   let data = order?.invoiceproducts ?? [];
   
-  
+  const isShowCode = activeConfig && activeConfig.includes("sales-show-code");
+  const isDefaultCommission = activeConfig && activeConfig.includes("product-default-commission");
   
   if (!data || data.length === 0) {
     return <NothingHere width="150" height="150" text="Agregue un producto" />;
@@ -36,8 +37,9 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   };
   
   
-  const listItems = data.map((record: any) => {
-    const isDisabled = record.cod == 9999999999 || record.lot_id;
+    const listItems = data.map((record: any) => {
+    const isOtherSales = record.cod == 9999999999;
+    const isDisabled = isOtherSales || record.lot_id;
 
     return (
         <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
@@ -45,11 +47,15 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             onClick={()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') }}>
             { record.quantity }
           </td>
-          <td className="px-2 py-1 whitespace-nowrap font-medium">
+          <td className={`px-2 py-1 whitespace-nowrap font-medium ${ !isShowCode && 'hidden'}`}>
           { record.cod }
           </td>
           <td className="px-2 py-1 text-left whitespace-nowrap" >
-            { record.product.slice(0, 50) }
+            {/* { record.product.slice(0, 50) } */}
+            <span className={`${!isOtherSales && 'clickeable ' } w-full bg-orange-500`} 
+            onClick={()=> { openModal('productDetails'); setSelectedElement('productDetails', record.cod); console.log(record.id); }}>
+            { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
+            </span>
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold`}>
             { numberToMoney(record.unit_price ?? 0, system) }
@@ -57,13 +63,13 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           <td className={`px-2 py-1 text-center whitespace-nowrap  font-bold ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`}>
             { numberToMoney(record.discount ?? 0, system) }
           </td>
-          <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+          <td className={`px-2 py-1 whitespace-nowrap font-medium ${ !isDefaultCommission && 'hidden'}`}>
             { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap`}>
             { numberToMoney(record.total ?? 0, system) }
           </td>
-          <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+          <td className={`px-2 py-1 flex justify-center`}>
             <Button disabled={isDisabled} preset={isDisabled ? Preset.smallMinusDisable : Preset.smallMinus} noText onClick={()=> { handleProductSend(record, 2)}} />
             <Button disabled={isDisabled} preset={isDisabled ? Preset.smallPlusDisable : Preset.smallPlus} noText onClick={()=> { handleProductSend(record, 1)}} />
           </td>
@@ -81,11 +87,11 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
             <tr>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cant</th>
-              <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cod </th>
+              <th scope="col" className={`px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap ${ !isShowCode && 'hidden'}`}>Cod </th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Producto</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Descuento</th>
-              <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Comisión</th>
+              <th scope="col" className={`px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap ${ !isDefaultCommission && 'hidden'}`}>Comisión</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">OP</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Del</th>
@@ -97,11 +103,11 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           <tfoot>
             <tr>
                 <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col" className={`${ !isShowCode && 'hidden'}`}></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col" className="py-2 px-2 border">{ numberToMoney(sumarDiscount(data), system)}</th>
-                <th scope="col" className="py-2 px-2 border">{ numberToMoney(commissionTotal(data), system) }</th>
+                <th scope="col" className={`py-2 px-2 border ${ !isDefaultCommission && 'hidden'}`}>{ numberToMoney(commissionTotal(data), system) }</th>
                 <th scope="col" className="py-2 px-2 border">{ numberToMoney(sumarTotales(data), system) }</th>
                 <th scope="col"></th>
                 <th scope="col"></th>

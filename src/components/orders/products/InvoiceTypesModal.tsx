@@ -41,21 +41,23 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   return (
     <Modal show={isShow} onClose={onClose} size="md" headerTitle="Seleccione el tipo de factura" >
       <Modal.Body>
-        <div className="p-4 space-y-6">
-          <ul className="p-4" >
-            {
-                invoiceTypes && invoiceTypes.length > 0 && invoiceTypes.map((type: any) => {
-                    return (
-                          <LiComponent 
-                            key={type.id} 
-                            content={type.name} 
-                            onClick={type.id == invoiceTypeSelected.id ? ()=>{} :  ()=> handleUpdate(type)}
-                            style={`${type.id == invoiceTypeSelected.id && 'font-bold bg-red-100 text-white hover:bg-red-200'} cur`}
-                          />
-                        );
-                })
-            }
+        <div className="flex flex-col gap-4">
+          <div className="bg-bg-base rounded-lg border border-bg-subtle/80">
+            <ul className="divide-y divide-bg-subtle">
+              {
+                  invoiceTypes && invoiceTypes.length > 0 && invoiceTypes.map((type: any) => {
+                      return (
+                            <LiComponent
+                              key={type.id}
+                              content={type.name}
+                              onClick={type.id == invoiceTypeSelected.id ? ()=>{} :  ()=> handleUpdate(type)}
+                              style={`${type.id == invoiceTypeSelected.id && 'font-bold bg-primary/10 text-primary hover:bg-primary/20'}`}
+                            />
+                          );
+                  })
+              }
             </ul>
+          </div>
         </div>
       </Modal.Body>
       <Modal.Footer>

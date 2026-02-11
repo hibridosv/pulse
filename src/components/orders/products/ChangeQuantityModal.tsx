@@ -67,17 +67,16 @@ export function ChangeQuantityModal(props: ChangeQuantityModalI) {
   return (
     <Modal show={isShow} onClose={onClose} size="sm" headerTitle={`Cambiar Cantidad`} >
       <Modal.Body>
-        <div className="p-4 space-y-6">
-        <form className="max-w-lg mt-4" onSubmit={handleSubmit(onSubmit)} >
-
-            <div className="w-full md:w-full px-3 mb-4">
-              <label htmlFor="quantity" className="input-label" >Cantidad</label>
-              <input type="number" step="any" {...register("quantity", { required: true, min: 0.1})} className="input" />
-            </div>
-              <div className="flex justify-center">
-              <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
+        <div className="flex flex-col gap-4">
+          <div className="bg-bg-base rounded-lg border border-bg-subtle/80 p-4">
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
+              <div>
+                <label htmlFor="quantity" className="block text-sm font-medium text-text-muted mb-1">Cantidad</label>
+                <input type="number" step="any" {...register("quantity", { required: true, min: 0.1})} className="input" />
               </div>
-        </form>
+              <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
+            </form>
+          </div>
         </div>
       </Modal.Body>
       <Modal.Footer>

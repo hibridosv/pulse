@@ -1,16 +1,17 @@
-import { useEffect } from 'react';
 import { Product } from '@/interfaces/products';
+import { useEffect } from 'react';
 import { useGetRequest } from '../request/useGetRequest';
 
 
 
 export function useProductDetailsLogic(product: Product, isShow: boolean) {
-  const { getRequest } = useGetRequest();
+  const { getRequest, responseData, loading } = useGetRequest();
 
     useEffect(() => {
         if (isShow && product?.id) {
             getRequest(`orders/products/${product?.id}/quantity`, false);
         }
-    }, [getRequest, product?.id, isShow]);
+    }, [getRequest, product, isShow]);
 
+    return { responseData, loading };
 }
