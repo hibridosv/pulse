@@ -36,7 +36,8 @@ const handler = NextAuth({
               accessToken: user.access_token, 
               refreshToken: user.refresh_token, 
               expiresAt: user.expires_at, 
-              url: user.url 
+              url: user.url,
+              redirect: user.redirect
             }
         }
         // console.log("Authorization failed.");
@@ -51,6 +52,7 @@ const handler = NextAuth({
         token.refreshToken = user.refreshToken;
         token.expiresAt = user.expiresAt;
         token.url = user.url;
+        token.redirect = user.redirect;
       }
       return token
     },
@@ -59,6 +61,7 @@ const handler = NextAuth({
       session.refreshToken = token.refreshToken;
       session.expiresAt = token.expiresAt;
       session.url = token.url;
+      session.redirect = token.redirect;
       return session
     },
     async redirect({ url, baseUrl }) {
