@@ -34,8 +34,10 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
            if (!invoiceTypeSelected) {
               setSelectedElement('invoiceTypeSelected', invoiceSelected);
            }
+           setSelectedElement('typeOfPrice', 1);
+           setSelectedElement('isSpecialSale', false);
         }
-  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, typeOfSearch])
+  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement])
 
   useEffect(() => {
     if (user && initialLoad) {

@@ -3,12 +3,35 @@ import { UpdateServiceInterface } from '@/services/Interfaces';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useToastMessageStore from '@/stores/toastMessageStore';
 
 export function useOrderFnLogic() {
-  const { saveOrder, loadOrder, order, payOrder, error, loadOrders, updateOrder, saveAs, deleteOrder } = ordersProductsStore();
+  const { saveOrder, loadOrder, order, payOrder, error, loadOrders, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const paymentType = getSelectedElement('paymentType') ?? 1;
+  const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;
+  const isSpecialSale = getSelectedElement('isSpecialSale') ?? false;
+  const { setError } = useToastMessageStore();
   const { closeModal, openModal} = useModalStore();
+
+/// agrega una orden o un producto
+const addNew = async (data: any) => {
+    if (!data.cod){
+      setError({ message: "Error en el código"});
+      return
+    }
+    let values = {
+      product_id: data.cod,
+      order_id: order ? order.id : null,
+      request_type: 2, // 1: id, 2: cod
+      delivery_type: 1, // delivery, recoger en tienda, ecommerce
+      order_type: 1, // venta, consignacion, ecommerce
+      price_type: typeOfPrice, // tipo de precio del producto
+      addOrSubtract: data.addOrSubtract ? data.addOrSubtract : 1, // 1 sumar 2 restar
+      special: isSpecialSale, // determina si es venta especial, debe activarse cuando se activa el modal
+    };
+    await addOrder(`orders`, values);
+}
 
 /** GUardar la orden en la que se trabaj */
   const save = async (id: string) => {
@@ -40,7 +63,7 @@ export function useOrderFnLogic() {
 
   /** Eliminar la orden */
   const cancel = async (id: string) => {
-      deleteOrder(`orders/${id}`);
+      await deleteOrder(`orders/${id}`);
       if (!error) {
         await loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
       }
@@ -68,6 +91,12 @@ export function useOrderFnLogic() {
   }
 
 
-  return { save, select, pay, cancel, update, quote, remissionNote }
+    /** Eliminar producto de la orden */
+  const del = async (id: string) => {
+      await deleteProduct(`orders/product/${id}`);
+  }
+
+
+  return { addNew, save, select, pay, cancel, update, quote, remissionNote, del }
 
 }

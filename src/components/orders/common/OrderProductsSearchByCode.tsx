@@ -1,4 +1,5 @@
 'use client'
+import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -13,6 +14,7 @@ export function OrderProductsSearchByCode() {
     const inputRef = useRef<HTMLInputElement>(null);
     const isLoading = false;
     const { register, handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm();
+    const { addNew } = useOrderFnLogic();
     const { getSelectedElement } = useTempSelectedElementStore();
     const typeOfSearch = getSelectedElement('typeOfSearch');
 
@@ -30,6 +32,7 @@ export function OrderProductsSearchByCode() {
         event.preventDefault();
         if (inputRef.current) {
           const data = { cod: inputRef.current.value };
+          addNew(data);
           inputRef.current.focus(); // Mantiene el foco en el input después de enviar
           inputRef.current.value = "";
         }

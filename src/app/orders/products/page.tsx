@@ -2,6 +2,7 @@
 
 import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { OrderProductsSearchPrincipal } from "@/components/orders/common/OrderProductsSearchPrincipal";
+import { ChangeQuantityModal } from "@/components/orders/products/ChangeQuantityModal";
 import { InvoiceTypesModal } from "@/components/orders/products/InvoiceTypesModal";
 import { OrderButtons } from "@/components/orders/products/OrderButtons";
 import { OrderProductsTable } from "@/components/orders/products/OrderProductsTable";
@@ -39,6 +40,7 @@ export default function Page() {
                 <OrderButtons order={order} />
             </div>
           </div>
+        <ChangeQuantityModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
         <SetRemissionNoteModal isShow={modals.setRemissionNote} onClose={()=>{ closeModal('setRemissionNote')}} />
         <SelectUserModal isShow={modals.setUser} onClose={()=>{ closeModal('setUser')}} />
         <SearchContactModal isShow={modals.searchContact} onClose={()=>{ closeModal('searchContact')}} />

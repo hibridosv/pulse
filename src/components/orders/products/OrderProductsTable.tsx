@@ -2,9 +2,12 @@
 
 import { Button, Preset } from "@/components/button/button";
 import { NothingHere } from "@/components/NothingHere";
+import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { Order } from "@/interfaces/order";
 import { getTotalPercentage, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { commissionTotal, sumarDiscount, sumarTotales } from "../utils";
 
 
@@ -15,49 +18,61 @@ export interface OrderProductsTableI {
 export function OrderProductsTable(props: OrderProductsTableI) {
   const { order } = props;
   const { system } = useConfigStore();
-  const isDisabled = false;
-
+  const { addNew, del} = useOrderFnLogic();
+  const { setSelectedElement } = useTempSelectedElementStore();
+  const { openModal} = useModalStore();
+  
   let data = order?.invoiceproducts ?? [];
-
-
-
+  
+  
+  
   if (!data || data.length === 0) {
     return <NothingHere width="150" height="150" text="Agregue un producto" />;
   }
+  
+  const handleProductSend = (product: any, type: number) => {
+    product.addOrSubtract = type;
+    addNew(product);
+  };
+  
+  
+  const listItems = data.map((record: any) => {
+    const isDisabled = record.cod == 9999999999 || record.lot_id;
 
-
-  const listItems = data.map((record: any) => (
-    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
-      <td className="px-2 py-1 whitespace-nowrap font-medium text-center">
-        { record.quantity }
-      </td>
-      <td className="px-2 py-1 whitespace-nowrap font-medium">
-       { record.cod }
-      </td>
-      <td className="px-2 py-1 text-left whitespace-nowrap" >
-        { record.product.slice(0, 50) }
-      </td>
-      <td className={`px-2 py-1 text-center whitespace-nowrap font-bold`}>
-        { numberToMoney(record.unit_price ?? 0, system) }
-      </td>
-      <td className={`px-2 py-1 text-center whitespace-nowrap  font-bold ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`}>
-        { numberToMoney(record.discount ?? 0, system) }
-      </td>
-      <td className={`px-2 py-1 text-center whitespace-nowrap`}>
-        { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
-      </td>
-      <td className={`px-2 py-1 text-center whitespace-nowrap`}>
-        { numberToMoney(record.total ?? 0, system) }
-      </td>
-      <td className={`px-2 py-1 text-center whitespace-nowrap`}>
-        <Button disabled={isDisabled} preset={isDisabled ? Preset.smallMinusDisable : Preset.smallMinus} noText onClick={()=> {}} />
-        <Button disabled={isDisabled} preset={isDisabled ? Preset.smallPlusDisable : Preset.smallPlus} noText onClick={()=> {}} />
-      </td>
-      <td className={`px-2 py-1 text-center whitespace-nowrap`}>
-        <Button preset={Preset.smallClose} noText onClick={()=> {}} />
-      </td>
-    </tr>
-  ));
+    return (
+        <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
+          <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable'}`} 
+            onClick={()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') }}>
+            { record.quantity }
+          </td>
+          <td className="px-2 py-1 whitespace-nowrap font-medium">
+          { record.cod }
+          </td>
+          <td className="px-2 py-1 text-left whitespace-nowrap" >
+            { record.product.slice(0, 50) }
+          </td>
+          <td className={`px-2 py-1 text-center whitespace-nowrap font-bold`}>
+            { numberToMoney(record.unit_price ?? 0, system) }
+          </td>
+          <td className={`px-2 py-1 text-center whitespace-nowrap  font-bold ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`}>
+            { numberToMoney(record.discount ?? 0, system) }
+          </td>
+          <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+            { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
+          </td>
+          <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+            { numberToMoney(record.total ?? 0, system) }
+          </td>
+          <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+            <Button disabled={isDisabled} preset={isDisabled ? Preset.smallMinusDisable : Preset.smallMinus} noText onClick={()=> { handleProductSend(record, 2)}} />
+            <Button disabled={isDisabled} preset={isDisabled ? Preset.smallPlusDisable : Preset.smallPlus} noText onClick={()=> { handleProductSend(record, 1)}} />
+          </td>
+          <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+            <Button preset={Preset.smallClose} noText onClick={()=> { del(record.id) }} />
+          </td>
+        </tr>
+      )
+  });
 
   return (
     <div className="m-4">

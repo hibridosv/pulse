@@ -1,6 +1,7 @@
 import { iconSvg } from "@/components/button/LiComponent";
 import { SearchInput } from "@/components/Search";
 import { useOrderProductsSearchLogic } from "@/hooks/order/common/useOrderProductsSearchLogic";
+import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useProductStore from "@/stores/products/productStore";
@@ -16,9 +17,12 @@ export function OrderProductsSearch() {
     useOrderProductsSearchLogic(currentPage, searchTerm, sortBy);
     const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
     const typeOfSearch = getSelectedElement('typeOfSearch');
+    const { addNew } = useOrderFnLogic();
+
 
     const handleSelectProduct = (product: any) => {
       setSelectedElement('productSearched', product);
+      addNew(product);
       handleSearchTerm('');
       setSearchKey(Date.now()); // 2. Cambiamos la key para forzar el reseteo
     };
@@ -39,7 +43,7 @@ export function OrderProductsSearch() {
                             <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
                               <span className="text-text-base">{item.cod} | {item.description}</span>
                               <span className="flex items-center">
-                                <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1 justify-end max-h-5 h-5">{item.prices[0]?.price}</span>
+                                <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1 justify-end max-h-5 h-5">{item?.quantity}</span>
                                 {iconSvg}
                               </span>
                             </div>

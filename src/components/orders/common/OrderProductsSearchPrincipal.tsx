@@ -18,7 +18,9 @@ export function OrderProductsSearchPrincipal() {
                 <OrderProductsSearch />
                 <OrderProductsSearchByCode />
             </div>
-            <div className={`mx-2 grid content-center clickeable  ${sending && ' animate-pulse'}`} onClick={()=>{ setSelectedElement('typeOfSearch', !typeOfSearch)}}>{  typeOfSearch ? NameIcon : SearchIcon  }</div>
+            <div className={`mx-2 grid content-center clickeable  ${sending && ' animate-pulse'}`} onClick={()=>{ setSelectedElement('typeOfSearch', !typeOfSearch)}}>
+                {  typeOfSearch ? NameIcon : SearchIcon  }
+            </div>
         </div>
     );
 }
