@@ -62,9 +62,9 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             onClick={()=> { openModal('productDetails'); setSelectedElement('productDetails', record.cod); }}>
             { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
             </span>
-            { isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
+            { !isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
             onClick={()=> { setSelectedElement('rowToUpdate', 'product'); openModal('changeRow'); setSelectedElement('productSelected', record); }}><FaPen color="black" /></span> }
-            { isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
+            { !isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
             onClick={()=> { setSelectedElement('rowToUpdate', 'comment'); openModal('changeRow'); setSelectedElement('productSelected', record); }}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
             { isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
             onClick={()=> {}}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
@@ -80,7 +80,9 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             </span>
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium ${ !isDefaultCommission && 'hidden'}`}>
-            { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
+            <span className="clickeable" onClick={()=>{ setSelectedElement('rowToUpdate', 'commission'); openModal('changeRow'); setSelectedElement('productSelected', record); }}>
+              { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
+            </span>
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap`}>
             { numberToMoney(record.total ?? 0, system) }

@@ -9,22 +9,23 @@ export interface Option {
 
 interface RadioButtonProps {
   options: Option[];
+  optionName?: string;
 }
 
-export const RadioButton: React.FC<RadioButtonProps> = ({ options }) => {
+export const RadioButton: React.FC<RadioButtonProps> = ({ options, optionName = "optionSelected" }) => {
   const [selectedOption, setSelectedOption] = useState<Option | null>(options[0] || null);
   const { setSelectedElement } = useTempSelectedElementStore();
 
   useEffect(() => {
     if (options && options.length > 0) {
-      setSelectedElement("optionSelected", options[0]);
+      setSelectedElement(optionName, options[0]);
     }
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleOptionChange = (option: Option) => {
     setSelectedOption(option);
-    setSelectedElement("optionSelected", option);
+    setSelectedElement(optionName, option);
   };
 
 

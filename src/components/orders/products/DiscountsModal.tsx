@@ -35,8 +35,10 @@ export function DiscountsModal(props: DiscountsModalI) {
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
 
   useEffect(() => {
-    setValue("quantity", null)
-    setFocus('quantity', {shouldSelect: true})
+    if (isShow) {
+      setValue("quantity", null)
+      setFocus('quantity', {shouldSelect: true})
+    }
   }, [setFocus, isShow, typeOfDiscount])
 
 

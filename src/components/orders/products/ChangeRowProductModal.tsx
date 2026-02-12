@@ -17,6 +17,14 @@ export interface ChangeRowProductModalI {
 }
 
 
+const getName = (row: string) => {
+  switch (row) {
+    case "product": return "Nombre";
+    case "comment": return "Comentario";
+    case "commission": return "Comisión";
+    default: return "";
+  }
+}
 
 
 export function ChangeRowProductModal(props: ChangeRowProductModalI) {
@@ -32,7 +40,7 @@ export function ChangeRowProductModal(props: ChangeRowProductModalI) {
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
 
   useEffect(() => {
-    if (product) {
+    if (product && isShow) {
       if (rowToUpdate) {
         setValue("value", product[rowToUpdate]);
         setFocus('value', { shouldSelect: true });
@@ -72,14 +80,19 @@ export function ChangeRowProductModal(props: ChangeRowProductModalI) {
 
 
   return (
-    <Modal show={isShow} onClose={onClose} size="sm" headerTitle={`Cambiar ${rowToUpdate == "comment" ? "comentario" : "nombre"}`} >
+    <Modal show={isShow} onClose={onClose} size="sm" headerTitle={`Cambiar ${getName(rowToUpdate)}`} >
       <Modal.Body>
         <div className="flex flex-col gap-4">
           <div className="bg-bg-base rounded-lg border border-bg-subtle/80 p-4">
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
               <div>
-                <label htmlFor="value" className="input-label" >{rowToUpdate == "comment" ? "Comentario" : "Nombre"} del producto</label>
-                <textarea rows={rowToUpdate == "comment" ? 8 : 2} {...register("value", { required: true, max:250, min:5 })} className="input" />
+                <label htmlFor="value" className="input-label" >{ getName(rowToUpdate) } del producto</label>
+                  {
+                  rowToUpdate == "commission" ?
+                  <input type="number" step="any" {...register("value", { required: true })} className="input" />
+                  :
+                  <textarea rows={rowToUpdate == "comment" ? 8 : 2} {...register("value", { required: true, max:250, min:5 })} className="input" />
+                }
               </div>
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>

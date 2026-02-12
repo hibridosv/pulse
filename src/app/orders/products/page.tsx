@@ -9,6 +9,7 @@ import { DiscountsModal } from "@/components/orders/products/DiscountsModal";
 import { InvoiceTypesModal } from "@/components/orders/products/InvoiceTypesModal";
 import { OrderButtons } from "@/components/orders/products/OrderButtons";
 import { OrderProductsTable } from "@/components/orders/products/OrderProductsTable";
+import { OtherSalesModal } from "@/components/orders/products/OtherSalesModal";
 import { PayedModal } from "@/components/orders/products/PayedModal";
 import { PayModal } from "@/components/orders/products/PayModal";
 import { SearchContactModal } from "@/components/orders/products/SearchContactModal";
@@ -44,6 +45,7 @@ export default function Page() {
                 <OrderButtons order={order} />
             </div>
           </div>
+        <OtherSalesModal isShow={modals.otherSales} onClose={()=>{ closeModal('otherSales')}} />
         <DiscountsModal isShow={modals.discountModal} onClose={()=>{ closeModal('discountModal')}} />
         <ChangePriceProductModal isShow={modals.changePriceProduct} onClose={()=>{ closeModal('changePriceProduct')}} />
         <ChangeRowProductModal isShow={modals.changeRow} onClose={()=>{ closeModal('changeRow')}} />

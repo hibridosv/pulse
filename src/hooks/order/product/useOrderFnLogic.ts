@@ -107,7 +107,7 @@ const addNew = async (data: any) => {
   }
 
 
-    const discount = async (id: string, values: any, discountType: number) => {
+  const discount = async (id: string, values: any, discountType: number) => {
       if (discountType == 1) {
         await updateOrder(`orders/product/discount`, values);
       } else {

@@ -50,7 +50,7 @@ export function Buttons(props: ButtonsI) {
             { isDelivery && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setUser'); setSelectedElement('setUser', "setDriver");}}> Asignar Repartidor </div>}
             { isOtherSales && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Otras Ventas</div>}
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('otherSales') }}> Otras Ventas</div>}
             { isSpecial && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Venta Especial </div>}
             { isComment && 
