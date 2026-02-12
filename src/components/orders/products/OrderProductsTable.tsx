@@ -62,15 +62,17 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             onClick={()=> { openModal('productDetails'); setSelectedElement('productDetails', record.cod); }}>
             { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
             </span>
-            { !isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
-            onClick={()=> {}}><FaPen color="black" /></span> }
-            { !isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
-            onClick={()=> {}}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
-            { !isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
+            { isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
+            onClick={()=> { setSelectedElement('rowToUpdate', 'product'); openModal('changeRow'); setSelectedElement('productSelected', record); }}><FaPen color="black" /></span> }
+            { isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
+            onClick={()=> { setSelectedElement('rowToUpdate', 'comment'); openModal('changeRow'); setSelectedElement('productSelected', record); }}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
+            { isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
             onClick={()=> {}}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold`}>
-            { numberToMoney(record.unit_price ?? 0, system) }
+            <span className="clickeable" onClick={()=>{ openModal('changePriceProduct'); setSelectedElement('productSelected', record); }}>
+              { numberToMoney(record.unit_price ?? 0, system) }
+            </span>
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap  font-bold ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`}>
             { numberToMoney(record.discount ?? 0, system) }

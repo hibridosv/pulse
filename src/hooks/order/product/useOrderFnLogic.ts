@@ -91,12 +91,21 @@ const addNew = async (data: any) => {
   }
 
 
-    /** Eliminar producto de la orden */
+  /** Eliminar producto de la orden */
   const del = async (id: string) => {
       await deleteProduct(`orders/product/${id}`);
   }
 
 
-  return { addNew, save, select, pay, cancel, update, quote, remissionNote, del }
+    /** Actualizar un campo de un producto */
+  const updateProduct = async (id: string, values: UpdateServiceInterface) => {
+      await updateOrder(`orders/product/${id}`, values);
+  }
+
+    const updatePrice = async (id: string, values: any) => {
+      await updateOrder(`orders/product/${id}/price`, values);
+  }
+
+  return { addNew, save, select, pay, cancel, update, quote, remissionNote, del, updateProduct, updatePrice }
 
 }
