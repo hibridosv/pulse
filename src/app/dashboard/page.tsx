@@ -4,11 +4,9 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { CharBarDay } from "@/components/dashboard/CharBarDay";
 import { CharBarWeek } from "@/components/dashboard/CharBarWeek";
 import { PrincipalInfo } from "@/components/dashboard/PrincipalInfo";
-import { useConfigLogic } from "@/hooks/config/useConfigLogic";
 import { useDashBoardLogic } from "@/hooks/config/useDashBoardLogic";
 
 export default function DashboardPage() {
-  useConfigLogic(); // carga todas las configuraciones necesarias
   useDashBoardLogic();
 
 

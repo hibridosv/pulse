@@ -1,5 +1,6 @@
 'use client';
 
+import { useConfigLogic } from '@/hooks/config/useConfigLogic';
 import useConfigStore from '@/stores/configStore';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -10,6 +11,7 @@ import Drawer from './Drawer'; // Restauramos la importación del Drawer
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
   const { user, client, permission } = useConfigStore();
+ useConfigLogic(); // carga todas las configuraciones necesarias
 
   return (
     <>

@@ -1,7 +1,7 @@
 'use client'
-import { useEffect } from 'react'
-import useConfigStore from '@/stores/configStore'
 import { extractActiveFeature } from '@/lib/config/config'
+import useConfigStore from '@/stores/configStore'
+import { useEffect } from 'react'
 
 export function useConfigLogic() {
   const { isLoaded, loadConfig, setActiveConfig, configurations, activeConfig} = useConfigStore()
@@ -13,10 +13,10 @@ export function useConfigLogic() {
   }, [isLoaded, loadConfig])
 
   useEffect(() => {
-    if (configurations && configurations.length > 0) {
+    if (!activeConfig && configurations && configurations.length > 0) {
       let extracted = extractActiveFeature(configurations)
       setActiveConfig(extracted)
     }
-  }, [configurations, setActiveConfig])
+  }, [configurations, activeConfig, setActiveConfig])
 
 }

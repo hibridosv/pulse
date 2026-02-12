@@ -6,9 +6,9 @@ import { getSession, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSave } from "react-icons/bi";
-import { LuLoader } from "react-icons/lu";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
+import { LuLoader } from "react-icons/lu";
 
 export default function Home() {
   const { status } = useSession();
@@ -21,7 +21,7 @@ export default function Home() {
   const [redirecting, setRedirecting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { clearConfig, isLoaded } = useConfigStore();
-  
+
   useEffect(() => {
     if (isLoaded){
       clearConfig();
@@ -108,13 +108,13 @@ export default function Home() {
             <div className="relative w-28 h-28 mx-auto">
               <div className="absolute inset-0 bg-accent/20 rounded-3xl blur-xl animate-pulse-glow"></div>
               <div className="relative w-full h-full bg-white/[0.12] rounded-3xl backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl">
-                <span className="text-6xl font-black text-white tracking-tighter" style={{ textShadow: '0 0 40px rgba(255,255,255,0.15)' }}>P</span>
+                <span className="text-6xl font-black text-white tracking-tighter" style={{ textShadow: '0 0 40px rgba(255,255,255,0.15)' }}>H</span>
               </div>
             </div>
           </div>
 
           <h1 className="text-6xl font-black text-white mb-4 tracking-tight animate-slide-up" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.2)' }}>
-            Pulse
+            Hibrido
           </h1>
           <div className="flex items-center justify-center gap-3 mb-6 animate-slide-up-delay">
             <div className="h-px w-12 bg-gradient-to-r from-transparent to-white/30"></div>
@@ -163,10 +163,10 @@ export default function Home() {
             <div className="relative w-18 h-18 mx-auto mb-4">
               <div className="absolute inset-0 bg-primary/30 rounded-2xl blur-lg"></div>
               <div className="relative w-16 h-16 mx-auto bg-primary rounded-2xl flex items-center justify-center shadow-xl shadow-primary/30">
-                <span className="text-3xl font-black text-text-inverted">P</span>
+                <span className="text-3xl font-black text-text-inverted">H</span>
               </div>
             </div>
-            <h1 className="text-xl font-bold text-text-base">Pulse</h1>
+            <h1 className="text-xl font-bold text-text-base">Hibrido</h1>
             <div className="w-8 h-0.5 bg-accent mx-auto rounded-full mt-2"></div>
           </div>
 
@@ -279,7 +279,7 @@ export default function Home() {
 
           {/* Pie sutil */}
           <p className="text-center text-xs text-text-muted/30 mt-8 tracking-widest uppercase animate-fade-in-delay">
-            Pulse &middot; Gestión Empresarial
+            Hibrido &middot; Gestión Empresarial
           </p>
         </div>
       </div>

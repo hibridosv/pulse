@@ -68,7 +68,7 @@ const useConfigStore = create(
           set({ error: false });
         } catch (error) {
           useToastMessageStore.getState().setError(error);
-          set({ error: true });
+          set({ error: true, isLoaded: false });
         } finally {
           set({ loading: false });
         }
