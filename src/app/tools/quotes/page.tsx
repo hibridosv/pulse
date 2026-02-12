@@ -20,15 +20,15 @@ export default function Page() {
   const data = quotes?.data || [];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-7 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="LISTA DE COTIZACIONES" />
         <div className="p-4">
           <QuotesTable records={data} isLoading={loading} />
           <Pagination records={quotes} handlePageNumber={handlePageNumber } />
         </div>
     </div>
-    <div className="col-span-3">
+    <div className="md:col-span-3">
         <ViewTitle text="DETALLES" />
         <div className="mt-2 p-2">
           <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar cotización" />

@@ -20,15 +20,15 @@ export default function Page() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-7 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="Historial de transacciones" />
         <div className="p-4">
           <HistoryTable />
         </div>
         <Pagination records={history} handlePageNumber={handlePageNumber } />
     </div>
-    <div className="col-span-3">
+    <div className="md:col-span-3">
         <ViewTitle text="Total en cuentas" />
         <div className="p-4">
           <CashTotal />

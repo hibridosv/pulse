@@ -16,14 +16,14 @@ export default function Page() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-4 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className="md:col-span-4 md:border-r md:border-primary">
         <ViewTitle text="Nueva Cuenta" />
         <div className="p-4">
           <AccountForm />
         </div>
     </div>
-    <div className="col-span-6">
+    <div className="md:col-span-6">
         <div className="flex justify-between items-center">
           <ViewTitle text="Listado de cuentas" />
           <MdCurrencyExchange size={28} className="clickeable mr-4 animate-pulse" color="red" onClick={()=> openModal("AccountsTransfers")} />

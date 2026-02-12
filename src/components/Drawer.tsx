@@ -192,7 +192,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className={`left-0 top-0 h-full w-64 shadow-lg z-50 transform transition-all duration-500 ease-in-out flex flex-col relative bg-[url('/img/sidenav.jpg')] bg-cover bg-center ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+        className={`left-0 top-0 h-full w-[85vw] max-w-[16rem] sm:w-64 shadow-lg z-50 transform transition-all duration-500 ease-in-out flex flex-col relative bg-[url('/img/sidenav.jpg')] bg-cover bg-center ${isOpen ? 'opacity-100' : 'opacity-0'}`}
         onClick={(e) => e.stopPropagation()}
         style={{ transform: isOpen ? "translateX(0)" : "translateX(-100%)" }}
       >

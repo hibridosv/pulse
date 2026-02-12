@@ -39,12 +39,12 @@ export default function Page() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-5 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className="md:col-span-5 md:border-r md:border-primary">
         <ViewTitle text="Cajas disponibles" />
         <Drawers />
     </div>
-    <div className="col-span-5">
+    <div className="md:col-span-5">
         <div className="flex justify-between">
           <ViewTitle text="Sus ultimos cortes" />
           <div onClick={()=>setShowAll(!showAll)} className="text-right">

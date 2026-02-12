@@ -12,6 +12,7 @@ interface ordersProductsStoreI {
   loading: boolean;
   sending: boolean;
   saving: boolean;
+  collecting: boolean;
   deleting: boolean;
   addOrder: (url: string, data: any) => Promise<void>;
   loadOrders: (url: string, showToast?: boolean) => Promise<void>;
@@ -31,6 +32,7 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
   loading: false,
   sending: false,
   saving: false,
+  collecting: false,
   deleting: false,
 
 
@@ -89,7 +91,7 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
 
 
   payOrder: async (url, data) => {
-        set({ sending: true });
+        set({ collecting: true });
         try {
             const response = await createService(url, data);
             set({ order: null, error: false });
@@ -99,7 +101,7 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
             useToastMessageStore.getState().setError(error);
             set({ error: true });
         } finally {
-            set({ sending: false });
+            set({ collecting: false });
         }
     },
 

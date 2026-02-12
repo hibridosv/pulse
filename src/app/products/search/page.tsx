@@ -35,15 +35,15 @@ export default function Page() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-      <div className="col-span-7 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+      <div className="md:col-span-7 md:border-r md:border-primary">
           <ViewTitle text={getNameOfPage(pageParam)} />
           <div className="p-2">
             { loading ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsTableLink records={products?.data} link={pageParam} /> }
           </div>
 
       </div>
-      <div className="col-span-3">
+      <div className="md:col-span-3">
           <div className="flex justify-between">
             <ViewTitle text="Buscar Producto" />
           </div>

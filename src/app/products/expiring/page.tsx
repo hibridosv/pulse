@@ -19,12 +19,12 @@ export default function Page() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-7 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="Proximos Vencimientos" />
         <ShowProductsExpiredTable records={productsExpired} isLoading={isLoading} />
     </div>
-    <div className="col-span-3">
+    <div className="md:col-span-3">
         <ViewTitle text="Detalles" />
         <ExpiredStatistics statics={expired} isLoading={isLoading} />
     </div> 

@@ -30,8 +30,8 @@ export default function Page() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-        <div className="col-span-5 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+        <div className="md:col-span-5 md:border-r md:border-primary">
             <ViewTitle text="Registrar nuevo Producto" />
 
             <div className="w-full px-4">
@@ -207,7 +207,7 @@ export default function Page() {
           </div>
 
         </div>
-        <div className="col-span-5">
+        <div className="md:col-span-5">
             <ViewTitle text="Ultimos Productos" />
             <div className="p-2">
               { loadingProducts ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsNewTable records={lastProducts?.data} /> }

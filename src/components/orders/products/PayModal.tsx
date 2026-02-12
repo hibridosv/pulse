@@ -28,7 +28,7 @@ export const nameOfPaymentType = (type: number) => {
 export function PayModal(props: PayModalI) {
   const { onClose, isShow } = props;
   const { payMethods } = useConfigStore();
-  const { order, sending } = ordersProductsStore();
+  const { order, collecting } = ordersProductsStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
   const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
   const paymentType = getSelectedElement('paymentType') ?? 1;
@@ -65,7 +65,7 @@ export function PayModal(props: PayModalI) {
                     />
                   </div>
                     <div className="flex justify-center mt-2">
-                      <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={sending} preset={sending ? Preset.saving : Preset.save} isFull />
+                      <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={collecting} preset={collecting ? Preset.saving : Preset.save} isFull />
                     </div>
                 </div>
                 ) :
@@ -75,8 +75,8 @@ export function PayModal(props: PayModalI) {
                      <Alert text="Debe agregar un cliente para continuar con el credito" type="danger" isDismissible={false} /> : 
                      paymentType === 5 && order?.client_id && order?.client?.is_credit_block == 1 ?
                       <Alert text="Cliente bloqueado para otrorgar credito" type="danger" isDismissible={false} /> :
-                      <Button type="submit" preset={sending ? Preset.saving : Preset.primary} 
-                      text={ paymentType === 5  ? `Asignar Credito` : `Pagar con ${nameOfPaymentType(paymentType)}`} disabled={sending} />
+                      <Button type="submit" preset={collecting ? Preset.saving : Preset.primary} 
+                      text={ paymentType === 5  ? `Asignar Credito` : `Pagar con ${nameOfPaymentType(paymentType)}`} disabled={collecting} />
                     }
                   </div>
                 )}
@@ -84,7 +84,7 @@ export function PayModal(props: PayModalI) {
             </div>
         </div>
       </Modal.Body>
-          { !sending && order?.invoice_assigned?.type != 8 &&
+          { !collecting && order?.invoice_assigned?.type != 8 &&
           <div className='flex justify-between px-4 py-2 text-sm font-semibold border rounded-lg transition-colors duration-150'>
             {
               payMethods && payMethods.length > 0 && payMethods.map((method: any) => {
@@ -95,7 +95,7 @@ export function PayModal(props: PayModalI) {
             }
           </div> }
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} isFull disabled={sending} /> 
+        <Button onClick={onClose} preset={Preset.close} isFull disabled={collecting} /> 
       </Modal.Footer>
     </Modal>
   );

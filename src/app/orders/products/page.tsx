@@ -25,8 +25,8 @@ export default function Page() {
   const { modals, closeModal, openModal} = useModalStore();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-          <div className="col-span-6 border-r md:border-sky-600">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+          <div className="md:col-span-6 md:border-r md:border-primary">
             <div className="pt-2">
               <OrderProductsSearchPrincipal />
             </div>
@@ -34,7 +34,7 @@ export default function Page() {
               <OrderProductsTable order={order} />
             </div>
           </div>
-          <div className="col-span-4 flex justify-center ">
+          <div className="md:col-span-4 flex justify-center ">
             <ShowOrders />
             <ShowTotal order={order} />
             <div className="absolute bottom-2 ">

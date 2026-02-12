@@ -39,15 +39,15 @@ export default function Page() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-7 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className="md:col-span-7 md:border-r md:border-primary">
           <ViewTitle text="Cuentas por cobrar" />
         <div className="p-4">
           <AccountsReceivableTable records={data} isLoading={loading} />
           <Pagination records={accounts} handlePageNumber={handlePageNumber } />
         </div>
     </div>
-    <div className="col-span-3">
+    <div className="md:col-span-3">
         <ViewTitle text="Resumen" />
             <div className="p-4">
               <ShowTotal quantity={countItemsWithStatus(data, "status", 1)} text="Creditos Pendientes" number={true} />

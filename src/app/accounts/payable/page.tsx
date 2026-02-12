@@ -34,8 +34,8 @@ export default function Page() {
   const data = accounts?.data || [];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-7 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className="md:col-span-7 md:border-r md:border-primary">
         <div className="flex justify-between">
           <ViewTitle text="Cuentas por pagar" />
           <BiPlusCircle size={28} className="clickeable text-primary mt-3 mr-4" onClick={()=>{openModal('payableAdd'); }} />
@@ -45,7 +45,7 @@ export default function Page() {
           <Pagination records={accounts} handlePageNumber={handlePageNumber } />
         </div>
     </div>
-    <div className="col-span-3">
+    <div className="md:col-span-3">
         <ViewTitle text="Resumen" />
             <div className="p-4">
               <ClientsSearch param="customers" placeholder="Buscar Proveedor" />

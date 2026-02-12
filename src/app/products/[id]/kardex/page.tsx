@@ -35,12 +35,12 @@ export default function Page({ params }: { params: { id: string } }) {
   
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-      <div className="col-span-7 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+      <div className="md:col-span-7 md:border-r md:border-primary">
           <ViewTitle text="Kardex de Producto" />
           <ShowKardexTable product={product} kardex={kardex} />
       </div>
-      <div className="col-span-3">
+      <div className="md:col-span-3">
           <div className="flex justify-between">
             <ViewTitle text="Busqueda" />
           </div>

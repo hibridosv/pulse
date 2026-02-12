@@ -30,8 +30,8 @@ export default function Page() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className={`${adjustmentActive ? 'col-span-7' : 'col-span-6'} border-r md:border-primary`}>
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className={`${adjustmentActive ? 'md:col-span-7' : 'md:col-span-6'} md:border-r md:border-primary`}>
         <ViewTitle text="Ajustar Inventario" />
         { adjustmentActive ? 
         (<div className="p-4">
@@ -45,7 +45,7 @@ export default function Page() {
         </div>) 
         }
     </div>
-    <div className={`${adjustmentActive ? 'col-span-3' : 'col-span-4'}`}>
+    <div className={`${adjustmentActive ? 'md:col-span-3' : 'md:col-span-4'}`}>
         <ViewTitle text="Iniciar Ajuste" />
 
           <div className="m-4">

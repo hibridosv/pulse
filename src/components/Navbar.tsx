@@ -15,27 +15,27 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-primary p-2 text-text-inverted shadow-md sticky top-0 z-50">
-        <div className="flex justify-between items-center px-4">
-         
-         <div className="flex items-center gap-4">
+      <nav className="bg-primary px-2 py-1.5 sm:p-2 text-text-inverted shadow-md sticky top-0 z-50">
+        <div className="flex justify-between items-center px-2 sm:px-4">
+
+         <div className="flex items-center">
             <button
               onClick={() => setIsDrawerOpen(true)}
               className="text-text-inverted hover:text-secondary"
             >
-              <HiMenu size={32} />
+              <HiMenu size={26} className="sm:w-8 sm:h-8" />
             </button>
           </div>
 
-          <div className="flex items-center gap-4 font-semibold">
-            <div>{ user?.name }</div>
-            <div>|</div>
-            <div>{ client?.nombre_comercial }</div>
+          <div className="flex items-center gap-1 sm:gap-4 font-semibold text-xs sm:text-sm">
+            <div className="hidden sm:block">{ user?.name }</div>
+            <div className="hidden sm:block">|</div>
+            <div className="truncate max-w-[160px] sm:max-w-none">{ client?.nombre_comercial }</div>
           </div>
 
           <div>
             <Link href="/orders/products" className="text-text-inverted hover:text-secondary">
-              <IoHome size={26} />
+              <IoHome size={22} className="sm:w-7 sm:h-7" />
             </Link>
           </div>
 

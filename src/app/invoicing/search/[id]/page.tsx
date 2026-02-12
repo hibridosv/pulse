@@ -20,12 +20,12 @@ export default function Page({ params }: { params: { id: string } }) {
   const { modals, closeModal } = useModalStore();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-      <div className="col-span-7 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+      <div className="md:col-span-7 md:border-r md:border-primary">
           <ViewTitle text="Detalles de la factura" />
           <InvoiceDetails isLoading={isLoading} order={order} onElectronic={false} />
       </div>
-      <div className="col-span-3">
+      <div className="md:col-span-3">
           <ViewTitle text="Detalles" />
           <div className="w-full p-4">
             <InvoiceDetailsButtons order={order} />

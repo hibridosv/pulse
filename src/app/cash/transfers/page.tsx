@@ -17,14 +17,14 @@ export default function Page() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-    <div className="col-span-4 border-r md:border-primary">
+    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
+    <div className="md:col-span-4 md:border-r md:border-primary">
         <ViewTitle text="Entradas y salidas de efectivo" />
         <div className="p-4">
           <TransfersForm />
         </div>
     </div>
-    <div className="col-span-6">
+    <div className="md:col-span-6">
         <ViewTitle text="Listado de transacciones" />
         <div className="p-4">
           <TransfersTable />
