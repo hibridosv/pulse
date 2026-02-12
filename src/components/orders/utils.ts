@@ -1,5 +1,23 @@
 import { getTotalPercentage } from "@/lib/utils";
 
+export const sumarTotalesWithoutDiscount = (datos: any): number => {
+  let totalSuma = 0;
+  let totalDiscount = 0;
+  let total = 0;
+
+  datos?.forEach((elemento: any) => {
+    if (elemento.hasOwnProperty('total')) {
+      totalSuma += elemento.total;
+    }
+    if (elemento.hasOwnProperty('discount')) {
+      totalDiscount += elemento.discount;
+    }
+  });
+  total = totalDiscount + totalSuma;
+
+  return total;
+}
+
 export const sumarDiscount = (datos: any): number => {
   let totalSuma = 0;
 

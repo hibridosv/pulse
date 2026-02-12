@@ -49,7 +49,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
 
     return (
         <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
-          <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable'}`} 
+          <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable'} ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`} 
             onClick={()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') }}>
             { record.quantity }
           </td>
@@ -74,8 +74,10 @@ export function OrderProductsTable(props: OrderProductsTableI) {
               { numberToMoney(record.unit_price ?? 0, system) }
             </span>
           </td>
-          <td className={`px-2 py-1 text-center whitespace-nowrap  font-bold ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`}>
-            { numberToMoney(record.discount ?? 0, system) }
+          <td className={`px-2 py-1 text-center whitespace-nowrap  font-bold`}>
+            <span className="clickeable" onClick={()=> { openModal('discountModal'); setSelectedElement('productSelected', record); setSelectedElement('discountType', 1) }}>
+              { numberToMoney(record.discount ?? 0, system) }
+            </span>
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium ${ !isDefaultCommission && 'hidden'}`}>
             { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }

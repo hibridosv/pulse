@@ -102,10 +102,20 @@ const addNew = async (data: any) => {
       await updateOrder(`orders/product/${id}`, values);
   }
 
-    const updatePrice = async (id: string, values: any) => {
+  const updatePrice = async (id: string, values: any) => {
       await updateOrder(`orders/product/${id}/price`, values);
   }
 
-  return { addNew, save, select, pay, cancel, update, quote, remissionNote, del, updateProduct, updatePrice }
+
+    const discount = async (id: string, values: any, discountType: number) => {
+      if (discountType == 1) {
+        await updateOrder(`orders/product/discount`, values);
+      } else {
+        await updateOrder(`orders/${id}/discount`, values);
+      }
+  }
+
+
+  return { addNew, save, select, pay, cancel, update, quote, remissionNote, del, updateProduct, updatePrice, discount }
 
 }
