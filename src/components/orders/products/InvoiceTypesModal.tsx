@@ -1,4 +1,5 @@
 "use client";
+import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import { LiComponent } from "@/components/button/LiComponent";
 import Modal from "@/components/modal/Modal";
@@ -22,7 +23,6 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   const { invoiceTypes } = useConfigStore();
   const { update } = useOrderFnLogic();
   const { closeModal} = useModalStore();
-
 
   if (!isShow || !order) return null;
 
@@ -58,6 +58,9 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
               }
             </ul>
           </div>
+          { error &&
+          <Alert type="danger" text={`Existe un error, No se actualizo correctamente. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
+          }
         </div>
       </Modal.Body>
       <Modal.Footer>

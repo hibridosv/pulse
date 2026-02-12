@@ -1,4 +1,5 @@
 "use client";
+import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
@@ -23,8 +24,6 @@ export function ChangePriceProductModal(props: ChangePriceProductModalI) {
   useOrderLoadersLogic(isShow)
   const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const product = getSelectedElement('productSelected');
-  const rowToUpdate = getSelectedElement('rowToUpdate');
-
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
 
@@ -65,6 +64,9 @@ export function ChangePriceProductModal(props: ChangePriceProductModalI) {
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>
           </div>
+          { error &&
+          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el precio. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
+          }
         </div>
       </Modal.Body>
       <Modal.Footer>

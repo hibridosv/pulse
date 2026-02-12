@@ -1,4 +1,5 @@
 "use client";
+import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderLoadersLogic } from "@/hooks/order/product/useOrderLoadersLogic";
@@ -24,7 +25,6 @@ export function ChangeQuantityModal(props: ChangeQuantityModalI) {
   const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
-
   useEffect(() => {
     if (product && isShow) {
       setValue("quantity", product?.quantity)
@@ -77,6 +77,9 @@ export function ChangeQuantityModal(props: ChangeQuantityModalI) {
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>
           </div>
+          { error &&
+          <Alert type="danger" text={`Existe un error, No se actualizo correctamente la cantidad. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
+          }
         </div>
       </Modal.Body>
       <Modal.Footer>

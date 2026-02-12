@@ -1,4 +1,5 @@
 "use client";
+import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
@@ -22,7 +23,7 @@ export interface DiscountsModalI {
 
 export function DiscountsModal(props: DiscountsModalI) {
   const { onClose, isShow, byCode } = props;
-  const { system, activeConfig } = useConfigStore();
+  const { system } = useConfigStore();
 
   const { order, sending, error } = ordersProductsStore();
   const { discount } = useOrderFnLogic();
@@ -31,7 +32,6 @@ export function DiscountsModal(props: DiscountsModalI) {
   const product = getSelectedElement('productSelected');
   const typeOfDiscount = getSelectedElement('typeOfDiscount') ?? 1; // 1: cantidad o 2: porcentaje
   const discountType = getSelectedElement('discountType') ?? 1;// 1: producto o 2: orden 
-
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
 
   useEffect(() => {
@@ -123,6 +123,9 @@ export function DiscountsModal(props: DiscountsModalI) {
               <span className="text-sm font-bold text-primary">{discountType == 1 ? numberToMoney(product?.total)  : numberToMoney(sumarTotales(order?.invoiceproducts), system)}</span>
             </div>
           </div>
+          }
+          { error &&
+          <Alert type="danger" text={`Existe un error, No se efectuo correctamente el descuento. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
           }
         </div>
       </Modal.Body>
