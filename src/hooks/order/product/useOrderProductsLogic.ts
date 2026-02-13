@@ -28,17 +28,20 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
 
   useEffect(() => {
         if (initialLoad && activeConfig) {
-           if (activeConfig.includes('sales-by-name') && typeOfSearch === undefined) {
-            setSelectedElement('typeOfSearch', true);
-           } else {
-            setSelectedElement('typeOfSearch', false);
-           }
-
+            if (typeOfSearch === undefined) {
+               if (activeConfig.includes('sales-by-name')) {
+                  setSelectedElement('typeOfSearch', true);
+               } else {
+                  setSelectedElement('typeOfSearch', false);
+               }
+            }
+            
            if (!invoiceTypeSelected) {
               setSelectedElement('invoiceTypeSelected', invoiceSelected);
            }
            setSelectedElement('typeOfPrice', 1); // tipo de precio
         }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, typeOfSearch])
 
   useEffect(() => {
