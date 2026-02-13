@@ -30,7 +30,7 @@ export function SetRemissionNoteModal(props: SetRemissionNoteModalI) {
     if (!type || !order) return;
 
     remissionNote(order.id, type);
-    if (!error && !sending) {
+    if (!error) {
       closeModal('setRemissionNote');
     }
   }

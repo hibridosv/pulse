@@ -46,7 +46,7 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
         };
 
       await updateOrder(`orders/${order.id}/others`, values);
-      if (!error && !sending) {
+      if (!error) {
         clearSelectedElement('optionSelected');
         clearSelectedElement('optionSelectedType');
         onClose();
@@ -54,7 +54,9 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
  }
 
 const handleClose = ()=>{
-  onClose();
+        clearSelectedElement('optionSelected');
+        clearSelectedElement('optionSelectedType');
+        onClose();
 }
 
   return (

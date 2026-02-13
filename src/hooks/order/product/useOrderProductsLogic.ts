@@ -63,7 +63,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
                openModal('specialSales')
             }
         }
-  }, [initialLoad, order, groupInvoiceProductsByCodSpecial])
+  }, [initialLoad, order, openModal])
 
    
 }

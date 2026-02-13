@@ -41,7 +41,7 @@ export function OtherSalesModal(props: OtherSalesModalI) {
     }
   }, [setFocus, isShow, setValue])
 
-  if (!isShow || !order) return null;
+  if (!isShow ) return null;
 
  const onSubmit = async(data: any) => {
       if (!data.quantity || !data.description|| !data.total) return;
@@ -50,12 +50,12 @@ export function OtherSalesModal(props: OtherSalesModalI) {
               description: data.description,
               quantity: data.quantity,
               total: data.total,
-              order_id: order.id,
+              order_id: order ? order.id : null,
               exempt: option?.id,
               product_type: optionType?.id
           };
-      await updateOrder(`orders/${order.id}/others`, values);
-      if (!error && !sending) {
+      await updateOrder(`orders/others`, values);
+      if (!error) {
         clearSelectedElement('optionSelected');
         clearSelectedElement('optionSelectedType');
         onClose();
@@ -63,9 +63,16 @@ export function OtherSalesModal(props: OtherSalesModalI) {
  }
 
 
+  const handleClose = ()=>{
+        clearSelectedElement('optionSelected');
+        clearSelectedElement('optionSelectedType');
+        onClose();
+  }
+
+
 
   return (
-    <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Otras Ventas" >
+    <Modal show={isShow} onClose={handleClose} size="sm" headerTitle="Otras Ventas" >
       <Modal.Body>
         <div className="p-4">
           <form className="w-full space-y-2" onSubmit={handleSubmit(onSubmit)} >
@@ -98,7 +105,7 @@ export function OtherSalesModal(props: OtherSalesModalI) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} disabled={sending} />
+        <Button onClick={handleClose} preset={Preset.close} disabled={sending} />
       </Modal.Footer>
     </Modal>
   );

@@ -60,7 +60,7 @@ export function SelectUserModal(props: SelectUserModalI) {
       value: item.id
     }
     update(order.id, values);
-    if (!error && !sending) {
+    if (!error) {
       setSelectedElement(tempSelectedName, item);
       closeModal('setUser');
     }

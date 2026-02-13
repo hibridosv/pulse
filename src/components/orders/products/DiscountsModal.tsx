@@ -37,7 +37,7 @@ export function DiscountsModal(props: DiscountsModalI) {
       setValue("quantity", null)
       setFocus('quantity', {shouldSelect: true})
     }
-  }, [setFocus, isShow, typeOfDiscount])
+  }, [setFocus, setValue, isShow, typeOfDiscount])
 
 
   if (!isShow || !order) return null;
@@ -56,7 +56,7 @@ export function DiscountsModal(props: DiscountsModalI) {
         byCode
       };
       discount(order.id, values, discountType);
-      if (!error && !sending) {
+      if (!error) {
         clearSelectedElement('productSelected');
         clearSelectedElement('discountType');
         clearSelectedElement('typeOfDiscount');

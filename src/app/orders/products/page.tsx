@@ -7,6 +7,7 @@ import { ChangePriceProductModal } from "@/components/orders/products/ChangePric
 import { ChangeQuantityModal } from "@/components/orders/products/ChangeQuantityModal";
 import { ChangeRowProductModal } from "@/components/orders/products/ChangeRowProductModal";
 import { DiscountsModal } from "@/components/orders/products/DiscountsModal";
+import { InitialButtons } from "@/components/orders/products/InitialButtons";
 import { InvoiceTypesModal } from "@/components/orders/products/InvoiceTypesModal";
 import { OrderButtons } from "@/components/orders/products/OrderButtons";
 import { OrderProductsTable } from "@/components/orders/products/OrderProductsTable";
@@ -29,7 +30,7 @@ export default function Page() {
   useOrderProductsLogic(true);
   const { order } = ordersProductsStore();
   const { modals, closeModal } = useModalStore();
-
+  console.log(modals);
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
           <div className="md:col-span-6 md:border-r md:border-primary">
@@ -38,6 +39,7 @@ export default function Page() {
             </div>
             <div className="relative z-0">
               <OrderProductsTable order={order} />
+              <InitialButtons />
             </div>
           </div>
           <div className="md:col-span-4 flex justify-center ">

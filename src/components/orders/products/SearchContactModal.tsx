@@ -45,7 +45,7 @@ export function SearchContactModal(props: SearchContactModalI) {
       value: item.id
     }
     update(order.id, values);
-    if (!error && !sending) {
+    if (!error) {
       closeModal('searchContact');
     }
   }

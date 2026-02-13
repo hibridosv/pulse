@@ -32,7 +32,7 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
       value: type.id
     }
     update(order.id, values);
-    if (!error && !sending) {
+    if (!error) {
         setSelectedElement('invoiceTypeSelected', type);
         closeModal('invoiceType');
       }

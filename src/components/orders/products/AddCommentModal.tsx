@@ -43,7 +43,7 @@ export function AddCommentModal(props: AddCommentModalI) {
        value: data.value
      }
     update(order.id, values);
-     if (!error && !sending) {
+     if (!error) {
        clearSelectedElement('rowToUpdate');
        clearSelectedElement('productSelected');
        onClose();
@@ -57,7 +57,7 @@ export function AddCommentModal(props: AddCommentModalI) {
        value: null
      }
     update(order.id, values);
-     if (!error && !sending) {
+     if (!error) {
        clearSelectedElement('rowToUpdate');
        clearSelectedElement('productSelected');
        onClose();

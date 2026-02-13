@@ -41,7 +41,7 @@ export function ComissionsProductModal(props: ComissionsProductModalI) {
       quantity: data.quantity,
     };
     updatePrice(product.id, values);
-     if (!error && !sending) {
+     if (!error) {
        clearSelectedElement('productSelected');
        onClose();
      }

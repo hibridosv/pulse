@@ -69,7 +69,7 @@ export function ChangeRowProductModal(props: ChangeRowProductModalI) {
        value: null
      }
     updateProduct(product.id, values);
-     if (!error && !sending) {
+     if (!error) {
        clearSelectedElement('rowToUpdate');
        clearSelectedElement('productSelected');
        onClose();
