@@ -50,13 +50,13 @@ export function OrderButtons(props: OrderButtonsI) {
         { fieldsRequired && fieldsRequired.length > 0 && 
           <div>Faltan los siguientes campos del cliente para facturar: <div className="text-red-500">{`${fieldsRequired.join(', ')}.`}</div></div> 
         }
-        <div className='grid grid-cols-4 gap-1.5 sm:flex sm:gap-0'>
-          <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-sm clickeable w-full'><IoMdOptions className='sm:mr-1' /> <span className='hidden sm:inline'>Opciones</span></div>} >
+        <div className='grid grid-cols-2 gap-1.5 sm:flex sm:gap-0'>
+          <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-xs sm:text-sm clickeable w-full h-full py-2.5 sm:py-2'><IoMdOptions className='mr-1' /> Opciones</div>} >
             <Buttons order={order} />
           </Popper>
-        <div className='button-cyan rounded-lg sm:rounded-none text-sm clickeable' onClick={saving ? ()=>{} : ()=>save(order.id)}>{ saving ? <LoaderIcon className='sm:mr-1' /> : <AiFillSave className='sm:mr-1' />} <span className='hidden sm:inline'>Guardar</span> </div>
-        <div className={`button-lime rounded-lg sm:rounded-none text-sm ${payDisabled ? 'cursor-not-allowed' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{ openModal('payOrder') }}> <FaRegMoneyBillAlt className='sm:mr-1' /> <span className='hidden sm:inline'>Cobrar</span> </div>
-        <div className='button-red rounded-lg sm:rounded-r-lg sm:rounded-l-none text-sm clickeable' onClick={()=>{openModal('deleteOrder')}}><GiCancel className='sm:mr-1' /> <span className='hidden sm:inline'>Cancelar</span> </div>
+        <div className='button-cyan rounded-lg sm:rounded-none text-xs sm:text-sm clickeable py-2.5 sm:py-2' onClick={saving ? ()=>{} : ()=>save(order.id)}>{ saving ? <LoaderIcon className='mr-1' /> : <AiFillSave className='mr-1' />} Guardar</div>
+        <div className={`button-lime rounded-lg sm:rounded-none text-xs sm:text-sm py-2.5 sm:py-2 ${payDisabled ? 'cursor-not-allowed' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{ openModal('payOrder') }}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar</div>
+        <div className='button-red rounded-lg sm:rounded-r-lg sm:rounded-l-none text-xs sm:text-sm clickeable py-2.5 sm:py-2' onClick={()=>{openModal('deleteOrder')}}><GiCancel className='mr-1' /> Cancelar</div>
       </div>
       <DeleteModal
               isShow={modals.deleteOrder}

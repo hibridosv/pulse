@@ -32,7 +32,7 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
   const option = getSelectedElement('optionSelected');
 
 
-  if (!isShow || !order) return null;
+  if (!isShow) return null;
 
  const onSubmit = async(data: any) => {
         if ( !data.description|| !data.total) return;

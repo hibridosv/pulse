@@ -1,14 +1,17 @@
 'use client';
 
-import React, { FC, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { PopperContext } from './popperContext';
 
 interface PopperProps {
   label: React.ReactNode;
   children: React.ReactNode;
-  closeOnClick?: boolean; // <-- La nueva propiedad
+  closeOnClick?: boolean;
 }
+
+const isTouchDevice = () =>
+  typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
 export const Popper: FC<PopperProps> = ({ label, children, closeOnClick = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +54,27 @@ export const Popper: FC<PopperProps> = ({ label, children, closeOnClick = false 
     }
   }, [isOpen, calculatePosition]);
 
+  // Cerrar al tocar fuera en dispositivos táctiles
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleOutsideTouch = (e: TouchEvent | MouseEvent) => {
+      if (
+        popperRef.current && !popperRef.current.contains(e.target as Node) &&
+        labelRef.current && !labelRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('touchstart', handleOutsideTouch);
+    document.addEventListener('mousedown', handleOutsideTouch);
+    return () => {
+      document.removeEventListener('touchstart', handleOutsideTouch);
+      document.removeEventListener('mousedown', handleOutsideTouch);
+    };
+  }, [isOpen]);
+
   const handleEnter = () => {
+    if (isTouchDevice()) return;
     if (leaveTimeout.current) {
       clearTimeout(leaveTimeout.current);
     }
@@ -59,9 +82,14 @@ export const Popper: FC<PopperProps> = ({ label, children, closeOnClick = false 
   };
 
   const handleLeave = () => {
+    if (isTouchDevice()) return;
     leaveTimeout.current = setTimeout(() => {
       setIsOpen(false);
     }, 150);
+  };
+
+  const handleClick = () => {
+    setIsOpen(prev => !prev);
   };
 
   const menuContent = (
@@ -88,6 +116,7 @@ export const Popper: FC<PopperProps> = ({ label, children, closeOnClick = false 
       <div
         ref={labelRef}
         onMouseEnter={handleEnter}
+        onClick={handleClick}
       >
         {label}
       </div>
