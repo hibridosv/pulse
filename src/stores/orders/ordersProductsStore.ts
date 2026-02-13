@@ -1,6 +1,7 @@
 import { errorSound, successSound } from '@/lib/config/config';
 import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
+import useModalStore from '../modalStorage';
 import useTempSelectedElementStore from '../tempSelectedElementStore';
 import useToastMessageStore from '../toastMessageStore';
 
@@ -96,7 +97,10 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
             const response = await createService(url, data);
             set({ order: null, error: false });
             useTempSelectedElementStore.getState().setSelectedElement("paymentSuccess", response.data.data);
+            ordersProductsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
             useToastMessageStore.getState().setMessage(response);
+            useModalStore.getState().closeModal('payOrder');
+            useModalStore.getState().openModal('paymentSuccess');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
@@ -110,6 +114,7 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
         try {
             const response = await createService(url, data);
             set({ order: null, error: false});
+            ordersProductsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -124,6 +129,7 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
     try {
       const response = await deleteService(url); 
       set({ order: null, error: false});
+      ordersProductsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
       useToastMessageStore.getState().setMessage(response);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -154,6 +160,7 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
         try {
             const response = await updateService(url, data);
             set({ order: null, error: false });
+            ordersProductsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
             useToastMessageStore.getState().setMessage(response);
         } catch (error) {
             useToastMessageStore.getState().setError(error);

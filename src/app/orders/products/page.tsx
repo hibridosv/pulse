@@ -28,7 +28,7 @@ import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 export default function Page() {
   useOrderProductsLogic(true);
   const { order } = ordersProductsStore();
-  const { modals, closeModal, openModal} = useModalStore();
+  const { modals, closeModal } = useModalStore();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">

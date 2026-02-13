@@ -54,15 +54,13 @@ export function SearchContactModal(props: SearchContactModalI) {
 
   return (
     <Modal show={isShow} onClose={onClose} size="md" headerTitle={`Asignar ${setNameContact(tempSelectedName)}`} >
-      <Modal.Body>
-        <div className="h-96">
-          <ClientsSearch param={setParam(tempSelectedName)} placeholder={`Buscar ${setNameContact(tempSelectedName)}`} onSelect={updateContact} tempSelectedName={tempSelectedName} />
-          <ShowClientSearched onClose={clearContact} tempSelectedName={tempSelectedName} />
-          { error && 
-          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el ${setNameContact(tempSelectedName)}. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
-          }
-        </div>
-      </Modal.Body>
+      <div className="p-2 space-y-3 overflow-visible">
+        <ClientsSearch param={setParam(tempSelectedName)} placeholder={`Buscar ${setNameContact(tempSelectedName)}`} onSelect={updateContact} tempSelectedName={tempSelectedName} />
+        <ShowClientSearched onClose={clearContact} tempSelectedName={tempSelectedName} />
+        { error &&
+        <Alert type="danger" text={`Existe un error, No se actualizo correctamente el ${setNameContact(tempSelectedName)}. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
+        }
+      </div>
       <Modal.Footer>
         <Button onClick={() => { openModal('contactAdd') }} text={`Registrar ${setNameContact(tempSelectedName)}`} preset={Preset.add}/>
         <Button onClick={onClose} preset={Preset.close} disabled={sending} /> 

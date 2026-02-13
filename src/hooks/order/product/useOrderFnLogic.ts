@@ -36,9 +36,6 @@ const addNew = async (data: any) => {
 /** GUardar la orden en la que se trabaj */
   const save = async (id: string) => {
       await saveOrder(`orders/${id}/save`, {});
-      if (!error) {
-        await loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-      }
   }
    
   /** Seleccionar una orden con id */
@@ -54,19 +51,11 @@ const addNew = async (data: any) => {
           invoice_type_id: order?.invoice_type_id,
         };
       await payOrder(`orders/${order?.id}/pay`, values);
-      if (!error) {
-        openModal('paymentSuccess');
-        await loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-        closeModal('payOrder');
-      }
   }
 
   /** Eliminar la orden */
   const cancel = async (id: string) => {
       await deleteOrder(`orders/${id}`);
-      if (!error) {
-        await loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-      }
   }
 
   /** Actualizar un campo de la orden */
@@ -77,17 +66,11 @@ const addNew = async (data: any) => {
  /* Guardar como cotizacion */ 
   const quote = async (id: string) => {
     await saveAs(`tools/quotes/${id}`, {});
-    if (!error) {
-        await loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-      }
   }
 
  /* Guardar como nota de remision */ 
   const remissionNote = async (id: string, type: number) => {
     await saveAs(`remissions/${id}/${type}`, {});
-    if (!error) {
-        await loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-      }
   }
 
 
