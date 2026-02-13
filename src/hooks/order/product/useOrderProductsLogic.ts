@@ -39,7 +39,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
            }
            setSelectedElement('typeOfPrice', 1); // tipo de precio
         }
-  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement])
+  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, typeOfSearch])
 
   useEffect(() => {
     if (user && initialLoad) {
