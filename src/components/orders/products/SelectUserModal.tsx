@@ -28,13 +28,10 @@ export function SelectUserModal(props: SelectUserModalI) {
   const { user } = useConfigStore();
   const { getSelectedElement, setSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const tempSelectedName = getSelectedElement('setUser');
-  const { modals, closeModal, openModal} = useModalStore();
+  const { closeModal} = useModalStore();
   useOrderLoadersLogic(isShow)
   const { users } = useUserStore();
   const { update } = useOrderFnLogic();
-
-
-  const userSelected = getSelectedElement('userSelected');
 
 
   if (!isShow || !order) return null;
@@ -81,8 +78,8 @@ export function SelectUserModal(props: SelectUserModalI) {
                             <LiComponent
                               key={user.id}
                               content={user.name}
-                              onClick={user.id == userSelected?.id ? ()=>{} :  ()=> updateUser(user)}
-                              style={`${user.id == userSelected?.id && 'font-bold bg-primary/10 text-primary hover:bg-primary/20'}`}
+                              onClick={user.id == order[setRowToChange(tempSelectedName)] ? ()=>{} :  ()=> updateUser(user)}
+                              style={`${user.id == order[setRowToChange(tempSelectedName)] && 'font-bold bg-primary/10 text-primary hover:bg-primary/20'}`}
                             />
                           );
                   })

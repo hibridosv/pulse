@@ -1,6 +1,8 @@
 'use client'
+import { groupInvoiceProductsByCodSpecial } from '@/components/orders/utils';
 import { getFirstElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
+import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import { useEffect } from 'react';
@@ -14,17 +16,18 @@ import { useEffect } from 'react';
 export function useOrderProductsLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes } = useConfigStore();
   const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
-  const typeOfSearch = getSelectedElement('typeOfSearch');
+  const typeOfSearch = getSelectedElement('typeOfSearch'); // tipo de busqueda
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
-
   const { loadOrder, loadOrders } = ordersProductsStore();
   const { user } =  useConfigStore();
-  const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1);
+  const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
+  const {  order } = ordersProductsStore();
+  const { openModal } = useModalStore();
 
+  
 
   useEffect(() => {
         if (initialLoad && activeConfig) {
-           console.log("Load Config and dependences"); 
            if (activeConfig.includes('sales-by-name') && typeOfSearch === undefined) {
             setSelectedElement('typeOfSearch', true);
            } else {
@@ -34,14 +37,12 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
            if (!invoiceTypeSelected) {
               setSelectedElement('invoiceTypeSelected', invoiceSelected);
            }
-           setSelectedElement('typeOfPrice', 1);
-           setSelectedElement('isSpecialSale', false);
+           setSelectedElement('typeOfPrice', 1); // tipo de precio
         }
   }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement])
 
   useEffect(() => {
     if (user && initialLoad) {
-    console.log("Load order");
      loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
     }
    }, [initialLoad, user, loadOrder]);
@@ -49,10 +50,20 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
 
   useEffect(() => {
     if (initialLoad) {
-      console.log("Load orders");
      loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
     }
    }, [initialLoad, loadOrders]);
+
+
+   // verificar si exite algun producto con venta especial sin terminar el preoceso
+     useEffect(() => {
+        if (initialLoad && order) {
+            if (order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order).length > 0) {
+               console.log("Open modal special sales. Carga completa");
+               openModal('specialSales')
+            }
+        }
+  }, [initialLoad, order, groupInvoiceProductsByCodSpecial])
 
    
 }

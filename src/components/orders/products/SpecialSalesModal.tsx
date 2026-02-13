@@ -54,12 +54,11 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
  }
 
 const handleClose = ()=>{
-  setSelectedElement('isSpecialSale', false);
   onClose();
 }
 
   return (
-    <Modal show={isShow} onClose={handleClose} size="xl4" headerTitle="INGRESAR PRODUCTOS DE VENTA ESPECIAL" >
+    <Modal show={isShow} onClose={handleClose} size="xl4" headerTitle="INGRESAR PRODUCTOS DE VENTA ESPECIAL" closeOnOverlayClick={false} hideCloseButton={true} >
       <Modal.Body>
         <div className="p-4">
           <div className="grid grid-cols-1 md:grid-cols-10 pb-10">

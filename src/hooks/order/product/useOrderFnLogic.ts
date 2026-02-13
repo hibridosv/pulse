@@ -8,11 +8,11 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 export function useOrderFnLogic() {
   const { saveOrder, loadOrder, order, payOrder, error, loadOrders, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
   const { getSelectedElement } = useTempSelectedElementStore();
+  const {modals} = useModalStore();
   const paymentType = getSelectedElement('paymentType') ?? 1;
   const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;
-  const isSpecialSale = getSelectedElement('isSpecialSale') ?? false;
+  const specialSales = modals.specialSales ?? false;
   const { setError } = useToastMessageStore();
-  const { closeModal, openModal} = useModalStore();
 
 /// agrega una orden o un producto
 const addNew = async (data: any) => {
@@ -28,7 +28,7 @@ const addNew = async (data: any) => {
       order_type: 1, // venta, consignacion, ecommerce
       price_type: typeOfPrice, // tipo de precio del producto
       addOrSubtract: data.addOrSubtract ? data.addOrSubtract : 1, // 1 sumar 2 restar
-      special: isSpecialSale, // determina si es venta especial, debe activarse cuando se activa el modal
+      special: specialSales, // determina si es venta especial, debe activarse cuando se activa el modal
     };
     await addOrder(`orders`, values);
 }
