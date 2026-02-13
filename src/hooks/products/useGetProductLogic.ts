@@ -9,7 +9,6 @@ export function useGetProductLogic(productId: string, isShow: boolean, row: RowT
 
     useEffect(() => {
         if (isShow && productId) {
-            console.log("Desde el useEffect", productId)
             getRequest(`products/find?filterWhere[${row}]==${productId}&included=prices,category,quantityUnit,provider,brand,location`, false);
         }
     }, [getRequest, productId, isShow, row]);

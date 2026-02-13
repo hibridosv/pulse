@@ -30,7 +30,7 @@ export default function Page() {
   useOrderProductsLogic(true);
   const { order } = ordersProductsStore();
   const { modals, closeModal } = useModalStore();
-  console.log(modals);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
           <div className="md:col-span-6 md:border-r md:border-primary">

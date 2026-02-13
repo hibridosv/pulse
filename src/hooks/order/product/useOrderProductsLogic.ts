@@ -59,7 +59,6 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
      useEffect(() => {
         if (initialLoad && order) {
             if (order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order).length > 0) {
-               console.log("Open modal special sales. Carga completa");
                openModal('specialSales')
             }
         }
