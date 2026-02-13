@@ -52,9 +52,9 @@ export function Buttons(props: ButtonsI) {
             { isOtherSales && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('otherSales') }}> Otras Ventas</div>}
             { isSpecial && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Venta Especial </div>}
-            { isComment && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Agregar comentario </div>}
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('specialSales'); setSelectedElement('isSpecialSale', true)}}> Venta Especial </div>}
+            { !isComment && 
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addComment') }}> Agregar comentario </div>}
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false);  openModal('invoiceType') }}> Tipo de Documento </div>
             { isQuote &&
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); quote(order.id); }}> Guardar como Cotización</div> }

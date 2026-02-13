@@ -3,7 +3,6 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import { useOrderLoadersLogic } from "@/hooks/order/product/useOrderLoadersLogic";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
@@ -21,7 +20,6 @@ export function ChangePriceProductModal(props: ChangePriceProductModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersProductsStore();
   const { updatePrice } = useOrderFnLogic();
-  useOrderLoadersLogic(isShow)
   const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const product = getSelectedElement('productSelected');
 

@@ -50,7 +50,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
     return (
         <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
           <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable'} ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`} 
-            onClick={()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') }}>
+            onClick={isOtherSales ? ()=>{} : ()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') }}>
             { record.quantity }
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium ${ !isShowCode && 'hidden'}`}>
@@ -59,12 +59,12 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           <td className="px-2 py-1 text-left whitespace-nowrap flex" >
             {/* { record.product.slice(0, 50) } */}
             <span className={`${!isOtherSales && 'clickeable ' } w-full`} 
-            onClick={()=> { openModal('productDetails'); setSelectedElement('productDetails', record.cod); }}>
+            onClick={ isOtherSales ? ()=>{} : ()=> { openModal('productDetails'); setSelectedElement('productDetails', record.cod); }}>
             { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
             </span>
-            { !isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
+            { isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
             onClick={()=> { setSelectedElement('rowToUpdate', 'product'); openModal('changeRow'); setSelectedElement('productSelected', record); }}><FaPen color="black" /></span> }
-            { !isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
+            { isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
             onClick={()=> { setSelectedElement('rowToUpdate', 'comment'); openModal('changeRow'); setSelectedElement('productSelected', record); }}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
             { isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
             onClick={()=> {}}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }

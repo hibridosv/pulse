@@ -3,71 +3,88 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
+import { UpdateServiceInterface } from "@/services/Interfaces";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { MdDeleteSweep } from "react-icons/md";
 
-export interface ComissionsProductModalI {
+export interface AddCommentModalI {
   onClose: () => void;
   isShow: boolean;
 }
 
 
 
-
-export function ComissionsProductModal(props: ComissionsProductModalI) {
+export function AddCommentModal(props: AddCommentModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersProductsStore();
-  const { updatePrice } = useOrderFnLogic();
+  const { update} = useOrderFnLogic();
   const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
-  const product = getSelectedElement('productSelected');
+
+
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
 
   useEffect(() => {
-    if (product && isShow) {
-      setValue("quantity", product?.unit_price)
-      setFocus('quantity', {shouldSelect: true}) 
-    }
-  }, [setFocus, isShow, product, setValue])
+    if (order && isShow) {
+        setValue("value", order?.comment);
+        setFocus('value', { shouldSelect: true });
+      }
+  }, [setFocus, isShow, order, setValue,]);
 
   if (!isShow || !order) return null;
 
  const onSubmit = async(data: any) => {
-     if (!data.quantity || !product || !order) return;
-    let values = {
-      order_id: order.id,
-      quantity: data.quantity,
-    };
-    updatePrice(product.id, values);
+     if (!data.value || !order) return;
+     let values: UpdateServiceInterface = {
+       row: "comment",
+       value: data.value
+     }
+    update(order.id, values);
      if (!error && !sending) {
+       clearSelectedElement('rowToUpdate');
+       clearSelectedElement('productSelected');
+       onClose();
+     }
+ }
+
+ const clean = ()=>{
+    if (!order) return;
+     let values: UpdateServiceInterface = {
+       row: "comment",
+       value: null
+     }
+    update(order.id, values);
+     if (!error && !sending) {
+       clearSelectedElement('rowToUpdate');
        clearSelectedElement('productSelected');
        onClose();
      }
  }
 
 
-
   return (
-    <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Establecer Comisión" >
+    <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Agregar Comentario" >
       <Modal.Body>
         <div className="flex flex-col gap-4">
           <div className="bg-bg-base rounded-lg border border-bg-subtle/80 p-4">
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
               <div>
-                <label htmlFor="quantity" className="input-label" >Establecer Comisión</label>
-                <input type="number" step="any" {...register("quantity", { required: true})} className="input" />
+                <label htmlFor="value" className="input-label" >Comentario</label>
+                  <textarea rows={8} {...register("value", { required: true, max:250, min:5 })} className="input" />
               </div>
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>
           </div>
           { error &&
-          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el precio. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
+          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el registro. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
           }
         </div>
       </Modal.Body>
       <Modal.Footer>
+        <MdDeleteSweep title="Eliminar Comentario" size={32} className="text-red-700 clickeable justify-start w-full" onClick={clean} />
         <Button onClick={onClose} preset={Preset.close} disabled={sending} /> 
       </Modal.Footer>
     </Modal>

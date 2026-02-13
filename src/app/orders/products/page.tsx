@@ -2,6 +2,7 @@
 
 import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { OrderProductsSearchPrincipal } from "@/components/orders/common/OrderProductsSearchPrincipal";
+import { AddCommentModal } from "@/components/orders/products/AddCommentModal";
 import { ChangePriceProductModal } from "@/components/orders/products/ChangePriceProductModal";
 import { ChangeQuantityModal } from "@/components/orders/products/ChangeQuantityModal";
 import { ChangeRowProductModal } from "@/components/orders/products/ChangeRowProductModal";
@@ -17,6 +18,7 @@ import { SelectUserModal } from "@/components/orders/products/SelectUserModal";
 import { SetRemissionNoteModal } from "@/components/orders/products/SetRemissionNoteModal";
 import { ShowOrders } from "@/components/orders/products/ShowOrders";
 import { ShowTotal } from "@/components/orders/products/ShowTotal";
+import { SpecialSalesModal } from "@/components/orders/products/SpecialSalesModal";
 import { ProductDetailsGetModal } from "@/components/products/ProductDetailsGetModal";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useOrderProductsLogic } from "@/hooks/order/product/useOrderProductsLogic";
@@ -45,6 +47,8 @@ export default function Page() {
                 <OrderButtons order={order} />
             </div>
           </div>
+        <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
+        <SpecialSalesModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
         <OtherSalesModal isShow={modals.otherSales} onClose={()=>{ closeModal('otherSales')}} />
         <DiscountsModal isShow={modals.discountModal} onClose={()=>{ closeModal('discountModal')}} />
         <ChangePriceProductModal isShow={modals.changePriceProduct} onClose={()=>{ closeModal('changePriceProduct')}} />

@@ -38,7 +38,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({ options, optionName = 
         >
           <input
             type="radio"
-            name="radio-group"
+            name={optionName}
             value={option.id}
             checked={selectedOption?.id === option.id}
             onChange={() => handleOptionChange(option)}

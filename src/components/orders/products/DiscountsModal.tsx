@@ -3,7 +3,6 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import { useOrderLoadersLogic } from "@/hooks/order/product/useOrderLoadersLogic";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
@@ -27,7 +26,6 @@ export function DiscountsModal(props: DiscountsModalI) {
 
   const { order, sending, error } = ordersProductsStore();
   const { discount } = useOrderFnLogic();
-  useOrderLoadersLogic(isShow)
   const { getSelectedElement, clearSelectedElement, setSelectedElement } = useTempSelectedElementStore();
   const product = getSelectedElement('productSelected');
   const typeOfDiscount = getSelectedElement('typeOfDiscount') ?? 1; // 1: cantidad o 2: porcentaje

@@ -2,7 +2,6 @@
 import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
-import { useOrderLoadersLogic } from "@/hooks/order/product/useOrderLoadersLogic";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
@@ -19,7 +18,6 @@ export interface ChangeQuantityModalI {
 export function ChangeQuantityModal(props: ChangeQuantityModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error, addOrder } = ordersProductsStore();
-  useOrderLoadersLogic(isShow)
   const { getSelectedElement } = useTempSelectedElementStore();
   const product = getSelectedElement('productSelected');
   const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;

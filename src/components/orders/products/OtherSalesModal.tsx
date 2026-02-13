@@ -2,8 +2,6 @@
 import { Button, Preset } from "@/components/button/button";
 import { Option, RadioButton } from "@/components/button/RadioButton";
 import Modal from "@/components/modal/Modal";
-import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import { useOrderLoadersLogic } from "@/hooks/order/product/useOrderLoadersLogic";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
@@ -19,11 +17,10 @@ export interface OtherSalesModalI {
 
 export function OtherSalesModal(props: OtherSalesModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersProductsStore();
-  const { updatePrice } = useOrderFnLogic();
-  useOrderLoadersLogic(isShow)
+  const { order, sending, error, updateOrder } = ordersProductsStore();
   const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
-  const product = getSelectedElement('productSelected');
+  const option = getSelectedElement('optionSelected');
+  const optionType = getSelectedElement('optionSelectedType');
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
   let optionsRadioButton: Option[] = [
@@ -42,21 +39,27 @@ export function OtherSalesModal(props: OtherSalesModalI) {
       setValue("quantity", 1)
       setFocus('quantity', {shouldSelect: true}) 
     }
-  }, [setFocus, isShow, product, setValue])
+  }, [setFocus, isShow, setValue])
 
   if (!isShow || !order) return null;
 
  const onSubmit = async(data: any) => {
-     if (!data.quantity || !product || !order) return;
-    let values = {
-      order_id: order.id,
-      quantity: data.quantity,
-    };
-    updatePrice(product.id, values);
-     if (!error && !sending) {
-       clearSelectedElement('productSelected');
-       onClose();
-     }
+      if (!data.quantity || !data.description|| !data.total) return;
+     
+          let values = {
+              description: data.description,
+              quantity: data.quantity,
+              total: data.total,
+              order_id: order.id,
+              exempt: option?.id,
+              product_type: optionType?.id
+          };
+      await updateOrder(`orders/${order.id}/others`, values);
+      if (!error && !sending) {
+        clearSelectedElement('optionSelected');
+        clearSelectedElement('optionSelectedType');
+        onClose();
+      }
  }
 
 
@@ -64,34 +67,38 @@ export function OtherSalesModal(props: OtherSalesModalI) {
   return (
     <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Otras Ventas" >
       <Modal.Body>
-        <div className="mx-4">
-            <form className="max-w-lg mt-4" onSubmit={handleSubmit(onSubmit)} >
-                <div className="w-full md:w-full px-3 mb-4">
-                    <label htmlFor="quantity" className="input-label" >Cantidad</label>
-                    <input type="number" step="any" {...register("quantity", { required: true })} className="input" />
-                </div>
-                <div className="w-full md:w-full px-3 mb-4">
-                    <label htmlFor="description" className="input-label" >Descripción</label>
-                    <input type="text" {...register("description", { required: true })} className="input" />
-                </div>
-                <div className="w-full md:w-full px-3 mb-4">
-                    <label htmlFor="total" className="input-label" >Precio</label>
-                    <input type="number" step="any" {...register("total", { required: true })} className="input" />
-                </div>
-                <div className="w-full md:w-full px-3 mb-4 flex justify-center">
-                 <RadioButton options={optionsRadioButton} />
-                </div>
-                <div className="w-full md:w-full px-3 mb-4 flex justify-center border-t border-sky-600 pt-2">
-                  <RadioButton options={optionsRadioButtonType} optionName="optionSelectedType" />
-                </div>
-                <div className="flex justify-center">
-                <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
-                </div>
-            </form>
+        <div className="p-4">
+          <form className="w-full space-y-2" onSubmit={handleSubmit(onSubmit)} >
+            <div className="flex gap-3">
+              <div className="w-1/2">
+                <label htmlFor="quantity" className="block text-sm font-medium text-text-muted mb-1">Cantidad</label>
+                <input type="number" step="any" {...register("quantity", { required: true })} className="input" />
+              </div>
+              <div className="w-1/2">
+                <label htmlFor="total" className="block text-sm font-medium text-text-muted mb-1">Precio</label>
+                <input type="number" step="any" {...register("total", { required: true })} className="input" />
+              </div>
+            </div>
+            <div className="w-full">
+              <label htmlFor="description" className="block text-sm font-medium text-text-muted mb-1">Descripción</label>
+              <input type="text" {...register("description", { required: true })} className="input" />
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium text-text-muted mb-1">Tipo de Gravación</label>
+              <RadioButton options={optionsRadioButton} />
+            </div>
+            <div className="w-full border-t border-bg-subtle pt-2">
+              <label className="block text-sm font-medium text-text-muted mb-1">Tipo de Venta</label>
+              <RadioButton options={optionsRadioButtonType} optionName="optionSelectedType" />
+            </div>
+            <div className="flex justify-center pt-1">
+              <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
+            </div>
+          </form>
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} disabled={sending} /> 
+        <Button onClick={onClose} preset={Preset.close} disabled={sending} />
       </Modal.Footer>
     </Modal>
   );
