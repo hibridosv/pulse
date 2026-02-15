@@ -1,11 +1,12 @@
 'use client';
 
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { numberToMoney } from "@/lib/utils";
+import { getLastElement, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { groupInvoiceProductsByCodAll } from "../utils";
+import { MdDelete } from "react-icons/md";
+import { groupInvoiceProductsByCodAll, isProductPendientToSend } from "../utils";
 
 
 
@@ -35,7 +36,7 @@ export function RestaurantProductsAdded() {
             { numberToMoney(record.total, system) }
             </td>
             <td className={`px-2 py-1 text-center whitespace-nowrap`}>
-              <AiFillCloseCircle />
+              <AiFillCloseCircle size={20} title="Editar" className={`${isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? 'text-grey-800' : 'text-red-800'} clickeable`}  />
             </td>
         </tr>
         )
@@ -51,7 +52,9 @@ export function RestaurantProductsAdded() {
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Producto</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
-              <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">X</th>
+              <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">
+                <MdDelete size={22} title="Eliminar" className={`text-red-800 clickeable`}  />
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">

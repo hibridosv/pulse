@@ -84,7 +84,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
                setSelectedElement('serviceType', order.order_type);
          }
       }
-  }, [initialLoad, order, openModal, serviceType])
+  }, [initialLoad, order, openModal, serviceType, setSelectedElement])
 
 
    
