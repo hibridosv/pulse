@@ -6,7 +6,7 @@ import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * Carga la lógica para la gestión de productos en una orden.
@@ -22,9 +22,10 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   const { loadOrder, loadOrders, setOrders, order } = ordersProductsStore();
   const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
   const { openModal } = useModalStore();
-   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
+  const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
+  const orderLoaded = useRef(false);
   
-  const { random: pusherRandom, data: pusherData} = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
+  const { data: pusherData} = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
 
 
   useEffect(() => {
@@ -45,22 +46,31 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, typeOfSearch])
 
+
   useEffect(() => {
-    if (user && initialLoad && !order) {
-     loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
-    }
-   if (initialLoad && !order) {
-     loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-   }
-   }, [initialLoad, user, loadOrder, loadOrders, order]);
+    if (!initialLoad || !user || orderLoaded.current) return;
+
+    const loadInitialData = async () => {
+      orderLoaded.current = true;
+      await loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
+      const currentOrder = ordersProductsStore.getState().order;
+      if (!currentOrder) {
+        loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+      }
+    };
+
+    loadInitialData();
+  }, [initialLoad, user, loadOrder, loadOrders]);
 
 
 /** Cargar Ordenes al realizar un evento de Pusher solo para los usuarios que no envia en evento */
   useEffect(() => {
     if (user && user.id != pusherData?.userId) return
-      console.log(pusherData);
-      // setOrders(pusherData); 
-   }, [loadOrders, pusherRandom, pusherData, user]);
+    if (!pusherData) return;
+    if (pusherData.data) {
+       setOrders(pusherData.data); 
+    }
+   }, [loadOrders, pusherData, user, setOrders]);
 
 
    // verificar si exite algun producto con venta especial sin terminar el preoceso
