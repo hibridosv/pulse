@@ -1,6 +1,7 @@
 'use client';
 
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
+import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
 import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
 import { RestaurantProductsAdded } from "@/components/orders/restaurant/RestaurantProductsAdded";
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
@@ -30,8 +31,11 @@ export default function Page() {
 
               <RestaurantProductsAdded />
               <RestaurantShowTotal />
+            <div className="absolute bottom-2 ">
+              <RestaurantButtons />
             </div>
           </div>
+        </div>
           <CategoryMenuModal isShow={modals.categoryMenu} onClose={()=>{ closeModal('categoryMenu')}} />
           <ToasterMessage />
     </div>

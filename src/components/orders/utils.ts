@@ -194,3 +194,20 @@ export function isProductPendientToSend(product: any) {
   const isValidPrintStatus = [1, 2, 3].includes(sendPrint ?? -1);
   return product.attributes && product.attributes.work_station_id && (isValidPrintStatus);
 }
+
+
+
+//// contar cuantos productos estan en cero de imprimir
+export function countSendPrintZero(invoice: any) {
+  if (!invoice?.invoiceproducts) return;
+
+  let count = 0;
+
+  invoice.invoiceproducts.forEach((product: any) => {
+      if (product.attributes && product.attributes.work_station_id && product.attributes.send_print === 0) {
+          count++;
+      }
+  });
+
+  return count;
+}

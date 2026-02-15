@@ -12,7 +12,7 @@ export function useMenuLogic() {
     if (_hasHydrated && !isLoaded && !loading) {
       getRestauranMenu(`menu?sort=${orderIcon}&filterWhere[status]==1&included=product.restaurant,category`)
     }
-  }, [_hasHydrated, isLoaded, loading, getRestauranMenu])
+  }, [_hasHydrated, isLoaded, loading, getRestauranMenu, orderIcon])
 
 
 }
