@@ -159,3 +159,30 @@ export function groupInvoiceProductsByCodSpecial(invoice: any) {
 );
   return products;
 }
+
+
+// agrupa los productos de restaurante para no mostrarlos individuales
+ export function groupInvoiceProductsByCodAll(invoice: any) {
+  const groupedProducts = {} as any;
+
+  invoice.invoiceproducts.forEach((product : any) => {
+      const { cod, quantity, subtotal, total } = product;
+        if (product.special == 0) {
+          if (!groupedProducts[cod]) {
+              groupedProducts[cod] = { ...product };
+          } else {
+              groupedProducts[cod].quantity += quantity;
+              groupedProducts[cod].subtotal += subtotal;
+              groupedProducts[cod].total += total;
+          }
+        }
+
+  });
+
+  // Convertir el objeto en un array de productos
+  invoice.invoiceproductsGroup = Object.values(groupedProducts);
+  invoice.invoiceproductsGroup.sort((a: any, b: any) => 
+    new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+);
+  return invoice;
+}

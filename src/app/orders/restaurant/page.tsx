@@ -1,6 +1,9 @@
 'use client';
 
+import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
 import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
+import { RestaurantProductsAdded } from "@/components/orders/restaurant/RestaurantProductsAdded";
+import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
 import { ServiceTypeSelect } from "@/components/orders/restaurant/ServiceTypeSelect";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
@@ -24,9 +27,12 @@ export default function Page() {
           <div className="md:col-span-4 flex justify-center ">
             <div className="w-full">
               <ServiceTypeSelect order={order} />
-              <div className="mx-4">Total</div>
+
+              <RestaurantProductsAdded />
+              <RestaurantShowTotal />
             </div>
           </div>
+          <CategoryMenuModal isShow={modals.categoryMenu} onClose={()=>{ closeModal('categoryMenu')}} />
           <ToasterMessage />
     </div>
   );
