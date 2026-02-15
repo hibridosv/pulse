@@ -65,7 +65,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
 
 /** Cargar Ordenes al realizar un evento de Pusher solo para los usuarios que no envia en evento */
   useEffect(() => {
-    if (user && user.id != pusherData?.userId) return
+    if (user && user.id == pusherData?.userId) return
     if (!pusherData) return;
     if (pusherData.data) {
        setOrders(pusherData.data); 
