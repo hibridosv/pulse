@@ -14,11 +14,12 @@ import { useEffect, useRef } from 'react';
  * @param initialLoad 
  */
 
-export function useOrderProductsLogic(initialLoad: boolean = false) {
+export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
   const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
-  const typeOfSearch = getSelectedElement('typeOfSearch'); // tipo de busqueda
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
+  const serviceType: number = getSelectedElement('serviceType');
+
   const { loadOrder, loadOrders, setOrders, order } = ordersProductsStore();
   const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
   const { openModal } = useModalStore();
@@ -27,15 +28,13 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   
   const { data: pusherData} = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
 
+
+  
   // para sistema de productos
   useEffect(() => {
         if (initialLoad && activeConfig) {
-            if (typeOfSearch === undefined) {
-               if (activeConfig.includes('sales-by-name')) {
-                  setSelectedElement('typeOfSearch', true);
-               } else {
-                  setSelectedElement('typeOfSearch', false);
-               }
+            if (!serviceType) {
+               setSelectedElement('serviceType', 1);
             }
             
            if (!invoiceTypeSelected) {
@@ -44,7 +43,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
            setSelectedElement('typeOfPrice', 1); // tipo de precio
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, typeOfSearch])
+  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, serviceType])
 
 
   useEffect(() => {
@@ -79,8 +78,14 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
          if (order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order).length > 0) {
             openModal('specialSales')
          }
+
+
+         if (order.order_type != serviceType) {
+               setSelectedElement('serviceType', order.order_type);
+         }
       }
-  }, [initialLoad, order, openModal])
+  }, [initialLoad, order, openModal, serviceType])
+
 
    
 }
