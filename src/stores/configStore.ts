@@ -22,14 +22,18 @@ interface ConfigStoreState {
   isLoaded: boolean;
   loading: boolean;
   error: boolean;
+  _hasHydrated: boolean;
+  setHasHydrated: (v: boolean) => void;
   loadConfig: () => Promise<void>;
   setActiveConfig: (activeConfig: any) => void;
   clearConfig: () => void;
 }
 
 const useConfigStore = create(
-  persist<ConfigStoreState>(
+  persist<ConfigStoreState & { _hasHydrated: boolean; setHasHydrated: (v: boolean) => void }>(
     (set) => ({
+      _hasHydrated: false,
+      setHasHydrated: (v: boolean) => set({ _hasHydrated: v }),
       configurations: null,
       activeConfig: null,
       system: null,
@@ -101,8 +105,11 @@ const useConfigStore = create(
 
     }),
     {
-      name: 'config-storage', // unique name
-      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+      name: 'config-storage',
+      storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
