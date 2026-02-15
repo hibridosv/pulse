@@ -4,13 +4,13 @@ import useConfigStore from '@/stores/configStore'
 import { useEffect } from 'react'
 
 export function useConfigLogic() {
-  const { isLoaded, loadConfig, setActiveConfig, configurations, activeConfig} = useConfigStore()
+  const { isLoaded, loadConfig, setActiveConfig, configurations, activeConfig, loading} = useConfigStore()
 
   useEffect(() => {
-    if (!isLoaded) {
+    if (!isLoaded && !loading) {
       loadConfig()
     }
-  }, [isLoaded, loadConfig])
+  }, [isLoaded, loading, loadConfig])
 
   useEffect(() => {
     if (!activeConfig && configurations && configurations.length > 0) {

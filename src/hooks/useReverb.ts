@@ -1,59 +1,66 @@
-// import { useEffect, useState } from 'react';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+import { useEffect, useRef, useState } from 'react';
 
-// // Extend the Window interface to include Pusher
-// declare global {
-//   interface Window {
-//     Pusher: typeof Pusher;
-//   }
-// }
-// import Echo from 'laravel-echo';
-// import Pusher from 'pusher-js';
+declare global {
+  interface Window {
+    Pusher: typeof Pusher;
+  }
+}
 
-// const useReverb = (channelName: string, eventName: string, status = false, randomData = true) => {
-//   const [data, setData] = useState([] as any);
-//   const [random, setRandom] = useState(0);
+let echoInstance: Echo<'reverb'> | null = null;
 
-//   useEffect(() => {
-//     if (!status) return;
-   
-//     window.Pusher = Pusher;
+function getEchoInstance(): Echo<'reverb'> {
+  if (!echoInstance) {
+    window.Pusher = Pusher;
 
-//     const REVERB_HOST = process.env.NEXT_PUBLIC_REVERB_HOST;
-//     const REVERB_PORT = process.env.NEXT_PUBLIC_REVERB_PORT;
-//     const REVERB_SCHEME = process.env.NEXT_PUBLIC_REVERB_SCHEME;
-//     const REVERB_KEY = process.env.NEXT_PUBLIC_REVERB_KEY;
-    
-//     const echo = new Echo({
-//       broadcaster: 'reverb',
-//       key: REVERB_KEY,
-//       wsHost: REVERB_HOST,
-//       wsPort: REVERB_PORT,
-//       wssPort: REVERB_PORT,
-//       forceTLS: (REVERB_SCHEME ?? 'https') === 'https',
-//     //   disableStats: true,
-//     //   encrypted: false,
-//       enabledTransports: ['ws', 'wss'],
-//     });
+    const REVERB_HOST = process.env.NEXT_PUBLIC_REVERB_HOST;
+    const REVERB_PORT = process.env.NEXT_PUBLIC_REVERB_PORT;
+    const REVERB_SCHEME = process.env.NEXT_PUBLIC_REVERB_SCHEME;
+    const REVERB_KEY = process.env.NEXT_PUBLIC_REVERB_KEY;
 
-//     const channel = echo.channel(channelName);
+    echoInstance = new Echo({
+      broadcaster: 'reverb',
+      key: REVERB_KEY,
+      wsHost: REVERB_HOST,
+      wsPort: Number(REVERB_PORT),
+      wssPort: Number(REVERB_PORT),
+      forceTLS: (REVERB_SCHEME ?? 'https') === 'https',
+      enabledTransports: ['ws', 'wss'],
+    });
+  }
+  return echoInstance;
+}
 
-//     const handleEvent = (eventData: string) => {
-//       if (randomData) {
-//         setRandom(Math.random());
-//       } else {
-//         setData(eventData);
-//       }
-//     };
+const useReverb = (channelName: string, eventName: string, status = false) => {
+  const [data, setData] = useState<any>(null);
+  const [random, setRandom] = useState(0);
+  const channelRef = useRef<any>(null);
 
-//     channel.listen(eventName, handleEvent);
+  useEffect(() => {
+    console.log("Status: ", status)
+    if (!status) return;
 
-//     return () => {
-//       channel.stopListening(eventName);
-//       echo.leave(channelName);
-//     };
-//   }, [channelName, eventName, status, randomData]);
+    const echo = getEchoInstance();
+    const channel = echo.channel(channelName);
+    channelRef.current = channel;
+    console.log("Channel: ", channel)
 
-//   return { data, random };
-// };
+    const handleEvent = (eventData: any) => {
+        setRandom(Math.random());
+        setData(eventData);
+    };
 
-// export default useReverb;
+    channel.listen(eventName, handleEvent);
+
+    return () => {
+      channel.stopListening(eventName);
+      echo.leave(channelName);
+      channelRef.current = null;
+    };
+  }, [channelName, eventName, status]);
+
+  return { data, random };
+};
+
+export default useReverb;

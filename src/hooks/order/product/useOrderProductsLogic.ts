@@ -1,5 +1,6 @@
 'use client'
 import { groupInvoiceProductsByCodSpecial } from '@/components/orders/utils';
+import useReverb from '@/hooks/useReverb';
 import { getFirstElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
@@ -14,17 +15,17 @@ import { useEffect } from 'react';
  */
 
 export function useOrderProductsLogic(initialLoad: boolean = false) {
-  const { activeConfig, invoiceTypes } = useConfigStore();
+  const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
   const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
   const typeOfSearch = getSelectedElement('typeOfSearch'); // tipo de busqueda
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
-  const { loadOrder, loadOrders } = ordersProductsStore();
-  const { user } =  useConfigStore();
+  const { loadOrder, loadOrders, setOrders, order } = ordersProductsStore();
   const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
-  const {  order } = ordersProductsStore();
   const { openModal } = useModalStore();
-
+   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
   
+  const { random: pusherRandom, data: pusherData} = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
+
 
   useEffect(() => {
         if (initialLoad && activeConfig) {
@@ -45,26 +46,30 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, typeOfSearch])
 
   useEffect(() => {
-    if (user && initialLoad) {
+    if (user && initialLoad && !order) {
      loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
     }
-   }, [initialLoad, user, loadOrder]);
-
-
-  useEffect(() => {
-    if (initialLoad) {
+   if (initialLoad && !order) {
      loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-    }
-   }, [initialLoad, loadOrders]);
+   }
+   }, [initialLoad, user, loadOrder, loadOrders, order]);
+
+
+/** Cargar Ordenes al realizar un evento de Pusher solo para los usuarios que no envia en evento */
+  useEffect(() => {
+    if (user && user.id != pusherData?.userId) return
+      console.log(pusherData);
+      // setOrders(pusherData); 
+   }, [loadOrders, pusherRandom, pusherData, user]);
 
 
    // verificar si exite algun producto con venta especial sin terminar el preoceso
-     useEffect(() => {
-        if (initialLoad && order) {
-            if (order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order).length > 0) {
-               openModal('specialSales')
-            }
-        }
+   useEffect(() => {
+      if (initialLoad && order) {
+         if (order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order).length > 0) {
+            openModal('specialSales')
+         }
+      }
   }, [initialLoad, order, openModal])
 
    

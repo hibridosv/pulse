@@ -1,3 +1,4 @@
+import { Order } from '@/interfaces/order';
 import { errorSound, successSound } from '@/lib/config/config';
 import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
@@ -24,6 +25,7 @@ interface ordersProductsStoreI {
   updateOrder: (url: string, data: any, showToast?: boolean) => Promise<void>;
   saveAs: (url: string, data: any) => Promise<void>;
   deleteProduct: (url: string) => Promise<void>;
+  setOrders: (orders: Order[]) => void;
 }
 
 const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
@@ -187,6 +189,11 @@ const ordersProductsStore = create<ordersProductsStoreI>((set) => ({
     } finally {
       set({ deleting: false });
     }
+  },
+
+  
+  setOrders: async (orders: any) => {
+    set({ orders });
   },
 
 }));
