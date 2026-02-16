@@ -23,16 +23,16 @@ export function RestaurantProductsAdded() {
         const listItems = order?.invoiceproductsGroup.map((record: any) => { 
         return (
         <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
-            <td className="px-2 py-1 whitespace-nowrap text-primary text-center">
+            <td className="px-2 py-1 whitespace-nowrap text-primary text-center font-semibold">
               { record.quantity }
             </td>
             <td className="px-2 py-1 text-left whitespace-nowrap font-medium " >
             { record.product }
             </td>
-            <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+            <td className={`px-2 py-1 text-right whitespace-nowrap`}>
               { numberToMoney(record.unit_price, system) }
             </td>
-            <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+            <td className={`px-2 py-1 text-right whitespace-nowrap`}>
             { numberToMoney(record.total, system) }
             </td>
             <td className={`px-2 py-1 text-center whitespace-nowrap`}>

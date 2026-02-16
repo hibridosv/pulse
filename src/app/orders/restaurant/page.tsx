@@ -1,6 +1,6 @@
 'use client';
 
-import { InvoiceTypesModal } from "@/components/orders/products/InvoiceTypesModal";
+import { InvoiceTypesModal } from "@/components/orders/common/InvoiceTypesModal";
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";

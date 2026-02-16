@@ -31,8 +31,8 @@ export function RestaurantShowTotal() {
           : sumarSalesTotal(order));
 
     return (
-        <div className="p-2 mt-4 w-full">
-            <div className="rounded-lg border-2 uppercase">
+        <div className="p-2 mt-4 w-full mb-4">
+            <div className="rounded-lg border-2 uppercase mb-4">
                 <div className={`flex justify-between ${sending && 'text-red-800 animate-pulse'}`}>
                     <div className="w-full text-sm items-center pl-4 text-left">Sub total</div>
                     <div className="w-full text-sm items-center flex pr-4 justify-end">
@@ -56,7 +56,7 @@ export function RestaurantShowTotal() {
                 </div>
             }
 
-            <div className={`flex justify-between ${sending && 'text-red-800 animate-pulse'}`}>
+                <div className={`flex justify-between ${sending && 'text-red-800 animate-pulse'}`}>
                     <div className="w-full  font-bold text-2xl items-center pl-4 text-left">Total</div>
                     <div className="w-full  font-bold text-2xl items-center flex pr-4 justify-end">
                         { numberToMoney(total + (tips_percentage / 100 * total), system)}

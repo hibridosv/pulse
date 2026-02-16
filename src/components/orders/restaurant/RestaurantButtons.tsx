@@ -40,7 +40,6 @@ export function RestaurantButtons() {
     return (
         <div className="w-full space-y-3 px-3 pt-3 pb-4">
 
-        {/* Alertas */}
         { !cashdrawer &&
         <Alert type="danger" title="Error" text="Debe seleccionar una caja para poder cobrar" isDismissible={false} /> }
 
@@ -54,10 +53,8 @@ export function RestaurantButtons() {
           </div>
         }
 
-        {/* Botones de acción */}
         <div className="grid grid-cols-[2fr_1fr_2fr]">
 
-          {/* Opciones */}
           <Popper label={
             <div className="button-grey clickeable">
               <IoMdOptions className="mr-1.5" /> Opciones
@@ -68,11 +65,7 @@ export function RestaurantButtons() {
           </Popper>
 
           {/* Guardar */}
-          <div
-            className="button-lime clickeable relative"
-            title="Guardar"
-            onClick={sending ? ()=>{} : () => console.log('Guardar')}
-          >
+          <div className="button-lime clickeable relative" title="Guardar" onClick={sending ? ()=>{} : () => console.log('Guardar')} >
             <AiFillSave size={22} />
             { isPrintable &&
               <span className="absolute -top-0 -right-0 flex h-3 w-3">
