@@ -5,6 +5,7 @@ import { getFirstElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
+import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import { useEffect, useRef } from 'react';
 
@@ -18,9 +19,13 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
   const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
-  const serviceType: number = getSelectedElement('serviceType');
+  const serviceType: number = getSelectedElement('serviceType'); // aqui, mesas, delivery
+  const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
+  const clientActive: number = getSelectedElement('clientActive');
+  const selectedTable: number = getSelectedElement('selectedTable');
+  const deliverySelected = getSelectedElement('deliverySelected'); // delivery o cliente en opcion 3
 
-  const { loadOrder, loadOrders, setOrders, order } = ordersProductsStore();
+  const { loadOrder, loadOrders, setOrders, order } = ordersRestaurantsStore();
   const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
   const { openModal } = useModalStore();
   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
@@ -36,9 +41,14 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
             if (!serviceType) {
                setSelectedElement('serviceType', 1);
             }
-            
+            if (!deliveryType) {
+               setSelectedElement('deliveryType', 1);
+            }
            if (!invoiceTypeSelected) {
               setSelectedElement('invoiceTypeSelected', invoiceSelected);
+           }
+           if (!clientActive) {
+              setSelectedElement('clientActive', 1);
            }
            setSelectedElement('typeOfPrice', 1); // tipo de precio
         }
@@ -79,14 +89,22 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
             openModal('specialSales')
          }
 
-
          if (order.order_type != serviceType) {
                setSelectedElement('serviceType', order.order_type);
          }
 
          setSelectedElement('payMethod', 1);
+
+         if (selectedTable != order?.attributes?.restaurant_table_id) {
+            setSelectedElement('selectedTable', order?.attributes?.restaurant_table_id);
+         }
+
+         if ((!deliverySelected && order?.delivery) || (deliverySelected && order?.delivery?.id != deliverySelected?.id)) {
+            setSelectedElement('deliverySelected', order?.delivery);
+         }
+
       }
-  }, [initialLoad, order, openModal, serviceType, setSelectedElement])
+  }, [initialLoad, order, openModal, serviceType, setSelectedElement, clientActive, selectedTable, deliverySelected])
 
 
    

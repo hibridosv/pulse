@@ -7,7 +7,7 @@ import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export interface InvoiceTypesModalI {
@@ -17,7 +17,7 @@ export interface InvoiceTypesModalI {
 
 export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersProductsStore();
+  const { order, sending, error } = ordersRestaurantsStore();
   const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
   const { invoiceTypes } = useConfigStore();

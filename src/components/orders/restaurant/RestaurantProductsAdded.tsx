@@ -1,8 +1,11 @@
 'use client';
 
+import { NothingHere } from "@/components/NothingHere";
 import { getLastElement, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import { useSession } from 'next-auth/react';
+import Image from "next/image";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { groupInvoiceProductsByCodAll, isProductPendientToSend } from "../utils";
@@ -11,10 +14,24 @@ import { groupInvoiceProductsByCodAll, isProductPendientToSend } from "../utils"
 
 export function RestaurantProductsAdded() {
   const { system } = useConfigStore();
-  const { order, sending} = ordersProductsStore();
+  const { order, sending} = ordersRestaurantsStore();
+  const { data: session } = useSession();
+  const  remoteUrl  = session?.url;
 
 
-  if (!order) return <></>
+    const imageLoader = ({ src, width, quality }: any) => {
+        return `${remoteUrl}/images/logo/${src}?w=${width}&q=${quality || 75}`
+    }
+            
+    if (!order?.invoiceproducts) return (
+        <div className="hidden w-full md:grid place-items-center">
+            { system && system?.logo ? 
+            <Image loader={imageLoader} src={system && system?.logo} alt="Hibrido" width={500} height={500} className="w-full max-w-[500px]"
+            sizes="(max-width: 768px) 100vw, 500px" /> :
+            <NothingHere width="500" text=" " />
+            }
+        </div>
+    )
 
     order?.invoiceproducts && groupInvoiceProductsByCodAll(order);
         const listItems = order?.invoiceproductsGroup.map((record: any, index: number) => {

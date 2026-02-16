@@ -8,8 +8,8 @@ import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { OrderTotal } from "./OrderTotal";
 import { HiCurrencyDollar } from "react-icons/hi2";
+import { OrderTotal } from "./OrderTotal";
 
 export interface PayModalI {
   onClose: () => void;
@@ -56,7 +56,7 @@ export function PayModal(props: PayModalI) {
                 {paymentType === 1 ? (
                 <div>
                       <div className="flex justify-center mt-2">
-                        <Button type="submit" form="restaurant-pay-form" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={collecting} preset={collecting ? Preset.saving : Preset.save} isFull />
+                        <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={collecting} preset={collecting ? Preset.saving : Preset.save} isFull />
                       </div>
                   </div>
                   ) :

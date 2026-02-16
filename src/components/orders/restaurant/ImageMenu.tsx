@@ -1,8 +1,9 @@
 'use client';
 
+import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import ordersProductsStore from '@/stores/orders/ordersProductsStore';
+import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import Image from 'next/image';
 
@@ -16,7 +17,8 @@ export interface ImageMenuI {
 
 export function ImageMenu(props:  ImageMenuI) {
   const { record, index, imageLoader } = props;
-  const { sending } = ordersProductsStore();
+  const { sending } = ordersRestaurantsStore();
+  const { addNew } = useOrderRestaurantFnLogic();
   const { setSelectedElement } = useTempSelectedElementStore();
   const { openModal, closeModal } = useModalStore();
   const { activeConfig } = useConfigStore(); 
@@ -26,7 +28,8 @@ export function ImageMenu(props:  ImageMenuI) {
 
 
 
-const sendProduct = (productId: number) => {
+const sendProduct = async(productId: number) => {
+    await addNew(productId);
     dismiss();
 }
 

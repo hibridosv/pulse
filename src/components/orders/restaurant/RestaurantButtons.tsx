@@ -1,27 +1,24 @@
 import { Alert } from "@/components/Alert/Alert";
 import { DeleteModal } from "@/components/DeleteModal";
 import { Popper } from "@/components/popper/Popper";
-import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
+import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functions";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoMdOptions } from "react-icons/io";
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import { PayButton } from "./Buttons/PayButton";
-import { SaveButton } from "./Buttons/saveButton";
+import { SaveButton } from "./Buttons/SaveButton";
 
 export function RestaurantButtons() {
-  const { order, sending} = ordersProductsStore();
-
-  const { cancel } = useOrderFnLogic();
-  const { saving } = ordersProductsStore();
+  const { collecting, order, sending } = ordersRestaurantsStore();
+  const { pay } = useOrderRestaurantFnLogic();
   const { modals, closeModal, openModal} = useModalStore();
-  const invoice = order;
   const { system, cashdrawer, activeConfig } =useConfigStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
   const { getSelectedElement} = useTempSelectedElementStore();
@@ -29,8 +26,15 @@ export function RestaurantButtons() {
   const [input, setInput] = useState('');
   const [showInput, setShowInput] = useState<boolean>(false);
   const [keyboard, setKeyboard] = useState<any>(null);
+  const invoice = order;
 
-  
+  useEffect(() => {
+    if (payMethod == 1 && activeConfig && activeConfig.includes("input-sales-focus")) {
+        setFocus('cash')
+    }
+  }, [setFocus, order, payMethod, activeConfig])
+
+
   const validateFields = ()=>{
     if (invoice?.client_id && invoice?.invoice_assigned?.type == 3) {
       return validateInvoiceFields(invoice?.client, requiredFieldsCCF)
@@ -39,8 +43,8 @@ export function RestaurantButtons() {
 
   let fieldsRequired = validateFields();
   
-  const pay = (data: any) => {
-    console.log(data);
+  const handlePay = async (data: any) => {
+        await pay(data);
         reset(); // Resetea el estado del formulario en react-hook-form
     if (activeConfig && activeConfig.includes("input-sales-keyboard")) {
         setInput(''); // Resetea el estado del input
@@ -92,7 +96,7 @@ const handleKeyboardChange = (inputValue: string) => {
             <span className="ml-1 font-semibold text-danger">{`${fieldsRequired.join(', ')}.`}</span>
           </div>
         }
-        <form id="restaurant-pay-form" onSubmit={handleSubmit(pay)}>
+        <form id="restaurant-pay-form" onSubmit={handleSubmit(handlePay)}>
         { payMethod == 1 && cashdrawer && <>
           { activeConfig && activeConfig.includes("input-sales-keyboard") ? <div>
           { showInput &&
@@ -101,7 +105,7 @@ const handleKeyboardChange = (inputValue: string) => {
                 <input className="input-disabled" type="text" {...register('cash')} value={input} placeholder="Ingrese una cantidad" readOnly />
             </div>
           </div> :
-          <input type="number" step="any" min={0} readOnly={sending} className="input" placeholder='Ingrese una cantidad' {...register("cash")} />
+          <input type="number" step="any" min={0} readOnly={sending || collecting} className="input" placeholder='Ingrese una cantidad' {...register("cash")} />
           }
         </>}
         <div className="grid grid-cols-[2fr_1fr_2fr]">
@@ -120,7 +124,7 @@ const handleKeyboardChange = (inputValue: string) => {
         <DeleteModal
           isShow={modals.deleteOrder}
           text={`¿Estas seguro de eliminar esta orden?`}
-          onDelete={() =>{ cancel(order?.id); closeModal('deleteOrder'); }}
+          onDelete={() =>{ console.log(order?.id); closeModal('deleteOrder'); }}
           onClose={() => closeModal('deleteOrder')}
         />
         </div>

@@ -4,6 +4,7 @@ import { InvoiceTypesModal } from "@/components/orders/common/InvoiceTypesModal"
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
+import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestaurantModal";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
 import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
 import { RestaurantProductsAdded } from "@/components/orders/restaurant/RestaurantProductsAdded";
@@ -13,12 +14,12 @@ import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
 import { useOrderRestaurantLogic } from "@/hooks/order/restaurant/useOrderRestaurantLogic";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
 
 export default function Page() {
   useMenuLogic();
   useOrderRestaurantLogic(true);
-  const { order } = ordersProductsStore();
+  const { order } = ordersRestaurantsStore();
   const { modals, closeModal } = useModalStore();
 
   return (
@@ -38,6 +39,7 @@ export default function Page() {
               <OptionsSelect />
           </div>
         </div>
+          <PayedRestaurantModal isShow={modals.paymentSuccess} onClose={()=>{ closeModal('paymentSuccess')}} />
           <InvoicePaymentMethodModal isShow={modals.payMethod} onClose={()=>{ closeModal('payMethod')}} />
           <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
           <CategoryMenuModal isShow={modals.categoryMenu} onClose={()=>{ closeModal('categoryMenu')}} />

@@ -1,0 +1,64 @@
+'use client'
+import useModalStore from '@/stores/modalStorage';
+import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
+import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useToastMessageStore from '@/stores/toastMessageStore';
+
+export function useOrderRestaurantFnLogic() {
+  const { saveOrder, loadOrder, order, payOrder, error, loadOrders, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersRestaurantsStore();
+  const { getSelectedElement } = useTempSelectedElementStore();
+  const {modals} = useModalStore();
+  const payMethod = getSelectedElement('payMethod') ?? 1;
+  const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;
+  const clientActive = getSelectedElement('clientActive') ?? 1;
+  const clientNumber = getSelectedElement('clientNumber') ?? null;
+  const selectedTable = getSelectedElement('selectedTable') ?? null;
+  const deliverySelected = getSelectedElement('deliverySelected');
+  const specialSales = modals.specialSales ?? false;
+  const { setError } = useToastMessageStore();
+  const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
+  const serviceType: number = getSelectedElement('serviceType'); // aqui, mesas, delivery
+
+
+
+const addNew = async (producId: any, quantity = 1) => {
+    if (!producId){
+        setError({ message: "No hay una cantidad para facturar "});
+        return
+    }
+    let values = {
+      product_id: producId,
+      request_type: 1, // 1: id, 2: cod
+      delivery_type: deliveryType, // 1: Aqui, 2: Llevar, 3: delivery
+      delivery_client: deliverySelected ? deliverySelected?.id : null, // id del cliente delivery
+      order_type: serviceType, // 1. rapida, 2. Mesas, 3. Delivery
+      price_type: typeOfPrice, // tipo de precio del producto
+      clients_quantity: 1, // Numero de clientes
+      client_active: clientActive, // Cliente activo para asignar producto
+      quantity,
+      restaurant_table_id: selectedTable,
+      special: specialSales,
+    };
+    await addOrder(`orders/restaurant`, values);
+          
+}
+
+
+
+
+/// pagar orden
+const pay = async (data: any) => {
+    let values = {
+      cash: data.cash || 0,
+      payment_type: payMethod, // efectivo, tarjeta, transferencia, cheque, credito
+      invoice_type_id: order?.invoice_type_id,
+      client_active: clientActive, // Cliente activo para asignar producto
+      client_number: clientNumber
+    };
+    await payOrder(`orders/restaurant/${order.id}/pay`, values);
+}
+
+
+  return { addNew, pay }
+
+}

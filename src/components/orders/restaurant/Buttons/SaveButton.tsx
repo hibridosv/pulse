@@ -1,16 +1,16 @@
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
 import { AiFillSave } from "react-icons/ai";
 import { countSendPrintZero } from "../../utils";
 
 
 export function SaveButton() {
-  const { order, sending} = ordersProductsStore();
+  const { order, sending, collecting} = ordersRestaurantsStore();
   const isPrintable = countSendPrintZero(order) != 0;
 
   if (!order) return <></>
 
     return (
-        <div className="button-lime clickeable relative" title="Guardar" onClick={sending ? ()=>{} : () => console.log('Guardar')} >
+        <div className="button-lime clickeable relative" title="Guardar" onClick={sending || collecting ? ()=>{} : () => console.log('Guardar')} >
           <AiFillSave size={22} />
           { isPrintable &&
             <span className="absolute -top-0 -right-0 flex h-3 w-3">

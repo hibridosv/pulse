@@ -4,7 +4,7 @@ import { Order } from '@/interfaces/order';
 import { extractActiveFeature } from '@/lib/config/config';
 import { permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
-import ordersProductsStore from '@/stores/orders/ordersProductsStore';
+import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 
@@ -15,7 +15,7 @@ export interface ServiceTypeSelectI {
 export function ServiceTypeSelect(props: ServiceTypeSelectI) {
   const { order } = props
   const { activeConfig, permission, configurations } = useConfigStore();
-  const { sending } = ordersProductsStore();
+  const { sending } = ordersRestaurantsStore();
   const { setError } =  useToastMessageStore();
   const { setSelectedElement, getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const isDelivery = activeConfig && activeConfig.includes("restaurant-sales-delivery");

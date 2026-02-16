@@ -1,12 +1,12 @@
 import useConfigStore from "@/stores/configStore";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { sumarTotales } from "../../utils";
 
 
 export function PayButton() {
-  const { order, sending} = ordersProductsStore();
+  const { order, sending, collecting } = ordersRestaurantsStore();
   const { system, cashdrawer } =useConfigStore();
   const { getSelectedElement} = useTempSelectedElementStore();
   const payMethod = getSelectedElement('payMethod') ?? 1;
@@ -16,7 +16,7 @@ export function PayButton() {
   const total = sumarTotales(order?.invoiceproducts);
   
   const blockMaxQuantityWithOutNit = system?.country == 3 && total >= 2500 && !order?.client_id;
-  const disabledButonPay = sending || !cashdrawer || blockMaxQuantityWithOutNit || (!order?.client_id && (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 4));
+  const disabledButonPay = collecting ||sending || !cashdrawer || blockMaxQuantityWithOutNit || (!order?.client_id && (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 4));
   
   if (!order) return <></>
 

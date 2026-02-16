@@ -4,7 +4,7 @@ import { LiComponent } from "@/components/button/LiComponent";
 import Modal from "@/components/modal/Modal";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export interface InvoicePaymentMethodModalI {
@@ -14,7 +14,7 @@ export interface InvoicePaymentMethodModalI {
 
 export function InvoicePaymentMethodModal(props: InvoicePaymentMethodModalI) {
   const { onClose, isShow } = props;
-  const { order } = ordersProductsStore();
+  const { order } = ordersRestaurantsStore();
   
   const { closeModal} = useModalStore();
   const { payMethods } = useConfigStore();
