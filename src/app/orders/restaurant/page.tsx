@@ -2,6 +2,7 @@
 
 import { InvoiceTypesModal } from "@/components/orders/common/InvoiceTypesModal";
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
+import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
 import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
@@ -37,6 +38,7 @@ export default function Page() {
               <OptionsSelect />
           </div>
         </div>
+          <InvoicePaymentMethodModal isShow={modals.payMethod} onClose={()=>{ closeModal('payMethod')}} />
           <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
           <CategoryMenuModal isShow={modals.categoryMenu} onClose={()=>{ closeModal('categoryMenu')}} />
           <ToasterMessage />

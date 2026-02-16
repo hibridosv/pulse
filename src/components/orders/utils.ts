@@ -154,7 +154,6 @@ export function isProductPendientToSend(product: any) {
 
 export function countSendPrintZero(order: any) {
   if (!order?.invoiceproducts) return 0;
-  console.log("countSendPrintZero", order?.invoiceproducts);
   return order.invoiceproducts.filter(
     (product: any) => product.attributes?.work_station_id && product.attributes?.send_print === 0
   ).length;

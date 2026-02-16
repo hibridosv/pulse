@@ -6,20 +6,29 @@ import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functi
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
-import { AiFillSave } from "react-icons/ai";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { IoMdOptions } from "react-icons/io";
-import { countSendPrintZero } from "../utils";
+import Keyboard from 'react-simple-keyboard';
+import 'react-simple-keyboard/build/css/index.css';
 import { PayButton } from "./Buttons/PayButton";
-
+import { SaveButton } from "./Buttons/saveButton";
 
 export function RestaurantButtons() {
   const { order, sending} = ordersProductsStore();
 
-  const { save, pay, cancel } = useOrderFnLogic();
+  const { cancel } = useOrderFnLogic();
   const { saving } = ordersProductsStore();
   const { modals, closeModal, openModal} = useModalStore();
   const invoice = order;
-  const { system, cashdrawer } =useConfigStore();
+  const { system, cashdrawer, activeConfig } =useConfigStore();
+  const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
+  const { getSelectedElement} = useTempSelectedElementStore();
+  const payMethod = getSelectedElement('payMethod') ?? 1;
+  const [input, setInput] = useState('');
+  const [showInput, setShowInput] = useState<boolean>(false);
+  const [keyboard, setKeyboard] = useState<any>(null);
 
   
   const validateFields = ()=>{
@@ -29,8 +38,43 @@ export function RestaurantButtons() {
   }
 
   let fieldsRequired = validateFields();
-  const isPrintable = countSendPrintZero(order) != 0;
   
+  const pay = (data: any) => {
+    console.log(data);
+        reset(); // Resetea el estado del formulario en react-hook-form
+    if (activeConfig && activeConfig.includes("input-sales-keyboard")) {
+        setInput(''); // Resetea el estado del input
+        if (keyboard) {
+            keyboard.clearInput(); // Resetea el teclado virtual
+        }
+        setShowInput(false)
+    }
+  }
+
+
+//////keyboard
+const handleKeyboardChange = (inputValue: string) => {
+    // Actualiza el estado del campo de entrada y el valor en react-hook-form
+    setInput(inputValue);
+    setValue('cash', inputValue, { shouldValidate: true });
+  };
+
+  const handleKeyPress = (button: string) => {
+    if (button === '{bksp}') {
+      handleKeyboardChange(input.slice(0, -1));
+    } else if (button === '.') {
+      // Solo agrega el punto si no existe ya uno en el input
+      if (!input.includes('.')) {
+        handleKeyboardChange(input + button);
+      }
+    } else if (button === '{submit}') {
+      handleSubmit(pay)();
+    } else {
+      handleKeyboardChange(input + button);
+    }
+  };
+//////// termina keyboard
+
   if (!order) return null;
 
     return (
@@ -48,31 +92,31 @@ export function RestaurantButtons() {
             <span className="ml-1 font-semibold text-danger">{`${fieldsRequired.join(', ')}.`}</span>
           </div>
         }
-
+        <form id="restaurant-pay-form" onSubmit={handleSubmit(pay)}>
+        { payMethod == 1 && cashdrawer && <>
+          { activeConfig && activeConfig.includes("input-sales-keyboard") ? <div>
+          { showInput &&
+            <Keyboard inputName='cash' display={{'{bksp}': '<'}} layout={{ default: ["1 2 3", "4 5 6", "7 8 9", ". 0 {bksp}"] }}  onKeyPress={handleKeyPress} keyboardRef={r => setKeyboard(r)}/> }
+            <div onClick={()=>setShowInput(!showInput)} className='clickeable p-1'>
+                <input className="input-disabled" type="text" {...register('cash')} value={input} placeholder="Ingrese una cantidad" readOnly />
+            </div>
+          </div> :
+          <input type="number" step="any" min={0} readOnly={sending} className="input" placeholder='Ingrese una cantidad' {...register("cash")} />
+          }
+        </>}
         <div className="grid grid-cols-[2fr_1fr_2fr]">
-
           <Popper label={
             <div className="button-grey clickeable">
               <IoMdOptions className="mr-1.5" /> Opciones
             </div>
           }>
-            {/* <Buttons order={order} /> */}
-            <div></div>
+            <div>Botones</div>
           </Popper>
 
-          {/* Guardar */}
-          <div className="button-lime clickeable relative" title="Guardar" onClick={sending ? ()=>{} : () => console.log('Guardar')} >
-            <AiFillSave size={22} />
-            { isPrintable &&
-              <span className="absolute -top-0 -right-0 flex h-3 w-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-white"></span>
-              </span>
-            }
-          </div>
+          <SaveButton />
           <PayButton />
         </div>
-
+      </form>
         <DeleteModal
           isShow={modals.deleteOrder}
           text={`¿Estas seguro de eliminar esta orden?`}

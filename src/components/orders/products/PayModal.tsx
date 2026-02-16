@@ -55,19 +55,8 @@ export function PayModal(props: PayModalI) {
                 <form onSubmit={handleSubmit(pay)} className="w-full">
                 {paymentType === 1 ? (
                 <div>
-                    <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white" >Search</label>
-                    <div className="relative">
-                      <input
-                        type={`${order?.invoice_assigned?.type == 8 ? "hidden" : "number"}`}
-                        step="any"
-                        id="cash"
-                        className="input"
-                        placeholder="Ingrese la cantidad de efectivo"
-                        {...register("cash")}
-                      />
-                    </div>
                       <div className="flex justify-center mt-2">
-                        <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={collecting} preset={collecting ? Preset.saving : Preset.save} isFull />
+                        <Button type="submit" form="restaurant-pay-form" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={collecting} preset={collecting ? Preset.saving : Preset.save} isFull />
                       </div>
                   </div>
                   ) :

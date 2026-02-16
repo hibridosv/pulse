@@ -83,6 +83,8 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
          if (order.order_type != serviceType) {
                setSelectedElement('serviceType', order.order_type);
          }
+
+         setSelectedElement('payMethod', 1);
       }
   }, [initialLoad, order, openModal, serviceType, setSelectedElement])
 

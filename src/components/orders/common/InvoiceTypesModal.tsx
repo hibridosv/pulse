@@ -39,7 +39,7 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   }
 
   return (
-    <Modal show={isShow} onClose={onClose} size="md" headerTitle="Seleccione el tipo de factura" closeOnOverlayClick={false} hideCloseButton={true} >
+    <Modal show={isShow} onClose={onClose} size="xs" headerTitle="Tipo de factura" closeOnOverlayClick={false} hideCloseButton={true} >
       <Modal.Body>
         <div className="flex flex-col gap-4">
           <div className="bg-bg-base rounded-lg border border-bg-subtle/80">
