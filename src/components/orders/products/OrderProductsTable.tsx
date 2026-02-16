@@ -7,6 +7,7 @@ import { Order } from "@/interfaces/order";
 import { getTotalPercentage, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
+import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { FaPen } from "react-icons/fa";
 import { MdBallot } from "react-icons/md";
@@ -23,6 +24,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   const { addNew, del} = useOrderFnLogic();
   const { setSelectedElement } = useTempSelectedElementStore();
   const { openModal} = useModalStore();
+  const { sending } = ordersProductsStore();
   
   let data = order?.invoiceproducts ?? [];
   
@@ -43,12 +45,13 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   };
   
   
-    const listItems = data.map((record: any) => {
+    const listItems = data.map((record: any, index: number) => {
     const isOtherSales = record.cod == 9999999999;
     const isDisabled = isOtherSales || record.lot_id;
 
     return (
-        <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
+        <tr key={record.id}
+            className={`${sending ? 'opacity-50 pointer-events-none' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
           <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable'} ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`} 
             onClick={isOtherSales ? ()=>{} : ()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') }}>
             { record.quantity }
@@ -69,22 +72,22 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             { isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
             onClick={()=> {}}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
           </td>
-          <td className={`px-2 py-1 text-center whitespace-nowrap font-bold`}>
+          <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
             <span className="clickeable" onClick={()=>{ openModal('changePriceProduct'); setSelectedElement('productSelected', record); }}>
               { numberToMoney(record.unit_price ?? 0, system) }
             </span>
           </td>
-          <td className={`px-2 py-1 text-center whitespace-nowrap  font-bold`}>
+          <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
             <span className="clickeable" onClick={()=> { openModal('discountModal'); setSelectedElement('productSelected', record); setSelectedElement('discountType', 1) }}>
               { numberToMoney(record.discount ?? 0, system) }
             </span>
           </td>
-          <td className={`px-2 py-1 whitespace-nowrap font-medium ${ !isDefaultCommission && 'hidden'}`}>
+          <td className={`px-2 py-1 whitespace-nowrap font-medium tabular-nums ${ !isDefaultCommission && 'hidden'}`}>
             <span className="clickeable" onClick={()=>{ setSelectedElement('rowToUpdate', 'commission'); openModal('changeRow'); setSelectedElement('productSelected', record); }}>
               { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
             </span>
           </td>
-          <td className={`px-2 py-1 text-center whitespace-nowrap`}>
+          <td className={`px-2 py-1 text-center whitespace-nowrap tabular-nums`}>
             { numberToMoney(record.total ?? 0, system) }
           </td>
           <td className={`px-2 py-1 flex justify-center`}>
@@ -100,9 +103,18 @@ export function OrderProductsTable(props: OrderProductsTableI) {
 
   return (
     <div className="m-4">
-      <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
+      <div className={`relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border transition-all duration-300
+        ${sending ? 'border-primary/30 shadow-md' : 'border-bg-subtle'}`}>
+
+        {sending && (
+          <div className="absolute top-0 left-0 w-full h-0.5 bg-primary/10 overflow-hidden z-10">
+            <div className="h-full w-1/3 bg-primary rounded-full animate-shimmer" />
+          </div>
+        )}
+
         <table className="w-full text-sm text-left">
-          <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
+          <thead className={`text-xs text-text-base uppercase border-b-2 transition-colors duration-300
+            ${sending ? 'bg-primary/10 border-primary/20' : 'bg-bg-subtle/60 border-bg-subtle'}`}>
             <tr>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cant</th>
               <th scope="col" className={`px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap ${ !isShowCode && 'hidden'}`}>Cod </th>

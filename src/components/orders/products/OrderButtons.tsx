@@ -48,7 +48,7 @@ export function OrderButtons(props: OrderButtonsI) {
         <Alert type="danger" title="Error" text={`Seleccione un cliente para el ${invoice?.invoice_assigned?.type == 3 ? "CCF" : "Sujeto Excluido"}`} isDismissible={false} className='my-1' /> }
 
         { fieldsRequired && fieldsRequired.length > 0 &&
-          <div className="rounded-lg border border-danger/20 bg-danger/10 p-2.5 text-sm text-text-base">
+          <div className="rounded-lg border border-danger/20 bg-danger/10 p-2 m-3 text-sm text-text-base ">
             Faltan los siguientes campos del cliente para facturar:
             <span className="ml-1 font-semibold text-danger">{`${fieldsRequired.join(', ')}.`}</span>
           </div>

@@ -51,7 +51,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
 
     const loadInitialData = async () => {
       orderLoaded.current = true;
-      await loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
+      await loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,invoiceproducts.attributes.workstation,attributes,table,invoiceproducts.options.option`, false);
       const currentOrder = ordersProductsStore.getState().order;
       if (!currentOrder) {
         loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);

@@ -7,9 +7,9 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import { AiFillSave } from "react-icons/ai";
-import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { IoMdOptions } from "react-icons/io";
-import { countSendPrintZero, sumarCantidad } from "../utils";
+import { countSendPrintZero } from "../utils";
+import { PayButton } from "./Buttons/PayButton";
 
 
 export function RestaurantButtons() {
@@ -21,21 +21,17 @@ export function RestaurantButtons() {
   const invoice = order;
   const { system, cashdrawer } =useConfigStore();
 
-  if (!order) return <></>
-
+  
   const validateFields = ()=>{
     if (invoice?.client_id && invoice?.invoice_assigned?.type == 3) {
       return validateInvoiceFields(invoice?.client, requiredFieldsCCF)
     }
   }
-  const total = sumarCantidad(order?.invoiceproducts);
 
   let fieldsRequired = validateFields();
-  const blockMaxQuantityWithOutNit = system?.country == 3 && total >= 2500 && !order?.client_id;
-  const disabledButonPay = sending || !cashdrawer || blockMaxQuantityWithOutNit || (!order?.client_id && (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 4));
-  const payType = 1;
   const isPrintable = countSendPrintZero(order) != 0;
-
+  
+  if (!order) return null;
 
     return (
         <div className="w-full space-y-3 px-3 pt-3 pb-4">
@@ -74,25 +70,7 @@ export function RestaurantButtons() {
               </span>
             }
           </div>
-
-          {/* Cobrar */}
-          { payType == 1 ?
-            <button
-              disabled={disabledButonPay}
-              type="submit"
-              className={`button-cyan w-full transition-opacity duration-200 ${disabledButonPay ? 'opacity-50 cursor-not-allowed' : 'clickeable'}`}
-            >
-              <FaRegMoneyBillAlt className="mr-1.5" size={20} /> Cobrar
-            </button>
-            :
-            <div
-              className={`button-cyan w-full transition-opacity duration-200 ${disabledButonPay ? 'opacity-50 cursor-not-allowed' : 'clickeable'}`}
-              title="Cobrar"
-              onClick={(disabledButonPay) ? ()=>{} : ()=>console.log('Cobrar')}
-            >
-              <FaRegMoneyBillAlt className="mr-1.5" size={20} /> Cobrar
-            </div>
-          }
+          <PayButton />
         </div>
 
         <DeleteModal

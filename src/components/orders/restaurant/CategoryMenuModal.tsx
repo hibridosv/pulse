@@ -25,8 +25,6 @@ export function CategoryMenuModal(props: CategoryMenuModalI) {
   const category = getSelectedElement('categoryMenu');
   const filter = category ? category.category_id : null;
 
-  console.log(category);
-  console.log(filter);
 
 
     useEffect(() => {
@@ -48,7 +46,6 @@ export function CategoryMenuModal(props: CategoryMenuModalI) {
             }
         
             const imagesFiltered = images && images.filter((item: any) => item.icon_type === 1 && item.category_id === filter);
-            console.log("imagesFiltered", imagesFiltered);
 
             const listItems = imagesFiltered && imagesFiltered.map((record: any, index: number) => {
                 if (record.icon_type == 2) return

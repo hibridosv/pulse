@@ -3,211 +3,159 @@ import { getTotalPercentage } from "@/lib/utils";
 export const sumarTotalesWithoutDiscount = (datos: any): number => {
   let totalSuma = 0;
   let totalDiscount = 0;
-  let total = 0;
 
   datos?.forEach((elemento: any) => {
-    if (elemento.hasOwnProperty('total')) {
-      totalSuma += elemento.total;
-    }
-    if (elemento.hasOwnProperty('discount')) {
-      totalDiscount += elemento.discount;
-    }
+    totalSuma += elemento.total ?? 0;
+    totalDiscount += elemento.discount ?? 0;
   });
-  total = totalDiscount + totalSuma;
 
-  return total;
+  return totalDiscount + totalSuma;
 }
 
 export const sumarDiscount = (datos: any): number => {
   let totalSuma = 0;
 
   datos?.forEach((elemento: any) => {
-    if (elemento.hasOwnProperty('discount')) {
-      totalSuma += elemento.discount;
-    }
+    totalSuma += elemento.discount ?? 0;
   });
 
   return totalSuma;
 }
 
-  export const commissionTotal = (records: any)=>{
-    let commission = 0;
-        records.forEach((element: any) => {
-          let comissionPercentage = getTotalPercentage(element?.subtotal, element?.commission)
-        commission = commission + comissionPercentage;
-      });
-    return commission;
-  }
+export const commissionTotal = (records: any): number => {
+  let commission = 0;
 
-  export const sumarTotales = (datos: any): number => {
+  records?.forEach((element: any) => {
+    commission += getTotalPercentage(element?.subtotal, element?.commission);
+  });
+
+  return commission;
+}
+
+export const sumarTotales = (datos: any): number => {
   let totalSuma = 0;
 
   datos?.forEach((elemento: any) => {
-    if (elemento.hasOwnProperty('total')) {
-      totalSuma += elemento.total;
-    }
+    totalSuma += elemento.total ?? 0;
   });
 
   return totalSuma;
 }
-
-
 
 export const sumarSubtotal = (datos: any): number => {
   let totalSuma = 0;
 
   datos?.forEach((elemento: any) => {
-    if (elemento.hasOwnProperty('subtotal')) {
-      totalSuma += elemento.subtotal;
-    }
+    totalSuma += elemento.subtotal ?? 0;
   });
 
   return totalSuma;
 }
-
 
 export const sumarCantidad = (datos: any): number => {
   let totalSuma = 0;
 
   datos?.forEach((elemento: any) => {
-    if (elemento.hasOwnProperty('total')) {
-      totalSuma += elemento.total;
-    }
+    totalSuma += elemento.quantity ?? 0;
   });
 
   return totalSuma;
 }
 
-/**
- * 
- * @param records (datos de la factura)
- * @returns 
- */
 export const sumarSalesTotal = (records: any): number => {
-  const total = sumarCantidad(records?.invoiceproducts);
+  const total = sumarTotales(records?.invoiceproducts);
   const subtotal = sumarSubtotal(records?.invoiceproducts);
 
   if (records?.client?.taxpayer_type == 2 && subtotal >= 100) { // gran contribuyente
-    let retention = subtotal * 0.01;
+    const retention = subtotal * 0.01;
     return (total - retention)
   }
 
   if (records?.invoice_assigned?.type == 4) { // sujeto excluido
-    let retention = sumarTotalRetentionSujetoExcluido(records);
+    const retention = sumarTotalRetentionSujetoExcluido(records);
     return (total - retention)
   }
   return total;
 }
 
-
 export const sumarTotalRetentionRenta = (datos: any): number => {
   let totalSuma = 0;
 
   datos?.invoiceproducts?.forEach((elemento: any) => {
-    if (elemento.hasOwnProperty('subtotal')) {
-        if (elemento.operation_type == 1 && elemento.product_type == 2) {
-          totalSuma += elemento.subtotal;
-        } 
+    if (elemento.operation_type == 1 && elemento.product_type == 2) {
+      totalSuma += elemento.subtotal ?? 0;
     }
   });
 
   return totalSuma * 0.10;
 }
 
-export const sumarTotalRetentionSujetoExcluido= (datos: any): number => {
+export const sumarTotalRetentionSujetoExcluido = (datos: any): number => {
   let totalSuma = 0;
 
   datos?.invoiceproducts?.forEach((elemento: any) => {
-    if (elemento.hasOwnProperty('total')) {
-      if (datos?.invoice_assigned?.type == 4) { // sujeto excluido
-        if (elemento.operation_type == 1 && elemento.product_type ==2) {
-          totalSuma += elemento.total;
-        }
-      } else {
-        totalSuma += elemento.total;
+    if (datos?.invoice_assigned?.type == 4) { // sujeto excluido
+      if (elemento.operation_type == 1 && elemento.product_type == 2) {
+        totalSuma += elemento.total ?? 0;
       }
+    } else {
+      totalSuma += elemento.total ?? 0;
     }
   });
 
   return totalSuma * 0.10;
 }
 
-// agrupa los productos de restaurante para no mostrarlos individuales
-export function groupInvoiceProductsByCodSpecial(order: any) {
-  const groupedProducts = {} as any;
-  let products = {} as any;
+function groupInvoiceProducts(products: any[], filterFn: (product: any) => boolean) {
+  const grouped = {} as any;
 
-  order.invoiceproducts.forEach((product : any) => {
-      const { cod, quantity, subtotal, total } = product;
+  products.forEach((product: any) => {
+    const { cod, quantity, subtotal, total } = product;
 
-      if (product.special == 1 && product.group_by == null) {
-          if (!groupedProducts[cod]) {
-            groupedProducts[cod] = { ...product };
-        } else {
-            groupedProducts[cod].quantity += quantity;
-            groupedProducts[cod].subtotal += subtotal;
-            groupedProducts[cod].total += total;
-        }
+    if (filterFn(product)) {
+      if (!grouped[cod]) {
+        grouped[cod] = { ...product };
+      } else {
+        grouped[cod].quantity += quantity;
+        grouped[cod].subtotal += subtotal;
+        grouped[cod].total += total;
       }
-
+    }
   });
 
-  // Convertir el objeto en un array de productos
-  products = Object.values(groupedProducts);
-  products.sort((a: any, b: any) => 
+  const result = Object.values(grouped);
+  result.sort((a: any, b: any) =>
     new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-);
-  return products;
+  );
+  return result;
 }
 
+export function groupInvoiceProductsByCodSpecial(order: any) {
+  return groupInvoiceProducts(
+    order.invoiceproducts,
+    (product: any) => product.special == 1 && product.group_by == null
+  );
+}
 
-// agrupa los productos de restaurante para no mostrarlos individuales
- export function groupInvoiceProductsByCodAll(order: any) {
-  const groupedProducts = {} as any;
-
-  order.invoiceproducts.forEach((product : any) => {
-      const { cod, quantity, subtotal, total } = product;
-        if (product.special == 0) {
-          if (!groupedProducts[cod]) {
-              groupedProducts[cod] = { ...product };
-          } else {
-              groupedProducts[cod].quantity += quantity;
-              groupedProducts[cod].subtotal += subtotal;
-              groupedProducts[cod].total += total;
-          }
-        }
-
-  });
-
-  // Convertir el objeto en un array de productos
-  order.invoiceproductsGroup = Object.values(groupedProducts);
-  order.invoiceproductsGroup.sort((a: any, b: any) => 
-    new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-);
+export function groupInvoiceProductsByCodAll(order: any) {
+  order.invoiceproductsGroup = groupInvoiceProducts(
+    order.invoiceproducts,
+    (product: any) => product.special == 0
+  );
   return order;
 }
 
-//// Verfifica si hay productos esta pendiente de mandar a imprimir o a comanda
 export function isProductPendientToSend(product: any) {
   if (!product) return false;
   const sendPrint = product?.attributes?.send_print;
   const isValidPrintStatus = [1, 2, 3].includes(sendPrint ?? -1);
-  return product.attributes && product.attributes.work_station_id && (isValidPrintStatus);
+  return product.attributes && product.attributes.work_station_id && isValidPrintStatus;
 }
 
-
-
-//// contar cuantos productos estan en cero de imprimir
 export function countSendPrintZero(order: any) {
-  if (!order?.invoiceproducts) return;
-
-  let count = 0;
-
-  order.invoiceproducts.forEach((product: any) => {
-      if (product.attributes && product.attributes.work_station_id && product.attributes.send_print === 0) {
-          count++;
-      }
-  });
-
-  return count;
+  if (!order?.invoiceproducts) return 0;
+  console.log("countSendPrintZero", order?.invoiceproducts);
+  return order.invoiceproducts.filter(
+    (product: any) => product.attributes?.work_station_id && product.attributes?.send_print === 0
+  ).length;
 }

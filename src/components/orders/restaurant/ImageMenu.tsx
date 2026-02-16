@@ -27,19 +27,15 @@ export function ImageMenu(props:  ImageMenuI) {
 
 
 const sendProduct = (productId: number) => {
-    console.log(productId);
     dismiss();
 }
 
 const dismiss = () => {
   if (activeConfig && activeConfig.includes("restaurant-sales-modal-dismis-category")) {
-    console.log("Cerrando Modal");
     closeModal('categoryMenu');
   }
 
 }
-console.log("Record: ", record);
-
 
 
     return (

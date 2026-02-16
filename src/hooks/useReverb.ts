@@ -38,13 +38,11 @@ const useReverb = (channelName: string, eventName: string, status = false) => {
   const channelRef = useRef<any>(null);
 
   useEffect(() => {
-    console.log("Status: ", status)
     if (!status) return;
 
     const echo = getEchoInstance();
     const channel = echo.channel(channelName);
     channelRef.current = channel;
-    console.log("Channel: ", channel)
 
     const handleEvent = (eventData: any) => {
         setRandom(Math.random());
