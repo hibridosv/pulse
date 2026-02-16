@@ -4,6 +4,8 @@ import { Button, Preset } from "@/components/button/button";
 import { LiComponent } from "@/components/button/LiComponent";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
+import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
+import { isRestaurant } from "@/lib/utils";
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
@@ -17,21 +19,29 @@ export interface InvoiceTypesModalI {
 
 export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   const { onClose, isShow } = props;
+  const { tenant } = useConfigStore();
   const { order, sending, error } = ordersRestaurantsStore();
   const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
   const { invoiceTypes } = useConfigStore();
-  const { update } = useOrderFnLogic();
+  const { update: updateProduct } = useOrderFnLogic();
+  const { update: updateRestaurant } = useOrderRestaurantFnLogic();
   const { closeModal} = useModalStore();
 
   if (!isShow || !order) return null;
+
+  console.log("tenant: ", tenant);
 
   const handleUpdate = (type: any) => {
     let values: UpdateServiceInterface = {
       row: "invoice_type_id",
       value: type.id
     }
-    update(order.id, values);
+    if (isRestaurant(tenant.system)) {
+      updateRestaurant(order.id, values);
+    } else {
+      updateProduct(order.id, values);
+    }
     if (!error) {
         setSelectedElement('invoiceTypeSelected', type);
         closeModal('invoiceType');

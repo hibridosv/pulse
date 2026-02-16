@@ -17,6 +17,8 @@ export function OptionsSelect() {
   const { getSelectedElement} = useTempSelectedElementStore();
   const payMethod = getSelectedElement('payMethod') ?? 1;
   const { modals, closeModal, openModal} = useModalStore();
+  const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
+  const deliveryType = getSelectedElement('deliveryType');
 
 
   if (!order?.invoiceproducts) return <></>
@@ -26,11 +28,11 @@ export function OptionsSelect() {
       return (
             <div>
               <div className="flex justify-around w-full h-7 shadow-md">
-                <div className="w-full font-medium clickeable bg-gray-200 items-center text-center border-r-2" onClick={()=>{}}>
-                  { deliveryTypeRestaurant(order?.delivery_type) }
+                <div className="w-full font-medium clickeable bg-gray-200 items-center text-center border-r-2" onClick={()=>{ openModal('deliveryType') }}>
+                  { deliveryTypeRestaurant(deliveryType) }
                 </div>
                 <div className="w-full font-medium clickeable bg-sky-200 items-center text-center" onClick={()=>{ openModal('invoiceType') }}>
-                  { order?.invoice_assigned?.name }
+                  { invoiceTypeSelected.name }
                 </div>
                 <div className="w-full font-medium clickeable bg-gray-200 items-center text-center border-l-2" onClick={()=> { openModal('payMethod') }}>
                   {getPaymentTypeName(payMethod)}

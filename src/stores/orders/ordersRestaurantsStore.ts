@@ -1,6 +1,6 @@
 import { Order } from '@/interfaces/order';
 import { errorSound, successSound } from '@/lib/config/config';
-import { createService, getServices } from '@/services/services';
+import { createService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useModalStore from '../modalStorage';
 import useTempSelectedElementStore from '../tempSelectedElementStore';
@@ -11,6 +11,7 @@ import ordersProductsStore from './ordersProductsStore';
 interface ordersRestaurantsStoreI {
   orders: any | null;
   order: any | null;
+  lastResponse: any | null;
   error: boolean;
   loading: boolean;
   sending: boolean;
@@ -32,6 +33,7 @@ interface ordersRestaurantsStoreI {
 const ordersRestaurantsStore = create<ordersRestaurantsStoreI>((set) => ({
   orders: null,
   order: null,
+  lastResponse: null,
   error: false, 
   loading: false,
   sending: false,
@@ -99,7 +101,7 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>((set) => ({
         useModalStore.getState().openModal('paymentSuccess');
         try {
             const response = await createService(url, data);
-            set({ order: null, error: false });
+            set({ order: null, error: false, lastResponse: response.data.data });
             useTempSelectedElementStore.getState().setSelectedElement("paymentSuccess", response.data.data);
             ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
         } catch (error) {
@@ -113,7 +115,15 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>((set) => ({
 
   saveOrder: async (url, data) => {
         set({ saving: true });
-
+        try {
+            const response = await updateService(url, data);
+            set({ order: response.data.data, error: false });
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            set({ error: true });
+        } finally {
+            set({ saving: false });
+        }
     },
 
   deleteOrder: async (url: string) => {
@@ -123,7 +133,18 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>((set) => ({
 
   updateOrder: async (url, data, showToast: boolean = true) => {
         set({ sending: true });
-
+        try {
+            const response = await updateService(url, data);
+            set({ order: response.data.data, error: false });
+            if (showToast) {
+              useToastMessageStore.getState().setMessage(response);
+            }
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            set({ error: true });
+        } finally {
+            set({ sending: false });
+        }
     },
 
   saveAs: async (url, data) => {

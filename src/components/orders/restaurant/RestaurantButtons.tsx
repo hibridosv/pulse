@@ -1,5 +1,4 @@
 import { Alert } from "@/components/Alert/Alert";
-import { DeleteModal } from "@/components/DeleteModal";
 import { Popper } from "@/components/popper/Popper";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functions";
@@ -78,7 +77,7 @@ const handleKeyboardChange = (inputValue: string) => {
     }
   };
 //////// termina keyboard
-
+  console.log(invoice);
   if (!order) return null;
 
     return (
@@ -121,13 +120,7 @@ const handleKeyboardChange = (inputValue: string) => {
           <PayButton />
         </div>
       </form>
-        <DeleteModal
-          isShow={modals.deleteOrder}
-          text={`¿Estas seguro de eliminar esta orden?`}
-          onDelete={() =>{ console.log(order?.id); closeModal('deleteOrder'); }}
-          onClose={() => closeModal('deleteOrder')}
-        />
-        </div>
+      </div>
     );
 
 }

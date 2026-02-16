@@ -1,11 +1,15 @@
 'use client'
+import { UpdateServiceInterface } from '@/services/Interfaces';
+import { postForPrint } from '@/services/OtherServices';
+import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 
 export function useOrderRestaurantFnLogic() {
-  const { saveOrder, loadOrder, order, payOrder, error, loadOrders, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersRestaurantsStore();
+  const { saveOrder, lastResponse, order, payOrder, error, loadOrders, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersRestaurantsStore();
+  const { activeConfig, system } = useConfigStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const {modals} = useModalStore();
   const payMethod = getSelectedElement('payMethod') ?? 1;
@@ -18,6 +22,7 @@ export function useOrderRestaurantFnLogic() {
   const { setError } = useToastMessageStore();
   const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
   const serviceType: number = getSelectedElement('serviceType'); // aqui, mesas, delivery
+  const { setMessage} = useToastMessageStore();
 
 
 
@@ -43,7 +48,21 @@ const addNew = async (producId: any, quantity = 1) => {
           
 }
 
+/** GUardar la orden y mada comandas a imprimir si asi se necesita */
+  const save = async (id: string, withOrder: boolean = false) => {
+      await saveOrder(`orders/restaurant/${id}/save`, { with_order: withOrder });
+      if (!error && withOrder) {
+        setMessage({message: "Imprimiendo pre cuenta"})
+        if (activeConfig && activeConfig.includes("print-local")) {
+          await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', lastResponse);
+        }
+      }
+  }
 
+  /** Actualizar un campo de la orden */
+  const update = async (id: string, values: UpdateServiceInterface) => {
+      await updateOrder(`orders/${id}/update`, values);
+  }
 
 
 /// pagar orden
@@ -59,6 +78,6 @@ const pay = async (data: any) => {
 }
 
 
-  return { addNew, pay }
+  return { addNew, save, update, pay }
 
 }

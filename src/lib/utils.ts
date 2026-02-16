@@ -206,3 +206,12 @@ export const percentage = (totalCost: number, totalPrice: number): number => {
 export const getTotalPercentage = (porcentaje: number, total: number ) :number => {
   return (porcentaje / 100) * total;
 }
+
+
+export const isRestaurant = (tenant: number): boolean => {
+    return tenant === 2 || tenant === 4;
+}
+
+export const isProducts = (tenant: number): boolean => {
+    return tenant === 1 || tenant === 3;
+}
