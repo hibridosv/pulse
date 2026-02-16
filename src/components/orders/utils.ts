@@ -133,11 +133,11 @@ export const sumarTotalRetentionSujetoExcluido= (datos: any): number => {
 }
 
 // agrupa los productos de restaurante para no mostrarlos individuales
-export function groupInvoiceProductsByCodSpecial(invoice: any) {
+export function groupInvoiceProductsByCodSpecial(order: any) {
   const groupedProducts = {} as any;
   let products = {} as any;
 
-  invoice.invoiceproducts.forEach((product : any) => {
+  order.invoiceproducts.forEach((product : any) => {
       const { cod, quantity, subtotal, total } = product;
 
       if (product.special == 1 && product.group_by == null) {
@@ -162,10 +162,10 @@ export function groupInvoiceProductsByCodSpecial(invoice: any) {
 
 
 // agrupa los productos de restaurante para no mostrarlos individuales
- export function groupInvoiceProductsByCodAll(invoice: any) {
+ export function groupInvoiceProductsByCodAll(order: any) {
   const groupedProducts = {} as any;
 
-  invoice.invoiceproducts.forEach((product : any) => {
+  order.invoiceproducts.forEach((product : any) => {
       const { cod, quantity, subtotal, total } = product;
         if (product.special == 0) {
           if (!groupedProducts[cod]) {
@@ -180,11 +180,11 @@ export function groupInvoiceProductsByCodSpecial(invoice: any) {
   });
 
   // Convertir el objeto en un array de productos
-  invoice.invoiceproductsGroup = Object.values(groupedProducts);
-  invoice.invoiceproductsGroup.sort((a: any, b: any) => 
+  order.invoiceproductsGroup = Object.values(groupedProducts);
+  order.invoiceproductsGroup.sort((a: any, b: any) => 
     new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
 );
-  return invoice;
+  return order;
 }
 
 //// Verfifica si hay productos esta pendiente de mandar a imprimir o a comanda
@@ -198,12 +198,12 @@ export function isProductPendientToSend(product: any) {
 
 
 //// contar cuantos productos estan en cero de imprimir
-export function countSendPrintZero(invoice: any) {
-  if (!invoice?.invoiceproducts) return;
+export function countSendPrintZero(order: any) {
+  if (!order?.invoiceproducts) return;
 
   let count = 0;
 
-  invoice.invoiceproducts.forEach((product: any) => {
+  order.invoiceproducts.forEach((product: any) => {
       if (product.attributes && product.attributes.work_station_id && product.attributes.send_print === 0) {
           count++;
       }

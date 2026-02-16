@@ -1,6 +1,8 @@
 'use client';
 
+import { InvoiceTypesModal } from "@/components/orders/products/InvoiceTypesModal";
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
+import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
 import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
 import { RestaurantProductsAdded } from "@/components/orders/restaurant/RestaurantProductsAdded";
@@ -31,11 +33,11 @@ export default function Page() {
 
               <RestaurantProductsAdded />
               <RestaurantShowTotal />
-            <div className="absolute bottom-2 ">
               <RestaurantButtons />
-            </div>
+              <OptionsSelect />
           </div>
         </div>
+          <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
           <CategoryMenuModal isShow={modals.categoryMenu} onClose={()=>{ closeModal('categoryMenu')}} />
           <ToasterMessage />
     </div>

@@ -47,9 +47,13 @@ export function OrderButtons(props: OrderButtonsI) {
         { (!invoice?.client_id && (invoice?.invoice_assigned?.type == 3 || invoice?.invoice_assigned?.type == 4)) && 
         <Alert type="danger" title="Error" text={`Seleccione un cliente para el ${invoice?.invoice_assigned?.type == 3 ? "CCF" : "Sujeto Excluido"}`} isDismissible={false} className='my-1' /> }
 
-        { fieldsRequired && fieldsRequired.length > 0 && 
-          <div>Faltan los siguientes campos del cliente para facturar: <div className="text-red-500">{`${fieldsRequired.join(', ')}.`}</div></div> 
+        { fieldsRequired && fieldsRequired.length > 0 &&
+          <div className="rounded-lg border border-danger/20 bg-danger/10 p-2.5 text-sm text-text-base">
+            Faltan los siguientes campos del cliente para facturar:
+            <span className="ml-1 font-semibold text-danger">{`${fieldsRequired.join(', ')}.`}</span>
+          </div>
         }
+
         <div className='grid grid-cols-2 gap-1.5 sm:flex sm:gap-0'>
           <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-xs sm:text-sm clickeable w-full h-full py-2.5 sm:py-2'><IoMdOptions className='mr-1' /> Opciones</div>} >
             <Buttons order={order} />
