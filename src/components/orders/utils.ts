@@ -158,3 +158,21 @@ export function countSendPrintZero(order: any) {
     (product: any) => product.attributes?.work_station_id && product.attributes?.send_print === 0
   ).length;
 }
+
+
+/// cuanta cuantos productos se han enviado a imprimir
+export function countSendPrint(invoice: any) {
+  if (!invoice?.invoiceproducts) return;
+
+  let count = 0;
+
+  invoice.invoiceproducts.forEach((product: any) => {
+      const sendPrint = product?.attributes?.send_print;
+      const isValidPrintStatus = [1, 2, 3].includes(sendPrint ?? -1);
+      if (product.attributes && product.attributes.work_station_id && isValidPrintStatus) {
+          count++;
+      }
+  });
+
+  return count;
+}

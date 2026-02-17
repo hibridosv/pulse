@@ -6,6 +6,7 @@ import useModalStore from '@/stores/modalStorage';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import Image from 'next/image';
+import { useState } from 'react';
 
 
 export interface ImageMenuI {
@@ -21,25 +22,25 @@ export function ImageMenu(props:  ImageMenuI) {
   const { addNew } = useOrderRestaurantFnLogic();
   const { setSelectedElement } = useTempSelectedElementStore();
   const { openModal, closeModal } = useModalStore();
-  const { activeConfig } = useConfigStore(); 
+  const { activeConfig } = useConfigStore();
+  const [isSending, setIsSending] = useState(false);
+
   const isProduct = record.icon_type == 1;
   const label = isProduct ? record?.product?.description : record?.category?.name;
   const imageSrc = isProduct ? record?.product?.restaurant?.image : record?.category?.img;
 
-
-
 const sendProduct = async(productId: number) => {
+    setIsSending(true);
     await addNew(productId);
     dismiss();
+    setIsSending(false);
 }
 
 const dismiss = () => {
   if (activeConfig && activeConfig.includes("restaurant-sales-modal-dismis-category")) {
     closeModal('categoryMenu');
   }
-
 }
-
 
     return (
         <div
@@ -56,10 +57,11 @@ const dismiss = () => {
               className={`
                 group relative w-[104px] overflow-hidden rounded-xl
                 bg-bg-content shadow-md
-                transition-all duration-300 ease-out
+                transition-all duration-200 ease-out
                 hover:shadow-xl hover:-translate-y-1
                 active:scale-95 active:shadow-md
-                ${sending ? 'opacity-60 pointer-events-none' : 'clickeable'}
+                ${sending ? 'pointer-events-none' : 'clickeable'}
+                ${isSending ? 'scale-[0.97]' : ''}
               `}
             >
                 <div className="relative h-[104px] w-[104px] overflow-hidden">
@@ -69,26 +71,45 @@ const dismiss = () => {
                     alt={label || 'Icono de imagen'}
                     width={104}
                     height={104}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    className={`
+                      h-full w-full object-cover transition-all duration-200 group-hover:scale-110
+                      ${isSending ? 'scale-105 brightness-90' : ''}
+                    `}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                  {isSending && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-primary/30">
+                      <div className="h-7 w-7 rounded-full border-[3px] border-white/30 border-t-white animate-spin" />
+                    </div>
+                  )}
                 </div>
 
                 <div className={`
                   flex h-10 items-center justify-center px-1.5
-                  transition-colors duration-300
-                  ${isProduct
-                    ? 'bg-bg-subtle/80 group-hover:bg-bg-subtle'
-                    : 'bg-accent/15 group-hover:bg-accent/25'
+                  transition-all duration-200
+                  ${isSending
+                    ? 'bg-primary/10'
+                    : isProduct
+                      ? 'bg-bg-subtle/80 group-hover:bg-bg-subtle'
+                      : 'bg-accent/15 group-hover:bg-accent/25'
                   }
                 `}>
-                  <p className={`
-                    w-full text-center text-[11px] font-semibold uppercase leading-tight
-                    line-clamp-2
-                    ${isProduct ? 'text-text-base' : 'text-accent'}
-                  `}>
-                    {label}
-                  </p>
+                  {isSending ? (
+                    <div className="flex items-center gap-1">
+                      <span className="inline-block h-1 w-1 rounded-full bg-primary animate-bounce" style={{ animationDuration: '0.4s' }} />
+                      <span className="inline-block h-1 w-1 rounded-full bg-primary animate-bounce" style={{ animationDuration: '0.4s', animationDelay: '0.1s' }} />
+                      <span className="inline-block h-1 w-1 rounded-full bg-primary animate-bounce" style={{ animationDuration: '0.4s', animationDelay: '0.2s' }} />
+                    </div>
+                  ) : (
+                    <p className={`
+                      w-full text-center text-[11px] font-semibold uppercase leading-tight
+                      line-clamp-2
+                      ${isProduct ? 'text-text-base' : 'text-accent'}
+                    `}>
+                      {label}
+                    </p>
+                  )}
                 </div>
 
                 {!isProduct && (
@@ -102,4 +123,3 @@ const dismiss = () => {
         </div>
     )
 };
-

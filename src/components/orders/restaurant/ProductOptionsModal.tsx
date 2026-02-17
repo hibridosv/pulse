@@ -35,10 +35,6 @@ const handleUpdate = (data: any) => {
     const LastProduct = getLastElement(order?.invoiceproducts)
     const lastOption = getLastElement(LastProduct?.options, "status", 0)
 
-    console.log("LastProduct ", LastProduct)
-    console.log("lastOption ", lastOption)
-
-
     const listItems = LastProduct && LastProduct?.options.map((record: any) => {
         if (record?.iden == lastOption?.iden) {
             return (
@@ -64,7 +60,7 @@ const handleUpdate = (data: any) => {
                 </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={onClose} preset={Preset.close} /> 
+            <Button onClick={()=>handleUpdate({ id: lastOption.id, iden: lastOption.iden})} preset={Preset.close} text="Saltar Opción" isFull /> 
           </Modal.Footer>
         </Modal>
   );

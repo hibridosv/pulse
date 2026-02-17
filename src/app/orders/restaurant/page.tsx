@@ -15,14 +15,21 @@ import { ServiceTypeSelect } from "@/components/orders/restaurant/ServiceTypeSel
 import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
 import { useOrderRestaurantLogic } from "@/hooks/order/restaurant/useOrderRestaurantLogic";
+import { formatDateAsNumber } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
 import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import CryptoJS from 'crypto-js';
 
 export default function Page() {
   useMenuLogic();
   useOrderRestaurantLogic(true);
   const { order } = ordersRestaurantsStore();
   const { modals, closeModal } = useModalStore();
+
+  const dateStr = formatDateAsNumber(new Date());
+  const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
+  console.log(hash);
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">

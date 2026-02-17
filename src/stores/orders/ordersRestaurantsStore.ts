@@ -1,11 +1,10 @@
 import { Order } from '@/interfaces/order';
 import { errorSound, successSound } from '@/lib/config/config';
-import { createService, getServices, updateService } from '@/services/services';
+import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useModalStore from '../modalStorage';
 import useTempSelectedElementStore from '../tempSelectedElementStore';
 import useToastMessageStore from '../toastMessageStore';
-import ordersProductsStore from './ordersProductsStore';
 
 
 interface ordersRestaurantsStoreI {
@@ -51,7 +50,7 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>((set) => ({
               successSound()
             } else {
               set({ order: null, error: false });
-              ordersProductsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+              ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
             }
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -128,7 +127,17 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>((set) => ({
 
   deleteOrder: async (url: string) => {
     set({ deleting: true });
-
+    try {
+      const response = await deleteService(url); 
+      set({ order: null, error: false});
+      ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+      useToastMessageStore.getState().setMessage(response);
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      set({ error: true });
+    } finally {
+      set({ deleting: false });
+    }
   },
 
   updateOrder: async (url, data, showToast: boolean = true) => {
@@ -154,7 +163,20 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>((set) => ({
 
   deleteProduct: async (url: string) => {
     set({ deleting: true });
-
+    try {
+      const response = await deleteService(url); 
+      if (response.status == 200) {
+        set({ order: response.data.data, error: false });        
+      } else {
+        set({ order: null, error: false});
+        ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+      }
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      set({ error: true });
+    } finally {
+      set({ deleting: false });
+    }
   },
 
   

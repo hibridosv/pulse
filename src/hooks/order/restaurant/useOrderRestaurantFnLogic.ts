@@ -69,6 +69,16 @@ const addNew = async (producId: any, quantity = 1) => {
       await updateOrder(`orders/restaurant/${id}/option`, values);
   }
 
+  /** Eliminar la orden */
+  const cancel = async (id: string) => {
+      await deleteOrder(`orders/${id}`);
+  }
+
+
+    /** Eliminar producto de la orden */
+  const del = async (id: string, cod: string) => {
+      await deleteProduct(`orders/restaurant/${id}/${cod}`);
+  }
 
 
 /// pagar orden
@@ -84,6 +94,6 @@ const pay = async (data: any) => {
 }
 
 
-  return { addNew, save, update, option, pay }
+  return { addNew, save, update, cancel, del, option, pay }
 
 }
