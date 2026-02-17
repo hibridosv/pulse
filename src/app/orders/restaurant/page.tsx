@@ -6,6 +6,7 @@ import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeMo
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestaurantModal";
+import { ProductOptionsModal } from "@/components/orders/restaurant/ProductOptionsModal";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
 import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
 import { RestaurantProductsAdded } from "@/components/orders/restaurant/RestaurantProductsAdded";
@@ -40,6 +41,7 @@ export default function Page() {
               <OptionsSelect />
           </div>
         </div>
+          <ProductOptionsModal isShow={modals.productOptions} onClose={()=>{ closeModal('productOptions')}} />
           <PayedRestaurantModal isShow={modals.paymentSuccess} onClose={()=>{ closeModal('paymentSuccess')}} />
           <InvoicePaymentMethodModal isShow={modals.payMethod} onClose={()=>{ closeModal('payMethod')}} />
           <DeliveryTypeModal isShow={modals.deliveryType} onClose={()=>{ closeModal('deliveryType')}} />

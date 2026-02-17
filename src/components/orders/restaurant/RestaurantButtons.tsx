@@ -77,7 +77,7 @@ const handleKeyboardChange = (inputValue: string) => {
     }
   };
 //////// termina keyboard
-  console.log(invoice);
+
   if (!order) return null;
 
     return (

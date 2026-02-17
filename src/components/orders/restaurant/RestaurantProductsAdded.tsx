@@ -36,7 +36,7 @@ export function RestaurantProductsAdded() {
     order?.invoiceproducts && groupInvoiceProductsByCodAll(order);
         const listItems = order?.invoiceproductsGroup.map((record: any, index: number) => {
         return (
-        <tr key={record.id}
+        <tr key={index}
             className={`${sending ? 'opacity-50 pointer-events-none' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
             <td className="px-2 py-1 whitespace-nowrap text-primary text-center font-semibold">
               { record.quantity }

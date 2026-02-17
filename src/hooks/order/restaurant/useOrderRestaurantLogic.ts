@@ -1,7 +1,7 @@
 'use client'
 import { groupInvoiceProductsByCodSpecial } from '@/components/orders/utils';
 import useReverb from '@/hooks/useReverb';
-import { getFirstElement } from '@/lib/utils';
+import { getFirstElement, getLastElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
@@ -103,6 +103,12 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
             setSelectedElement('deliverySelected', order?.delivery);
          }
 
+         // verifica si hay opciones activas para el producto
+            const LastProduct = getLastElement(order?.invoiceproducts)
+            const lastOption = getLastElement(LastProduct?.options, "status", 0)
+            if (lastOption) {
+               openModal('productOptions');
+            }
       }
   }, [initialLoad, order, openModal, serviceType, setSelectedElement, clientActive, selectedTable, deliverySelected])
 

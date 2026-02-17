@@ -30,8 +30,6 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
 
   if (!isShow || !order) return null;
 
-  console.log("tenant: ", tenant);
-
   const handleUpdate = (type: any) => {
     let values: UpdateServiceInterface = {
       row: "invoice_type_id",

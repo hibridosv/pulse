@@ -64,6 +64,12 @@ const addNew = async (producId: any, quantity = 1) => {
       await updateOrder(`orders/${id}/update`, values);
   }
 
+  /** las opciones de un producto */
+  const option = async (id: string, values: any) => {
+      await updateOrder(`orders/restaurant/${id}/option`, values);
+  }
+
+
 
 /// pagar orden
 const pay = async (data: any) => {
@@ -78,6 +84,6 @@ const pay = async (data: any) => {
 }
 
 
-  return { addNew, save, update, pay }
+  return { addNew, save, update, option, pay }
 
 }
