@@ -34,7 +34,7 @@ export const Navbar = () => {
           </div>
 
           <div>
-            <Link href="/orders/products" className="text-text-inverted hover:text-secondary">
+            <Link href="/orders" className="text-text-inverted hover:text-secondary">
               <IoHome size={22} className="sm:w-7 sm:h-7" />
             </Link>
           </div>
