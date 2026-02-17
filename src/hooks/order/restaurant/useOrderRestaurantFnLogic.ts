@@ -66,7 +66,7 @@ const addNew = async (producId: any, quantity = 1) => {
 
   /** las opciones de un producto */
   const option = async (id: string, values: any) => {
-      await updateOrder(`orders/restaurant/${id}/option`, values);
+      await updateOrder(`orders/restaurant/${id}/option`, values, false);
   }
 
   /** Eliminar la orden */
