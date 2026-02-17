@@ -3,12 +3,21 @@
 import { NothingHere } from '@/components/NothingHere';
 import { RestaurantMenuSkeleton } from '@/components/skeleton/RestaurantMenuSkeleton';
 import { URL } from '@/constants';
+import ordersStore from '@/stores/orders/ordersStore';
 import restauranMenuStore from '@/stores/orders/restauranMenuStore';
+import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import { ImageMenu } from './ImageMenu';
 
 
 export function RestaurantMenu() {
   const { loading, restaurantMenu: images } =  restauranMenuStore();
+  const { getSelectedElement } = useTempSelectedElementStore();
+  const serviceType: number = getSelectedElement('serviceType');
+  const selectedTables = getSelectedElement('selectedTables');
+  const deliverySelected = getSelectedElement('deliverySelected');
+  const { order } = ordersStore();
+
+  if ((serviceType == 2 && selectedTables != "") || order?.invoiceproducts || (serviceType == 3 && deliverySelected?.id)) return <></>;
 
 
   const imageLoader = ({ src, width, quality }: any) => {
