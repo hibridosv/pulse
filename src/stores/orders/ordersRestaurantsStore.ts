@@ -18,6 +18,7 @@ interface ordersRestaurantsStoreI {
   saveAs: (url: string, data: any) => Promise<void>;
   deleteProduct: (url: string) => Promise<void>;
   setOrders: (orders: Order[]) => void;
+  loadTables: (url: string, showToast?: boolean) => Promise<void>;
 }
 
 const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
@@ -138,19 +139,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
     },
 
   saveAs: async (url, data) => {
-        ordersStore.setState({ sending: true });
-        try {
-            const response = await updateService(url, data);
-            ordersStore.setState({ order: null, error: false });
-            ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-            useToastMessageStore.getState().setMessage(response);
-        } catch (error) {
-            useToastMessageStore.getState().setError(error);
-            ordersStore.setState({ error: true });
-        } finally {
-            ordersStore.setState({ sending: false });
-        }
-    },
+      console.log(url, data)
+  },
 
   deleteProduct: async (url: string) => {
     ordersStore.setState({ deleting: true });
@@ -174,6 +164,24 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
   setOrders: (orders: any) => {
     ordersStore.setState({ orders });
   },
+
+  loadTables: async (url: string, showToast: boolean = true) => {
+    ordersStore.setState({ loading: true });
+    try {
+      const response = await getServices(url);
+      ordersStore.setState({ tables: response.data.data, error: false });
+    } catch (error) {
+      ordersStore.setState({ tables: null });
+      if (showToast) {
+        useToastMessageStore.getState().setError(error);
+      }
+      ordersStore.setState({ error: true });
+    } finally {
+      ordersStore.setState({ loading: false });
+    }
+  },
+
+
 
 }));
 

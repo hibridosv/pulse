@@ -19,6 +19,7 @@ import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButt
 import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
 import { RestaurantProductsAdded } from "@/components/orders/restaurant/RestaurantProductsAdded";
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
+import { RestaurantTables } from "@/components/orders/restaurant/RestaurantTables";
 import { ServiceTypeSelect } from "@/components/orders/restaurant/ServiceTypeSelect";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
@@ -44,6 +45,7 @@ export default function Page() {
           <div className="md:col-span-6 md:border-r md:border-primary">
             <div className="relative z-0">
               <RestaurantMenu />
+              <RestaurantTables />
             </div>
           </div>
           <div className="md:col-span-4 flex justify-center ">

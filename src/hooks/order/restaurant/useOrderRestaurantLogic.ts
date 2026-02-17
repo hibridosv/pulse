@@ -4,7 +4,6 @@ import useReverb from '@/hooks/useReverb';
 import { getFirstElement, getLastElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import ordersStore from '@/stores/orders/ordersStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
@@ -20,13 +19,13 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
   const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
-  const serviceType: number = getSelectedElement('serviceType'); // aqui, mesas, delivery
+  const serviceType: number = getSelectedElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
   const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
   const clientActive: number = getSelectedElement('clientActive');
   const selectedTable: number = getSelectedElement('selectedTable');
   const deliverySelected = getSelectedElement('deliverySelected'); // delivery o cliente en opcion 3
 
-  const { loadOrder, loadOrders, setOrders } = ordersRestaurantsStore();
+  const { loadOrder, loadOrders, setOrders, loadTables } = ordersRestaurantsStore();
   const { order } = ordersStore();
   const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
   const { openModal } = useModalStore();
@@ -114,6 +113,12 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
       }
   }, [initialLoad, order, openModal, serviceType, setSelectedElement, clientActive, selectedTable, deliverySelected])
 
+
+   useEffect(() => {
+    if (serviceType == 2) {
+       loadTables(`tables?included=tables`); 
+    }
+   }, [serviceType]);
 
    
 }

@@ -5,6 +5,7 @@ interface ordersStoreI {
   orders: any | null;
   order: any | null;
   lastResponse: any | null;
+  tables: any | null;
   error: boolean;
   loading: boolean;
   sending: boolean;
@@ -17,6 +18,7 @@ const ordersStore = create<ordersStoreI>((set) => ({
   orders: null,
   order: null,
   lastResponse: null,
+  tables: null,
   error: false, 
   loading: false,
   sending: false,
