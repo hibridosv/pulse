@@ -5,7 +5,10 @@ import { NothingHere } from "@/components/NothingHere";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { getLastElement, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
+import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import { useSession } from 'next-auth/react';
 import Image from "next/image";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -21,7 +24,9 @@ export function RestaurantProductsAdded() {
   const { cancel, del } = useOrderRestaurantFnLogic();
   const { data: session } = useSession();
   const  remoteUrl  = session?.url;
-
+  const { setSelectedElement } = useTempSelectedElementStore();
+  const { openModal} = useModalStore();
+  const { setError } = useToastMessageStore();
 
     const imageLoader = ({ src, width, quality }: any) => {
         return `${remoteUrl}/images/logo/${src}?w=${width}&q=${quality || 75}`
@@ -39,16 +44,26 @@ export function RestaurantProductsAdded() {
 
     order?.invoiceproducts && groupInvoiceProductsByCodAll(order);
         const listItems = order?.invoiceproductsGroup.map((record: any, index: number) => {
+           const hasOptions = record.options.length > 0;
         return (
         <tr key={index}
             className={`${sending ? 'opacity-50 pointer-events-none' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
-            <td className="px-2 py-1 whitespace-nowrap text-primary text-center font-semibold">
+            <td className={`px-2 py-1 whitespace-nowrap text-primary text-center ${hasOptions ? 'font-normal' : 'clickeable font-bold'}`}
+             onClick={ hasOptions ? 
+                ()=> setError({ message: 'Opción no disponible en este producto'}) : 
+                ()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') 
+             }}>
               { record.quantity }
             </td>
             <td className="px-2 py-1 text-left whitespace-nowrap font-medium " >
             { record.product }
             </td>
-            <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums`}>
+            <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums clickeable`} 
+              onClick={()=> { 
+                openModal('discountModal'); 
+                setSelectedElement('productSelected', record); 
+                setSelectedElement('discountType', 1) 
+              }}>
               { numberToMoney(record.unit_price, system) }
             </td>
             <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums`}>

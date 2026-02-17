@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { IoMdOptions } from "react-icons/io";
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
+import { Buttons } from "./Buttons";
 import { PayButton } from "./Buttons/PayButton";
 import { SaveButton } from "./Buttons/SaveButton";
 
@@ -113,7 +114,7 @@ const handleKeyboardChange = (inputValue: string) => {
               <IoMdOptions className="mr-1.5" /> Opciones
             </div>
           }>
-            <div>Botones</div>
+            <Buttons order={order} />
           </Popper>
 
           <SaveButton />

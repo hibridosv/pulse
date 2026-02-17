@@ -3,11 +3,11 @@
 import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { AddCommentModal } from "@/components/orders/common/AddCommentModal";
 import { ChangePriceProductModal } from "@/components/orders/common/ChangePriceProductModal";
-import { ChangeQuantityModal } from "@/components/orders/common/ChangeQuantityModal";
 import { ChangeRowProductModal } from "@/components/orders/common/ChangeRowProductModal";
 import { DiscountsModal } from "@/components/orders/common/DiscountsModal";
 import { InvoiceTypesModal } from "@/components/orders/common/InvoiceTypesModal";
 import { OrderProductsSearchPrincipal } from "@/components/orders/common/OrderProductsSearchPrincipal";
+import { ChangeQuantityModal } from "@/components/orders/products/ChangeQuantityModal";
 import { InitialButtons } from "@/components/orders/products/InitialButtons";
 import { OrderButtons } from "@/components/orders/products/OrderButtons";
 import { OrderProductsTable } from "@/components/orders/products/OrderProductsTable";
