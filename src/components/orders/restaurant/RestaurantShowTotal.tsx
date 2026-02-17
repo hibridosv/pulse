@@ -1,11 +1,11 @@
 import { formatDuiWithAll, getCountryProperty, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import { sumarDiscount, sumarSalesTotal, sumarSubtotal, sumarTotalesWithoutDiscount, sumarTotalRetentionRenta, sumarTotalRetentionSujetoExcluido } from "../utils";
 
 
 export function RestaurantShowTotal() {
-  const { order, sending} = ordersRestaurantsStore();
+  const { order, sending} = ordersStore();
   const { system } =useConfigStore();
 
 

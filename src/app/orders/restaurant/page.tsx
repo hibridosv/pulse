@@ -17,13 +17,13 @@ import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
 import { useOrderRestaurantLogic } from "@/hooks/order/restaurant/useOrderRestaurantLogic";
 import { formatDateAsNumber } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import CryptoJS from 'crypto-js';
 
 export default function Page() {
   useMenuLogic();
   useOrderRestaurantLogic(true);
-  const { order } = ordersRestaurantsStore();
+  const { order } = ordersStore();
   const { modals, closeModal } = useModalStore();
 
   const dateStr = formatDateAsNumber(new Date());

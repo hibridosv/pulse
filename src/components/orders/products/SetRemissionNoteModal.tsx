@@ -5,7 +5,7 @@ import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { useOrderLoadersLogic } from "@/hooks/order/product/useOrderLoadersLogic";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 
 export interface SetRemissionNoteModalI {
   onClose: () => void;
@@ -19,7 +19,7 @@ interface SalesSelectRemissionType {
 
 export function SetRemissionNoteModal(props: SetRemissionNoteModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error,  } = ordersProductsStore();
+  const { order, sending, error,  } = ordersStore();
   const { closeModal} = useModalStore();
   const { remissionNote } = useOrderFnLogic();
   useOrderLoadersLogic(isShow)

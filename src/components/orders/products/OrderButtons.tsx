@@ -8,7 +8,7 @@ import { Order } from '@/interfaces/order';
 import { requiredFieldsCCF, validateInvoiceFields } from '@/lib/validator-functions';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import ordersProductsStore from '@/stores/orders/ordersProductsStore';
+import ordersStore from '@/stores/orders/ordersStore';
 import { LoaderIcon } from 'react-hot-toast';
 import { AiFillSave } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
@@ -24,7 +24,7 @@ export function OrderButtons(props: OrderButtonsI) {
   const { order } = props
   const { cashdrawer } = useConfigStore();
   const { save, pay, cancel } = useOrderFnLogic();
-  const { saving } = ordersProductsStore();
+  const { saving } = ordersStore();
   const { modals, closeModal, openModal} = useModalStore();
 
   const invoice = order;

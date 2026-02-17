@@ -1,17 +1,15 @@
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import { AiFillSave } from "react-icons/ai";
 import { FaSpinner } from "react-icons/fa";
 import { countSendPrintZero } from "../../utils";
 
 
 export function SaveButton() {
-  const { order, saving, collecting} = ordersRestaurantsStore();
-  const { sending: isSending } = ordersProductsStore();
+  const { order, saving, collecting} = ordersStore();
   const { save } = useOrderRestaurantFnLogic();
   const isPrintable = countSendPrintZero(order) != 0;
-  const isBlock = isSending || collecting || saving;
+  const isBlock = collecting || saving;
   
   if (!order) return <></>
 

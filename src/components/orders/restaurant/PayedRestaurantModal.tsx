@@ -4,7 +4,7 @@ import { ButtonDownload } from "@/components/button/button-download";
 import Modal from "@/components/modal/Modal";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { HiCurrencyDollar } from "react-icons/hi";
 import { nameOfPaymentType } from "../products/PayModal";
@@ -20,7 +20,7 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
   const { getSelectedElement, clearSelectedElement  } = useTempSelectedElementStore();
   const orderPayed = getSelectedElement('paymentSuccess') ?? null;
   const paymentType = getSelectedElement('paymentType') ?? 1;
-  const { sending, collecting } = ordersRestaurantsStore();
+  const { sending, collecting } = ordersStore();
 
 
   if (!isShow) return null;

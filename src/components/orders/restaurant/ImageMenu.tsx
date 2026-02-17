@@ -3,7 +3,7 @@
 import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
+import ordersStore from '@/stores/orders/ordersStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -18,7 +18,7 @@ export interface ImageMenuI {
 
 export function ImageMenu(props:  ImageMenuI) {
   const { record, index, imageLoader } = props;
-  const { sending } = ordersRestaurantsStore();
+  const { sending } = ordersStore();
   const { addNew } = useOrderRestaurantFnLogic();
   const { setSelectedElement } = useTempSelectedElementStore();
   const { openModal, closeModal } = useModalStore();

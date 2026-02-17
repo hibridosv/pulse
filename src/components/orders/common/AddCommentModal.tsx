@@ -4,7 +4,7 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { UpdateServiceInterface } from "@/services/Interfaces";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ export interface AddCommentModalI {
 
 export function AddCommentModal(props: AddCommentModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersProductsStore();
+  const { order, sending, error } = ordersStore();
   const { update} = useOrderFnLogic();
   const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
 

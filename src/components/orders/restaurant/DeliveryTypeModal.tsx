@@ -5,7 +5,7 @@ import Modal from "@/components/modal/Modal";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import useModalStore from "@/stores/modalStorage";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export interface DeliveryTypeModalI {
@@ -15,7 +15,7 @@ export interface DeliveryTypeModalI {
 
 export function DeliveryTypeModal(props: DeliveryTypeModalI) {
   const { onClose, isShow } = props;
-  const { order, error } = ordersRestaurantsStore();
+  const { order, error } = ordersStore();
     const { update: updateRestaurant } = useOrderRestaurantFnLogic();
 
   const { closeModal} = useModalStore();

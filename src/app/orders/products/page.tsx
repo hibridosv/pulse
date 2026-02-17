@@ -24,11 +24,11 @@ import { ProductDetailsGetModal } from "@/components/products/ProductDetailsGetM
 import { ToasterMessage } from "@/components/toaster-message";
 import { useOrderProductsLogic } from "@/hooks/order/product/useOrderProductsLogic";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 
 export default function Page() {
   useOrderProductsLogic(true);
-  const { order } = ordersProductsStore();
+  const { order } = ordersStore();
   const { modals, closeModal } = useModalStore();
 
   return (

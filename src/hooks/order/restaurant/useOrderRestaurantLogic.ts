@@ -6,6 +6,7 @@ import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
+import ordersStore from '@/stores/orders/ordersStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import { useEffect, useRef } from 'react';
 
@@ -25,7 +26,8 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const selectedTable: number = getSelectedElement('selectedTable');
   const deliverySelected = getSelectedElement('deliverySelected'); // delivery o cliente en opcion 3
 
-  const { loadOrder, loadOrders, setOrders, order } = ordersRestaurantsStore();
+  const { loadOrder, loadOrders, setOrders } = ordersRestaurantsStore();
+  const { order } = ordersStore();
   const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
   const { openModal } = useModalStore();
   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
@@ -62,7 +64,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
     const loadInitialData = async () => {
       orderLoaded.current = true;
       await loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,invoiceproducts.attributes.workstation,attributes,table,invoiceproducts.options.option`, false);
-      const currentOrder = ordersProductsStore.getState().order;
+      const currentOrder = ordersStore.getState().order;
       if (!currentOrder) {
         loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
       }

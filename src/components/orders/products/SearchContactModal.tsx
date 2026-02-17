@@ -7,7 +7,7 @@ import { ShowClientSearched } from "@/components/search/ShowClientSearched";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { setNameContact, setParam, setRowToChange } from "../functions";
 
@@ -18,7 +18,7 @@ export interface SearchContactModalI {
 
 export function SearchContactModal(props: SearchContactModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersProductsStore();
+  const { order, sending, error } = ordersStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const tempSelectedName = getSelectedElement('contactSearch');
   const { openModal, closeModal} = useModalStore();

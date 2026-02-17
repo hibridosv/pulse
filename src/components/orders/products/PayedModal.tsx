@@ -4,7 +4,7 @@ import { ButtonDownload } from "@/components/button/button-download";
 import Modal from "@/components/modal/Modal";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { nameOfPaymentType } from "./PayModal";
 
@@ -19,7 +19,7 @@ export function PayedModal(props: PayedModal) {
   const { getSelectedElement, clearSelectedElement  } = useTempSelectedElementStore();
   const orderPayed = getSelectedElement('paymentSuccess') ?? null;
   const paymentType = getSelectedElement('paymentType') ?? 1;
-  const { sending } = ordersRestaurantsStore();
+  const { sending } = ordersStore();
 
   if (!isShow || !orderPayed) return null;
 

@@ -3,7 +3,7 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -18,7 +18,7 @@ export interface ComissionsProductModalI {
 
 export function ComissionsProductModal(props: ComissionsProductModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersProductsStore();
+  const { order, sending, error } = ordersStore();
   const { updatePrice } = useOrderFnLogic();
   const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const product = getSelectedElement('productSelected');

@@ -7,7 +7,7 @@ import { Order } from "@/interfaces/order";
 import { getTotalPercentage, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { FaPen } from "react-icons/fa";
 import { MdBallot } from "react-icons/md";
@@ -24,7 +24,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   const { addNew, del} = useOrderFnLogic();
   const { setSelectedElement } = useTempSelectedElementStore();
   const { openModal} = useModalStore();
-  const { sending } = ordersProductsStore();
+  const { sending } = ordersStore();
   
   let data = order?.invoiceproducts ?? [];
   

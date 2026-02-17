@@ -3,6 +3,7 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -17,7 +18,8 @@ export interface ChangeQuantityModalI {
 
 export function ChangeQuantityModal(props: ChangeQuantityModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error, addOrder } = ordersProductsStore();
+  const { order, sending, error, } = ordersStore();
+  const { addOrder } = ordersProductsStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const product = getSelectedElement('productSelected');
   const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;

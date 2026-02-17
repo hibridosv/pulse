@@ -4,7 +4,7 @@ import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRest
 import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functions";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,7 +15,7 @@ import { PayButton } from "./Buttons/PayButton";
 import { SaveButton } from "./Buttons/SaveButton";
 
 export function RestaurantButtons() {
-  const { collecting, order, sending } = ordersRestaurantsStore();
+  const { collecting, order, sending } = ordersStore();
   const { pay } = useOrderRestaurantFnLogic();
   const { modals, closeModal, openModal} = useModalStore();
   const { system, cashdrawer, activeConfig } =useConfigStore();

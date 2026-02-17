@@ -3,6 +3,7 @@ import { Button, Preset } from "@/components/button/button";
 import { Option, RadioButton } from "@/components/button/RadioButton";
 import Modal from "@/components/modal/Modal";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -17,7 +18,8 @@ export interface OtherSalesModalI {
 
 export function OtherSalesModal(props: OtherSalesModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error, updateOrder } = ordersProductsStore();
+  const { order, sending, error } = ordersStore();
+  const { updateOrder } = ordersProductsStore();
   const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const option = getSelectedElement('optionSelected');
   const optionType = getSelectedElement('optionSelectedType');

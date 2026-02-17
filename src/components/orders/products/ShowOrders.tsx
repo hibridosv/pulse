@@ -5,7 +5,7 @@ import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { numberToMoney } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
-import ordersProductsStore from '@/stores/orders/ordersProductsStore';
+import ordersStore from '@/stores/orders/ordersStore';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { FaDownload } from 'react-icons/fa';
@@ -14,7 +14,7 @@ import { FaDownload } from 'react-icons/fa';
 
 export function ShowOrders() {
     const { system } = useConfigStore();
-    const { orders, order } = ordersProductsStore();
+    const { orders, order } = ordersStore();
     const { select } = useOrderFnLogic();
     const { data: session } = useSession();
     const downloadStatus = true;

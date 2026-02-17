@@ -9,7 +9,7 @@ import { useOrderLoadersLogic } from "@/hooks/order/product/useOrderLoadersLogic
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useUserStore from "@/stores/UserStore";
 import { setNameUser, setRowToChange } from "../functions";
@@ -24,7 +24,7 @@ export interface SelectUserModalI {
 
 export function SelectUserModal(props: SelectUserModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersProductsStore();
+  const { order, sending, error } = ordersStore();
   const { user } = useConfigStore();
   const { getSelectedElement, setSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
   const tempSelectedName = getSelectedElement('setUser');

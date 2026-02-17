@@ -2,11 +2,13 @@
 import { UpdateServiceInterface } from '@/services/Interfaces';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
+import ordersStore from '@/stores/orders/ordersStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 
 export function useOrderFnLogic() {
-  const { saveOrder, loadOrder, order, payOrder, error, loadOrders, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
+  const { saveOrder, loadOrder, payOrder, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
+  const {  order } = ordersStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const {modals} = useModalStore();
   const paymentType = getSelectedElement('paymentType') ?? 1;

@@ -5,7 +5,7 @@ import { NothingHere } from "@/components/NothingHere";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { getLastElement, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import { useSession } from 'next-auth/react';
 import Image from "next/image";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -17,7 +17,7 @@ import { groupInvoiceProductsByCodAll, isProductPendientToSend } from "../utils"
 
 export function RestaurantProductsAdded() {
   const { system } = useConfigStore();
-  const { order, sending, deleting } = ordersRestaurantsStore();
+  const { order, sending, deleting } = ordersStore();
   const { cancel, del } = useOrderRestaurantFnLogic();
   const { data: session } = useSession();
   const  remoteUrl  = session?.url;

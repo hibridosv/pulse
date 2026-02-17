@@ -4,11 +4,13 @@ import { postForPrint } from '@/services/OtherServices';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
+import ordersStore from '@/stores/orders/ordersStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 
 export function useOrderRestaurantFnLogic() {
-  const { saveOrder, lastResponse, order, payOrder, error, loadOrders, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersRestaurantsStore();
+  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct } = ordersRestaurantsStore();
+  const { order, error, lastResponse } = ordersStore();
   const { activeConfig, system } = useConfigStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const {modals} = useModalStore();

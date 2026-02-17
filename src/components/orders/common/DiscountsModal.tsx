@@ -5,7 +5,7 @@ import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -24,7 +24,7 @@ export function DiscountsModal(props: DiscountsModalI) {
   const { onClose, isShow, byCode } = props;
   const { system } = useConfigStore();
 
-  const { order, sending, error } = ordersProductsStore();
+  const { order, sending, error } = ordersStore();
   const { discount } = useOrderFnLogic();
   const { getSelectedElement, clearSelectedElement, setSelectedElement } = useTempSelectedElementStore();
   const product = getSelectedElement('productSelected');

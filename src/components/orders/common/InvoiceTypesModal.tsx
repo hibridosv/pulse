@@ -9,7 +9,7 @@ import { isRestaurant } from "@/lib/utils";
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 export interface InvoiceTypesModalI {
@@ -20,13 +20,14 @@ export interface InvoiceTypesModalI {
 export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   const { onClose, isShow } = props;
   const { tenant } = useConfigStore();
-  const { order, sending, error } = ordersRestaurantsStore();
+  const { order, sending, error } = ordersStore();
   const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
   const { invoiceTypes } = useConfigStore();
   const { update: updateProduct } = useOrderFnLogic();
   const { update: updateRestaurant } = useOrderRestaurantFnLogic();
   const { closeModal} = useModalStore();
+
 
   if (!isShow || !order) return null;
 

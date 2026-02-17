@@ -1,13 +1,13 @@
 
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import { MdMoney, MdOutlinePointOfSale } from "react-icons/md";
 
 
 
 export function InitialButtons() {
-  const { order } = ordersProductsStore();
+  const { order } = ordersStore();
   const { activeConfig } = useConfigStore();
   const { openModal} = useModalStore();
 

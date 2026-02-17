@@ -5,6 +5,7 @@ import { getFirstElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
+import ordersStore from '@/stores/orders/ordersStore';
 import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import { useEffect, useRef } from 'react';
 
@@ -19,7 +20,8 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
   const typeOfSearch = getSelectedElement('typeOfSearch'); // tipo de busqueda
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
-  const { loadOrder, loadOrders, setOrders, order } = ordersProductsStore();
+  const { loadOrder, loadOrders, setOrders } = ordersProductsStore();
+  const { order } = ordersStore();
   const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
   const { openModal } = useModalStore();
   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
@@ -53,7 +55,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
     const loadInitialData = async () => {
       orderLoaded.current = true;
       await loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
-      const currentOrder = ordersProductsStore.getState().order;
+      const currentOrder = ordersStore.getState().order;
       if (!currentOrder) {
         loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
       }

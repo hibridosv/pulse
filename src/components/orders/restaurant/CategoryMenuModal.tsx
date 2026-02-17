@@ -3,7 +3,7 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { NothingHere } from "@/components/NothingHere";
 import { URL } from "@/constants";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import restauranMenuStore from "@/stores/orders/restauranMenuStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
@@ -19,7 +19,7 @@ export interface CategoryMenuModalI {
 
 export function CategoryMenuModal(props: CategoryMenuModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersRestaurantsStore();
+  const { order, sending, error } = ordersStore();
   const { loading, restaurantMenu: images } =  restauranMenuStore();
   const { getSelectedElement } = useTempSelectedElementStore();
   const category = getSelectedElement('categoryMenu');

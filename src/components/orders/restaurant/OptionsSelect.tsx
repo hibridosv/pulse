@@ -1,6 +1,6 @@
 import { getPaymentTypeName } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 
 
@@ -13,7 +13,7 @@ export function deliveryTypeRestaurant(type: number) {
 }
 
 export function OptionsSelect() {
-  const { order } = ordersRestaurantsStore();
+  const { order } = ordersStore();
   const { getSelectedElement} = useTempSelectedElementStore();
   const payMethod = getSelectedElement('payMethod') ?? 1;
   const { modals, closeModal, openModal} = useModalStore();

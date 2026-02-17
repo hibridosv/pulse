@@ -1,13 +1,13 @@
 
 import { getCountryProperty } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import { sumarSalesTotal, sumarSubtotal, sumarTotalRetentionRenta } from "../utils";
 
 
 
 export function OrderTotal() {
-  const { order, sending } = ordersProductsStore();
+  const { order, sending } = ordersStore();
   const { system } = useConfigStore();
   const isExcludedClient = order?.client?.excluded == 1;
   const retencionRenta = order?.retention_rent ?? 0 ;
@@ -35,7 +35,7 @@ export function OrderTotal() {
           <span className="text-lg font-semibold">
             {getCountryProperty(parseInt(system?.country)).currency}
           </span>
-          <span className="text-5xl font-bold tabular-nums tracking-tight">
+          <span className="text-6xl font-bold tabular-nums tracking-tight">
             {total}
           </span>
         </div>

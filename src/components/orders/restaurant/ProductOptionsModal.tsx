@@ -4,7 +4,7 @@ import Modal from "@/components/modal/Modal";
 import { URL } from "@/constants";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { getLastElement } from "@/lib/utils";
-import ordersRestaurantsStore from "@/stores/orders/ordersRestaurantsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import Image from "next/image";
 
 
@@ -16,7 +16,7 @@ export interface ProductOptionsModalI {
 
 export function ProductOptionsModal(props: ProductOptionsModalI) {
   const {  onClose, isShow } = props;
-  const { order } = ordersRestaurantsStore();
+  const { order } = ordersStore();
   const { option } = useOrderRestaurantFnLogic();
 
 

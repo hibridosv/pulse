@@ -4,7 +4,7 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import useConfigStore from "@/stores/configStore";
-import ordersProductsStore from "@/stores/orders/ordersProductsStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -29,7 +29,7 @@ export const nameOfPaymentType = (type: number) => {
 export function PayModal(props: PayModalI) {
   const { onClose, isShow } = props;
   const { payMethods } = useConfigStore();
-  const { order, collecting } = ordersProductsStore();
+  const { order, collecting, sending } = ordersStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
   const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
   const paymentType = getSelectedElement('paymentType') ?? 1;
@@ -41,6 +41,8 @@ export function PayModal(props: PayModalI) {
       setValue('cash', '');
     }
   }, [setFocus, isShow, paymentType, setValue])
+
+  console.log("paymentType", paymentType);
 
 
   if (!isShow || !order) return null;
@@ -54,11 +56,22 @@ export function PayModal(props: PayModalI) {
               <div>
                 <form onSubmit={handleSubmit(pay)} className="w-full">
                 {paymentType === 1 ? (
-                <div>
-                      <div className="flex justify-center mt-2">
-                        <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={collecting} preset={collecting ? Preset.saving : Preset.save} isFull />
+                  <div>
+                      <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white" >Search</label>
+                      <div className="relative">
+                        <input
+                          type={`${order?.invoice_assigned?.type == 8 ? "hidden" : "number"}`}
+                          step="any"
+                          id="cash"
+                          className="input"
+                          placeholder="Ingrese la cantidad de efectivo"
+                          {...register("cash")}
+                        />
                       </div>
-                  </div>
+                        <div className="flex justify-center mt-2">
+                          <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={sending} preset={sending ? Preset.saving : Preset.save} isFull />
+                        </div>
+                    </div>
                   ) :
                   (
                     <div className="flex justify-center">
