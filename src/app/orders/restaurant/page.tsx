@@ -37,8 +37,9 @@ export default function Page() {
 
   const dateStr = formatDateAsNumber(new Date());
   const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
-  console.log(hash);
+  // console.log(hash);
 
+  // console.log("order", order);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">

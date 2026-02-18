@@ -15,9 +15,10 @@ export function RestaurantMenu() {
   const serviceType: number = getSelectedElement('serviceType');
   const selectedTables = getSelectedElement('selectedTables');
   const deliverySelected = getSelectedElement('deliverySelected');
+  const selectedTable = getSelectedElement('selectedTable');
   const { order } = ordersStore();
 
-  if ((serviceType == 2 && selectedTables != "") || order?.invoiceproducts || (serviceType == 3 && deliverySelected?.id)) return <></>;
+  if ((serviceType == 2 && selectedTables && !selectedTable) || (serviceType == 3 && deliverySelected?.id)) return <></>;
 
 
   const imageLoader = ({ src, width, quality }: any) => {

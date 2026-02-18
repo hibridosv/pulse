@@ -1,5 +1,6 @@
 'use client';
 
+import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
 import { Order } from '@/interfaces/order';
 import { extractActiveFeature } from '@/lib/config/config';
 import { permissionExists } from '@/lib/utils';
@@ -25,6 +26,9 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
   const permissionQuick = permissionExists(permission, "restaurant-sales-quick");
   const permissionHere = permissionExists(permission, "restaurant-sales-here");
   const serviceType: number = getSelectedElement('serviceType');
+  const { saveAndOut } = useOrderRestaurantFnLogic();
+  const selectedTable = getSelectedElement('selectedTable');
+  const selectedTables = getSelectedElement('selectedTables');
 
 
   const countFeatures = () => {
@@ -38,10 +42,10 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
   }
   
   if (countFeatures() === 0) return <></>;
+  console.log("selectedTable", selectedTable)
+  console.log("selectedTables", selectedTables)
 
-
-
-    const handleSelected = (option: number)=>{
+    const handleSelected = async (option: number)=>{
     if (serviceType == 1) {
       if (option == 1 ) return;
       if(order?.invoiceproducts){
@@ -51,9 +55,9 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
     }
     if (serviceType == 2) {
       if(order?.invoiceproducts){
-        // onClickOrder(OptionsClickOrder.save)
+        await saveAndOut(order.id)
       }
-      // setSelectedTable("");
+      clearSelectedElement('selectedTable');
     }
     if (serviceType == 3) {
       if(order?.invoiceproducts){

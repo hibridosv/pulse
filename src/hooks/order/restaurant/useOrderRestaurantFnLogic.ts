@@ -9,7 +9,7 @@ import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 
 export function useOrderRestaurantFnLogic() {
-  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct } = ordersRestaurantsStore();
+  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs } = ordersRestaurantsStore();
   const { order, error, lastResponse } = ordersStore();
   const { activeConfig, system } = useConfigStore();
   const { getSelectedElement } = useTempSelectedElementStore();
@@ -50,7 +50,7 @@ const addNew = async (producId: any, quantity = 1) => {
           
 }
 
-/** GUardar la orden y mada comandas a imprimir si asi se necesita */
+/** GUardar la orden y manda comandas a imprimir si asi se necesita, no sale de la orden*/
   const save = async (id: string, withOrder: boolean = false) => {
       await saveOrder(`orders/restaurant/${id}/save`, { with_order: withOrder });
       if (!error && withOrder) {
@@ -59,6 +59,11 @@ const addNew = async (producId: any, quantity = 1) => {
           await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', lastResponse);
         }
       }
+  }
+
+  // Guarda la orden y sale de la pantalla
+  const saveAndOut = async (id: string) => {
+    await saveAs(`orders/${id}/save`, {});
   }
 
   /** Actualizar un campo de la orden */
@@ -82,6 +87,10 @@ const addNew = async (producId: any, quantity = 1) => {
       await deleteProduct(`orders/restaurant/${id}/${cod}`);
   }
 
+  /** Seleccionar una orden con id */
+  const select = async (id: string) => {
+    await loadOrder(`orders/${id}/select`, true);
+  }
 
 /// pagar orden
 const pay = async (data: any) => {
@@ -96,6 +105,6 @@ const pay = async (data: any) => {
 }
 
 
-  return { addNew, save, update, cancel, del, option, pay }
+  return { addNew, save, saveAndOut, update, cancel, del, option, select, pay }
 
 }

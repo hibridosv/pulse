@@ -91,12 +91,12 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
          }
 
          if (order.order_type != serviceType) {
-               setSelectedElement('serviceType', order.order_type);
+            setSelectedElement('serviceType', order.order_type);
          }
 
          setSelectedElement('payMethod', 1);
 
-         if (selectedTable != order?.attributes?.restaurant_table_id) {
+         if (serviceType == 2 && !selectedTable != order?.attributes?.restaurant_table_id) {
             setSelectedElement('selectedTable', order?.attributes?.restaurant_table_id);
          }
 
@@ -115,10 +115,10 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
 
 
    useEffect(() => {
-    if (serviceType == 2) {
-       loadTables(`tables?included=tables`); 
+    if (!order && serviceType == 2 && selectedTable === undefined) {
+       loadTables(`tables?included=tables`, true); 
     }
-   }, [serviceType]);
+   }, [order, serviceType, selectedTable]);
 
    
 }

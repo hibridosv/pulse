@@ -32,7 +32,7 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
               successSound()
             } else {
               ordersStore.setState({ order: null, error: false });
-              ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+              ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
             }
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -71,6 +71,7 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
       }
       ordersStore.setState({ order: null });
       ordersStore.setState({ error: true });
+      useTempSelectedElementStore.getState().clearSelectedElement('selectedTable');
     } finally {
       ordersStore.setState({ loading: false });
     }
@@ -84,7 +85,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
             const response = await createService(url, data);
             ordersStore.setState({ order: null, error: false, lastResponse: response.data.data });
             useTempSelectedElementStore.getState().setSelectedElement("paymentSuccess", response.data.data);
-            ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+            ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
+            useTempSelectedElementStore.getState().clearSelectedElement('selectedTable');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             useModalStore.getState().closeModal('paymentSuccess');
@@ -95,6 +97,7 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
     },
 
   saveOrder: async (url, data) => {
+    // Solo guarada el estadp de la orden para enviar comandas
         ordersStore.setState({ saving: true });
         try {
             const response = await updateService(url, data);
@@ -112,8 +115,9 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
     try {
       const response = await deleteService(url);
       ordersStore.setState({ order: null, error: false });
-      ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+      ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
       useToastMessageStore.getState().setMessage(response);
+      useTempSelectedElementStore.getState().clearSelectedElement('selectedTable');
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       ordersStore.setState({ error: true });
@@ -139,7 +143,19 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
     },
 
   saveAs: async (url, data) => {
-      console.log(url, data)
+    // Guarda la orden y sale de la pantalla
+        ordersStore.setState({ saving: true });
+        try {
+            const response = await createService(url, data);
+            ordersStore.setState({ order: null, error: false });
+            // ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
+            useToastMessageStore.getState().setMessage(response);
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            ordersStore.setState({ error: true });
+        } finally {
+            ordersStore.setState({ saving: false });
+        }
   },
 
   deleteProduct: async (url: string) => {
@@ -150,7 +166,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
         ordersStore.setState({ order: response.data.data, error: false });
       } else {
         ordersStore.setState({ order: null, error: false });
-        ordersRestaurantsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+        ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
+        useTempSelectedElementStore.getState().clearSelectedElement('selectedTable');
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);

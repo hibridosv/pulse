@@ -35,7 +35,7 @@ const addNew = async (data: any) => {
     await addOrder(`orders`, values);
 }
 
-/** GUardar la orden en la que se trabaj */
+/** GUardar la orden en la que se trabaja */
   const save = async (id: string) => {
       await saveOrder(`orders/${id}/save`, {});
   }
