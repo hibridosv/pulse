@@ -6,7 +6,7 @@ import { extractActiveFeature } from '@/lib/config/config';
 import { permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useStateStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 
 export interface ServiceTypeSelectI {
@@ -18,7 +18,7 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
   const { activeConfig, permission, configurations } = useConfigStore();
   const { sending } = ordersStore();
   const { setError } =  useToastMessageStore();
-  const { setSelectedElement, getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement, clearSelectedElement } = useStateStore();
   const isDelivery = activeConfig && activeConfig.includes("restaurant-sales-delivery");
   const isQuick = activeConfig && activeConfig.includes("restaurant-sales-quick");
   const isHere = activeConfig && activeConfig.includes("restaurant-sales-here");
@@ -59,9 +59,10 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
     }
     if (serviceType == 3) {
       if(order?.invoiceproducts){
-        // onClickOrder(OptionsClickOrder.save)
+        await saveAndOut(order.id)
       }
-      // setclientOrder([]);
+      clearSelectedElement('clientOrder');
+      clearSelectedElement('clientSelectedByDelivery');
     }
     setSelectedElement("serviceType", option);
   }
