@@ -4,8 +4,8 @@ import { SkeletonForm } from "@/components/skeleton/SkeletonForm";
 import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
 import useContactStore from "@/stores/ContactStore";
 import productAddStore from "@/stores/products/productAddStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -14,7 +14,7 @@ export function AddInitialForm() {
     const { register, handleSubmit, control, watch, reset } = useForm();
     const { product, loading, createPrincipal } = productAddStore();
     const { contacts: providers } = useContactStore();
-    const { setSelectedElement } = useTempSelectedElementStore();
+    const { setSelectedElement } = useTempStorage();
 
     const [isBillsActive, setIsBillsActive] = useState(false);
     const [isAccountActive, setIsAccountActive] = useState(false);

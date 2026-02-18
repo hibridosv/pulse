@@ -5,7 +5,7 @@ import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functi
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoMdOptions } from "react-icons/io";
@@ -21,7 +21,7 @@ export function RestaurantButtons() {
   const { modals, closeModal, openModal} = useModalStore();
   const { system, cashdrawer, activeConfig } =useConfigStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
-  const { getSelectedElement} = useTempSelectedElementStore();
+  const { getSelectedElement} = useTempStorage();
   const payMethod = getSelectedElement('payMethod') ?? 1;
   const [input, setInput] = useState('');
   const [showInput, setShowInput] = useState<boolean>(false);

@@ -4,7 +4,7 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -20,7 +20,7 @@ export function ChangeQuantityModal(props: ChangeQuantityModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error, } = ordersStore();
   const { addOrder } = ordersProductsStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const product = getSelectedElement('productSelected');
   const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;
 

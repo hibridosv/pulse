@@ -1,8 +1,8 @@
 import { createService } from '@/services/services';
 import useCategoriesStore from '@/stores/products/categoriesStore';
 import useStateStore from '@/stores/stateStorage';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect } from 'react';
 
 
@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 export function useProductCategoriesLogic(isShow: boolean, setFocus: any, resetField: any) {
     const { loadCategories, categories } = useCategoriesStore();
     const { openLoading, closeLoading } = useStateStore();
-    const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+    const { setSelectedElement, getSelectedElement} = useTempStorage();
     const elementSelected = getSelectedElement("option");
 
 

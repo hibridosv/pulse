@@ -4,7 +4,7 @@ import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRest
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -20,7 +20,7 @@ export function ImageMenu(props:  ImageMenuI) {
   const { record, index, imageLoader } = props;
   const { sending } = ordersStore();
   const { addNew } = useOrderRestaurantFnLogic();
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
   const { openModal, closeModal } = useModalStore();
   const { activeConfig } = useConfigStore();
   const [isSending, setIsSending] = useState(false);

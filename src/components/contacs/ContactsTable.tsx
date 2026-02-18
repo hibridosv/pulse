@@ -1,18 +1,18 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import useContactStore from "@/stores/ContactStore";
-import { Dropdown } from "../dropDown/Dropdown";
-import { DropdownItem } from "../dropDown/DropdownItem";
-import { DropdownDivider } from "../dropDown/DropdownDivider";
-import { FiSettings } from "react-icons/fi";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useModalStore from "@/stores/modalStorage";
+import useTempStorage from "@/stores/useTempStorage";
+import { FiSettings } from "react-icons/fi";
+import { Dropdown } from "../dropDown/Dropdown";
+import { DropdownDivider } from "../dropDown/DropdownDivider";
+import { DropdownItem } from "../dropDown/DropdownItem";
 
 
 export function ContactsTable() {
     const { contacts: response, loading} = useContactStore();
     const contacts = response?.data;
-    const { setSelectedElement } = useTempSelectedElementStore();
+    const { setSelectedElement } = useTempStorage();
     const { openModal } = useModalStore();
 
 

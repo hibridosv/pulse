@@ -3,8 +3,8 @@ import { errorSound, successSound } from '@/lib/config/config';
 import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useModalStore from '../modalStorage';
-import useTempSelectedElementStore from '../tempSelectedElementStore';
 import useToastMessageStore from '../toastMessageStore';
+import useTempStorage from '../useTempStorage';
 import ordersStore from './ordersStore';
 
 interface ordersProductsStoreI {
@@ -81,7 +81,7 @@ const ordersProductsStore = create<ordersProductsStoreI>(() => ({
         try {
             const response = await createService(url, data);
             ordersStore.setState({ order: null, error: false });
-            useTempSelectedElementStore.getState().setSelectedElement("paymentSuccess", response.data.data);
+            useTempStorage.getState().setSelectedElement("paymentSuccess", response.data.data);
             ordersProductsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
             useToastMessageStore.getState().setMessage(response);
             useModalStore.getState().closeModal('payOrder');

@@ -5,7 +5,7 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { formatDuiWithAll } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { FaEdit } from "react-icons/fa";
 import { Indicator } from "../Indicators";
 import { Dropdown } from "../dropDown/Dropdown";
@@ -19,7 +19,7 @@ export interface RemissionNoteTableI {
 
 export function RemissionNoteTable(props: RemissionNoteTableI) {
   const { records, isLoading } = props;
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
   const { openModal } = useModalStore();
 
 

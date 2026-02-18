@@ -3,7 +3,7 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { Button, Preset } from "../button/button";
 
 
@@ -17,7 +17,7 @@ export interface AdjustmentsProductsToChangeTableI {
 export function AdjustmentsProductsToChangeTable(props: AdjustmentsProductsToChangeTableI) {
   const { records, isLoading, isSending, sendAdjustment } = props;
   const { openModal } = useModalStore();
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 

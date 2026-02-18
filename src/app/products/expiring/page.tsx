@@ -8,14 +8,14 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { useProductExpiresLogic } from "@/hooks/products/useProductsExpiresLogic";
 import useModalStore from "@/stores/modalStorage";
 import useStateStore from "@/stores/stateStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 export default function Page() {
   const { productsExpired, expired } = useProductExpiresLogic();
   const { loading } = useStateStore();
   const isLoading = loading["Expirations"] ? true : false;
   const { modals, closeModal } = useModalStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
 
 
   return (

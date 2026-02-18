@@ -1,4 +1,4 @@
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { Button, Preset } from "../button/button";
 
 export interface ShowClientSearchedI {
@@ -8,7 +8,7 @@ export interface ShowClientSearchedI {
 
 export function ShowClientSearched(props: ShowClientSearchedI) {
   const { tempSelectedName = "clientSelectedBySearch", onClose } = props;
-  const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement } = useTempStorage();
   const elementSelected = getSelectedElement(tempSelectedName);
 
     if (!elementSelected) return null;

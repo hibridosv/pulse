@@ -1,7 +1,7 @@
 'use client';
 
 import ordersStore from '@/stores/orders/ordersStore';
-import useStateStore from '@/stores/tempSelectedElementStore';
+import useStateStore from '@/stores/useTempStorage';
 import { DeliveryCard } from './DeliveryCard';
 
 export function DeliveryOrders() {

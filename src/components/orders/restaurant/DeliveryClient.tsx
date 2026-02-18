@@ -1,13 +1,13 @@
 'use client';
 
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import Image from 'next/image';
 import { GoEye } from 'react-icons/go';
 import { HiMapPin, HiPhone } from 'react-icons/hi2';
 
 export function DeliveryClient() {
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const serviceType: number = getSelectedElement('serviceType');
   const clientOrder = getSelectedElement('clientOrder');
   const { order } = ordersStore();

@@ -4,11 +4,11 @@ import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import productAddStore from "@/stores/products/productAddStore";
 import useProductStore from "@/stores/products/productStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 export function AddProductsSearch() {
     const { product, loading } = productAddStore();
-    const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+    const { setSelectedElement, getSelectedElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";

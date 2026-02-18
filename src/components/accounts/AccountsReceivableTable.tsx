@@ -6,7 +6,7 @@ import { formatDateAsDMY } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { MdAddchart } from "react-icons/md";
 import { status } from "./utils";
 
@@ -20,7 +20,7 @@ export function AccountsReceivableTable(props: AccountsReceivableTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
   const { openModal } = useModalStore();
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 

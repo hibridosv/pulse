@@ -7,13 +7,13 @@ import { ShowProductSearched } from "@/components/search/ShowProductSearched";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 
 export default function Page() {
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const elementSelected = getSelectedElement('productSearched');
   const { history, handleGet, loading, links } = useHistorySalesLogic('histories/by-product', 'excel/by-product/', false);
   const isLoading = loading.history ?? false; 

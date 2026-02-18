@@ -6,7 +6,7 @@ import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRest
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 export interface DeliveryTypeModalI {
   onClose: () => void;
@@ -19,7 +19,7 @@ export function DeliveryTypeModal(props: DeliveryTypeModalI) {
     const { update: updateRestaurant } = useOrderRestaurantFnLogic();
 
   const { closeModal} = useModalStore();
-  const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement} = useTempStorage();
   const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
 
   const handleUpdate = async(type: any) => {

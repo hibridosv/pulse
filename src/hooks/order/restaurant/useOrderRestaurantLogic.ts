@@ -6,7 +6,7 @@ import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect, useRef } from 'react';
 
 /**
@@ -17,7 +17,7 @@ import { useEffect, useRef } from 'react';
 
 export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
-  const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, setSelectedElement } = useTempStorage();
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
   const serviceType: number = getSelectedElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
   const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery

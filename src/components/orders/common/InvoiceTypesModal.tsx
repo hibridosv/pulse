@@ -10,7 +10,7 @@ import { UpdateServiceInterface } from "@/services/Interfaces";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 export interface InvoiceTypesModalI {
   onClose: () => void;
@@ -21,7 +21,7 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   const { onClose, isShow } = props;
   const { tenant } = useConfigStore();
   const { order, sending, error } = ordersStore();
-  const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement} = useTempStorage();
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
   const { invoiceTypes } = useConfigStore();
   const { update: updateProduct } = useOrderFnLogic();

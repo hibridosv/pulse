@@ -10,14 +10,14 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoiceTypesElectronicLogic } from "@/hooks/invoicing/useInvoiceTypesElectronicLogic";
 import { useInvoicingElectronicLogic } from "@/hooks/invoicing/useInvoicingElectronicLogic";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
   const { history, handleGet,links, resendDocument } = useInvoicingElectronicLogic('electronic/documents', 'excel/electronic/');
   const { Additionalfields, loading: loadingFields} =  useInvoiceTypesElectronicLogic('invoice/type?filterWhere[type]=!9&filterWhere[is_electronic]==1&FilterWhereIn[status]==1,0');
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
-  const { getSelectedElement} = useTempSelectedElementStore();
+  const { getSelectedElement} = useTempStorage();
   const { modals, closeModal } = useModalStore();
   const documentSelected = getSelectedElement('documentSelected') ?? {};
 

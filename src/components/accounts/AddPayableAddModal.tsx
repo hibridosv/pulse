@@ -8,8 +8,8 @@ import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
 import cashAccountStore from "@/stores/cash/cashAccountStore";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from "../Alert/Alert";
@@ -22,7 +22,7 @@ export interface AddPayableModal {
 }
 
 export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
-        const { getSelectedElement } = useTempSelectedElementStore();
+        const { getSelectedElement } = useTempStorage();
         const { cashdrawer, system, activeConfig } = useConfigStore();
 
         const { register, handleSubmit, reset, setValue, watch } = useForm();

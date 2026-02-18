@@ -5,13 +5,13 @@ import { formatDate, formatHourAsHM } from "@/lib/date-formats";
 import { documentType } from "@/lib/utils";
 import useModalStore from "@/stores/modalStorage";
 import productAddStore from "@/stores/products/productAddStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export function RegistersTable() {
     const { loading, product, products } = productAddStore();
     const { openModal } = useModalStore();
-    const { setSelectedElement } = useTempSelectedElementStore();
+    const { setSelectedElement } = useTempStorage();
 
     if (loading) return <SkeletonTable rows={4} columns={5} />;
     if (product) return null;

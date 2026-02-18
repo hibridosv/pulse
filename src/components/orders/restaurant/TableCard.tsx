@@ -1,7 +1,7 @@
 'use client';
 
 import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { MdTableRestaurant } from 'react-icons/md';
 import { TablesTime } from './TablesTime';
 
@@ -12,7 +12,7 @@ interface TableCardProps {
 export function TableCard({ record }: TableCardProps) {
   const { select } = useOrderRestaurantFnLogic();
   const isOccupied = record.status == 1;
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
 
   const handleSelect = (option: any) => {
     setSelectedElement('selectedTable', option.id);

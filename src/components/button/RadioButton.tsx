@@ -1,5 +1,5 @@
 "use client";
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import React, { useEffect, useState } from 'react';
 
 export interface Option {
@@ -14,7 +14,7 @@ interface RadioButtonProps {
 
 export const RadioButton: React.FC<RadioButtonProps> = ({ options, optionName = "optionSelected" }) => {
   const [selectedOption, setSelectedOption] = useState<Option | null>(options[0] || null);
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
 
   useEffect(() => {
     if (options && options.length > 0) {

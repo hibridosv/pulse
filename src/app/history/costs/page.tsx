@@ -5,12 +5,12 @@ import { ProductsSearch } from "@/components/search/ProductsSearch";
 import { ShowProductSearched } from "@/components/search/ShowProductSearched";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistoryCostLogic } from "@/hooks/history/useHistoryCostLogic";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useMemo } from "react";
 
 
 export default function Page() {
-    const { getSelectedElement } = useTempSelectedElementStore();
+    const { getSelectedElement } = useTempStorage();
   const elementSelected = getSelectedElement('productSearched');
 
   const params = useMemo(() => 

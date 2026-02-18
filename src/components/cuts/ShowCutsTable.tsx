@@ -6,7 +6,7 @@ import { numberToMoney } from "@/lib/utils";
 import useCutStore from "@/stores/cashdrawer/cutStore";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { DeleteButton } from "../button/DeleteButton";
 import { NothingHere } from "../NothingHere";
 import { CutDetailsModal } from "./CutDetailsModal";
@@ -20,7 +20,7 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
   const { system } = useConfigStore();
   const { modals, openModal, closeModal } = useModalStore();
   const { deleteCut, deleting } = useCutStore();
-  const { getSelectedElement, setSelectedElement} = useTempSelectedElementStore();
+  const { getSelectedElement, setSelectedElement} = useTempStorage();
 
 
   const firstRecord = records && records[0];

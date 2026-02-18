@@ -15,7 +15,7 @@ import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useContactStore from "@/stores/ContactStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useSearchParams } from 'next/navigation';
 import { BiPlusCircle } from "react-icons/bi";
 
@@ -27,7 +27,7 @@ export default function Page() {
   const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number", "code", "phone"], 500);
   const { onDelete } = useContactsLogic(currentPage, searchTerm, getParamString(pageParam));
   const { contacts } = useContactStore();
-  const { getSelectedElement, clearSelectedElement } =  useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement } =  useTempStorage();
   const { modals, closeModal, openModal} = useModalStore();
  
 

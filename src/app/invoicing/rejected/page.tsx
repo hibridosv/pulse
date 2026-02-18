@@ -7,12 +7,12 @@ import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoicingElectronicLogic } from "@/hooks/invoicing/useInvoicingElectronicLogic";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
   const { history, resendDocument } = useInvoicingElectronicLogic('electronic/documents/rejected', 'excel/electronic/', true);
-  const { getSelectedElement} = useTempSelectedElementStore();
+  const { getSelectedElement} = useTempStorage();
   const { modals, closeModal } = useModalStore();
   const documentSelected = getSelectedElement('documentSelected') ?? {};
   const quantity = history?.length ?? 0;

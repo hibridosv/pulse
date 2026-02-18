@@ -1,8 +1,8 @@
 import { Button, Preset } from "@/components/button/button";
 import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/products/productRemovedStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
 import { MdBallot } from "react-icons/md";
 
@@ -13,9 +13,9 @@ type Inputs = {
 export function RemoveProductsForm() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
     const { product, loading, createProduct } = productRemovedStore();
-    const { getSelectedElement, clearSelectedElement} = useTempSelectedElementStore();
+    const { getSelectedElement, clearSelectedElement} = useTempStorage();
     const { openModal } = useModalStore();
-    const { setSelectedElement } = useTempSelectedElementStore();
+    const { setSelectedElement } = useTempStorage();
     const lotSelected = getSelectedElement("lotSelected");
     const elementSelected = getSelectedElement('product');
 

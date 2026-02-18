@@ -13,7 +13,7 @@ import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
 
 export default function Page() {
@@ -23,7 +23,7 @@ export default function Page() {
   const { products, loading } = useProductStore();
   useLinkedProductsLogic(currentPage, searchTerm, sortBy);
   const { modals, closeModal } = useModalStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
 
 
 

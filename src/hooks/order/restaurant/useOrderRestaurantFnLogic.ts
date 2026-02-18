@@ -5,14 +5,14 @@ import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
+import useTempStorage from '@/stores/useTempStorage';
 
 export function useOrderRestaurantFnLogic() {
   const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs } = ordersRestaurantsStore();
   const { order, error, lastResponse } = ordersStore();
   const { activeConfig, system } = useConfigStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const {modals} = useModalStore();
   const payMethod = getSelectedElement('payMethod') ?? 1;
   const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;

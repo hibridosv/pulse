@@ -1,11 +1,11 @@
 'use client';
 
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { HiCheck, HiUser } from 'react-icons/hi2';
 
 export function RestaurantClients() {
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const serviceType: number = getSelectedElement('serviceType');
   const clientActive: number = getSelectedElement('clientActive');
   const selectedTable = getSelectedElement('selectedTable');

@@ -7,7 +7,7 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoiceTypesLogic } from "@/hooks/invoicing/useInvoiceTypesLogic";
 import { useInvoicingLogic } from "@/hooks/invoicing/useInvoicingLogic";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
@@ -15,7 +15,7 @@ export default function Page() {
   const { fieldsFiltered, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9&FilterWhereIn[status]==1,0');
   const isLoading = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
-  const { getSelectedElement} = useTempSelectedElementStore();
+  const { getSelectedElement} = useTempStorage();
   const { modals, closeModal } = useModalStore();
   const documentSelected = getSelectedElement('documentSelected') ?? {};
 

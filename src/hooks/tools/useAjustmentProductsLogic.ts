@@ -1,14 +1,14 @@
 'use client'
 import useModalStore from '@/stores/modalStorage';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import adjustStore from '@/stores/tools/adjustStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect, useState } from 'react';
 
 export function useAjustmentProductsLogic(currentPage?: any, searchTerm?: any, initialLoad: boolean = false) {
   const { loadDetails, sendAdjustment: send, error } = adjustStore()
   const [searchTermNew, setSearchTermNew] = useState("");
   const { closeModal } = useModalStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const record = getSelectedElement('setAdjustment') || null;
 
 

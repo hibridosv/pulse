@@ -1,11 +1,11 @@
 'use client'
 import useAccountPayableStore from '@/stores/accounts/accountPayableStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect } from 'react';
 
 export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createAccount, createPayment, error, deleteAccount, createCreditNote, deleteCreditNote} = useAccountPayableStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const selectedOption = getSelectedElement("optionSelected");
   const contactSelected = getSelectedElement('clientSelectedBySearch');
   const elementSelected = getSelectedElement('clientSelectedBySearchModal');

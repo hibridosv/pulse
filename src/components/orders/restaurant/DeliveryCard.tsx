@@ -2,7 +2,7 @@
 
 import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
 import { numberToMoney } from '@/lib/utils';
-import useStateStore from '@/stores/tempSelectedElementStore';
+import useStateStore from '@/stores/useTempStorage';
 import { HiUser } from 'react-icons/hi2';
 import { MdDeliveryDining } from 'react-icons/md';
 import { TbClock } from 'react-icons/tb';

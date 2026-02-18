@@ -1,13 +1,13 @@
 'use client';
 
-import useConfigStore from "@/stores/configStore";
-import { numberToMoney } from "@/lib/utils";
-import { NothingHere } from "@/components/NothingHere";
-import useModalStore from "@/stores/modalStorage";
-import { formatDateAsDMY } from "@/lib/date-formats";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { Indicator } from "@/components/Indicators";
+import { NothingHere } from "@/components/NothingHere";
+import SkeletonTable from "@/components/skeleton/skeleton-table";
+import { formatDateAsDMY } from "@/lib/date-formats";
+import { numberToMoney } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export interface ShowProductsExpiredTableProps {
@@ -19,7 +19,7 @@ export function ShowProductsExpiredTable(props: ShowProductsExpiredTableProps) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
   const { openModal } = useModalStore();
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
 
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />

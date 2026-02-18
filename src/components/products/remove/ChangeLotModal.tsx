@@ -1,15 +1,15 @@
 
-import { Product } from "@/interfaces/products";
-import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
-import { useLotAssignLogic } from "@/hooks/products/useLotAssignLogic";
-import { formatDate, formatHourAsHM } from "@/lib/date-formats";
-import { RiCloseCircleFill } from "react-icons/ri";
-import { FaRegSave } from "react-icons/fa";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
-import useToastMessageStore from "@/stores/toastMessageStore";
-import useStateStore from "@/stores/stateStorage";
 import { Loader } from "@/components/Loader";
+import Modal from "@/components/modal/Modal";
+import { useLotAssignLogic } from "@/hooks/products/useLotAssignLogic";
+import { Product } from "@/interfaces/products";
+import { formatDate, formatHourAsHM } from "@/lib/date-formats";
+import useStateStore from "@/stores/stateStorage";
+import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
+import { FaRegSave } from "react-icons/fa";
+import { RiCloseCircleFill } from "react-icons/ri";
 
 
 export interface ChangeLotModalProps {
@@ -21,7 +21,7 @@ export interface ChangeLotModalProps {
 export function ChangeLotModal(props: ChangeLotModalProps) {
     const { onClose, isShow, product } = props;
     const { lots } = useLotAssignLogic(product, isShow);
-    const { getSelectedElement, setSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+    const { getSelectedElement, setSelectedElement, clearSelectedElement } = useTempStorage();
     const { loading } = useStateStore();
     const lotSelected = getSelectedElement("lotSelected");
     const isSending = loading["lotAssign"] ? true : false;

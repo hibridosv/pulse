@@ -4,7 +4,7 @@ import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import { Contact } from "@/interfaces/contact";
 import useContactStore from "@/stores/ContactStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { LiComponent } from "../button/LiComponent";
 import { getParamString } from "../contacs/utils";
 
@@ -20,7 +20,7 @@ export interface ClientsSearchI {
 export function ClientsSearch(props: ClientsSearchI) {
     const { param, placeholder = "Buscar Cliente", pagination = 10, tempSelectedName = "clientSelectedBySearch", onSelect } = props;
     const { contacts, loading } = useContactStore();
-    const { setSelectedElement} = useTempSelectedElementStore();
+    const { setSelectedElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";

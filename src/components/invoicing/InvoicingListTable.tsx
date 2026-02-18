@@ -6,7 +6,7 @@ import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { Indicator } from "../Indicators";
 
 
@@ -18,7 +18,7 @@ export interface InvoicingListTableI {
 export function InvoicingListTable(props: InvoicingListTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
-  const { setSelectedElement} = useTempSelectedElementStore();
+  const { setSelectedElement} = useTempStorage();
   const { openModal } = useModalStore();
 
 

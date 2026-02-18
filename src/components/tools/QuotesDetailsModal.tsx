@@ -5,7 +5,7 @@ import { useQuotesLogic } from "@/hooks/tools/useQuotesLogic";
 import { formatDate } from "@/lib/date-formats";
 import { getTotalOfItem, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { FaDownload } from "react-icons/fa";
 import { Alert } from "../Alert/Alert";
 import { ButtonDownload } from "../button/button-download";
@@ -17,7 +17,7 @@ export interface QuotesDetailsModalI {
 }
 
 export function QuotesDetailsModal({ onClose, isShow }: QuotesDetailsModalI) {
-        const { getSelectedElement } = useTempSelectedElementStore();
+        const { getSelectedElement } = useTempStorage();
         const { cashdrawer, system, activeConfig } = useConfigStore();
         const quote = getSelectedElement('quoteDetail') || {};
         const { chargeRegisters, sending } = useQuotesLogic();

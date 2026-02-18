@@ -1,7 +1,7 @@
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { sumarTotales } from "../../utils";
 
@@ -10,7 +10,7 @@ export function PayButton() {
   const { order, sending, collecting } = ordersStore();
   const { pay } = useOrderRestaurantFnLogic();
   const { system, cashdrawer } =useConfigStore();
-  const { getSelectedElement} = useTempSelectedElementStore();
+  const { getSelectedElement} = useTempStorage();
   const payMethod = getSelectedElement('payMethod') ?? 1;
 
   

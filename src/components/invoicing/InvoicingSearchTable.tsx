@@ -6,7 +6,7 @@ import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import Link from "next/link";
 import { BiArrowFromLeft } from "react-icons/bi";
 import { Indicator } from "../Indicators";
@@ -20,7 +20,7 @@ export interface InvoicingSearchTableI {
 export function InvoicingSearchTable(props: InvoicingSearchTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
-  const { setSelectedElement} = useTempSelectedElementStore();
+  const { setSelectedElement} = useTempStorage();
   const { openModal } = useModalStore();
 
   if(isLoading) return <SkeletonTable rows={15} columns={8} />

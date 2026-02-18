@@ -5,7 +5,7 @@ import { Option, RadioButton } from "@/components/button/RadioButton";
 import Modal from "@/components/modal/Modal";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
 import { OrderProductsSearchPrincipal } from "../common/OrderProductsSearchPrincipal";
 import { OrderSpecialSalesTable } from "../common/OrderSpecialSalesTable";
@@ -23,7 +23,7 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { updateOrder } = ordersProductsStore();
-  const { getSelectedElement, clearSelectedElement, setSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement, setSelectedElement } = useTempStorage();
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
   let special = order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order);
   let optionsRadioButton: Option[] = [

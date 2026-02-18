@@ -5,7 +5,7 @@ import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useProductStore from "@/stores/products/productStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
 
 export function OrderProductsSearch() {
@@ -15,7 +15,7 @@ export function OrderProductsSearch() {
     const { products } = useProductStore();
     const [searchKey, setSearchKey] = useState(Date.now()); // 1. Añadimos un estado para la key
     useOrderProductsSearchLogic(currentPage, searchTerm, sortBy);
-    const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
+    const { getSelectedElement, setSelectedElement } = useTempStorage();
     const typeOfSearch = getSelectedElement('typeOfSearch');
     const { addNew } = useOrderFnLogic();
 

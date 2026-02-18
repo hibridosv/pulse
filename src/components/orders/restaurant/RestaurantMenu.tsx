@@ -5,13 +5,13 @@ import { RestaurantMenuSkeleton } from '@/components/skeleton/RestaurantMenuSkel
 import { URL } from '@/constants';
 import ordersStore from '@/stores/orders/ordersStore';
 import restauranMenuStore from '@/stores/orders/restauranMenuStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { ImageMenu } from './ImageMenu';
 
 
 export function RestaurantMenu() {
   const { loading, restaurantMenu: images } =  restauranMenuStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const serviceType: number = getSelectedElement('serviceType');
   const selectedTables = getSelectedElement('selectedTables');
   const clientOrder = getSelectedElement('clientOrder');

@@ -1,12 +1,12 @@
 'use client';
 
-import useConfigStore from "@/stores/configStore";
-import { numberToMoney } from "@/lib/utils";
-import { Product } from "@/interfaces/products";
 import { NothingHere } from "@/components/NothingHere";
+import { Product } from "@/interfaces/products";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
+import { numberToMoney } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export interface ShowKardexTableProps {
@@ -18,7 +18,7 @@ export function ShowKardexTable(props: ShowKardexTableProps) {
   const { product, kardex } = props;
   const { system } = useConfigStore();
   const { openModal } = useModalStore();
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
 
 
   if (!product) {

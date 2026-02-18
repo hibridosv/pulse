@@ -1,6 +1,6 @@
 'use client'
 import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -15,7 +15,7 @@ export function OrderProductsSearchByCode() {
     const isLoading = false;
     const { register, handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm();
     const { addNew } = useOrderFnLogic();
-    const { getSelectedElement } = useTempSelectedElementStore();
+    const { getSelectedElement } = useTempStorage();
     const typeOfSearch = getSelectedElement('typeOfSearch');
 
 

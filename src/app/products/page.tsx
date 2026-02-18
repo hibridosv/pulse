@@ -17,7 +17,7 @@ import { permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 
@@ -31,7 +31,7 @@ export default function Page() {
   const links = useSetLinkLogic();
   const { getRequest, loading: loadingRequest } = useGetRequest();
   const { modals, closeModal } = useModalStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
 
 
 

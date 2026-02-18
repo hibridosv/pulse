@@ -6,7 +6,7 @@ import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { sumarDiscount, sumarTotales, sumarTotalesWithoutDiscount } from "../utils";
@@ -26,7 +26,7 @@ export function DiscountsModal(props: DiscountsModalI) {
 
   const { order, sending, error } = ordersStore();
   const { discount } = useOrderFnLogic();
-  const { getSelectedElement, clearSelectedElement, setSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement, setSelectedElement } = useTempStorage();
   const product = getSelectedElement('productSelected');
   const typeOfDiscount = getSelectedElement('typeOfDiscount') ?? 1; // 1: cantidad o 2: porcentaje
   const discountType = getSelectedElement('discountType') ?? 1;// 1: producto o 2: orden 

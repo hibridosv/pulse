@@ -5,7 +5,7 @@ import Modal from "@/components/modal/Modal";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { nameOfPaymentType } from "./PayModal";
 
 export interface PayedModal {
@@ -16,7 +16,7 @@ export interface PayedModal {
 export function PayedModal(props: PayedModal) {
   const { onClose, isShow } = props;
   const { system, activeConfig } = useConfigStore();
-  const { getSelectedElement, clearSelectedElement  } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement  } = useTempStorage();
   const orderPayed = getSelectedElement('paymentSuccess') ?? null;
   const paymentType = getSelectedElement('paymentType') ?? 1;
   const { sending } = ordersStore();

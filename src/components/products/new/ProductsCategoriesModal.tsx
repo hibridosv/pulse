@@ -4,7 +4,7 @@ import Modal from "@/components/modal/Modal";
 import { useProductCategoriesLogic } from "@/hooks/products/useProductCategoriesLogic";
 import useCategoriesStore from "@/stores/products/categoriesStore";
 import useStateStore from "@/stores/stateStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
 
 export interface ProductsCategoriesModalProps {
@@ -19,7 +19,7 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
     const isSending = loading["categoryForm"] ? true : false;
     const { onSubmit } = useProductCategoriesLogic(isShow, setFocus, resetField);
     const { categories } = useCategoriesStore();
-    const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
+    const { setSelectedElement, getSelectedElement } = useTempStorage();
 
 
     if (!isShow) return null;

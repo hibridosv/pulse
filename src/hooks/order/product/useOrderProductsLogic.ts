@@ -6,7 +6,7 @@ import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect, useRef } from 'react';
 
 /**
@@ -17,7 +17,7 @@ import { useEffect, useRef } from 'react';
 
 export function useOrderProductsLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
-  const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, setSelectedElement } = useTempStorage();
   const typeOfSearch = getSelectedElement('typeOfSearch'); // tipo de busqueda
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
   const { loadOrder, loadOrders, setOrders } = ordersProductsStore();

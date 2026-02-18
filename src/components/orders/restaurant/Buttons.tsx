@@ -4,7 +4,7 @@ import { usePopper } from '@/components/popper/popperContext';
 import { Order } from '@/interfaces/order';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 
 export interface ButtonsI {
   order: Order;
@@ -14,7 +14,7 @@ export function Buttons(props: ButtonsI) {
   const { order } = props
   const { activeConfig, system } = useConfigStore();
   const { openModal} = useModalStore();
-  const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement } = useTempStorage();
   const serviceType: number = getSelectedElement('serviceType'); // aqui, mesas, delivery
 
   const isDiscount = activeConfig && activeConfig.includes("sales-discount");

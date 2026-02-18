@@ -13,14 +13,14 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { useProductRemoveLogic } from "@/hooks/products/useProductRemoveLogic";
 import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/products/productRemovedStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
   useProductRemoveLogic();
     const { loading, product, deleting, deletePrincipal, savePrincipal } = productRemovedStore();
     const { modals, closeModal } = useModalStore();
-    const { getSelectedElement } = useTempSelectedElementStore();
+    const { getSelectedElement } = useTempStorage();
     const isActive = product?.failures && product.failures.filter((fai: any) => fai.status == 1).length > 0;
 
 

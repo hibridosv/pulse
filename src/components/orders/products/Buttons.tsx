@@ -5,7 +5,7 @@ import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
 import { Order } from '@/interfaces/order';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 
 export interface ButtonsI {
   order: Order;
@@ -15,7 +15,7 @@ export function Buttons(props: ButtonsI) {
   const { order } = props
   const { activeConfig } = useConfigStore();
   const { openModal} = useModalStore();
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
   const isDiscount = activeConfig && activeConfig.includes("sales-discount");
   const isOtherSeller = activeConfig && activeConfig.includes("sales-other-seller");
   const isReferred = activeConfig && activeConfig.includes("sales-referred");

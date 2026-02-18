@@ -1,11 +1,11 @@
 'use client'
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import adjustStore from '@/stores/tools/adjustStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect } from 'react';
 
 export function useAjustmentModalLogic(currentPage?: any, isShow: boolean = false) {
     const { loadAdjustment } = adjustStore()
-    const { getSelectedElement } = useTempSelectedElementStore();
+    const { getSelectedElement } = useTempStorage();
     const record = getSelectedElement('adjustmentDetails') || null;
 
 

@@ -4,7 +4,7 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -20,7 +20,7 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
   const { onClose, isShow } = props;
   const { order, sending, error, } = ordersStore();
   const { addNew } = useOrderRestaurantFnLogic();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const product = getSelectedElement('productSelected');
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();

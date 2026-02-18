@@ -10,7 +10,7 @@ import { useSearchDocumentLogic } from "@/hooks/invoicing/useSearchDocumentLogic
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
@@ -19,7 +19,7 @@ export default function Page() {
     const { responseData, loading } = useSearchDocumentLogic(currentPage, searchTerm);
     const data = responseData?.data;
     const quantity =  data?.total ?? 0;
-    const { getSelectedElement} = useTempSelectedElementStore();
+    const { getSelectedElement} = useTempStorage();
     const { modals, closeModal } = useModalStore();
     const documentSelected = getSelectedElement('documentSelected') ?? {};
 

@@ -5,7 +5,7 @@ import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { MdDeleteSweep } from "react-icons/md";
@@ -21,7 +21,7 @@ export function AddCommentModal(props: AddCommentModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { update} = useOrderFnLogic();
-  const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement } = useTempStorage();
 
 
 

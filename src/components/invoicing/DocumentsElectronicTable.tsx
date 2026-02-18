@@ -5,7 +5,7 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useStateStore from "@/stores/stateStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { FaEdit, FaSpinner } from "react-icons/fa";
 import { Dropdown } from "../dropDown/Dropdown";
 import { DropdownItem } from "../dropDown/DropdownItem";
@@ -21,7 +21,7 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
   const { records, resendDocument } = props;
   const { system } = useConfigStore();
   const API_URL = process.env.NEXT_PUBLIC_URL_API;
-  const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement} = useTempStorage();
   const { openModal } = useModalStore();
   const {  loading } = useStateStore();
   const isLoading = loading.history ?? false; 

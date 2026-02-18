@@ -3,8 +3,8 @@ import { createService, getServices } from '@/services/services';
 import useProductLinkedStore from '@/stores/products/productLinkedStore';
 import useProductStore from '@/stores/products/productStore';
 import useStateStore from '@/stores/stateStorage';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect, useState } from 'react';
 
 export function useProductLinkedLogic(currentPage: any, searchTerm: string, sortBy: string, product: any, isShow: boolean) {
@@ -14,7 +14,7 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
   const [ products, setProducts ] = useState([]) as any;
   const { openLoading, closeLoading } = useStateStore();
   const { loadProducts: fetchDataLinked, products: productsLinked, loading, productId} = useProductLinkedStore();
-  const { clearSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+  const { clearSelectedElement, getSelectedElement} = useTempStorage();
   const elementSelected = getSelectedElement("product");
 
   useEffect(() => {

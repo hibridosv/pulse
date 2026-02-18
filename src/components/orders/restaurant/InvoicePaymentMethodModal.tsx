@@ -5,7 +5,7 @@ import Modal from "@/components/modal/Modal";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 export interface InvoicePaymentMethodModalI {
   onClose: () => void;
@@ -18,7 +18,7 @@ export function InvoicePaymentMethodModal(props: InvoicePaymentMethodModalI) {
   
   const { closeModal} = useModalStore();
   const { payMethods } = useConfigStore();
-  const { setSelectedElement, getSelectedElement} = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement} = useTempStorage();
   const payMethod = getSelectedElement('payMethod') ?? 1;
   
   const handleUpdate = (type: any) => {

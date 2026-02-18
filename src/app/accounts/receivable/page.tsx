@@ -15,7 +15,7 @@ import { usePagination } from "@/hooks/usePagination";
 import { countItemsWithStatus, getTotalOfItem } from "@/lib/utils";
 import accountReceivableStore from "@/stores/accounts/accountReceivableStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 export default function Page() {
   let optionsRadioButton: Option[] = [
@@ -31,7 +31,7 @@ export default function Page() {
   const { accounts, loading } = accountReceivableStore();
 
   const data = accounts?.data || [];
-  const { getSelectedElement} = useTempSelectedElementStore();
+  const { getSelectedElement} = useTempStorage();
   const documentSelected = getSelectedElement('documentSelected') ?? {};
 
   const handleFormSubmit = async (values: any) => {

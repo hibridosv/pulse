@@ -4,7 +4,7 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -20,7 +20,7 @@ export function ComissionsProductModal(props: ComissionsProductModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { updatePrice } = useOrderFnLogic();
-  const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement } = useTempStorage();
   const product = getSelectedElement('productSelected');
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();

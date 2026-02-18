@@ -8,7 +8,7 @@ import { getTotalPercentage, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { FaPen } from "react-icons/fa";
 import { MdBallot } from "react-icons/md";
 import { commissionTotal, sumarDiscount, sumarTotales } from "../utils";
@@ -22,7 +22,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   const { order } = props;
   const { system, activeConfig } = useConfigStore();
   const { addNew, del} = useOrderFnLogic();
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement } = useTempStorage();
   const { openModal} = useModalStore();
   const { sending } = ordersStore();
   

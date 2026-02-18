@@ -5,7 +5,7 @@ import { NothingHere } from "@/components/NothingHere";
 import { URL } from "@/constants";
 import ordersStore from "@/stores/orders/ordersStore";
 import restauranMenuStore from "@/stores/orders/restauranMenuStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { getModalSize } from "../functions";
 import { ImageMenu } from "./ImageMenu";
@@ -21,7 +21,7 @@ export function CategoryMenuModal(props: CategoryMenuModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { loading, restaurantMenu: images } =  restauranMenuStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const category = getSelectedElement('categoryMenu');
   const filter = category ? category.category_id : null;
 

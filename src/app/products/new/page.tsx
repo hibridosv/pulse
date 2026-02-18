@@ -13,7 +13,7 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
 import useStateStore from "@/stores/stateStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
 
 
@@ -26,7 +26,7 @@ export default function Page() {
   const isSending = loading["productForm"] ? true : false;
   const { modals, closeModal, openModal } = useModalStore();
   const lastProducts = products?.data;
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
 
 
   return (

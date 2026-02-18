@@ -5,7 +5,7 @@ import { formatDateAsDMY } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
 import useConfigStore from "@/stores/configStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
 import { DeleteButton } from "../button/DeleteButton";
 
@@ -15,7 +15,7 @@ export interface AddPayableCreditNoteModalI {
 }
 
 export function AddPayableCreditNoteModal({ onClose, isShow }: AddPayableCreditNoteModalI) {
-        const { getSelectedElement } = useTempSelectedElementStore();
+        const { getSelectedElement } = useTempStorage();
 
         const { register, handleSubmit, reset, setValue, watch } = useForm();
         const payableRecord = getSelectedElement('paymentPayableAdd');

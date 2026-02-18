@@ -10,7 +10,7 @@ import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { BiLoader } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { DeleteModal } from "../DeleteModal";
@@ -32,7 +32,7 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
   const isBrand = activeConfig?.includes("product-locations");
   const { deleteProduct, deleting } = useProductStore();
   const { getRequest, loading: loadingRequest } = useGetRequest();
-  const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement } = useTempStorage();
   const elementSelected = getSelectedElement('productDetails');
 
 

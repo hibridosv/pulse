@@ -6,8 +6,8 @@ import { extractActiveFeature } from '@/lib/config/config';
 import { permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import ordersStore from '@/stores/orders/ordersStore';
-import useStateStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
+import useStateStore from '@/stores/useTempStorage';
 
 export interface ServiceTypeSelectI {
   order: Order;

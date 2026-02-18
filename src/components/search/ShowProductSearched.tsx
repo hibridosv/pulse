@@ -1,10 +1,10 @@
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { Button, Preset } from "../button/button";
 
 
 
 export function ShowProductSearched() {
-  const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement } = useTempStorage();
   const elementSelected = getSelectedElement('productSearched');
 
     if (!elementSelected) return null;

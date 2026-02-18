@@ -7,8 +7,8 @@ import { getLastElement, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useSession } from 'next-auth/react';
 import Image from "next/image";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -24,7 +24,7 @@ export function RestaurantProductsAdded() {
   const { cancel, del } = useOrderRestaurantFnLogic();
   const { data: session } = useSession();
   const  remoteUrl  = session?.url;
-  const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement } = useTempStorage();
   const { openModal} = useModalStore();
   const { setError } = useToastMessageStore();
   const serviceType: number = getSelectedElement('serviceType');

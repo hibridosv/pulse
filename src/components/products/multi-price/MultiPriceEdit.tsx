@@ -4,7 +4,7 @@ import { useProductPricesEditLogic } from "@/hooks/products/useProductPricesEdit
 import { numberToMoney4Digits } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useStateStore from "@/stores/stateStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
 import { RadioButton } from "../../button/RadioButton";
 import { Button, Preset } from "../../button/button";
@@ -26,7 +26,7 @@ export function MultiPriceEdit(props: MultiPrice) {
   const { system } = useConfigStore();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
   const { options, priceTypeToText } = usePriceTypes();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const selectedOption = getSelectedElement("optionSelected");
   const { prices, addPrice, deletePrice } = useProductPricesEditLogic(productId, isShow, reset, selectedOption);
   const { loading } = useStateStore();

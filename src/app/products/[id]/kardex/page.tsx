@@ -10,7 +10,7 @@ import { useKardexLogic } from "@/hooks/products/useKardexLogic";
 import { urlConstructor } from "@/lib/urlConstructor";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useRouter } from "next/navigation";
 
 
@@ -20,7 +20,7 @@ export default function Page({ params }: { params: { id: string } }) {
   useKardexLogic(id);
   const { modals, closeModal } = useModalStore();
   const router = useRouter();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
 
 
   const handleFormSubmit = async (values: DateRangeValues) => { 

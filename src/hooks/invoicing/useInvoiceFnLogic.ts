@@ -1,15 +1,15 @@
 'use client'
 import { updateService } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useRouter } from 'next/navigation';
 
 export function useInvoiceFnLogic() {
   const router = useRouter();
   const { openLoading, closeLoading, loading: sending } = useStateStore()
   const { setError } = useToastMessageStore();
-  const { clearSelectedElement } = useTempSelectedElementStore();
+  const { clearSelectedElement } = useTempStorage();
    
   
   const sendRemissions = async (id: string) => {

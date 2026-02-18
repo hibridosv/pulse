@@ -1,14 +1,14 @@
 'use client'
 import accountReceivableStore from '@/stores/accounts/accountReceivableStore';
 import useConfigStore from '@/stores/configStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect } from 'react';
 import { usePostRequest } from '../request/usePostRequest';
 import { usePutRequest } from '../request/usePutRequest';
 
 export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createPayment, error, checkIn } = accountReceivableStore();
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const selectedOption = getSelectedElement("optionSelected");
   const contactSelected = getSelectedElement('clientSelectedBySearch');
   const receivableRecord = getSelectedElement('paymentReceivableAdd');

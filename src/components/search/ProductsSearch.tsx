@@ -3,11 +3,11 @@ import { useProductsSearchLogic } from "@/hooks/products/useProductsSearchLogic"
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useProductStore from "@/stores/products/productStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { LiComponent } from "../button/LiComponent";
 
 export function ProductsSearch() {
-    const { setSelectedElement} = useTempSelectedElementStore();
+    const { setSelectedElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";

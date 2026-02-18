@@ -1,8 +1,8 @@
 import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useModalStore from './modalStorage';
-import useTempSelectedElementStore from './tempSelectedElementStore';
 import useToastMessageStore from './toastMessageStore';
+import useTempStorage from './useTempStorage';
 
 
 interface ContactStoreState {
@@ -45,7 +45,7 @@ const useContactStore = create<ContactStoreState>((set) => ({
             set({ contact: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
             useModalStore.getState().closeModal('contactAdd');
-            useTempSelectedElementStore.getState().setSelectedElement("contactDetails", response.data.data);
+            useTempStorage.getState().setSelectedElement("contactDetails", response.data.data);
             useModalStore.getState().openModal('contactDetails');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -62,7 +62,7 @@ const useContactStore = create<ContactStoreState>((set) => ({
             set({ contact: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
             useModalStore.getState().closeModal('contactAdd');
-            useTempSelectedElementStore.getState().setSelectedElement("contactDetails", response.data.data);
+            useTempStorage.getState().setSelectedElement("contactDetails", response.data.data);
             useModalStore.getState().openModal('contactDetails');
         } catch (error) {
             useToastMessageStore.getState().setError(error);

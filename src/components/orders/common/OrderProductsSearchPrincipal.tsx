@@ -1,6 +1,6 @@
 'use client'
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { NameIcon, SearchIcon } from '@/styles/svg';
 import { OrderProductsSearch } from './OrderProductsSearch';
 import { OrderProductsSearchByCode } from './OrderProductsSearchByCode';
@@ -8,7 +8,7 @@ import { OrderProductsSearchByCode } from './OrderProductsSearchByCode';
 
 
 export function OrderProductsSearchPrincipal() {
-    const { getSelectedElement, setSelectedElement } = useTempSelectedElementStore();
+    const { getSelectedElement, setSelectedElement } = useTempStorage();
     const typeOfSearch = getSelectedElement('typeOfSearch');
     const { sending } = ordersStore();
 

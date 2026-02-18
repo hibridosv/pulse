@@ -4,7 +4,7 @@ import { Option, RadioButton } from "@/components/button/RadioButton";
 import Modal from "@/components/modal/Modal";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -20,7 +20,7 @@ export function OtherSalesModal(props: OtherSalesModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { updateOrder } = ordersProductsStore();
-  const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement } = useTempStorage();
   const option = getSelectedElement('optionSelected');
   const optionType = getSelectedElement('optionSelectedType');
 

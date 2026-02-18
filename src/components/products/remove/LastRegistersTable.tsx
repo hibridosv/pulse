@@ -2,14 +2,14 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/products/productRemovedStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { typeFailure } from "../utils";
 
 
 export function LastRegistersTable() {
     const {product, loading, products} = productRemovedStore();
     const { openModal } = useModalStore();
-    const { setSelectedElement } = useTempSelectedElementStore();
+    const { setSelectedElement } = useTempStorage();
 
     if (loading) return <SkeletonTable columns={5} rows={4} />;
     if (product && !loading) return null;

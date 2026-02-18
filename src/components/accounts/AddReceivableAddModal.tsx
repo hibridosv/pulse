@@ -8,8 +8,8 @@ import accountReceivableStore from "@/stores/accounts/accountReceivableStore";
 import cashAccountStore from "@/stores/cash/cashAccountStore";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from "../Alert/Alert";
@@ -23,7 +23,7 @@ export interface AddReceivableAddModalI {
 }
 
 export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModalI) {
-        const { getSelectedElement } = useTempSelectedElementStore();
+        const { getSelectedElement } = useTempStorage();
         const { cashdrawer, system } = useConfigStore();
 
         const { register, handleSubmit, reset, setValue, watch } = useForm();
@@ -33,7 +33,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
         const { savePayment, handleCheckIn } = useAccountReceivableLogic();
         const { sending, deleting } = accountReceivableStore();
         const { setError } = useToastMessageStore();
-        const { setSelectedElement} = useTempSelectedElementStore();
+        const { setSelectedElement} = useTempStorage();
         const { openModal } = useModalStore();
 
 

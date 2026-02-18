@@ -1,12 +1,12 @@
 'use client';
 
-import useConfigStore from "@/stores/configStore";
-import { numberToMoney } from "@/lib/utils";
-import { Product } from "@/interfaces/products";
-import { productTypeIcon } from './utils';
 import { NothingHere } from "@/components/NothingHere";
+import { Product } from "@/interfaces/products";
+import { numberToMoney } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
+import { productTypeIcon } from './utils';
 
 
 export interface ShowProductsNewTableProps {
@@ -17,7 +17,7 @@ export function ShowProductsNewTable(props: ShowProductsNewTableProps) {
   const { records } = props;
   const { system } = useConfigStore();
   const { openModal } = useModalStore();
-  const { setSelectedElement} = useTempSelectedElementStore();
+  const { setSelectedElement} = useTempStorage();
 
 
 

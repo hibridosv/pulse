@@ -2,9 +2,9 @@
 import { updateService } from '@/services/services';
 import useModalStore from '@/stores/modalStorage';
 import useStateStore from '@/stores/stateStorage';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import quotesStore from '@/stores/tools/quotesStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -13,7 +13,7 @@ export function useQuotesLogic(currentPage?: any, searchTerm?: any, initialLoad:
   const [searchTermNew, setSearchTermNew] = useState("");
   const router = useRouter();
   const { openLoading, closeLoading, loading: sending } = useStateStore()
-  const { clearSelectedElement } = useTempSelectedElementStore();
+  const { clearSelectedElement } = useTempStorage();
   const { setError } = useToastMessageStore();
   const { closeModal } = useModalStore();
 

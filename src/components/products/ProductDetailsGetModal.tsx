@@ -3,7 +3,7 @@ import { useGetProductLogic } from "@/hooks/products/useGetProductLogic";
 import { useProductDetailsLogic } from "@/hooks/products/useProductDetailsLogic";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { FaBox, FaCheckCircle, FaTag, FaTimesCircle, FaUserTie } from "react-icons/fa";
 import { MdOutlineAttachMoney, MdOutlineBrandingWatermark, MdOutlineCategory, MdOutlineHomeRepairService, MdOutlineInfo, MdOutlineInventory, MdOutlineLocationOn, MdProductionQuantityLimits } from "react-icons/md"; // Icons
 import { Button, Preset } from "../button/button";
@@ -26,7 +26,7 @@ export interface ProductDetailsGetModalI {
 export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   const { onClose, isShow, row = "id" } = props;
   const { system } = useConfigStore();
-  const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement, clearSelectedElement } = useTempStorage();
   const productId = getSelectedElement('productDetails');
   
   const {responseData: data, loading: loadingRecord } = useGetProductLogic(productId, isShow, row);

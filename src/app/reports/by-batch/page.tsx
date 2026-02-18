@@ -7,12 +7,12 @@ import { ShowProductSearched } from "@/components/search/ShowProductSearched";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useReportsLogic } from "@/hooks/reports/useReportsLogic";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 
 export default function Page() {
-  const { getSelectedElement } = useTempSelectedElementStore();
+  const { getSelectedElement } = useTempStorage();
   const elementSelected = getSelectedElement('productSearched');
   const { history, handleGet, loading, links } = useReportsLogic(`reports/lot?perPage=20&page=1`, 'excel/reports/by-lot/');
   const isLoading = loading.history ?? false; 

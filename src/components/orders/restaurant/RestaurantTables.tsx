@@ -1,13 +1,13 @@
 'use client';
 
 import ordersStore from '@/stores/orders/ordersStore';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useEffect } from 'react';
 import { TableCard } from './TableCard';
 
 export function RestaurantTables() {
   const { order, tables } = ordersStore();
-  const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement } = useTempStorage();
   const selectedTables = getSelectedElement('selectedTables');
   const serviceType: number = getSelectedElement('serviceType');
   const selectedTable: number = getSelectedElement('selectedTable');

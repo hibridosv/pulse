@@ -5,12 +5,12 @@ import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import productRemovedStore from "@/stores/products/productRemovedStore";
 import useProductStore from "@/stores/products/productStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export function RemoveProductsSearch() {
     const { product, loading } = productRemovedStore();
-    const { getSelectedElement, setSelectedElement} = useTempSelectedElementStore();
+    const { getSelectedElement, setSelectedElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";

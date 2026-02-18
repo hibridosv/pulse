@@ -2,7 +2,7 @@ import { Button, Preset } from "@/components/button/button";
 import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
 import { documentType } from "@/lib/utils";
 import productAddStore from "@/stores/products/productAddStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
 import { AddProductsSearch } from "./AddProductsSearch";
 
@@ -10,7 +10,7 @@ export function AddProductForm() {
     useProductAddLogic();
     const { register, handleSubmit, reset } = useForm();
     const { product, loading, createProduct } = productAddStore();
-    const { getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+    const { getSelectedElement, clearSelectedElement } = useTempStorage();
     const isBill = getSelectedElement("isBill");
     const productSelected = getSelectedElement("product");
 

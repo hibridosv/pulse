@@ -8,8 +8,8 @@ import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import { Product } from "@/interfaces/products";
 import useStateStore from "@/stores/stateStorage";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
 import { productTypeIcon } from "../utils";
 
@@ -28,7 +28,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const { products, onSubmit, productsLinked, loading: isSending } = useProductLinkedLogic(currentPage, searchTerm, sortBy, product, isShow);
     const { loading } = useStateStore();
     const isLoading = loading["productSearch"] ? true : false;
-    const { setSelectedElement, getSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+    const { setSelectedElement, getSelectedElement, clearSelectedElement } = useTempStorage();
     const elementSelected = getSelectedElement("product");
 
     if (!isShow || !product) return null;

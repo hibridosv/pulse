@@ -1,8 +1,8 @@
 import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useModalStore from '../modalStorage';
-import useTempSelectedElementStore from '../tempSelectedElementStore';
 import useToastMessageStore from '../toastMessageStore';
+import useTempStorage from '../useTempStorage';
 
 
 interface AccountPayableStoreStateI {
@@ -86,7 +86,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
         };
       });
       useToastMessageStore.getState().setMessage(response);
-      useTempSelectedElementStore.getState().clearSelectedElement("paymentPayableAdd");
+      useTempStorage.getState().clearSelectedElement("paymentPayableAdd");
       useModalStore.getState().closeModal("paymentPayableAdd");
       set({ error: false });
     } catch (error) {
@@ -102,7 +102,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
         try {
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
-            useTempSelectedElementStore.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+            useTempStorage.getState().setSelectedElement("paymentPayableAdd", response.data.data);
             set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -118,7 +118,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
     try {
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
-      useTempSelectedElementStore.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+      useTempStorage.getState().setSelectedElement("paymentPayableAdd", response.data.data);
       set({ error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -134,7 +134,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
         try {
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
-            useTempSelectedElementStore.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+            useTempStorage.getState().setSelectedElement("paymentPayableAdd", response.data.data);
             set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -149,7 +149,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
     try {
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
-      useTempSelectedElementStore.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+      useTempStorage.getState().setSelectedElement("paymentPayableAdd", response.data.data);
       useModalStore.getState().closeModal("creditNoteAdd");
       set({ error: false });
     } catch (error) {

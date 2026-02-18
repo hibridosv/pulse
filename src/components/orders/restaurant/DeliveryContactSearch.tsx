@@ -1,7 +1,7 @@
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempSelectedElementStore from "@/stores/tempSelectedElementStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export function deliveryTypeRestaurant(type: number) {
@@ -14,7 +14,7 @@ export function deliveryTypeRestaurant(type: number) {
 
 export function DeliveryContactSearch() {
   const { order } = ordersStore();
-  const { getSelectedElement, setSelectedElement, clearSelectedElement} = useTempSelectedElementStore();
+  const { getSelectedElement, setSelectedElement, clearSelectedElement} = useTempStorage();
   const serviceType: number = getSelectedElement('serviceType');
 
 

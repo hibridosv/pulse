@@ -2,8 +2,8 @@ import { DateRangeValues } from '@/components/button/DateRange';
 import { urlConstructor } from '@/lib/urlConstructor';
 import { getServices, updateService } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
-import useTempSelectedElementStore from '@/stores/tempSelectedElementStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
@@ -14,7 +14,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
     const [ lastUrl, setLastUrl ] = useState("");
     const { openLoading, closeLoading } = useStateStore();
     const { links, addLink} = useDownloadLink();
-    const { setSelectedElement, clearSelectedElement } = useTempSelectedElementStore();
+    const { setSelectedElement, clearSelectedElement } = useTempStorage();
     const { setMessage, setError } = useToastMessageStore();
 
 
