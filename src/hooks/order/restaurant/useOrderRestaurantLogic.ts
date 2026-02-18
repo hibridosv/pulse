@@ -64,13 +64,13 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
       orderLoaded.current = true;
       await loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,invoiceproducts.attributes.workstation,attributes,table,invoiceproducts.options.option`, false);
       const currentOrder = ordersStore.getState().order;
-      if (!currentOrder) {
-        loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+      if (!currentOrder && serviceType == 3) {
+        loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2&filterWhere[order_type]==3`, false);
       }
     };
 
     loadInitialData();
-  }, [initialLoad, user, loadOrder, loadOrders]);
+  }, [initialLoad, user, loadOrder, loadOrders, serviceType]);
 
 
 /** Cargar Ordenes al realizar un evento de Pusher solo para los usuarios que no envia en evento */
@@ -118,7 +118,10 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
     if (!order && serviceType == 2 && selectedTable === undefined) {
        loadTables(`tables?included=tables`, true); 
     }
-   }, [order, serviceType, selectedTable]);
 
-   
+    if (!order && serviceType == 3) {
+       loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2&filterWhere[order_type]==3`, false);
+    }
+   }, [order, serviceType, selectedTable, loadOrders, loadTables]);
+
 }

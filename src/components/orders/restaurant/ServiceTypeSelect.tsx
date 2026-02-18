@@ -42,8 +42,6 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
   }
   
   if (countFeatures() === 0) return <></>;
-  console.log("selectedTable", selectedTable)
-  console.log("selectedTables", selectedTables)
 
     const handleSelected = async (option: number)=>{
     if (serviceType == 1) {

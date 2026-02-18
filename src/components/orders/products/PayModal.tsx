@@ -42,9 +42,6 @@ export function PayModal(props: PayModalI) {
     }
   }, [setFocus, isShow, paymentType, setValue])
 
-  console.log("paymentType", paymentType);
-
-
   if (!isShow || !order) return null;
 
   return (

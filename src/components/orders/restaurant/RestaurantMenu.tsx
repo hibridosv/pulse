@@ -18,7 +18,7 @@ export function RestaurantMenu() {
   const selectedTable = getSelectedElement('selectedTable');
   const { order } = ordersStore();
 
-  if ((serviceType == 2 && selectedTables && !selectedTable) || (serviceType == 3 && deliverySelected?.id)) return <></>;
+  if ((serviceType == 2 && selectedTables && !selectedTable) || (serviceType == 3 && !deliverySelected)) return <></>;
 
 
   const imageLoader = ({ src, width, quality }: any) => {

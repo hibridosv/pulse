@@ -10,6 +10,8 @@ import { SelectUserModal } from "@/components/orders/products/SelectUserModal";
 import { SpecialSalesModal } from "@/components/orders/products/SpecialSalesModal";
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
 import { ChangeQuantityRestaurantModal } from "@/components/orders/restaurant/ChangeQuantityRestaurantModal";
+import { DeliveryClient } from "@/components/orders/restaurant/DeliveryClient";
+import { DeliveryContactSearch } from "@/components/orders/restaurant/DeliveryContactSearch";
 import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeModal";
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
@@ -33,19 +35,20 @@ import CryptoJS from 'crypto-js';
 export default function Page() {
   useMenuLogic();
   useOrderRestaurantLogic(true);
-  const { order } = ordersStore();
+  const { order, orders } = ordersStore();
   const { modals, closeModal } = useModalStore();
 
   const dateStr = formatDateAsNumber(new Date());
   const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
   // console.log(hash);
 
-  // console.log("order", order);
+  console.log("orders", orders);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
           <div className="md:col-span-6 md:border-r md:border-primary">
             <div className="relative z-0">
+              <DeliveryClient />
               <RestaurantClients />
               <RestaurantMenu />
               <RestaurantTables />
@@ -59,6 +62,7 @@ export default function Page() {
               <RestaurantShowTotal />
               <RestaurantButtons />
               <OptionsSelect />
+              <DeliveryContactSearch />
           </div>
         </div>
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />

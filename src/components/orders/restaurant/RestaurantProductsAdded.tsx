@@ -24,9 +24,14 @@ export function RestaurantProductsAdded() {
   const { cancel, del } = useOrderRestaurantFnLogic();
   const { data: session } = useSession();
   const  remoteUrl  = session?.url;
-  const { setSelectedElement } = useTempSelectedElementStore();
+  const { setSelectedElement, getSelectedElement } = useTempSelectedElementStore();
   const { openModal} = useModalStore();
   const { setError } = useToastMessageStore();
+  const serviceType: number = getSelectedElement('serviceType');
+
+
+  if (serviceType == 3 && !order) return <></>;
+
 
     const imageLoader = ({ src, width, quality }: any) => {
         return `${remoteUrl}/images/logo/${src}?w=${width}&q=${quality || 75}`
