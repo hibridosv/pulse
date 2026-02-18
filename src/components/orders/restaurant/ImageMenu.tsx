@@ -46,7 +46,7 @@ const dismiss = () => {
         <div key={record?.id} className="animate-scale-in" style={{ animationDelay: `${index * 15}ms` }} title={label} >
             <div
               onClick={isProduct ?
-                ( sending ? ()=>{} : () => sendProduct(record.product_id)) :
+                (sending ? ()=>{} : () => sendProduct(record.product_id)) :
                 ()=>{ openModal('categoryMenu'); setSelectedElement("categoryMenu", record) }
               }
               className={`group relative w-[104px] overflow-hidden rounded-xl bg-bg-content shadow-md transition-all duration-100 ease-out hover:shadow-xl hover:-translate-y-1 active:scale-95 active:shadow-md

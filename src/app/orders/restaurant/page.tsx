@@ -16,6 +16,7 @@ import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestaurantModal";
 import { ProductOptionsModal } from "@/components/orders/restaurant/ProductOptionsModal";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
+import { RestaurantClients } from "@/components/orders/restaurant/RestaurantClients";
 import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
 import { RestaurantProductsAdded } from "@/components/orders/restaurant/RestaurantProductsAdded";
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
@@ -45,6 +46,7 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
           <div className="md:col-span-6 md:border-r md:border-primary">
             <div className="relative z-0">
+              <RestaurantClients />
               <RestaurantMenu />
               <RestaurantTables />
             </div>
