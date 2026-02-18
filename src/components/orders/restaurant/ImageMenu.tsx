@@ -43,23 +43,13 @@ const dismiss = () => {
 }
 
     return (
-        <div
-          key={record?.id}
-          className="animate-scale-in"
-          style={{ animationDelay: `${index * 20}ms` }}
-          title={label}
-        >
+        <div key={record?.id} className="animate-scale-in" style={{ animationDelay: `${index * 15}ms` }} title={label} >
             <div
               onClick={isProduct ?
                 ( sending ? ()=>{} : () => sendProduct(record.product_id)) :
                 ()=>{ openModal('categoryMenu'); setSelectedElement("categoryMenu", record) }
               }
-              className={`
-                group relative w-[104px] overflow-hidden rounded-xl
-                bg-bg-content shadow-md
-                transition-all duration-200 ease-out
-                hover:shadow-xl hover:-translate-y-1
-                active:scale-95 active:shadow-md
+              className={`group relative w-[104px] overflow-hidden rounded-xl bg-bg-content shadow-md transition-all duration-100 ease-out hover:shadow-xl hover:-translate-y-1 active:scale-95 active:shadow-md
                 ${sending ? 'pointer-events-none' : 'clickeable'}
                 ${isSending ? 'scale-[0.97]' : ''}
               `}
@@ -71,10 +61,7 @@ const dismiss = () => {
                     alt={label || 'Icono de imagen'}
                     width={104}
                     height={104}
-                    className={`
-                      h-full w-full object-cover transition-all duration-200 group-hover:scale-110
-                      ${isSending ? 'scale-105 brightness-90' : ''}
-                    `}
+                    className={` h-full w-full object-cover transition-all duration-100 group-hover:scale-110 ${isSending ? 'scale-105 brightness-90' : ''}`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -87,10 +74,8 @@ const dismiss = () => {
 
                 <div className={`
                   flex h-10 items-center justify-center px-1.5
-                  transition-all duration-200
-                  ${isSending
-                    ? 'bg-primary/10'
-                    : isProduct
+                  transition-all duration-100
+                  ${isSending ? 'bg-primary/10' : isProduct
                       ? 'bg-bg-subtle/80 group-hover:bg-bg-subtle'
                       : 'bg-accent/15 group-hover:bg-accent/25'
                   }
@@ -102,11 +87,7 @@ const dismiss = () => {
                       <span className="inline-block h-1 w-1 rounded-full bg-primary animate-bounce" style={{ animationDuration: '0.4s', animationDelay: '0.2s' }} />
                     </div>
                   ) : (
-                    <p className={`
-                      w-full text-center text-[11px] font-semibold uppercase leading-tight
-                      line-clamp-2
-                      ${isProduct ? 'text-text-base' : 'text-accent'}
-                    `}>
+                    <p className={`w-full text-center text-[11px] font-semibold uppercase leading-tight line-clamp-2 ${isProduct ? 'text-text-base' : 'text-accent'} `}>
                       {label}
                     </p>
                   )}

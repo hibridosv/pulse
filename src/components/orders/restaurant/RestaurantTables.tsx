@@ -41,7 +41,7 @@ export function RestaurantTables() {
             const isActive = record.id == activeZoneId;
             return (
               <button key={record.id}
-                className={` flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all duration-200
+                className={` flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all duration-100
                   ${isActive  ? 'bg-primary text-text-inverted shadow-sm' : 'text-text-muted hover:text-text-base hover:bg-bg-content' } `}
                 onClick={() => setSelectedElement('selectedTables', record.tables)} >
                 {record.name}
