@@ -42,7 +42,6 @@ export default function Page() {
   const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
   // console.log(hash);
 
-  console.log("orders", orders);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">

@@ -22,12 +22,11 @@ export function DeliveryContactSearch() {
 
   const handleSelect = () =>{
     const client = getSelectedElement('clientSelectedByDelivery');
-    setSelectedElement('deliverySelected', client);
+    setSelectedElement('clientOrder', client);
   }
 
-    const handleDelete = () =>{
-    const client = getSelectedElement('clientSelectedByDelivery');
-    clearSelectedElement('deliverySelected');
+  const handleDelete = () =>{
+    clearSelectedElement('clientOrder');
   }
 
 

@@ -21,9 +21,9 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
   const serviceType: number = getSelectedElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
   const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
-  const clientActive: number = getSelectedElement('clientActive');
-  const selectedTable: number = getSelectedElement('selectedTable');
-  const deliverySelected = getSelectedElement('deliverySelected'); // delivery o cliente en opcion 3
+  const clientActive: number = getSelectedElement('clientActive'); // Cliente activo para asignar producto ( numero )
+  const selectedTable: number = getSelectedElement('selectedTable'); // mesa seleccionada
+  const clientOrder = getSelectedElement('clientOrder'); // delivery o cliente en opcion 3
 
   const { loadOrder, loadOrders, setOrders, loadTables } = ordersRestaurantsStore();
   const { order } = ordersStore();
@@ -100,8 +100,8 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
             setSelectedElement('selectedTable', order?.attributes?.restaurant_table_id);
          }
 
-         if ((!deliverySelected && order?.delivery) || (deliverySelected && order?.delivery?.id != deliverySelected?.id)) {
-            setSelectedElement('deliverySelected', order?.delivery);
+         if ((!clientOrder && order?.client) || (clientOrder && order?.client?.id != clientOrder?.id)) {
+            setSelectedElement('clientOrder', order?.client);
          }
 
          // verifica si hay opciones activas para el producto
@@ -111,7 +111,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
                openModal('productOptions');
             }
       }
-  }, [initialLoad, order, openModal, serviceType, setSelectedElement, clientActive, selectedTable, deliverySelected])
+  }, [initialLoad, order, openModal, serviceType, setSelectedElement, selectedTable, clientOrder])
 
 
    useEffect(() => {

@@ -61,7 +61,7 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
       if(order?.invoiceproducts){
         // onClickOrder(OptionsClickOrder.save)
       }
-      // setDeliverySelected([]);
+      // setclientOrder([]);
     }
     setSelectedElement("serviceType", option);
   }

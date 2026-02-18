@@ -9,10 +9,10 @@ import { HiMapPin, HiPhone } from 'react-icons/hi2';
 export function DeliveryClient() {
   const { getSelectedElement } = useTempSelectedElementStore();
   const serviceType: number = getSelectedElement('serviceType');
-  const deliverySelected = getSelectedElement('deliverySelected');
+  const clientOrder = getSelectedElement('clientOrder');
   const { order } = ordersStore();
 
-  if ((serviceType != 3 || !deliverySelected)) return <></>;
+  if ((serviceType != 3 || !clientOrder)) return <></>;
 
   return (
     <div className="w-full px-3 py-1.5 animate-fade-in mb-2">
@@ -24,21 +24,21 @@ export function DeliveryClient() {
           </div>
         </div>
 
-        <span className="font-semibold text-sm text-text-base truncate">{deliverySelected?.name}</span>
+        <span className="font-semibold text-xs text-text-base" title={clientOrder?.name}>{clientOrder?.name}</span>
         <GoEye className="w-4 h-4 text-accent clickeable shrink-0 hover:scale-110 transition-transform" title="Ver información" />
 
         <div className="h-4 w-px bg-bg-subtle mx-1" />
 
-        <div className="flex items-center gap-1 text-xs text-text-muted min-w-0">
+        <div className="flex items-center gap-1 text-xs text-text-muted min-w-0" title={clientOrder?.address}>
           <HiMapPin className="w-3.5 h-3.5 text-accent/70 shrink-0" />
-          <span className="truncate">{deliverySelected?.address}</span>
+          <span className="">{clientOrder?.address}</span>
         </div>
 
         <div className="h-4 w-px bg-bg-subtle mx-1" />
 
         <div className="flex items-center gap-1 text-xs text-text-muted shrink-0">
           <HiPhone className="w-3.5 h-3.5 text-accent/70" />
-          <span>{deliverySelected?.phone}</span>
+          <span>{clientOrder?.phone}</span>
         </div>
       </div>
     </div>

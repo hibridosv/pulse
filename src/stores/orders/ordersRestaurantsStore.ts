@@ -20,7 +20,7 @@ interface ordersRestaurantsStoreI {
   setOrders: (orders: Order[]) => void;
   loadTables: (url: string, showToast?: boolean) => Promise<void>;
 }
-
+// clientSelectedByDelivery
 const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
 
   addOrder: async (url, data) => {
@@ -87,6 +87,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
             useTempSelectedElementStore.getState().setSelectedElement("paymentSuccess", response.data.data);
             ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
             useTempSelectedElementStore.getState().clearSelectedElement('selectedTable');
+            useTempSelectedElementStore.getState().clearSelectedElement('clientOrder');
+            useTempSelectedElementStore.getState().clearSelectedElement('clientSelectedByDelivery');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             useModalStore.getState().closeModal('paymentSuccess');
@@ -118,6 +120,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
       ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
       useToastMessageStore.getState().setMessage(response);
       useTempSelectedElementStore.getState().clearSelectedElement('selectedTable');
+      useTempSelectedElementStore.getState().clearSelectedElement('clientOrder');
+      useTempSelectedElementStore.getState().clearSelectedElement('clientSelectedByDelivery');
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       ordersStore.setState({ error: true });
@@ -150,6 +154,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
             ordersStore.setState({ order: null, error: false });
             // ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
             useToastMessageStore.getState().setMessage(response);
+            useTempSelectedElementStore.getState().clearSelectedElement('clientOrder');
+            useTempSelectedElementStore.getState().clearSelectedElement('clientSelectedByDelivery');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             ordersStore.setState({ error: true });
@@ -168,6 +174,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
         ordersStore.setState({ order: null, error: false });
         ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
         useTempSelectedElementStore.getState().clearSelectedElement('selectedTable');
+        useTempSelectedElementStore.getState().clearSelectedElement('clientOrder');
+        useTempSelectedElementStore.getState().clearSelectedElement('clientSelectedByDelivery');
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);

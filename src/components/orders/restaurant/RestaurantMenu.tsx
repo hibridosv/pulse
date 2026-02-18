@@ -14,11 +14,15 @@ export function RestaurantMenu() {
   const { getSelectedElement } = useTempSelectedElementStore();
   const serviceType: number = getSelectedElement('serviceType');
   const selectedTables = getSelectedElement('selectedTables');
-  const deliverySelected = getSelectedElement('deliverySelected');
+  const clientOrder = getSelectedElement('clientOrder');
   const selectedTable = getSelectedElement('selectedTable');
   const { order } = ordersStore();
 
-  if ((serviceType == 2 && selectedTables && !selectedTable) || (serviceType == 3 && !deliverySelected)) return <></>;
+  console.log("clientOrder", clientOrder)
+  console.log("order", order)
+
+
+  if ((serviceType == 2 && selectedTables && !selectedTable) || (serviceType == 3 && !clientOrder)) return <></>;
 
 
   const imageLoader = ({ src, width, quality }: any) => {

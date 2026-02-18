@@ -19,7 +19,7 @@ export function useOrderRestaurantFnLogic() {
   const clientActive = getSelectedElement('clientActive') ?? 1;
   const clientNumber = getSelectedElement('clientNumber') ?? null;
   const selectedTable = getSelectedElement('selectedTable') ?? null;
-  const deliverySelected = getSelectedElement('deliverySelected');
+  const clientOrder = getSelectedElement('clientOrder');
   const specialSales = modals.specialSales ?? false;
   const { setError } = useToastMessageStore();
   const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
@@ -37,11 +37,11 @@ const addNew = async (producId: any, quantity = 1) => {
       product_id: producId,
       request_type: 1, // 1: id, 2: cod
       delivery_type: deliveryType, // 1: Aqui, 2: Llevar, 3: delivery
-      delivery_client: deliverySelected ? deliverySelected?.id : null, // id del cliente delivery
+      delivery_client: clientOrder ? clientOrder?.id : null, // id del cliente delivery
       order_type: serviceType, // 1. rapida, 2. Mesas, 3. Delivery
       price_type: typeOfPrice, // tipo de precio del producto
       clients_quantity: 1, // Numero de clientes
-      client_active: clientActive, // Cliente activo para asignar producto
+      client_active: clientActive, // Cliente activo para asignar producto (numero de cliente)
       quantity,
       restaurant_table_id: selectedTable,
       special: specialSales,
