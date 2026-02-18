@@ -17,9 +17,9 @@ export default function Page() {
   const { history, handleGet,links, resendDocument } = useInvoicingElectronicLogic('electronic/documents', 'excel/electronic/');
   const { Additionalfields, loading: loadingFields} =  useInvoiceTypesElectronicLogic('invoice/type?filterWhere[type]=!9&filterWhere[is_electronic]==1&FilterWhereIn[status]==1,0');
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
-  const { getSelectedElement} = useTempStorage();
+  const { getElement} = useTempStorage();
   const { modals, closeModal } = useModalStore();
-  const documentSelected = getSelectedElement('documentSelected') ?? {};
+  const documentSelected = getElement('documentSelected') ?? {};
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
       if (values.invoiceId == 2) values.invoiceId = '01';

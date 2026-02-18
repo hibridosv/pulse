@@ -20,7 +20,7 @@ export interface InvoicingSearchTableI {
 export function InvoicingSearchTable(props: InvoicingSearchTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
-  const { setSelectedElement} = useTempStorage();
+  const { setElement} = useTempStorage();
   const { openModal } = useModalStore();
 
   if(isLoading) return <SkeletonTable rows={15} columns={8} />
@@ -35,7 +35,7 @@ export function InvoicingSearchTable(props: InvoicingSearchTableI) {
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { formatDateAsDMY(record?.charged_at) } | { formatHourAsHM(record?.charged_at)}
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={()=>{ setSelectedElement('documentSelected', record); openModal('documentDetail')  }}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={()=>{ setElement('documentSelected', record); openModal('documentDetail')  }}>
         { record?.invoice_assigned?.name ?? "--" }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >

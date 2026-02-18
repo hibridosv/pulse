@@ -21,7 +21,7 @@ export function QuotesTable(props: QuotesTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
   const { openModal } = useModalStore();
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
   const { deleteRegister } = useQuotesLogic();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
@@ -49,7 +49,7 @@ export function QuotesTable(props: QuotesTableI) {
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         <span className="flex justify-between">
-        <RiListRadio size={24} title="Ver detalles" className="text-cyan-600 clickeable" onClick={()=>{ openModal('quoteDetail'); setSelectedElement('quoteDetail', record)}} />
+        <RiListRadio size={24} title="Ver detalles" className="text-cyan-600 clickeable" onClick={()=>{ openModal('quoteDetail'); setElement('quoteDetail', record)}} />
         <DeleteButton id={record.id} 
                 disabled={false}
                 url="tools/quotes" 

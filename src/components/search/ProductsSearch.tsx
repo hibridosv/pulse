@@ -7,7 +7,7 @@ import useTempStorage from "@/stores/useTempStorage";
 import { LiComponent } from "../button/LiComponent";
 
 export function ProductsSearch() {
-    const { setSelectedElement} = useTempStorage();
+    const { setElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";
@@ -16,7 +16,7 @@ export function ProductsSearch() {
 
 
     const handleSelectProduct = (product: any) => {
-        setSelectedElement('productSearched', product);
+        setElement('productSearched', product);
         handleSearchTerm('');
     };
 

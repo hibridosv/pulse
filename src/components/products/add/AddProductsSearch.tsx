@@ -8,19 +8,19 @@ import useTempStorage from "@/stores/useTempStorage";
 
 export function AddProductsSearch() {
     const { product, loading } = productAddStore();
-    const { setSelectedElement, getSelectedElement} = useTempStorage();
+    const { setElement, getElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";
     const { products } = useProductStore();
     useProductsSearchLogic(currentPage, searchTerm, sortBy);
-    const elementSelected = getSelectedElement('product');
+    const elementSelected = getElement('product');
 
     if (!product || loading) return null;
     if (elementSelected) return null;
 
     const handleSelectProduct = (product: any) => {
-        setSelectedElement('product', product);
+        setElement('product', product);
         handleSearchTerm('');
     };
 

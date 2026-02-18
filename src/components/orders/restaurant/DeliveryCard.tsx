@@ -22,14 +22,14 @@ interface DeliveryCardProps {
 
 export function DeliveryCard({ record }: DeliveryCardProps) {
   const { select } = useOrderRestaurantFnLogic();
-  const { setSelectedElement } = useStateStore();
+  const { setElement } = useStateStore();
   const status = statusConfig[record.status] ?? statusConfig[0];
   const client = record?.client;
   const productCount = record?.invoiceproducts?.length ?? 0;
   const total = sumarTotales(record?.invoiceproducts);
 
   const handleSelect = () => {
-    setSelectedElement('selectedTable', null);
+    setElement('selectedTable', null);
     if (record.id) select(record.id);
   };
 

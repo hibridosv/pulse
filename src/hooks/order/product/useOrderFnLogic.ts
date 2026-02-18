@@ -9,10 +9,10 @@ import useTempStorage from '@/stores/useTempStorage';
 export function useOrderFnLogic() {
   const { saveOrder, loadOrder, payOrder, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
   const {  order } = ordersStore();
-  const { getSelectedElement } = useTempStorage();
+  const { getElement } = useTempStorage();
   const {modals} = useModalStore();
-  const paymentType = getSelectedElement('paymentType') ?? 1;
-  const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;
+  const paymentType = getElement('paymentType') ?? 1;
+  const typeOfPrice = getElement('typeOfPrice') ?? 1;
   const specialSales = modals.specialSales ?? false;
   const { setError } = useToastMessageStore();
 

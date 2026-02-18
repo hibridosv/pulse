@@ -22,11 +22,11 @@ export interface AddPayableModal {
 }
 
 export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
-        const { getSelectedElement } = useTempStorage();
+        const { getElement } = useTempStorage();
         const { cashdrawer, system, activeConfig } = useConfigStore();
 
         const { register, handleSubmit, reset, setValue, watch } = useForm();
-        const payableRecord = getSelectedElement('paymentPayableAdd');
+        const payableRecord = getElement('paymentPayableAdd');
         useCashAccountLogic();
         const { accounts } = cashAccountStore();
         const { savePayment, deletePayableAccount } = useAccountPayableLogic();

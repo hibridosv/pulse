@@ -13,7 +13,7 @@ export function useQuotesLogic(currentPage?: any, searchTerm?: any, initialLoad:
   const [searchTermNew, setSearchTermNew] = useState("");
   const router = useRouter();
   const { openLoading, closeLoading, loading: sending } = useStateStore()
-  const { clearSelectedElement } = useTempStorage();
+  const { clearElement } = useTempStorage();
   const { setError } = useToastMessageStore();
   const { closeModal } = useModalStore();
 
@@ -46,7 +46,7 @@ export function useQuotesLogic(currentPage?: any, searchTerm?: any, initialLoad:
           setError(error)
         } finally {
           closeLoading("sendQuote");
-          clearSelectedElement("quoteDetail");
+          clearElement("quoteDetail");
           closeModal("quoteDetail");
       }
   }

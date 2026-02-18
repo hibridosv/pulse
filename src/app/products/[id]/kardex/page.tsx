@@ -20,7 +20,7 @@ export default function Page({ params }: { params: { id: string } }) {
   useKardexLogic(id);
   const { modals, closeModal } = useModalStore();
   const router = useRouter();
-  const { getSelectedElement } = useTempStorage();
+  const { getElement } = useTempStorage();
 
 
   const handleFormSubmit = async (values: DateRangeValues) => { 
@@ -51,7 +51,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   
           </div>  
       </div> 
-      <KardexDetailsModal isShow={modals.kardexDetails} onClose={() => closeModal('kardexDetails')} record={getSelectedElement('kardexDetails')} />
+      <KardexDetailsModal isShow={modals.kardexDetails} onClose={() => closeModal('kardexDetails')} record={getElement('kardexDetails')} />
     </div>
   );
 }

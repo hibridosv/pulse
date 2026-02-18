@@ -20,7 +20,7 @@ export interface ClientsSearchI {
 export function ClientsSearch(props: ClientsSearchI) {
     const { param, placeholder = "Buscar Cliente", pagination = 10, tempSelectedName = "clientSelectedBySearch", onSelect } = props;
     const { contacts, loading } = useContactStore();
-    const { setSelectedElement} = useTempStorage();
+    const { setElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";
@@ -28,7 +28,7 @@ export function ClientsSearch(props: ClientsSearchI) {
 
 
     const handleSelectContact = (client: Contact) => {
-        setSelectedElement(tempSelectedName, client);
+        setElement(tempSelectedName, client);
         handleSearchTerm('');
         onSelect && onSelect(client);
     };

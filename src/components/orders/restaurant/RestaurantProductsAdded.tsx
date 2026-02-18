@@ -24,10 +24,10 @@ export function RestaurantProductsAdded() {
   const { cancel, del } = useOrderRestaurantFnLogic();
   const { data: session } = useSession();
   const  remoteUrl  = session?.url;
-  const { setSelectedElement, getSelectedElement } = useTempStorage();
+  const { setElement, getElement } = useTempStorage();
   const { openModal} = useModalStore();
   const { setError } = useToastMessageStore();
-  const serviceType: number = getSelectedElement('serviceType');
+  const serviceType: number = getElement('serviceType');
 
 
   if (serviceType == 3 && !order) return <></>;
@@ -56,7 +56,7 @@ export function RestaurantProductsAdded() {
             <td className={`px-2 py-1 whitespace-nowrap text-primary text-center ${hasOptions ? 'font-normal' : 'clickeable font-bold'}`}
              onClick={ hasOptions ? 
                 ()=> setError({ message: 'Opción no disponible en este producto'}) : 
-                ()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') 
+                ()=>{ setElement('productSelected', record); openModal('changeQuantity') 
              }}>
               { record.quantity }
             </td>
@@ -66,8 +66,8 @@ export function RestaurantProductsAdded() {
             <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums clickeable`} 
               onClick={()=> { 
                 openModal('discountModal'); 
-                setSelectedElement('productSelected', record); 
-                setSelectedElement('discountType', 1) 
+                setElement('productSelected', record); 
+                setElement('discountType', 1) 
               }}>
               { numberToMoney(record.unit_price, system) }
             </td>

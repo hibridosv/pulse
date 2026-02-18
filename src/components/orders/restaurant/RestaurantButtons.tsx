@@ -21,8 +21,8 @@ export function RestaurantButtons() {
   const { modals, closeModal, openModal} = useModalStore();
   const { system, cashdrawer, activeConfig } =useConfigStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
-  const { getSelectedElement} = useTempStorage();
-  const payMethod = getSelectedElement('payMethod') ?? 1;
+  const { getElement} = useTempStorage();
+  const payMethod = getElement('payMethod') ?? 1;
   const [input, setInput] = useState('');
   const [showInput, setShowInput] = useState<boolean>(false);
   const [keyboard, setKeyboard] = useState<any>(null);

@@ -19,8 +19,8 @@ export function DeliveryTypeModal(props: DeliveryTypeModalI) {
     const { update: updateRestaurant } = useOrderRestaurantFnLogic();
 
   const { closeModal} = useModalStore();
-  const { setSelectedElement, getSelectedElement} = useTempStorage();
-  const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
+  const { setElement, getElement} = useTempStorage();
+  const deliveryType: number = getElement('deliveryType'); // aqui, llevar, delivery
 
   const handleUpdate = async(type: any) => {
         let values: UpdateServiceInterface = {
@@ -29,7 +29,7 @@ export function DeliveryTypeModal(props: DeliveryTypeModalI) {
         }
           await updateRestaurant(order.id, values);
         if (!error) {
-          setSelectedElement('deliveryType', type);
+          setElement('deliveryType', type);
           closeModal('deliveryType');
         }
 

@@ -14,8 +14,8 @@ export function Buttons(props: ButtonsI) {
   const { order } = props
   const { activeConfig, system } = useConfigStore();
   const { openModal} = useModalStore();
-  const { setSelectedElement, getSelectedElement } = useTempStorage();
-  const serviceType: number = getSelectedElement('serviceType'); // aqui, mesas, delivery
+  const { setElement, getElement } = useTempStorage();
+  const serviceType: number = getElement('serviceType'); // aqui, mesas, delivery
 
   const isDiscount = activeConfig && activeConfig.includes("sales-discount");
   const isOtherSeller = activeConfig && activeConfig.includes("sales-other-seller");
@@ -40,16 +40,16 @@ export function Buttons(props: ButtonsI) {
         <div className="w-8/10">
 
             { isDiscount && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('discountModal'); setSelectedElement('discountType', 2) }}>  Agregar Descuento</div>}
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('discountModal'); setElement('discountType', 2) }}>  Agregar Descuento</div>}
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Asignar Propina</div>
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('searchContact'); setSelectedElement('contactSearch', "customerSearch");}}> Asignar Cliente</div>
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('searchContact'); setElement('contactSearch', "customerSearch");}}> Asignar Cliente</div>
 
             { isOtherSeller && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setUser'); setSelectedElement('setUser', "setSeller");}}>Asignar Vendedor</div>}
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setUser'); setElement('setUser', "setSeller");}}>Asignar Vendedor</div>}
             { isReferred && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('searchContact'); setSelectedElement('contactSearch', "referralSearch");}}> Asignar Referido</div>}
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('searchContact'); setElement('contactSearch', "referralSearch");}}> Asignar Referido</div>}
             { isDelivery && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setUser'); setSelectedElement('setUser', "setDriver");}}> Asignar Repartidor </div>}
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setUser'); setElement('setUser', "setDriver");}}> Asignar Repartidor </div>}
             { isOtherSales && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('otherSales') }}> Otras Ventas</div>}
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false);  openModal('invoiceType') }}> Tipo de Documento </div>

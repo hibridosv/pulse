@@ -28,8 +28,8 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const { products, onSubmit, productsLinked, loading: isSending } = useProductLinkedLogic(currentPage, searchTerm, sortBy, product, isShow);
     const { loading } = useStateStore();
     const isLoading = loading["productSearch"] ? true : false;
-    const { setSelectedElement, getSelectedElement, clearSelectedElement } = useTempStorage();
-    const elementSelected = getSelectedElement("product");
+    const { setElement, getElement, clearElement } = useTempStorage();
+    const elementSelected = getElement("product");
 
     if (!isShow || !product) return null;
 
@@ -64,7 +64,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
     const ProductList = products.data && products.data.map((productMap: Product) => {
         if (product.id === productMap.id) return;
         return (
-            <LiComponent key={productMap.id} text={`${productMap.cod} - ${productMap.description}`}  onClick={() => setSelectedElement("product", productMap)} />
+            <LiComponent key={productMap.id} text={`${productMap.cod} - ${productMap.description}`}  onClick={() => setElement("product", productMap)} />
         );
     });
 
@@ -137,7 +137,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
                             />
                         </div>
                         <div className="flex justify-end items-center gap-3 border-t border-bg-subtle pt-4 mt-4">
-                            <Button onClick={() => clearSelectedElement()} text="Cancelar" preset={Preset.cancel} />
+                            <Button onClick={() => clearElement()} text="Cancelar" preset={Preset.cancel} />
                             <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
                         </div>
                     </form>

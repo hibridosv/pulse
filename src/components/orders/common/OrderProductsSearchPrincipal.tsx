@@ -8,8 +8,8 @@ import { OrderProductsSearchByCode } from './OrderProductsSearchByCode';
 
 
 export function OrderProductsSearchPrincipal() {
-    const { getSelectedElement, setSelectedElement } = useTempStorage();
-    const typeOfSearch = getSelectedElement('typeOfSearch');
+    const { getElement, setElement } = useTempStorage();
+    const typeOfSearch = getElement('typeOfSearch');
     const { sending } = ordersStore();
 
     return (
@@ -18,7 +18,7 @@ export function OrderProductsSearchPrincipal() {
                 <OrderProductsSearch />
                 <OrderProductsSearchByCode />
             </div>
-            <div className={`mx-2 grid content-center clickeable  ${sending && ' animate-pulse'}`} onClick={()=>{ setSelectedElement('typeOfSearch', !typeOfSearch)}}>
+            <div className={`mx-2 grid content-center clickeable  ${sending && ' animate-pulse'}`} onClick={()=>{ setElement('typeOfSearch', !typeOfSearch)}}>
                 {  typeOfSearch ? NameIcon : SearchIcon  }
             </div>
         </div>

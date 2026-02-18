@@ -8,10 +8,10 @@ import { usePutRequest } from '../request/usePutRequest';
 
 export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createPayment, error, checkIn } = accountReceivableStore();
-  const { getSelectedElement } = useTempStorage();
-  const selectedOption = getSelectedElement("optionSelected");
-  const contactSelected = getSelectedElement('clientSelectedBySearch');
-  const receivableRecord = getSelectedElement('paymentReceivableAdd');
+  const { getElement } = useTempStorage();
+  const selectedOption = getElement("optionSelected");
+  const contactSelected = getElement('clientSelectedBySearch');
+  const receivableRecord = getElement('paymentReceivableAdd');
   const { responseData: postData, loading: postLoading, postRequest } = usePostRequest() as { responseData: any; loading: boolean; postRequest: any };
   const { responseData: putData, loading: putLoading, putRequest } = usePutRequest() as { responseData: any; loading: boolean; putRequest: any };
 

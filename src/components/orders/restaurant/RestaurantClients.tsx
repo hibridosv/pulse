@@ -5,10 +5,10 @@ import useTempStorage from '@/stores/useTempStorage';
 import { HiCheck, HiUser } from 'react-icons/hi2';
 
 export function RestaurantClients() {
-  const { getSelectedElement } = useTempStorage();
-  const serviceType: number = getSelectedElement('serviceType');
-  const clientActive: number = getSelectedElement('clientActive');
-  const selectedTable = getSelectedElement('selectedTable');
+  const { getElement } = useTempStorage();
+  const serviceType: number = getElement('serviceType');
+  const clientActive: number = getElement('clientActive');
+  const selectedTable = getElement('selectedTable');
   const { order } = ordersStore();
 
   if ((serviceType != 2 || !selectedTable)) return <></>;

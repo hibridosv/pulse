@@ -32,8 +32,8 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
   const isBrand = activeConfig?.includes("product-locations");
   const { deleteProduct, deleting } = useProductStore();
   const { getRequest, loading: loadingRequest } = useGetRequest();
-  const { setSelectedElement, getSelectedElement } = useTempStorage();
-  const elementSelected = getSelectedElement('productDetails');
+  const { setElement, getElement } = useTempStorage();
+  const elementSelected = getElement('productDetails');
 
 
 
@@ -47,16 +47,16 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
     <tr 
       key={product.id} 
       className={`whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
-      <td className="px-2 py-2 clickeable font-medium text-primary hover:underline" onClick={() => { setSelectedElement('productDetails', product); openModal('productDetails')  }}>
+      <td className="px-2 py-2 clickeable font-medium text-primary hover:underline" onClick={() => { setElement('productDetails', product); openModal('productDetails')  }}>
         {product.cod}
       </td>
-      <td className="px-2 py-2 clickeable" onClick={() => { setSelectedElement('productDetails', product); openModal('productDetails')  }}>
+      <td className="px-2 py-2 clickeable" onClick={() => { setElement('productDetails', product); openModal('productDetails')  }}>
         <div className="flex items-center space-x-2">
           {productTypeIcon(product.product_type)}
           <span>{product.description}</span>
         </div>
       </td>
-      <td className="px-2 py-2 text-right font-medium" onClick={() => { setSelectedElement('productDetails', product); openModal('productDetails')  }}>
+      <td className="px-2 py-2 text-right font-medium" onClick={() => { setElement('productDetails', product); openModal('productDetails')  }}>
         {product.prices[0] ? numberToMoney(product.prices[0].price, system) : numberToMoney(0, system)}
       </td>
       <td className={`px-2 py-2 text-center font-bold ${product.quantity <= product.minimum_stock ? 'text-danger' : ''}`}>
@@ -70,12 +70,12 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
       <td className="px-2 py-2 text-center text-text-muted">{product.minimum_stock}</td>
       <td className="px-2 py-2 text-center">
         { deleting || loadingRequest ? <BiLoader className="animate-spin" /> : <Dropdown label={<FiSettings size={18} /> }>
-          <DropdownItem onClick={() => { setSelectedElement('productDetails', product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
+          <DropdownItem onClick={() => { setElement('productDetails', product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
           <DropdownItem onClick={() => { getRequest(`transactions/products/prices/${product.cod}`); }}>Actualizar Precios</DropdownItem>
           <DropdownItem as={`/products/${product.id}/edit`}>Editar</DropdownItem>
           <DropdownItem as={`/products/${product.id}/kardex`}>Kardex</DropdownItem>
           <DropdownDivider />
-          <DropdownItem onClick={() => { setSelectedElement('productDetails', product); openModal('deleteProduct'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
+          <DropdownItem onClick={() => { setElement('productDetails', product); openModal('deleteProduct'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
         </Dropdown> }
       </td>
     </tr>

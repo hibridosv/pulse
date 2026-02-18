@@ -18,11 +18,11 @@ export function InvoicePaymentMethodModal(props: InvoicePaymentMethodModalI) {
   
   const { closeModal} = useModalStore();
   const { payMethods } = useConfigStore();
-  const { setSelectedElement, getSelectedElement} = useTempStorage();
-  const payMethod = getSelectedElement('payMethod') ?? 1;
+  const { setElement, getElement} = useTempStorage();
+  const payMethod = getElement('payMethod') ?? 1;
   
   const handleUpdate = (type: any) => {
-    setSelectedElement('payMethod', type);
+    setElement('payMethod', type);
     closeModal('payMethod');
   }
 

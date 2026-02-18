@@ -45,7 +45,7 @@ const useContactStore = create<ContactStoreState>((set) => ({
             set({ contact: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
             useModalStore.getState().closeModal('contactAdd');
-            useTempStorage.getState().setSelectedElement("contactDetails", response.data.data);
+            useTempStorage.getState().setElement("contactDetails", response.data.data);
             useModalStore.getState().openModal('contactDetails');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -62,7 +62,7 @@ const useContactStore = create<ContactStoreState>((set) => ({
             set({ contact: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
             useModalStore.getState().closeModal('contactAdd');
-            useTempStorage.getState().setSelectedElement("contactDetails", response.data.data);
+            useTempStorage.getState().setElement("contactDetails", response.data.data);
             useModalStore.getState().openModal('contactDetails');
         } catch (error) {
             useToastMessageStore.getState().setError(error);

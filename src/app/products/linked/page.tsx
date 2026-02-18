@@ -23,7 +23,7 @@ export default function Page() {
   const { products, loading } = useProductStore();
   useLinkedProductsLogic(currentPage, searchTerm, sortBy);
   const { modals, closeModal } = useModalStore();
-  const { getSelectedElement } = useTempStorage();
+  const { getElement } = useTempStorage();
 
 
 
@@ -43,7 +43,7 @@ export default function Page() {
           <ShowLowStockStatistics />
         </div>
     </div> 
-    <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getSelectedElement("productDetails")} /> 
+    <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement("productDetails")} /> 
     <ToasterMessage />
 </div>
   );

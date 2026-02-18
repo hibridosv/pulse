@@ -20,9 +20,9 @@ export function OtherSalesModal(props: OtherSalesModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { updateOrder } = ordersProductsStore();
-  const { getSelectedElement, clearSelectedElement } = useTempStorage();
-  const option = getSelectedElement('optionSelected');
-  const optionType = getSelectedElement('optionSelectedType');
+  const { getElement, clearElement } = useTempStorage();
+  const option = getElement('optionSelected');
+  const optionType = getElement('optionSelectedType');
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
   let optionsRadioButton: Option[] = [
@@ -58,16 +58,16 @@ export function OtherSalesModal(props: OtherSalesModalI) {
           };
       await updateOrder(`orders/others`, values);
       if (!error) {
-        clearSelectedElement('optionSelected');
-        clearSelectedElement('optionSelectedType');
+        clearElement('optionSelected');
+        clearElement('optionSelectedType');
         onClose();
       }
  }
 
 
   const handleClose = ()=>{
-        clearSelectedElement('optionSelected');
-        clearSelectedElement('optionSelectedType');
+        clearElement('optionSelected');
+        clearElement('optionSelectedType');
         onClose();
   }
 

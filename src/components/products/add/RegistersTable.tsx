@@ -11,7 +11,7 @@ import useTempStorage from "@/stores/useTempStorage";
 export function RegistersTable() {
     const { loading, product, products } = productAddStore();
     const { openModal } = useModalStore();
-    const { setSelectedElement } = useTempStorage();
+    const { setElement } = useTempStorage();
 
     if (loading) return <SkeletonTable rows={4} columns={5} />;
     if (product) return null;
@@ -23,7 +23,7 @@ export function RegistersTable() {
             <tr 
             title={ record?.status === 2 ? `Eliminado por ${record?.deleted_by?.name}` : ``}
             key={record.id} 
-            onClick={() => { openModal("viewDetails"); setSelectedElement("viewDetails", record);  }}
+            onClick={() => { openModal("viewDetails"); setElement("viewDetails", record);  }}
             className={`clickeable whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 2 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
             <td className="px-3 py-2 font-medium text-primary hover:underline">
                 <div className="flex justify-between">

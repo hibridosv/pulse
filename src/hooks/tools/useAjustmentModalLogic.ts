@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 
 export function useAjustmentModalLogic(currentPage?: any, isShow: boolean = false) {
     const { loadAdjustment } = adjustStore()
-    const { getSelectedElement } = useTempStorage();
-    const record = getSelectedElement('adjustmentDetails') || null;
+    const { getElement } = useTempStorage();
+    const record = getElement('adjustmentDetails') || null;
 
 
   useEffect(() => {

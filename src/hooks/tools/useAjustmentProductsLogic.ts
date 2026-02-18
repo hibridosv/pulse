@@ -8,8 +8,8 @@ export function useAjustmentProductsLogic(currentPage?: any, searchTerm?: any, i
   const { loadDetails, sendAdjustment: send, error } = adjustStore()
   const [searchTermNew, setSearchTermNew] = useState("");
   const { closeModal } = useModalStore();
-  const { getSelectedElement } = useTempStorage();
-  const record = getSelectedElement('setAdjustment') || null;
+  const { getElement } = useTempStorage();
+  const record = getElement('setAdjustment') || null;
 
 
   useEffect(() => {

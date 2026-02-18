@@ -15,13 +15,13 @@ export function OrderProductsSearch() {
     const { products } = useProductStore();
     const [searchKey, setSearchKey] = useState(Date.now()); // 1. Añadimos un estado para la key
     useOrderProductsSearchLogic(currentPage, searchTerm, sortBy);
-    const { getSelectedElement, setSelectedElement } = useTempStorage();
-    const typeOfSearch = getSelectedElement('typeOfSearch');
+    const { getElement, setElement } = useTempStorage();
+    const typeOfSearch = getElement('typeOfSearch');
     const { addNew } = useOrderFnLogic();
 
 
     const handleSelectProduct = (product: any) => {
-      setSelectedElement('productSearched', product);
+      setElement('productSearched', product);
       addNew(product);
       handleSearchTerm('');
       setSearchKey(Date.now()); // 2. Cambiamos la key para forzar el reseteo

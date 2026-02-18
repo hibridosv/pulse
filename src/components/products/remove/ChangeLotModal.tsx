@@ -21,9 +21,9 @@ export interface ChangeLotModalProps {
 export function ChangeLotModal(props: ChangeLotModalProps) {
     const { onClose, isShow, product } = props;
     const { lots } = useLotAssignLogic(product, isShow);
-    const { getSelectedElement, setSelectedElement, clearSelectedElement } = useTempStorage();
+    const { getElement, setElement, clearElement } = useTempStorage();
     const { loading } = useStateStore();
-    const lotSelected = getSelectedElement("lotSelected");
+    const lotSelected = getElement("lotSelected");
     const isSending = loading["lotAssign"] ? true : false;
 
 
@@ -50,12 +50,12 @@ export function ChangeLotModal(props: ChangeLotModalProps) {
                 {
                 lotSelected?.id === record.id ? 
                     <RiCloseCircleFill size={20} className="text-red-600 clickeable" 
-                        onClick={()=> clearSelectedElement("lotSelected") } /> :
+                        onClick={()=> clearElement("lotSelected") } /> :
                 record.actual_stock < lotSelected?.quantity ? 
                     <FaRegSave size={20} className="text-gray-700 clickeable" 
                         onClick={()=> useToastMessageStore.getState().setError({ message : "No existen cantidades suficientes en este lote"})} /> : 
                     <FaRegSave size={20} className="text-lime-700 clickeable" 
-                        onClick={()=> setSelectedElement("lotSelected", record)} />
+                        onClick={()=> setElement("lotSelected", record)} />
                 }
             </span>
         </td>

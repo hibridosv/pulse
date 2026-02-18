@@ -12,18 +12,18 @@ export function useOrderRestaurantFnLogic() {
   const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs } = ordersRestaurantsStore();
   const { order, error, lastResponse } = ordersStore();
   const { activeConfig, system } = useConfigStore();
-  const { getSelectedElement } = useTempStorage();
+  const { getElement } = useTempStorage();
   const {modals} = useModalStore();
-  const payMethod = getSelectedElement('payMethod') ?? 1;
-  const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;
-  const clientActive = getSelectedElement('clientActive') ?? 1;
-  const clientNumber = getSelectedElement('clientNumber') ?? null;
-  const selectedTable = getSelectedElement('selectedTable') ?? null;
-  const clientOrder = getSelectedElement('clientOrder');
+  const payMethod = getElement('payMethod') ?? 1;
+  const typeOfPrice = getElement('typeOfPrice') ?? 1;
+  const clientActive = getElement('clientActive') ?? 1;
+  const clientNumber = getElement('clientNumber') ?? null;
+  const selectedTable = getElement('selectedTable') ?? null;
+  const clientOrder = getElement('clientOrder');
   const specialSales = modals.specialSales ?? false;
   const { setError } = useToastMessageStore();
-  const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
-  const serviceType: number = getSelectedElement('serviceType'); // aqui, mesas, delivery
+  const deliveryType: number = getElement('deliveryType'); // aqui, llevar, delivery
+  const serviceType: number = getElement('serviceType'); // aqui, mesas, delivery
   const { setMessage} = useToastMessageStore();
 
 

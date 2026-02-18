@@ -13,12 +13,12 @@ import { SkeletonDrawers } from "../skeleton/SkeletonDrawers";
 export function Drawers() {
   const { cashDrawers, loading: cashDrawerLoading } = useCashDrawerStore();
   const {  openModal } = useModalStore();
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
   const { cashdrawer: cashDrawerActive, user } = useConfigStore();
 
   const handleSelect = (select: CashDrawer) => {
     if ((cashDrawerActive && cashDrawerActive?.id == select.id) || (!cashDrawerActive && select.status == 1)) {
-      setSelectedElement("selectDrawer", select);
+      setElement("selectDrawer", select);
       openModal('cashDrawerOpen');
     }
   }

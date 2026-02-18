@@ -29,8 +29,8 @@ export default function Page() {
   const { modals, closeModal } = useModalStore();
   const [showAll, setShowAll] = useState(true);
   useCutsLogic(`cuts?included=employee,cashdrawer${!showAll && `&filterWhere[employee_id]==${user?.id}`}&sort=-updated_at&perPage=10${currentPage}`, currentPage, showAll);
-  const { getSelectedElement } = useTempStorage();
-  const selectDrawer = getSelectedElement("selectDrawer");
+  const { getElement } = useTempStorage();
+  const selectDrawer = getElement("selectDrawer");
 
   if (status === "loading") {
     return <LoadingPage />;

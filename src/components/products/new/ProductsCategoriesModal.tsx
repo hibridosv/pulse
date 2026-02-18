@@ -19,12 +19,12 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
     const isSending = loading["categoryForm"] ? true : false;
     const { onSubmit } = useProductCategoriesLogic(isShow, setFocus, resetField);
     const { categories } = useCategoriesStore();
-    const { setSelectedElement, getSelectedElement } = useTempStorage();
+    const { setElement, getElement } = useTempStorage();
 
 
     if (!isShow) return null;
 
-    const selectedType = getSelectedElement("option") ?? 1; // Default to 1
+    const selectedType = getElement("option") ?? 1; // Default to 1
 
     return (
         <Modal show={isShow} onClose={onClose} size="md" headerTitle="Agregar Categoría">
@@ -34,14 +34,14 @@ export function ProductsCategoriesModal(props: ProductsCategoriesModalProps) {
                     <div className="flex items-center p-1 space-x-1 bg-bg-subtle rounded-lg">
                         <button
                             type="button"
-                            onClick={() => setSelectedElement("option",1)}
+                            onClick={() => setElement("option",1)}
                             className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${selectedType === 1 ? 'bg-primary text-text-inverted shadow-sm' : 'text-text-base hover:bg-bg-content'}`}
                         >
                             Categoría
                         </button>
                         <button
                             type="button"
-                            onClick={() => setSelectedElement("option",2)}
+                            onClick={() => setElement("option",2)}
                             className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${selectedType === 2 ? 'bg-primary text-text-inverted shadow-sm' : 'text-text-base hover:bg-bg-content'}`}
                         >
                             Subcategoría

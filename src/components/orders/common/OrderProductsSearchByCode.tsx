@@ -15,8 +15,8 @@ export function OrderProductsSearchByCode() {
     const isLoading = false;
     const { register, handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm();
     const { addNew } = useOrderFnLogic();
-    const { getSelectedElement } = useTempStorage();
-    const typeOfSearch = getSelectedElement('typeOfSearch');
+    const { getElement } = useTempStorage();
+    const typeOfSearch = getElement('typeOfSearch');
 
 
     useEffect(() => {

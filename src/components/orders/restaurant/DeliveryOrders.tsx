@@ -6,8 +6,8 @@ import { DeliveryCard } from './DeliveryCard';
 
 export function DeliveryOrders() {
   const { orders, loading, order } = ordersStore();
-  const { getSelectedElement } = useStateStore();
-  const serviceType: number = getSelectedElement('serviceType');
+  const { getElement } = useStateStore();
+  const serviceType: number = getElement('serviceType');
 
   if (serviceType != 3 || order || loading) return <></>;
   

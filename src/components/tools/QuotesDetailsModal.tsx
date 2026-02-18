@@ -17,9 +17,9 @@ export interface QuotesDetailsModalI {
 }
 
 export function QuotesDetailsModal({ onClose, isShow }: QuotesDetailsModalI) {
-        const { getSelectedElement } = useTempStorage();
+        const { getElement } = useTempStorage();
         const { cashdrawer, system, activeConfig } = useConfigStore();
-        const quote = getSelectedElement('quoteDetail') || {};
+        const quote = getElement('quoteDetail') || {};
         const { chargeRegisters, sending } = useQuotesLogic();
         const isSending = sending["sendQuote"] || false;
         const { checks, loading } = useQuoteCheckLogic(`tools/quotes/${quote?.id}/check`, isShow);

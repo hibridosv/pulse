@@ -16,15 +16,15 @@ export interface PayedModal {
 export function PayedModal(props: PayedModal) {
   const { onClose, isShow } = props;
   const { system, activeConfig } = useConfigStore();
-  const { getSelectedElement, clearSelectedElement  } = useTempStorage();
-  const orderPayed = getSelectedElement('paymentSuccess') ?? null;
-  const paymentType = getSelectedElement('paymentType') ?? 1;
+  const { getElement, clearElement  } = useTempStorage();
+  const orderPayed = getElement('paymentSuccess') ?? null;
+  const paymentType = getElement('paymentType') ?? 1;
   const { sending } = ordersStore();
 
   if (!isShow || !orderPayed) return null;
 
   const handleClose = () => {
-    clearSelectedElement('paymentSuccess');
+    clearElement('paymentSuccess');
     onClose();
   }
 

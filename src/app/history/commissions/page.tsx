@@ -13,8 +13,8 @@ import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-  const { getSelectedElement } = useTempStorage();
-  const elementSelected = getSelectedElement('clientSelectedBySearch');
+  const { getElement } = useTempStorage();
+  const elementSelected = getElement('clientSelectedBySearch');
   const { history, handleGet, loading, links } = useHistorySalesLogic('histories/commissions', 'pdf/commissions/', false);
   const isLoading = loading.history ?? false; 
 

@@ -13,11 +13,11 @@ type Inputs = {
 export function RemoveProductsForm() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
     const { product, loading, createProduct } = productRemovedStore();
-    const { getSelectedElement, clearSelectedElement} = useTempStorage();
+    const { getElement, clearElement} = useTempStorage();
     const { openModal } = useModalStore();
-    const { setSelectedElement } = useTempStorage();
-    const lotSelected = getSelectedElement("lotSelected");
-    const elementSelected = getSelectedElement('product');
+    const { setElement } = useTempStorage();
+    const lotSelected = getElement("lotSelected");
+    const elementSelected = getElement('product');
 
     if (!product || !elementSelected) return null;
 
@@ -36,7 +36,7 @@ export function RemoveProductsForm() {
         }
         createProduct(newData);
         reset();
-        clearSelectedElement();
+        clearElement();
     }
 
   return (
@@ -56,13 +56,13 @@ export function RemoveProductsForm() {
               </label>
               <div className="flex items-center gap-2">
                 <input type="number" {...register("quantity", { required: "La cantidad es obligatorio.", valueAsNumber: true, max: elementSelected?.quantity })} className="input" step="any" min={0} />
-                <MdBallot size={30} color={lotSelected ? "red" : "gray"} className="text-text-muted clickeable" onClick={()=>{ openModal('ChangeLot'); setSelectedElement('product', elementSelected) }} />
+                <MdBallot size={30} color={lotSelected ? "red" : "gray"} className="text-text-muted clickeable" onClick={()=>{ openModal('ChangeLot'); setElement('product', elementSelected) }} />
               </div>
               {errors.quantity && <p className="text-danger text-xs mt-1">{errors.quantity.message}</p>}
             </div>
 
             <div className="flex justify-end gap-4">
-              <Button text="Cancelar" disabled={loading} preset={Preset.cancel} onClick={()=>clearSelectedElement()} />
+              <Button text="Cancelar" disabled={loading} preset={Preset.cancel} onClick={()=>clearElement()} />
               <Button type="submit" disabled={loading} preset={loading ? Preset.saving : Preset.save} />
             </div>
           </form>

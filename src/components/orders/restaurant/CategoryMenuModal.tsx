@@ -21,8 +21,8 @@ export function CategoryMenuModal(props: CategoryMenuModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { loading, restaurantMenu: images } =  restauranMenuStore();
-  const { getSelectedElement } = useTempStorage();
-  const category = getSelectedElement('categoryMenu');
+  const { getElement } = useTempStorage();
+  const category = getElement('categoryMenu');
   const filter = category ? category.category_id : null;
 
 

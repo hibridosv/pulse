@@ -14,11 +14,11 @@ export function deliveryTypeRestaurant(type: number) {
 
 export function OptionsSelect() {
   const { order } = ordersStore();
-  const { getSelectedElement} = useTempStorage();
-  const payMethod = getSelectedElement('payMethod') ?? 1;
+  const { getElement} = useTempStorage();
+  const payMethod = getElement('payMethod') ?? 1;
   const { modals, closeModal, openModal} = useModalStore();
-  const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
-  const deliveryType = getSelectedElement('deliveryType');
+  const invoiceTypeSelected = getElement('invoiceTypeSelected');
+  const deliveryType = getElement('deliveryType');
 
 
   if (!order?.invoiceproducts) return <></>

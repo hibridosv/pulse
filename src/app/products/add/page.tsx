@@ -16,7 +16,7 @@ import useTempStorage from "@/stores/useTempStorage";
 export default function Page() {
     const { saving, product, savePrincipal, deleting, loading } = productAddStore();
     const { modals, closeModal } = useModalStore();
-    const { getSelectedElement } = useTempStorage();
+    const { getElement } = useTempStorage();
 
 
   return (
@@ -40,7 +40,7 @@ export default function Page() {
             )}
             </div>
       </div> 
-      <AddDetailsModal isShow={modals.viewDetails} onClose={()=>closeModal("viewDetails")} product={getSelectedElement("viewDetails")} />
+      <AddDetailsModal isShow={modals.viewDetails} onClose={()=>closeModal("viewDetails")} product={getElement("viewDetails")} />
     </div>
   );
 }

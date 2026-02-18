@@ -58,7 +58,7 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
         try {
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
-            useTempStorage.getState().setSelectedElement("paymentReceivableAdd", response.data.data);
+            useTempStorage.getState().setElement("paymentReceivableAdd", response.data.data);
             set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -74,7 +74,7 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
     try {
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
-      useTempStorage.getState().setSelectedElement("paymentReceivableAdd", response.data.data);
+      useTempStorage.getState().setElement("paymentReceivableAdd", response.data.data);
       set({ error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -89,7 +89,7 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
         try {
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
-            useTempStorage.getState().setSelectedElement("paymentReceivableAdd", response.data.data);
+            useTempStorage.getState().setElement("paymentReceivableAdd", response.data.data);
             set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);

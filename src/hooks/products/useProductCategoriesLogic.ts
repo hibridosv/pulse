@@ -10,18 +10,18 @@ import { useEffect } from 'react';
 export function useProductCategoriesLogic(isShow: boolean, setFocus: any, resetField: any) {
     const { loadCategories, categories } = useCategoriesStore();
     const { openLoading, closeLoading } = useStateStore();
-    const { setSelectedElement, getSelectedElement} = useTempStorage();
-    const elementSelected = getSelectedElement("option");
+    const { setElement, getElement} = useTempStorage();
+    const elementSelected = getElement("option");
 
 
     useEffect(() => {
       setFocus('name', {shouldSelect: true})
       if (isShow) {
         if (!elementSelected) {
-            setSelectedElement("option", 1);
+            setElement("option", 1);
         } 
      }
-    }, [setFocus, isShow, elementSelected, setSelectedElement])
+    }, [setFocus, isShow, elementSelected, setElement])
 
     useEffect(() => {
         if (!categories && isShow) {

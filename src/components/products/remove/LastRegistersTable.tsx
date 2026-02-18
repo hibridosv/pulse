@@ -9,7 +9,7 @@ import { typeFailure } from "../utils";
 export function LastRegistersTable() {
     const {product, loading, products} = productRemovedStore();
     const { openModal } = useModalStore();
-    const { setSelectedElement } = useTempStorage();
+    const { setElement } = useTempStorage();
 
     if (loading) return <SkeletonTable columns={5} rows={4} />;
     if (product && !loading) return null;
@@ -18,7 +18,7 @@ export function LastRegistersTable() {
         <tr 
           key={product.id} 
           className={`clickeable whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}
-          onClick={() => { openModal("viewDetails"); setSelectedElement("viewDetails", product);  }}
+          onClick={() => { openModal("viewDetails"); setElement("viewDetails", product);  }}
           >
           <td className="px-3 py-2 font-medium text-primary hover:underline">
             { formatDateAsDMY(product?.created_at) } { formatHourAsHM(product?.created_at) }

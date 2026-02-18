@@ -18,17 +18,17 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
   const { activeConfig, permission, configurations } = useConfigStore();
   const { sending } = ordersStore();
   const { setError } =  useToastMessageStore();
-  const { setSelectedElement, getSelectedElement, clearSelectedElement } = useStateStore();
+  const { setElement, getElement, clearElement } = useStateStore();
   const isDelivery = activeConfig && activeConfig.includes("restaurant-sales-delivery");
   const isQuick = activeConfig && activeConfig.includes("restaurant-sales-quick");
   const isHere = activeConfig && activeConfig.includes("restaurant-sales-here");
   const permissionDelivery = permissionExists(permission, "restaurant-sales-delivery");
   const permissionQuick = permissionExists(permission, "restaurant-sales-quick");
   const permissionHere = permissionExists(permission, "restaurant-sales-here");
-  const serviceType: number = getSelectedElement('serviceType');
+  const serviceType: number = getElement('serviceType');
   const { saveAndOut } = useOrderRestaurantFnLogic();
-  const selectedTable = getSelectedElement('selectedTable');
-  const selectedTables = getSelectedElement('selectedTables');
+  const selectedTable = getElement('selectedTable');
+  const selectedTables = getElement('selectedTables');
 
 
   const countFeatures = () => {
@@ -55,16 +55,16 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
       if(order?.invoiceproducts){
         await saveAndOut(order.id)
       }
-      clearSelectedElement('selectedTable');
+      clearElement('selectedTable');
     }
     if (serviceType == 3) {
       if(order?.invoiceproducts){
         await saveAndOut(order.id)
       }
-      clearSelectedElement('clientOrder');
-      clearSelectedElement('clientSelectedByDelivery');
+      clearElement('clientOrder');
+      clearElement('clientSelectedByDelivery');
     }
-    setSelectedElement("serviceType", option);
+    setElement("serviceType", option);
   }
 
 

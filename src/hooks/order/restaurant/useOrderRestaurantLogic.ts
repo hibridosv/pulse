@@ -17,13 +17,13 @@ import { useEffect, useRef } from 'react';
 
 export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
-  const { getSelectedElement, setSelectedElement } = useTempStorage();
-  const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
-  const serviceType: number = getSelectedElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
-  const deliveryType: number = getSelectedElement('deliveryType'); // aqui, llevar, delivery
-  const clientActive: number = getSelectedElement('clientActive'); // Cliente activo para asignar producto ( numero )
-  const selectedTable: number = getSelectedElement('selectedTable'); // mesa seleccionada
-  const clientOrder = getSelectedElement('clientOrder'); // delivery o cliente en opcion 3
+  const { getElement, setElement } = useTempStorage();
+  const invoiceTypeSelected = getElement('invoiceTypeSelected');
+  const serviceType: number = getElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
+  const deliveryType: number = getElement('deliveryType'); // aqui, llevar, delivery
+  const clientActive: number = getElement('clientActive'); // Cliente activo para asignar producto ( numero )
+  const selectedTable: number = getElement('selectedTable'); // mesa seleccionada
+  const clientOrder = getElement('clientOrder'); // delivery o cliente en opcion 3
 
   const { loadOrder, loadOrders, setOrders, loadTables } = ordersRestaurantsStore();
   const { order } = ordersStore();
@@ -40,21 +40,21 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   useEffect(() => {
         if (initialLoad && activeConfig) {
             if (!serviceType) {
-               setSelectedElement('serviceType', 1);
+               setElement('serviceType', 1);
             }
             if (!deliveryType) {
-               setSelectedElement('deliveryType', 1);
+               setElement('deliveryType', 1);
             }
            if (!invoiceTypeSelected) {
-              setSelectedElement('invoiceTypeSelected', invoiceSelected);
+              setElement('invoiceTypeSelected', invoiceSelected);
            }
            if (!clientActive) {
-              setSelectedElement('clientActive', 1);
+              setElement('clientActive', 1);
            }
-           setSelectedElement('typeOfPrice', 1); // tipo de precio
+           setElement('typeOfPrice', 1); // tipo de precio
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, serviceType])
+  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setElement, serviceType])
 
 
   useEffect(() => {
@@ -91,17 +91,17 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
          }
 
          if (order.order_type != serviceType) {
-            setSelectedElement('serviceType', order.order_type);
+            setElement('serviceType', order.order_type);
          }
 
-         setSelectedElement('payMethod', 1);
+         setElement('payMethod', 1);
 
          if (serviceType == 2 && !selectedTable != order?.attributes?.restaurant_table_id) {
-            setSelectedElement('selectedTable', order?.attributes?.restaurant_table_id);
+            setElement('selectedTable', order?.attributes?.restaurant_table_id);
          }
 
          if ((!clientOrder && order?.client) || (clientOrder && order?.client?.id != clientOrder?.id)) {
-            setSelectedElement('clientOrder', order?.client);
+            setElement('clientOrder', order?.client);
          }
 
          // verifica si hay opciones activas para el producto
@@ -111,7 +111,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
                openModal('productOptions');
             }
       }
-  }, [initialLoad, order, openModal, serviceType, setSelectedElement, selectedTable, clientOrder])
+  }, [initialLoad, order, openModal, serviceType, setElement, selectedTable, clientOrder])
 
 
    useEffect(() => {

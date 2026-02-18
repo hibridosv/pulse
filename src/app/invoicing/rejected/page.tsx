@@ -12,9 +12,9 @@ import useTempStorage from "@/stores/useTempStorage";
 
 export default function Page() {
   const { history, resendDocument } = useInvoicingElectronicLogic('electronic/documents/rejected', 'excel/electronic/', true);
-  const { getSelectedElement} = useTempStorage();
+  const { getElement} = useTempStorage();
   const { modals, closeModal } = useModalStore();
-  const documentSelected = getSelectedElement('documentSelected') ?? {};
+  const documentSelected = getElement('documentSelected') ?? {};
   const quantity = history?.length ?? 0;
 
 

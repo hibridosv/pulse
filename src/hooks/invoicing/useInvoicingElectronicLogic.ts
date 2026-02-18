@@ -14,7 +14,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
     const [ lastUrl, setLastUrl ] = useState("");
     const { openLoading, closeLoading } = useStateStore();
     const { links, addLink} = useDownloadLink();
-    const { setSelectedElement, clearSelectedElement } = useTempStorage();
+    const { setElement, clearElement } = useTempStorage();
     const { setMessage, setError } = useToastMessageStore();
 
 
@@ -49,7 +49,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
 
     const resendDocument = async (invoice: string) => {
       try {
-         setSelectedElement("resendDocument", invoice);
+         setElement("resendDocument", invoice);
          openLoading("resendDocument");
         const response = await updateService(`electronic/documents/${invoice}`, {});
         if (response.status === 200) {
@@ -64,7 +64,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
         setError(error);
       } finally {
         closeLoading("resendDocument");
-        clearSelectedElement("resendDocument");
+        clearElement("resendDocument");
       }
     };
 

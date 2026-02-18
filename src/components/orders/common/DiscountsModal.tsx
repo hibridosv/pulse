@@ -26,10 +26,10 @@ export function DiscountsModal(props: DiscountsModalI) {
 
   const { order, sending, error } = ordersStore();
   const { discount } = useOrderFnLogic();
-  const { getSelectedElement, clearSelectedElement, setSelectedElement } = useTempStorage();
-  const product = getSelectedElement('productSelected');
-  const typeOfDiscount = getSelectedElement('typeOfDiscount') ?? 1; // 1: cantidad o 2: porcentaje
-  const discountType = getSelectedElement('discountType') ?? 1;// 1: producto o 2: orden 
+  const { getElement, clearElement, setElement } = useTempStorage();
+  const product = getElement('productSelected');
+  const typeOfDiscount = getElement('typeOfDiscount') ?? 1; // 1: cantidad o 2: porcentaje
+  const discountType = getElement('discountType') ?? 1;// 1: producto o 2: orden 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
 
   useEffect(() => {
@@ -57,17 +57,17 @@ export function DiscountsModal(props: DiscountsModalI) {
       };
       discount(order.id, values, discountType);
       if (!error) {
-        clearSelectedElement('productSelected');
-        clearSelectedElement('discountType');
-        clearSelectedElement('typeOfDiscount');
+        clearElement('productSelected');
+        clearElement('discountType');
+        clearElement('typeOfDiscount');
         onClose();
       }
  }
 
  const handleClose = ()=>{
-        clearSelectedElement('productSelected');
-        clearSelectedElement('discountType');
-        clearSelectedElement('typeOfDiscount');
+        clearElement('productSelected');
+        clearElement('discountType');
+        clearElement('typeOfDiscount');
         onClose();
  }
 
@@ -79,9 +79,9 @@ export function DiscountsModal(props: DiscountsModalI) {
         <div className="p-4 space-y-4">
           <div className="bg-bg-base rounded-lg border border-bg-subtle/80 divide-y divide-bg-subtle flex justify-between">
               <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfDiscount == 1 ? 'bg-slate-300' : 'bg-slate-100 clickeable'}`} 
-              onClick={()=> { setSelectedElement('typeOfDiscount', 1)}}>Cantidad</div>
+              onClick={()=> { setElement('typeOfDiscount', 1)}}>Cantidad</div>
               <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfDiscount == 2 ? 'bg-slate-300' : 'bg-slate-100 clickeable'}`} 
-              onClick={()=> { setSelectedElement('typeOfDiscount', 2)}}>Porcentaje</div>
+              onClick={()=> { setElement('typeOfDiscount', 2)}}>Porcentaje</div>
           </div>
           <form className="w-full" onSubmit={handleSubmit(onSubmit)} >
             <div className="w-full mb-4">

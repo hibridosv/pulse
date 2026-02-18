@@ -26,8 +26,8 @@ export function SelectUserModal(props: SelectUserModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { user } = useConfigStore();
-  const { getSelectedElement, setSelectedElement, clearSelectedElement } = useTempStorage();
-  const tempSelectedName = getSelectedElement('setUser');
+  const { getElement, setElement, clearElement } = useTempStorage();
+  const tempSelectedName = getElement('setUser');
   const { closeModal} = useModalStore();
   useOrderLoadersLogic(isShow)
   const { users } = useUserStore();
@@ -45,9 +45,9 @@ export function SelectUserModal(props: SelectUserModalI) {
     update(order.id, values);
     if (!error && !sending) {
       if (tempSelectedName =="setSeller") {
-        setSelectedElement(tempSelectedName, user);
+        setElement(tempSelectedName, user);
       } else {
-        clearSelectedElement(tempSelectedName);
+        clearElement(tempSelectedName);
       }
       closeModal('setUser');
     }
@@ -61,7 +61,7 @@ export function SelectUserModal(props: SelectUserModalI) {
     }
     update(order.id, values);
     if (!error) {
-      setSelectedElement(tempSelectedName, item);
+      setElement(tempSelectedName, item);
       closeModal('setUser');
     }
   }

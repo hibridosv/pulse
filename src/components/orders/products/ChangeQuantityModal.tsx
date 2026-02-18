@@ -20,9 +20,9 @@ export function ChangeQuantityModal(props: ChangeQuantityModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error, } = ordersStore();
   const { addOrder } = ordersProductsStore();
-  const { getSelectedElement } = useTempStorage();
-  const product = getSelectedElement('productSelected');
-  const typeOfPrice = getSelectedElement('typeOfPrice') ?? 1;
+  const { getElement } = useTempStorage();
+  const product = getElement('productSelected');
+  const typeOfPrice = getElement('typeOfPrice') ?? 1;
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
   useEffect(() => {

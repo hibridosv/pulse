@@ -12,7 +12,7 @@ import { DropdownItem } from "../dropDown/DropdownItem";
 export function ContactsTable() {
     const { contacts: response, loading} = useContactStore();
     const contacts = response?.data;
-    const { setSelectedElement } = useTempStorage();
+    const { setElement } = useTempStorage();
     const { openModal } = useModalStore();
 
 
@@ -27,7 +27,7 @@ export function ContactsTable() {
             key={record.id} 
             className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
             
-            <td className="px-1 py-1 text-left  font-medium clickeable" onClick={() => { setSelectedElement('contactDetails', record); openModal('contactDetails'); }}>
+            <td className="px-1 py-1 text-left  font-medium clickeable" onClick={() => { setElement('contactDetails', record); openModal('contactDetails'); }}>
                 { record?.name }
             </td>
             <td className="px-1 py-1 text-left text-sm whitespace-normal">
@@ -41,10 +41,10 @@ export function ContactsTable() {
             </td>
             <td className="px-1 py-1 flex justify-center">
             <Dropdown label={<FiSettings size={18} /> }>
-                <DropdownItem onClick={() => { setSelectedElement('contactDetails', record); openModal('contactDetails'); }}>Ver Contacto</DropdownItem>
-                <DropdownItem onClick={() => { setSelectedElement('contactAdd', record); openModal('contactAdd'); }}>Editar</DropdownItem>
+                <DropdownItem onClick={() => { setElement('contactDetails', record); openModal('contactDetails'); }}>Ver Contacto</DropdownItem>
+                <DropdownItem onClick={() => { setElement('contactAdd', record); openModal('contactAdd'); }}>Editar</DropdownItem>
                 <DropdownDivider />
-                <DropdownItem onClick={() => { setSelectedElement('deleteContact', record); openModal('deleteContact'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
+                <DropdownItem onClick={() => { setElement('deleteContact', record); openModal('deleteContact'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
             </Dropdown> 
             </td>
             </tr>

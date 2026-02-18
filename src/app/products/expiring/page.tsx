@@ -15,7 +15,7 @@ export default function Page() {
   const { loading } = useStateStore();
   const isLoading = loading["Expirations"] ? true : false;
   const { modals, closeModal } = useModalStore();
-  const { getSelectedElement } = useTempStorage();
+  const { getElement } = useTempStorage();
 
 
   return (
@@ -28,7 +28,7 @@ export default function Page() {
         <ViewTitle text="Detalles" />
         <ExpiredStatistics statics={expired} isLoading={isLoading} />
     </div> 
-    <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getSelectedElement("productDetails")} /> 
+    <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement("productDetails")} /> 
     <ToasterMessage />
 </div>
   );

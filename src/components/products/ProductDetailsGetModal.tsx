@@ -26,8 +26,8 @@ export interface ProductDetailsGetModalI {
 export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   const { onClose, isShow, row = "id" } = props;
   const { system } = useConfigStore();
-  const { getSelectedElement, clearSelectedElement } = useTempStorage();
-  const productId = getSelectedElement('productDetails');
+  const { getElement, clearElement } = useTempStorage();
+  const productId = getElement('productDetails');
   
   const {responseData: data, loading: loadingRecord } = useGetProductLogic(productId, isShow, row);
   const record = data?.data;
@@ -38,7 +38,7 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   if (!isShow) { return null; }
 
   const handleClose = () => {
-    clearSelectedElement('productDetails');
+    clearElement('productDetails');
     onClose();
   };
 

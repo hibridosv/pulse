@@ -26,8 +26,8 @@ export function MultiPriceEdit(props: MultiPrice) {
   const { system } = useConfigStore();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
   const { options, priceTypeToText } = usePriceTypes();
-  const { getSelectedElement } = useTempStorage();
-  const selectedOption = getSelectedElement("optionSelected");
+  const { getElement } = useTempStorage();
+  const selectedOption = getElement("optionSelected");
   const { prices, addPrice, deletePrice } = useProductPricesEditLogic(productId, isShow, reset, selectedOption);
   const { loading } = useStateStore();
   const isLoading = loading["productPrices"] ? true : false;

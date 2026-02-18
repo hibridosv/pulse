@@ -21,12 +21,12 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
   const { records, resendDocument } = props;
   const { system } = useConfigStore();
   const API_URL = process.env.NEXT_PUBLIC_URL_API;
-  const { setSelectedElement, getSelectedElement} = useTempStorage();
+  const { setElement, getElement} = useTempStorage();
   const { openModal } = useModalStore();
   const {  loading } = useStateStore();
   const isLoading = loading.history ?? false; 
   const isReSending = loading.resendDocument ?? false;
-  const InvoiceResending = getSelectedElement('resendDocument');
+  const InvoiceResending = getElement('resendDocument');
 
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
@@ -58,14 +58,14 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
         }
       </td>
       <td className={`px-3 py-2 text-left ${isDocumentVisible && 'clickeable'}`} 
-        onClick={ isDocumentVisible ? ()=> { setSelectedElement('documentSelected', record); openModal('documentDetail')  } : ()=>{}} >
+        onClick={ isDocumentVisible ? ()=> { setElement('documentSelected', record); openModal('documentDetail')  } : ()=>{}} >
         { record?.numero_control ?? "--" }
       </td>
       <td className={`px-3 py-2 text-left`}>
         { record?.receptor_nombre ?? "N/A" }
       </td>
       <td className={`px-3 py-2 text-left whitespace-nowrap ${isRejected && 'clickeable'}`} title={record?.descripcion_msg} 
-        onClick={ isRejected ? ()=>{ setSelectedElement('documentSelected', record); openModal('documentErrors')  } : ()=>{} }>
+        onClick={ isRejected ? ()=>{ setElement('documentSelected', record); openModal('documentErrors')  } : ()=>{} }>
         { status(record?.status) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
@@ -75,10 +75,10 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
          { isReSending && InvoiceResending == record?.codigo_generacion ? 
             <FaSpinner className="animate-spin" size={20} />
           : <Dropdown label={<FaEdit size={18} /> }>
-            <DropdownItem disabled={!isDocumentVisible} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
+            <DropdownItem disabled={!isDocumentVisible} onClick={() => { setElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
-            <DropdownItem disabled={!isDownloader} onClick={() => { setSelectedElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
+            <DropdownItem disabled={!isDownloader} onClick={() => { setElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
             <DropdownItem disabled={!isRejected} onClick={() => { resendDocument(record?.codigo_generacion) }}>Reenviar Documento</DropdownItem>
           </Dropdown> }
       </td>

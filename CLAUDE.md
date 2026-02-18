@@ -334,7 +334,7 @@ deleteDato(url)             // DELETE → toast éxito/error
 | Store | Archivo | Propósito |
 |:------|:--------|:----------|
 | `modalStorage` | `modalStorage.ts` | `openModal(id)` / `closeModal(id)` — Controla visibilidad de modales |
-| `tempSelectedElementStore` | `tempSelectedElementStore.ts` | `setSelectedElement(id, data)` — Almacén temporal para pasar datos entre componentes |
+| `tempSelectedElementStore` | `tempSelectedElementStore.ts` | `setElement(id, data)` — Almacén temporal para pasar datos entre componentes |
 | `stateStorage` | `stateStorage.ts` | `openLoading(id)` / `closeLoading(id)` — Estados de carga genéricos por ID |
 | `toastMessageStore` | `toastMessageStore.ts` | `setMessage()` / `setError()` — Mensajes de notificación |
 

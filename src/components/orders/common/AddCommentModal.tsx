@@ -21,7 +21,7 @@ export function AddCommentModal(props: AddCommentModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { update} = useOrderFnLogic();
-  const { getSelectedElement, clearSelectedElement } = useTempStorage();
+  const { getElement, clearElement } = useTempStorage();
 
 
 
@@ -44,8 +44,8 @@ export function AddCommentModal(props: AddCommentModalI) {
      }
     update(order.id, values);
      if (!error) {
-       clearSelectedElement('rowToUpdate');
-       clearSelectedElement('productSelected');
+       clearElement('rowToUpdate');
+       clearElement('productSelected');
        onClose();
      }
  }
@@ -58,8 +58,8 @@ export function AddCommentModal(props: AddCommentModalI) {
      }
     update(order.id, values);
      if (!error) {
-       clearSelectedElement('rowToUpdate');
-       clearSelectedElement('productSelected');
+       clearElement('rowToUpdate');
+       clearElement('productSelected');
        onClose();
      }
  }

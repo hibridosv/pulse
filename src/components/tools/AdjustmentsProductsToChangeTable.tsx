@@ -17,7 +17,7 @@ export interface AdjustmentsProductsToChangeTableI {
 export function AdjustmentsProductsToChangeTable(props: AdjustmentsProductsToChangeTableI) {
   const { records, isLoading, isSending, sendAdjustment } = props;
   const { openModal } = useModalStore();
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
@@ -37,7 +37,7 @@ export function AdjustmentsProductsToChangeTable(props: AdjustmentsProductsToCha
         { record?.quantity }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-       <Button text="Cambiar" onClick={()=>{ openModal('setAdjustment'); setSelectedElement('setAdjustment', record)}} disabled={isLoading}/>
+       <Button text="Cambiar" onClick={()=>{ openModal('setAdjustment'); setElement('setAdjustment', record)}} disabled={isLoading}/>
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         <Button preset={isSending ? Preset.saving : Preset.save} text="Aceptar" onClick={()=>sendAdjustment(record)} disabled={isSending}/>

@@ -10,9 +10,9 @@ export function AddProductForm() {
     useProductAddLogic();
     const { register, handleSubmit, reset } = useForm();
     const { product, loading, createProduct } = productAddStore();
-    const { getSelectedElement, clearSelectedElement } = useTempStorage();
-    const isBill = getSelectedElement("isBill");
-    const productSelected = getSelectedElement("product");
+    const { getElement, clearElement } = useTempStorage();
+    const isBill = getElement("isBill");
+    const productSelected = getElement("product");
 
     if (loading || !product) return null;
 
@@ -30,7 +30,7 @@ export function AddProductForm() {
       data.sale_price = productSelected?.prices[0]?.price;
       await createProduct(data);
       reset();
-      clearSelectedElement("product");
+      clearElement("product");
   }
 
 
@@ -115,7 +115,7 @@ export function AddProductForm() {
                         </div>
                         <div className="flex justify-center mt-6 pt-4 border-t border-bg-subtle gap-4">
                             <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
-                            <Button disabled={isSending} preset={Preset.close} text="Cancelar" onClick={()=>clearSelectedElement("product")} />
+                            <Button disabled={isSending} preset={Preset.close} text="Cancelar" onClick={()=>clearElement("product")} />
                         </div>
                     </form>
                 </div>

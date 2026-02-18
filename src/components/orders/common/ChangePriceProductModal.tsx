@@ -20,8 +20,8 @@ export function ChangePriceProductModal(props: ChangePriceProductModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { updatePrice } = useOrderFnLogic();
-  const { getSelectedElement, clearSelectedElement } = useTempStorage();
-  const product = getSelectedElement('productSelected');
+  const { getElement, clearElement } = useTempStorage();
+  const product = getElement('productSelected');
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
 
@@ -42,7 +42,7 @@ export function ChangePriceProductModal(props: ChangePriceProductModalI) {
     };
     updatePrice(product.id, values);
      if (!error) {
-       clearSelectedElement('productSelected');
+       clearElement('productSelected');
        onClose();
      }
  }

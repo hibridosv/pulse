@@ -14,8 +14,8 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
   const [ products, setProducts ] = useState([]) as any;
   const { openLoading, closeLoading } = useStateStore();
   const { loadProducts: fetchDataLinked, products: productsLinked, loading, productId} = useProductLinkedStore();
-  const { clearSelectedElement, getSelectedElement} = useTempStorage();
-  const elementSelected = getSelectedElement("product");
+  const { clearElement, getElement} = useTempStorage();
+  const elementSelected = getElement("product");
 
   useEffect(() => {
         const fetchData = async (url: string) => {
@@ -61,7 +61,7 @@ const onSubmit = async (data: any) => {
       const response = await createService(`products/${newData.product_id}/linked`, newData);
       useToastMessageStore.getState().setMessage(response);
       await fetchDataLinked(newData.product_id);
-      clearSelectedElement();
+      clearElement();
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       console.error(error);

@@ -15,9 +15,9 @@ export default function Page() {
   const { fieldsFiltered, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9&FilterWhereIn[status]==1,0');
   const isLoading = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
-  const { getSelectedElement} = useTempStorage();
+  const { getElement} = useTempStorage();
   const { modals, closeModal } = useModalStore();
-  const documentSelected = getSelectedElement('documentSelected') ?? {};
+  const documentSelected = getElement('documentSelected') ?? {};
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
         await handleGet(values, 'documents', 'excel/invoices/documents/');

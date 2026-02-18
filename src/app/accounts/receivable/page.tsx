@@ -31,8 +31,8 @@ export default function Page() {
   const { accounts, loading } = accountReceivableStore();
 
   const data = accounts?.data || [];
-  const { getSelectedElement} = useTempStorage();
-  const documentSelected = getSelectedElement('documentSelected') ?? {};
+  const { getElement} = useTempStorage();
+  const documentSelected = getElement('documentSelected') ?? {};
 
   const handleFormSubmit = async (values: any) => {
     console.log("DateRange values:", values);

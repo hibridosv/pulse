@@ -14,18 +14,18 @@ interface RadioButtonProps {
 
 export const RadioButton: React.FC<RadioButtonProps> = ({ options, optionName = "optionSelected" }) => {
   const [selectedOption, setSelectedOption] = useState<Option | null>(options[0] || null);
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
 
   useEffect(() => {
     if (options && options.length > 0) {
-      setSelectedElement(optionName, options[0]);
+      setElement(optionName, options[0]);
     }
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleOptionChange = (option: Option) => {
     setSelectedOption(option);
-    setSelectedElement(optionName, option);
+    setElement(optionName, option);
   };
 
 

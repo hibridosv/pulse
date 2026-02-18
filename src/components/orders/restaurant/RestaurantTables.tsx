@@ -7,23 +7,23 @@ import { TableCard } from './TableCard';
 
 export function RestaurantTables() {
   const { order, tables } = ordersStore();
-  const { setSelectedElement, getSelectedElement } = useTempStorage();
-  const selectedTables = getSelectedElement('selectedTables');
-  const serviceType: number = getSelectedElement('serviceType');
-  const selectedTable: number = getSelectedElement('selectedTable');
+  const { setElement, getElement } = useTempStorage();
+  const selectedTables = getElement('selectedTables');
+  const serviceType: number = getElement('serviceType');
+  const selectedTable: number = getElement('selectedTable');
 
 
   useEffect(() => {
     if (!tables) return;
     if (!selectedTables) {
       const principalLocation = tables.find((location: any) => location.is_principal === 1);
-      setSelectedElement('selectedTables', principalLocation?.tables);
+      setElement('selectedTables', principalLocation?.tables);
     } else {
       const activeZone = tables.find((location: any) =>
         location.id === selectedTables[0]?.restaurant_table_location_id
       );
       if (activeZone) {
-        setSelectedElement('selectedTables', activeZone.tables);
+        setElement('selectedTables', activeZone.tables);
       }
     }
     // eslint-disable-next-line
@@ -43,7 +43,7 @@ export function RestaurantTables() {
               <button key={record.id}
                 className={` flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all duration-100
                   ${isActive  ? 'bg-primary text-text-inverted shadow-sm' : 'text-text-muted hover:text-text-base hover:bg-bg-content' } `}
-                onClick={() => setSelectedElement('selectedTables', record.tables)} >
+                onClick={() => setElement('selectedTables', record.tables)} >
                 {record.name}
               </button>
             );

@@ -10,8 +10,8 @@ import { useMemo } from "react";
 
 
 export default function Page() {
-    const { getSelectedElement } = useTempStorage();
-  const elementSelected = getSelectedElement('productSearched');
+    const { getElement } = useTempStorage();
+  const elementSelected = getElement('productSearched');
 
   const params = useMemo(() => 
     elementSelected?.id ? [{name: "product_id", value: elementSelected?.id}] : [],

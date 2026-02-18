@@ -21,8 +21,8 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   const { onClose, isShow } = props;
   const { tenant } = useConfigStore();
   const { order, sending, error } = ordersStore();
-  const { setSelectedElement, getSelectedElement} = useTempStorage();
-  const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
+  const { setElement, getElement} = useTempStorage();
+  const invoiceTypeSelected = getElement('invoiceTypeSelected');
   const { invoiceTypes } = useConfigStore();
   const { update: updateProduct } = useOrderFnLogic();
   const { update: updateRestaurant } = useOrderRestaurantFnLogic();
@@ -42,7 +42,7 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
       updateProduct(order.id, values);
     }
     if (!error) {
-        setSelectedElement('invoiceTypeSelected', type);
+        setElement('invoiceTypeSelected', type);
         closeModal('invoiceType');
       }
   }

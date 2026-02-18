@@ -15,10 +15,10 @@ export interface AddPayableCreditNoteModalI {
 }
 
 export function AddPayableCreditNoteModal({ onClose, isShow }: AddPayableCreditNoteModalI) {
-        const { getSelectedElement } = useTempStorage();
+        const { getElement } = useTempStorage();
 
         const { register, handleSubmit, reset, setValue, watch } = useForm();
-        const payableRecord = getSelectedElement('paymentPayableAdd');
+        const payableRecord = getElement('paymentPayableAdd');
         const { saveCreditNote, delCreditNote } = useAccountPayableLogic();
         const { sending, deleting } = useAccountPayableStore();
         const { system } = useConfigStore();

@@ -10,8 +10,8 @@ export function PayButton() {
   const { order, sending, collecting } = ordersStore();
   const { pay } = useOrderRestaurantFnLogic();
   const { system, cashdrawer } =useConfigStore();
-  const { getSelectedElement} = useTempStorage();
-  const payMethod = getSelectedElement('payMethod') ?? 1;
+  const { getElement} = useTempStorage();
+  const payMethod = getElement('payMethod') ?? 1;
 
   
   

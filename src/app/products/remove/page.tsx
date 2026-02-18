@@ -20,7 +20,7 @@ export default function Page() {
   useProductRemoveLogic();
     const { loading, product, deleting, deletePrincipal, savePrincipal } = productRemovedStore();
     const { modals, closeModal } = useModalStore();
-    const { getSelectedElement } = useTempStorage();
+    const { getElement } = useTempStorage();
     const isActive = product?.failures && product.failures.filter((fai: any) => fai.status == 1).length > 0;
 
 
@@ -50,8 +50,8 @@ export default function Page() {
             </div>
 
       </div> 
-      <ChangeLotModal isShow={modals.ChangeLot} onClose={()=>closeModal("ChangeLot")} product={getSelectedElement("product")}/>
-      <LotDetailsModal isShow={modals.viewDetails} onClose={()=>closeModal("viewDetails")} product={getSelectedElement("viewDetails")}/>
+      <ChangeLotModal isShow={modals.ChangeLot} onClose={()=>closeModal("ChangeLot")} product={getElement("product")}/>
+      <LotDetailsModal isShow={modals.viewDetails} onClose={()=>closeModal("viewDetails")} product={getElement("viewDetails")}/>
       <ToasterMessage />
     </div>
   );

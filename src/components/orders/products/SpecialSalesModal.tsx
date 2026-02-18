@@ -23,7 +23,7 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { updateOrder } = ordersProductsStore();
-  const { getSelectedElement, clearSelectedElement, setSelectedElement } = useTempStorage();
+  const { getElement, clearElement, setElement } = useTempStorage();
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
   let special = order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order);
   let optionsRadioButton: Option[] = [
@@ -31,7 +31,7 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
       { id: 2, name: "Exento" },
       { id: 3, name: "No Sujeto" },
   ];
-  const option = getSelectedElement('optionSelected');
+  const option = getElement('optionSelected');
 
 
   if (!isShow) return null;
@@ -49,15 +49,15 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
 
       await updateOrder(`orders/${order.id}/others`, values);
       if (!error) {
-        clearSelectedElement('optionSelected');
-        clearSelectedElement('optionSelectedType');
+        clearElement('optionSelected');
+        clearElement('optionSelectedType');
         onClose();
       }
  }
 
 const handleClose = ()=>{
-        clearSelectedElement('optionSelected');
-        clearSelectedElement('optionSelectedType');
+        clearElement('optionSelected');
+        clearElement('optionSelectedType');
         onClose();
 }
 

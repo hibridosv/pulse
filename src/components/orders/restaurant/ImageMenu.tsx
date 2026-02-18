@@ -20,7 +20,7 @@ export function ImageMenu(props:  ImageMenuI) {
   const { record, index, imageLoader } = props;
   const { sending } = ordersStore();
   const { addNew } = useOrderRestaurantFnLogic();
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
   const { openModal, closeModal } = useModalStore();
   const { activeConfig } = useConfigStore();
   const [isSending, setIsSending] = useState(false);
@@ -47,7 +47,7 @@ const dismiss = () => {
             <div
               onClick={isProduct ?
                 (sending ? ()=>{} : () => sendProduct(record.product_id)) :
-                ()=>{ openModal('categoryMenu'); setSelectedElement("categoryMenu", record) }
+                ()=>{ openModal('categoryMenu'); setElement("categoryMenu", record) }
               }
               className={`group relative w-[104px] overflow-hidden rounded-xl bg-bg-content shadow-md transition-all duration-100 ease-out hover:shadow-xl hover:-translate-y-1 active:scale-95 active:shadow-md
                 ${sending ? 'pointer-events-none' : 'clickeable'}

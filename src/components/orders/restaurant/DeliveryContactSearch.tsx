@@ -14,19 +14,19 @@ export function deliveryTypeRestaurant(type: number) {
 
 export function DeliveryContactSearch() {
   const { order } = ordersStore();
-  const { getSelectedElement, setSelectedElement, clearSelectedElement} = useTempStorage();
-  const serviceType: number = getSelectedElement('serviceType');
+  const { getElement, setElement, clearElement} = useTempStorage();
+  const serviceType: number = getElement('serviceType');
 
 
   if (serviceType != 3 || order?.invoiceproducts) return <></>
 
   const handleSelect = () =>{
-    const client = getSelectedElement('clientSelectedByDelivery');
-    setSelectedElement('clientOrder', client);
+    const client = getElement('clientSelectedByDelivery');
+    setElement('clientOrder', client);
   }
 
   const handleDelete = () =>{
-    clearSelectedElement('clientOrder');
+    clearElement('clientOrder');
   }
 
 

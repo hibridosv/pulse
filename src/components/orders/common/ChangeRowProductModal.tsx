@@ -30,9 +30,9 @@ export function ChangeRowProductModal(props: ChangeRowProductModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { updateProduct} = useOrderFnLogic();
-  const { getSelectedElement, clearSelectedElement } = useTempStorage();
-  const product = getSelectedElement('productSelected');
-  const rowToUpdate = getSelectedElement('rowToUpdate');
+  const { getElement, clearElement } = useTempStorage();
+  const product = getElement('productSelected');
+  const rowToUpdate = getElement('rowToUpdate');
 
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
@@ -56,8 +56,8 @@ export function ChangeRowProductModal(props: ChangeRowProductModalI) {
      }
     updateProduct(product.id, values);
      if (!error && !sending) {
-       clearSelectedElement('rowToUpdate');
-       clearSelectedElement('productSelected');
+       clearElement('rowToUpdate');
+       clearElement('productSelected');
        onClose();
      }
  }
@@ -70,8 +70,8 @@ export function ChangeRowProductModal(props: ChangeRowProductModalI) {
      }
     updateProduct(product.id, values);
      if (!error) {
-       clearSelectedElement('rowToUpdate');
-       clearSelectedElement('productSelected');
+       clearElement('rowToUpdate');
+       clearElement('productSelected');
        onClose();
      }
  }

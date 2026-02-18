@@ -31,8 +31,8 @@ export function PayModal(props: PayModalI) {
   const { payMethods } = useConfigStore();
   const { order, collecting, sending } = ordersStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
-  const { setSelectedElement, getSelectedElement} = useTempStorage();
-  const paymentType = getSelectedElement('paymentType') ?? 1;
+  const { setElement, getElement} = useTempStorage();
+  const paymentType = getElement('paymentType') ?? 1;
   const { pay } = useOrderFnLogic();
 
   useEffect(() => {
@@ -121,7 +121,7 @@ export function PayModal(props: PayModalI) {
               payMethods && payMethods.length > 0 && payMethods.map((method: any) => {
                 if (method.status == 0) return null;
                 return (<span key={method.id} className={`mx-1 text-sm clickeable transition-colors duration-150 ${paymentType === method.iden ? 'font-bold text-primary' : 'text-text-muted'}`}
-                  onClick={()=>setSelectedElement('paymentType', method.iden)}>{method.name}</span>);
+                  onClick={()=>setElement('paymentType', method.iden)}>{method.name}</span>);
               })
             }
           </div> }

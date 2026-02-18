@@ -22,7 +22,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   const { order } = props;
   const { system, activeConfig } = useConfigStore();
   const { addNew, del} = useOrderFnLogic();
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
   const { openModal} = useModalStore();
   const { sending } = ordersStore();
   
@@ -53,7 +53,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
         <tr key={record.id}
             className={`${sending ? 'opacity-50 pointer-events-none' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
           <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable'} ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`} 
-            onClick={isOtherSales ? ()=>{} : ()=>{ setSelectedElement('productSelected', record); openModal('changeQuantity') }}>
+            onClick={isOtherSales ? ()=>{} : ()=>{ setElement('productSelected', record); openModal('changeQuantity') }}>
             { record.quantity }
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium ${ !isShowCode && 'hidden'}`}>
@@ -62,28 +62,28 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           <td className="px-2 py-1 text-left whitespace-nowrap flex" >
             {/* { record.product.slice(0, 50) } */}
             <span className={`${!isOtherSales && 'clickeable ' } w-full`} 
-            onClick={ isOtherSales ? ()=>{} : ()=> { openModal('productDetails'); setSelectedElement('productDetails', record.cod); }}>
+            onClick={ isOtherSales ? ()=>{} : ()=> { openModal('productDetails'); setElement('productDetails', record.cod); }}>
             { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
             </span>
             { isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
-            onClick={()=> { setSelectedElement('rowToUpdate', 'product'); openModal('changeRow'); setSelectedElement('productSelected', record); }}><FaPen color="black" /></span> }
+            onClick={()=> { setElement('rowToUpdate', 'product'); openModal('changeRow'); setElement('productSelected', record); }}><FaPen color="black" /></span> }
             { isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
-            onClick={()=> { setSelectedElement('rowToUpdate', 'comment'); openModal('changeRow'); setSelectedElement('productSelected', record); }}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
+            onClick={()=> { setElement('rowToUpdate', 'comment'); openModal('changeRow'); setElement('productSelected', record); }}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
             { isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
             onClick={()=> {}}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
-            <span className="clickeable" onClick={()=>{ openModal('changePriceProduct'); setSelectedElement('productSelected', record); }}>
+            <span className="clickeable" onClick={()=>{ openModal('changePriceProduct'); setElement('productSelected', record); }}>
               { numberToMoney(record.unit_price ?? 0, system) }
             </span>
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
-            <span className="clickeable" onClick={()=> { openModal('discountModal'); setSelectedElement('productSelected', record); setSelectedElement('discountType', 1) }}>
+            <span className="clickeable" onClick={()=> { openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1) }}>
               { numberToMoney(record.discount ?? 0, system) }
             </span>
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium tabular-nums ${ !isDefaultCommission && 'hidden'}`}>
-            <span className="clickeable" onClick={()=>{ setSelectedElement('rowToUpdate', 'commission'); openModal('changeRow'); setSelectedElement('productSelected', record); }}>
+            <span className="clickeable" onClick={()=>{ setElement('rowToUpdate', 'commission'); openModal('changeRow'); setElement('productSelected', record); }}>
               { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
             </span>
           </td>

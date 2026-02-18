@@ -19,8 +19,8 @@ export interface SearchContactModalI {
 export function SearchContactModal(props: SearchContactModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
-  const { getSelectedElement } = useTempStorage();
-  const tempSelectedName = getSelectedElement('contactSearch');
+  const { getElement } = useTempStorage();
+  const tempSelectedName = getElement('contactSearch');
   const { openModal, closeModal} = useModalStore();
   const { update } = useOrderFnLogic();
 

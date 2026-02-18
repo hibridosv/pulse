@@ -11,11 +11,11 @@ import { ImageMenu } from './ImageMenu';
 
 export function RestaurantMenu() {
   const { loading, restaurantMenu: images } =  restauranMenuStore();
-  const { getSelectedElement } = useTempStorage();
-  const serviceType: number = getSelectedElement('serviceType');
-  const selectedTables = getSelectedElement('selectedTables');
-  const clientOrder = getSelectedElement('clientOrder');
-  const selectedTable = getSelectedElement('selectedTable');
+  const { getElement } = useTempStorage();
+  const serviceType: number = getElement('serviceType');
+  const selectedTables = getElement('selectedTables');
+  const clientOrder = getElement('clientOrder');
+  const selectedTable = getElement('selectedTable');
   const { order } = ordersStore();
 
   console.log("clientOrder", clientOrder)

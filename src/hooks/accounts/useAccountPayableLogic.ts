@@ -5,11 +5,11 @@ import { useEffect } from 'react';
 
 export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createAccount, createPayment, error, deleteAccount, createCreditNote, deleteCreditNote} = useAccountPayableStore();
-  const { getSelectedElement } = useTempStorage();
-  const selectedOption = getSelectedElement("optionSelected");
-  const contactSelected = getSelectedElement('clientSelectedBySearch');
-  const elementSelected = getSelectedElement('clientSelectedBySearchModal');
-  const payableRecord = getSelectedElement('paymentPayableAdd');
+  const { getElement } = useTempStorage();
+  const selectedOption = getElement("optionSelected");
+  const contactSelected = getElement('clientSelectedBySearch');
+  const elementSelected = getElement('clientSelectedBySearchModal');
+  const payableRecord = getElement('paymentPayableAdd');
 
 
   useEffect(() => {

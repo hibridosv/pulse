@@ -19,7 +19,7 @@ export interface RemissionNoteTableI {
 
 export function RemissionNoteTable(props: RemissionNoteTableI) {
   const { records, isLoading } = props;
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
   const { openModal } = useModalStore();
 
 
@@ -49,7 +49,7 @@ export function RemissionNoteTable(props: RemissionNoteTableI) {
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
        <Dropdown label={<FaEdit size={18} /> }>
-          <DropdownItem  onClick={() => { setSelectedElement('remissionNote', record); openModal('remissionNote')  }}>Ver Nota de remisión</DropdownItem>
+          <DropdownItem  onClick={() => { setElement('remissionNote', record); openModal('remissionNote')  }}>Ver Nota de remisión</DropdownItem>
           <DropdownItem disabled>Eliminar Nota de remisión</DropdownItem>
         </Dropdown>
       </td>

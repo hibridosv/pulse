@@ -7,9 +7,9 @@ import { GoEye } from 'react-icons/go';
 import { HiMapPin, HiPhone } from 'react-icons/hi2';
 
 export function DeliveryClient() {
-  const { getSelectedElement } = useTempStorage();
-  const serviceType: number = getSelectedElement('serviceType');
-  const clientOrder = getSelectedElement('clientOrder');
+  const { getElement } = useTempStorage();
+  const serviceType: number = getElement('serviceType');
+  const clientOrder = getElement('clientOrder');
   const { order } = ordersStore();
 
   if ((serviceType != 3 || !clientOrder)) return <></>;

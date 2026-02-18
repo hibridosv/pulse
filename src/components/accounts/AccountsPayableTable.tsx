@@ -20,7 +20,7 @@ export function AccountsPayableTable(props: AccountsPayableTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
   const { openModal } = useModalStore();
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
@@ -52,7 +52,7 @@ export function AccountsPayableTable(props: AccountsPayableTableI) {
         { status(record?.status) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        <MdAddchart size={28} className="text-lime-600 clickeable" onClick={()=>{ setSelectedElement('paymentPayableAdd', record); openModal('paymentPayableAdd'); }} />
+        <MdAddchart size={28} className="text-lime-600 clickeable" onClick={()=>{ setElement('paymentPayableAdd', record); openModal('paymentPayableAdd'); }} />
       </td>
     </tr>
   ));

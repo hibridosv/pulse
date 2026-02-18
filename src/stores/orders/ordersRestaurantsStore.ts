@@ -71,7 +71,7 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
       }
       ordersStore.setState({ order: null });
       ordersStore.setState({ error: true });
-      useTempStorage.getState().clearSelectedElement('selectedTable');
+      useTempStorage.getState().clearElement('selectedTable');
     } finally {
       ordersStore.setState({ loading: false });
     }
@@ -84,11 +84,11 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
         try {
             const response = await createService(url, data);
             ordersStore.setState({ order: null, error: false, lastResponse: response.data.data });
-            useTempStorage.getState().setSelectedElement("paymentSuccess", response.data.data);
+            useTempStorage.getState().setElement("paymentSuccess", response.data.data);
             ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
-            useTempStorage.getState().clearSelectedElement('selectedTable');
-            useTempStorage.getState().clearSelectedElement('clientOrder');
-            useTempStorage.getState().clearSelectedElement('clientSelectedByDelivery');
+            useTempStorage.getState().clearElement('selectedTable');
+            useTempStorage.getState().clearElement('clientOrder');
+            useTempStorage.getState().clearElement('clientSelectedByDelivery');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             useModalStore.getState().closeModal('paymentSuccess');
@@ -119,9 +119,9 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
       ordersStore.setState({ order: null, error: false });
       ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
       useToastMessageStore.getState().setMessage(response);
-      useTempStorage.getState().clearSelectedElement('selectedTable');
-      useTempStorage.getState().clearSelectedElement('clientOrder');
-      useTempStorage.getState().clearSelectedElement('clientSelectedByDelivery');
+      useTempStorage.getState().clearElement('selectedTable');
+      useTempStorage.getState().clearElement('clientOrder');
+      useTempStorage.getState().clearElement('clientSelectedByDelivery');
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       ordersStore.setState({ error: true });
@@ -154,8 +154,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
             ordersStore.setState({ order: null, error: false });
             // ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
             useToastMessageStore.getState().setMessage(response);
-            useTempStorage.getState().clearSelectedElement('clientOrder');
-            useTempStorage.getState().clearSelectedElement('clientSelectedByDelivery');
+            useTempStorage.getState().clearElement('clientOrder');
+            useTempStorage.getState().clearElement('clientSelectedByDelivery');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             ordersStore.setState({ error: true });
@@ -173,9 +173,9 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
       } else {
         ordersStore.setState({ order: null, error: false });
         ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
-        useTempStorage.getState().clearSelectedElement('selectedTable');
-        useTempStorage.getState().clearSelectedElement('clientOrder');
-        useTempStorage.getState().clearSelectedElement('clientSelectedByDelivery');
+        useTempStorage.getState().clearElement('selectedTable');
+        useTempStorage.getState().clearElement('clientOrder');
+        useTempStorage.getState().clearElement('clientSelectedByDelivery');
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);

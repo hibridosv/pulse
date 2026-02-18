@@ -17,9 +17,9 @@ import { useEffect, useRef } from 'react';
 
 export function useOrderProductsLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
-  const { getSelectedElement, setSelectedElement } = useTempStorage();
-  const typeOfSearch = getSelectedElement('typeOfSearch'); // tipo de busqueda
-  const invoiceTypeSelected = getSelectedElement('invoiceTypeSelected');
+  const { getElement, setElement } = useTempStorage();
+  const typeOfSearch = getElement('typeOfSearch'); // tipo de busqueda
+  const invoiceTypeSelected = getElement('invoiceTypeSelected');
   const { loadOrder, loadOrders, setOrders } = ordersProductsStore();
   const { order } = ordersStore();
   const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
@@ -34,19 +34,19 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
         if (initialLoad && activeConfig) {
             if (typeOfSearch === undefined) {
                if (activeConfig.includes('sales-by-name')) {
-                  setSelectedElement('typeOfSearch', true);
+                  setElement('typeOfSearch', true);
                } else {
-                  setSelectedElement('typeOfSearch', false);
+                  setElement('typeOfSearch', false);
                }
             }
             
            if (!invoiceTypeSelected) {
-              setSelectedElement('invoiceTypeSelected', invoiceSelected);
+              setElement('invoiceTypeSelected', invoiceSelected);
            }
-           setSelectedElement('typeOfPrice', 1); // tipo de precio
+           setElement('typeOfPrice', 1); // tipo de precio
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setSelectedElement, typeOfSearch])
+  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setElement, typeOfSearch])
 
 
   useEffect(() => {

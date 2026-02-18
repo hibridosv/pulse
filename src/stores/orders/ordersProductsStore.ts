@@ -81,7 +81,7 @@ const ordersProductsStore = create<ordersProductsStoreI>(() => ({
         try {
             const response = await createService(url, data);
             ordersStore.setState({ order: null, error: false });
-            useTempStorage.getState().setSelectedElement("paymentSuccess", response.data.data);
+            useTempStorage.getState().setElement("paymentSuccess", response.data.data);
             ordersProductsStore.getState().loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
             useToastMessageStore.getState().setMessage(response);
             useModalStore.getState().closeModal('payOrder');

@@ -9,7 +9,7 @@ export function useInvoiceFnLogic() {
   const router = useRouter();
   const { openLoading, closeLoading, loading: sending } = useStateStore()
   const { setError } = useToastMessageStore();
-  const { clearSelectedElement } = useTempStorage();
+  const { clearElement } = useTempStorage();
    
   
   const sendRemissions = async (id: string) => {
@@ -17,7 +17,7 @@ export function useInvoiceFnLogic() {
       try {
           const response = await updateService(`remissions/${id}`, {});
           if (response.status === 200) {
-            clearSelectedElement("remissionNote");
+            clearElement("remissionNote");
             router.push("/orders");
           }
       } catch (error) {

@@ -19,9 +19,9 @@ export default function Page() {
     const { responseData, loading } = useSearchDocumentLogic(currentPage, searchTerm);
     const data = responseData?.data;
     const quantity =  data?.total ?? 0;
-    const { getSelectedElement} = useTempStorage();
+    const { getElement} = useTempStorage();
     const { modals, closeModal } = useModalStore();
-    const documentSelected = getSelectedElement('documentSelected') ?? {};
+    const documentSelected = getElement('documentSelected') ?? {};
 
 
   return (

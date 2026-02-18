@@ -19,9 +19,9 @@ export default function Page() {
     const { responseData, loading } = useRemissionNoteLogic(currentPage, searchTerm);
     const data = responseData?.data;
     const quantity =  data?.total ?? 0;
-    const { getSelectedElement} = useTempStorage();
+    const { getElement} = useTempStorage();
     const { modals, closeModal } = useModalStore();
-    const documentSelected = getSelectedElement('remissionNote') ?? {};
+    const documentSelected = getElement('remissionNote') ?? {};
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">

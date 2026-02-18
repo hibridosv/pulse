@@ -8,13 +8,13 @@ export interface ShowClientSearchedI {
 
 export function ShowClientSearched(props: ShowClientSearchedI) {
   const { tempSelectedName = "clientSelectedBySearch", onClose } = props;
-  const { getSelectedElement, clearSelectedElement } = useTempStorage();
-  const elementSelected = getSelectedElement(tempSelectedName);
+  const { getElement, clearElement } = useTempStorage();
+  const elementSelected = getElement(tempSelectedName);
 
     if (!elementSelected) return null;
 
     const handleClose = () => {
-      clearSelectedElement(tempSelectedName);
+      clearElement(tempSelectedName);
       onClose && onClose(elementSelected);
     }
 

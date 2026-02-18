@@ -31,7 +31,7 @@ export default function Page() {
   const links = useSetLinkLogic();
   const { getRequest, loading: loadingRequest } = useGetRequest();
   const { modals, closeModal } = useModalStore();
-  const { getSelectedElement } = useTempStorage();
+  const { getElement } = useTempStorage();
 
 
 
@@ -72,7 +72,7 @@ export default function Page() {
               } 
         </div>
     </div> 
-    <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getSelectedElement('productDetails')} /> 
+    <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement('productDetails')} /> 
     <ToasterMessage />
 </div>
   );

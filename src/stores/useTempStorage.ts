@@ -2,21 +2,21 @@ import { create } from 'zustand';
 
 interface TempSelectedElementState {
   elements: Record<string, any>;
-  setSelectedElement: (id: string, element: any) => void;
-  clearSelectedElement: (id?: string) => void;
-  getSelectedElement: (id: string) => any | undefined;
+  setElement: (id: string, element: any) => void;
+  clearElement: (id?: string) => void;
+  getElement: (id: string) => any | undefined;
 }
 
 const useTempSelectedElementStore = create<TempSelectedElementState>((set, get) => ({
   elements: {},
-  setSelectedElement: (id, element) =>
+  setElement: (id, element) =>
     set((state) => ({
       elements: {
         ...state.elements,
         [id]: element,
       },
     })),
-  clearSelectedElement: (id) =>
+  clearElement: (id) =>
     set((state) => {
       if (id) {
         const newElements = { ...state.elements };
@@ -26,7 +26,7 @@ const useTempSelectedElementStore = create<TempSelectedElementState>((set, get) 
         return { elements: {} }; // Clear all if no id is provided
       }
     }),
-  getSelectedElement: (id) => get().elements[id],
+  getElement: (id) => get().elements[id],
 }));
 
 export default useTempSelectedElementStore;

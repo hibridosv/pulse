@@ -13,8 +13,8 @@ import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-  const { getSelectedElement } = useTempStorage();
-  const elementSelected = getSelectedElement('productSearched');
+  const { getElement } = useTempStorage();
+  const elementSelected = getElement('productSearched');
   const { history, handleGet, loading, links } = useHistorySalesLogic('histories/by-product', 'excel/by-product/', false);
   const isLoading = loading.history ?? false; 
 

@@ -26,7 +26,7 @@ export default function Page() {
   const isSending = loading["productForm"] ? true : false;
   const { modals, closeModal, openModal } = useModalStore();
   const lastProducts = products?.data;
-  const { getSelectedElement } = useTempStorage();
+  const { getElement } = useTempStorage();
 
 
   return (
@@ -214,7 +214,7 @@ export default function Page() {
             </div>
         </div> 
         <ProductsLinkedModal isShow={modals.productLinked} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
-        <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getSelectedElement('productDetails')} /> 
+        <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement('productDetails')} /> 
         <ProductsCategoriesModal isShow={modals.productCategories} onClose={() => closeModal('productCategories')} />
         <ToasterMessage />
     </div>

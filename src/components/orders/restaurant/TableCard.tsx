@@ -12,10 +12,10 @@ interface TableCardProps {
 export function TableCard({ record }: TableCardProps) {
   const { select } = useOrderRestaurantFnLogic();
   const isOccupied = record.status == 1;
-  const { setSelectedElement } = useTempStorage();
+  const { setElement } = useTempStorage();
 
   const handleSelect = (option: any) => {
-    setSelectedElement('selectedTable', option.id);
+    setElement('selectedTable', option.id);
     if (option.status == 1) {
         select(option.ticket_order_id)
     }

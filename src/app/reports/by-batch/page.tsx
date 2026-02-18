@@ -12,8 +12,8 @@ import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-  const { getSelectedElement } = useTempStorage();
-  const elementSelected = getSelectedElement('productSearched');
+  const { getElement } = useTempStorage();
+  const elementSelected = getElement('productSearched');
   const { history, handleGet, loading, links } = useReportsLogic(`reports/lot?perPage=20&page=1`, 'excel/reports/by-lot/');
   const isLoading = loading.history ?? false; 
 

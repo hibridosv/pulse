@@ -20,8 +20,8 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
   const { onClose, isShow } = props;
   const { order, sending, error, } = ordersStore();
   const { addNew } = useOrderRestaurantFnLogic();
-  const { getSelectedElement } = useTempStorage();
-  const product = getSelectedElement('productSelected');
+  const { getElement } = useTempStorage();
+  const product = getElement('productSelected');
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
   useEffect(() => {

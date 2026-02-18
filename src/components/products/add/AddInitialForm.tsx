@@ -14,7 +14,7 @@ export function AddInitialForm() {
     const { register, handleSubmit, control, watch, reset } = useForm();
     const { product, loading, createPrincipal } = productAddStore();
     const { contacts: providers } = useContactStore();
-    const { setSelectedElement } = useTempStorage();
+    const { setElement } = useTempStorage();
 
     const [isBillsActive, setIsBillsActive] = useState(false);
     const [isAccountActive, setIsAccountActive] = useState(false);
@@ -33,7 +33,7 @@ export function AddInitialForm() {
             data.provider_id = data.provider_id ? data.provider_id : providers.data ? providers.data[0].id : 0;
             data.comment = data.comment ? data.comment : "Ingreso de productos";
             data.account_active = isAccountActive;
-            setSelectedElement("isBill", data.bills_active);
+            setElement("isBill", data.bills_active);
             createPrincipal(data);
             reset();
     };

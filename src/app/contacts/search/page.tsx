@@ -27,7 +27,7 @@ export default function Page() {
   const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number", "code", "phone"], 500);
   const { onDelete } = useContactsLogic(currentPage, searchTerm, getParamString(pageParam));
   const { contacts } = useContactStore();
-  const { getSelectedElement, clearSelectedElement } =  useTempStorage();
+  const { getElement, clearElement } =  useTempStorage();
   const { modals, closeModal, openModal} = useModalStore();
  
 
@@ -37,7 +37,7 @@ export default function Page() {
     <div className="md:col-span-7 md:border-r md:border-primary">
         <div className="flex justify-between">
           <ViewTitle text="Lista de Contactos" />
-          <BiPlusCircle size={28} className="clickeable text-primary mt-3 mr-4" onClick={()=>{openModal('contactAdd'); clearSelectedElement('contactAdd'); }} />
+          <BiPlusCircle size={28} className="clickeable text-primary mt-3 mr-4" onClick={()=>{openModal('contactAdd'); clearElement('contactAdd'); }} />
         </div>
         <div className="p-4">
           <ContactsTable />
@@ -53,15 +53,15 @@ export default function Page() {
           <ShowTotal quantity={contacts?.total} text="Cantidad de Contactos" number={true} />
         </div>
         <div className="p-4 flex justify-center">
-          <Button preset={Preset.add} text="Agregar Contacto" onClick={()=>{openModal('contactAdd'); clearSelectedElement('contactAdd'); }} />
+          <Button preset={Preset.add} text="Agregar Contacto" onClick={()=>{openModal('contactAdd'); clearElement('contactAdd'); }} />
         </div>
     </div> 
-    <ViewContactModal isShow={modals.contactDetails} onClose={()=>closeModal('contactDetails')} record={getSelectedElement('contactDetails')} />
-    <AddContactModal isShow={modals.contactAdd} onClose={()=>closeModal('contactAdd')} record={getSelectedElement('contactAdd')} />
+    <ViewContactModal isShow={modals.contactDetails} onClose={()=>closeModal('contactDetails')} record={getElement('contactDetails')} />
+    <AddContactModal isShow={modals.contactAdd} onClose={()=>closeModal('contactAdd')} record={getElement('contactAdd')} />
     <DeleteModal
         isShow={modals.deleteContact}
         text={`¿Estas seguro de eliminar este contacto?`}
-        onDelete={() =>{ onDelete(getSelectedElement('deleteContact').id);  }}
+        onDelete={() =>{ onDelete(getElement('deleteContact').id);  }}
         onClose={() => closeModal('deleteContact')} />
     <ToasterMessage />
 </div>

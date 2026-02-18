@@ -10,20 +10,20 @@ import useTempStorage from "@/stores/useTempStorage";
 
 export function RemoveProductsSearch() {
     const { product, loading } = productRemovedStore();
-    const { getSelectedElement, setSelectedElement} = useTempStorage();
+    const { getElement, setElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";
     const { products, loading: loadingSearch } = useProductStore();
     useProductsSearchLogic(currentPage, searchTerm, sortBy);
-    const elementSelected = getSelectedElement('product');
+    const elementSelected = getElement('product');
 
     if (!product || loading) return null;
     if (elementSelected) return null;
 
 
     const handleSelectProduct = (product: any) => {
-        setSelectedElement('product', product);
+        setElement('product', product);
         handleSearchTerm('');
     };
 

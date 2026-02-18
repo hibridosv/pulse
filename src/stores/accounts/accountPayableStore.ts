@@ -86,7 +86,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
         };
       });
       useToastMessageStore.getState().setMessage(response);
-      useTempStorage.getState().clearSelectedElement("paymentPayableAdd");
+      useTempStorage.getState().clearElement("paymentPayableAdd");
       useModalStore.getState().closeModal("paymentPayableAdd");
       set({ error: false });
     } catch (error) {
@@ -102,7 +102,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
         try {
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
-            useTempStorage.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+            useTempStorage.getState().setElement("paymentPayableAdd", response.data.data);
             set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -118,7 +118,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
     try {
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
-      useTempStorage.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+      useTempStorage.getState().setElement("paymentPayableAdd", response.data.data);
       set({ error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -134,7 +134,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
         try {
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
-            useTempStorage.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+            useTempStorage.getState().setElement("paymentPayableAdd", response.data.data);
             set({ error: false });
         } catch (error) {
             useToastMessageStore.getState().setError(error);
@@ -149,7 +149,7 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
     try {
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
-      useTempStorage.getState().setSelectedElement("paymentPayableAdd", response.data.data);
+      useTempStorage.getState().setElement("paymentPayableAdd", response.data.data);
       useModalStore.getState().closeModal("creditNoteAdd");
       set({ error: false });
     } catch (error) {

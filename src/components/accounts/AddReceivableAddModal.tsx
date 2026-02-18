@@ -23,17 +23,17 @@ export interface AddReceivableAddModalI {
 }
 
 export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModalI) {
-        const { getSelectedElement } = useTempStorage();
+        const { getElement } = useTempStorage();
         const { cashdrawer, system } = useConfigStore();
 
         const { register, handleSubmit, reset, setValue, watch } = useForm();
-        const receivableRecord = getSelectedElement('paymentReceivableAdd');
+        const receivableRecord = getElement('paymentReceivableAdd');
         useCashAccountLogic();
         const { accounts } = cashAccountStore();
         const { savePayment, handleCheckIn } = useAccountReceivableLogic();
         const { sending, deleting } = accountReceivableStore();
         const { setError } = useToastMessageStore();
-        const { setSelectedElement} = useTempStorage();
+        const { setElement} = useTempStorage();
         const { openModal } = useModalStore();
 
 
@@ -196,7 +196,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
       </Modal.Body>
       <Modal.Footer>
         <div className="flex justify-end gap-4">
-        <Button onClick={()=>{ setSelectedElement('documentSelected',  receivableRecord?.order); openModal('documentDetail')  }} preset={Preset.success} disabled={deleting} text="Factura Asociada" />
+        <Button onClick={()=>{ setElement('documentSelected',  receivableRecord?.order); openModal('documentDetail')  }} preset={Preset.success} disabled={deleting} text="Factura Asociada" />
         {
           receivableRecord?.balance == 0 && receivableRecord?.order?.status == 5 && 
           <Button onClick={handleCheckIn} preset={sending ? Preset.saving : Preset.save} text="Facturar Credito" disabled={sending} />
