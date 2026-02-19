@@ -32,7 +32,7 @@ export function DeliveryContactSearch() {
 
       return (
             <div>
-              <div className="m-2">
+              <div className="m-2 mt-8">
                 <ClientsSearch param="customers" placeholder="Buscar Cliente Delivery" tempSelectedName="clientSelectedByDelivery" 
                 onSelect={handleSelect} />
                 <ShowClientSearched tempSelectedName="clientSelectedByDelivery" onClose={handleDelete} />

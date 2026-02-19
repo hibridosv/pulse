@@ -12,6 +12,7 @@ import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuMo
 import { ChangeQuantityRestaurantModal } from "@/components/orders/restaurant/ChangeQuantityRestaurantModal";
 import { DeliveryClient } from "@/components/orders/restaurant/DeliveryClient";
 import { DeliveryContactSearch } from "@/components/orders/restaurant/DeliveryContactSearch";
+import { DeliveryOrders } from "@/components/orders/restaurant/DeliveryOrders";
 import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeModal";
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
@@ -51,6 +52,7 @@ export default function Page() {
               <RestaurantClients />
               <RestaurantMenu />
               <RestaurantTables />
+              <DeliveryOrders />
             </div>
           </div>
           <div className="md:col-span-4 flex justify-center ">

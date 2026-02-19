@@ -19,10 +19,10 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
   const { getElement, setElement } = useTempStorage();
   const invoiceTypeSelected = getElement('invoiceTypeSelected');
-  const serviceType: number = getElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
-  const deliveryType: number = getElement('deliveryType'); // aqui, llevar, delivery
-  const clientActive: number = getElement('clientActive'); // Cliente activo para asignar producto ( numero )
-  const selectedTable: number = getElement('selectedTable'); // mesa seleccionada
+  const serviceType = getElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
+  const deliveryType = getElement('deliveryType'); // aqui, llevar, delivery
+  const clientActive = getElement('clientActive'); // Cliente activo para asignar producto ( numero )
+  const selectedTable = getElement('selectedTable'); // mesa seleccionada
   const clientOrder = getElement('clientOrder'); // delivery o cliente en opcion 3
 
   const { loadOrder, loadOrders, setOrders, loadTables } = ordersRestaurantsStore();
@@ -43,7 +43,11 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
                setElement('serviceType', 1);
             }
             if (!deliveryType) {
-               setElement('deliveryType', 1);
+               if (activeConfig?.includes("sales-quick-here")) {
+                  setElement('deliveryType', 1); // comer aqui
+               } else {
+                  setElement('deliveryType', 2); // llevar
+               }
             }
            if (!invoiceTypeSelected) {
               setElement('invoiceTypeSelected', invoiceSelected);
@@ -95,6 +99,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
          }
 
          setElement('payMethod', 1);
+         setElement("deliveryType", order?.delivery_type ?? 2)
 
          if (serviceType == 2 && !selectedTable != order?.attributes?.restaurant_table_id) {
             setElement('selectedTable', order?.attributes?.restaurant_table_id);
@@ -110,6 +115,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
             if (lastOption) {
                openModal('productOptions');
             }
+
       }
   }, [initialLoad, order, openModal, serviceType, setElement, selectedTable, clientOrder])
 
@@ -122,6 +128,17 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
     if (!order && serviceType == 3) {
        loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2&filterWhere[order_type]==3`, false);
     }
+
+    if (!order) {
+         if (serviceType == 1) { // si es venta rapida se asigna para llevar
+            setElement('deliveryType', 2);
+         } else if (serviceType == 2) { // si es servicio a mesas se asigna comer aqui
+            setElement('deliveryType', 1);
+         } else {
+            setElement('deliveryType', 3); // delivery
+         }
+    }
+
    }, [order, serviceType, selectedTable, loadOrders, loadTables]);
 
 }

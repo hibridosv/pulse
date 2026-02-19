@@ -3,7 +3,6 @@
 import { NothingHere } from '@/components/NothingHere';
 import { RestaurantMenuSkeleton } from '@/components/skeleton/RestaurantMenuSkeleton';
 import { URL } from '@/constants';
-import ordersStore from '@/stores/orders/ordersStore';
 import restauranMenuStore from '@/stores/orders/restauranMenuStore';
 import useTempStorage from '@/stores/useTempStorage';
 import { ImageMenu } from './ImageMenu';
@@ -16,14 +15,8 @@ export function RestaurantMenu() {
   const selectedTables = getElement('selectedTables');
   const clientOrder = getElement('clientOrder');
   const selectedTable = getElement('selectedTable');
-  const { order } = ordersStore();
-
-  console.log("clientOrder", clientOrder)
-  console.log("order", order)
-
 
   if ((serviceType == 2 && selectedTables && !selectedTable) || (serviceType == 3 && !clientOrder)) return <></>;
-
 
   const imageLoader = ({ src, width, quality }: any) => {
       return `${URL}/images/ico/${src}?w=${width}&q=${quality || 75}`
