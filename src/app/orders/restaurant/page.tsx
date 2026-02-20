@@ -8,6 +8,7 @@ import { OtherSalesModal } from "@/components/orders/products/OtherSalesModal";
 import { SearchContactModal } from "@/components/orders/products/SearchContactModal";
 import { SelectUserModal } from "@/components/orders/products/SelectUserModal";
 import { SpecialSalesModal } from "@/components/orders/products/SpecialSalesModal";
+import { AddNameModal } from "@/components/orders/restaurant/AddNameModal";
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
 import { ChangeQuantityRestaurantModal } from "@/components/orders/restaurant/ChangeQuantityRestaurantModal";
 import { DeliveryClient } from "@/components/orders/restaurant/DeliveryClient";
@@ -42,7 +43,7 @@ export default function Page() {
   const dateStr = formatDateAsNumber(new Date());
   const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
   // console.log(hash);
-
+  console.log(order);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
@@ -66,6 +67,7 @@ export default function Page() {
               <DeliveryContactSearch />
           </div>
         </div>
+          <AddNameModal isShow={modals.addName} onClose={()=>{ closeModal('addName')}} />
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
           <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
           <SpecialSalesModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />

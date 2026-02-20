@@ -1,6 +1,7 @@
 'use client';
 
 import { usePopper } from '@/components/popper/popperContext';
+import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
 import { Order } from '@/interfaces/order';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
@@ -13,6 +14,7 @@ export interface ButtonsI {
 export function Buttons(props: ButtonsI) {
   const { order } = props
   const { activeConfig, system } = useConfigStore();
+  const { addClient } = useOrderRestaurantFnLogic();
   const { openModal} = useModalStore();
   const { setElement, getElement } = useTempStorage();
   const serviceType: number = getElement('serviceType'); // aqui, mesas, delivery
@@ -34,7 +36,7 @@ export function Buttons(props: ButtonsI) {
   // }
 
   if(!order) return null;
-
+// 
 
   return (<div>
         <div className="w-8/10">
@@ -59,9 +61,9 @@ export function Buttons(props: ButtonsI) {
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('specialSales'); }}> Venta Especial </div>}
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Imprimir pre cuenta</div>
             { serviceType == 2 &&
-              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Agregar cliente a la mesa</div>}
+              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); addClient(order.id) }}> Agregar cliente a la mesa</div>}
             { serviceType == 2 &&
-              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Agregar nombre a la mesa</div>}
+              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addName'); }}> Agregar nombre a la mesa</div>}
             { serviceType == 2 &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Dividir Cuenta</div>}
             { system?.country == 3 &&

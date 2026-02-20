@@ -71,6 +71,19 @@ const addNew = async (producId: any, quantity = 1) => {
       await updateOrder(`orders/${id}/update`, values);
   }
 
+
+    /** Agrega nuevo cliente a la orden */
+  const addClient = async (id: string) => {
+      await updateOrder(`orders/restaurant/${id}/add-client`, {});
+  }
+
+  
+    /** Agrega nombre a la orden */
+  const addName = async (id: string, values: any) => {
+      await updateOrder(`orders/restaurant/${id}/name-table`, values);
+  }
+
+  
   /** las opciones de un producto */
   const option = async (id: string, values: any) => {
       await updateOrder(`orders/restaurant/${id}/option`, values, false);
@@ -105,6 +118,6 @@ const pay = async (data: any) => {
 }
 
 
-  return { addNew, save, saveAndOut, update, cancel, del, option, select, pay }
+  return { addNew, save, saveAndOut, update, addClient, addName, cancel, del, option, select, pay }
 
 }

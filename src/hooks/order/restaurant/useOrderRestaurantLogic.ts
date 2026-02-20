@@ -90,6 +90,14 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
    // verificar si exite algun producto con venta especial sin terminar el preoceso
    useEffect(() => {
       if (initialLoad && order) {
+         if (getElement('lastOrderId') != order.id) { // verifica si hay cambio de orden
+            setElement('lastOrderId', order.id);
+
+            setElement('clientActive', 1)
+            setElement('payMethod', 1);
+            setElement("deliveryType", order?.delivery_type ?? 2)
+         }
+
          if (order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order).length > 0) {
             openModal('specialSales')
          }
@@ -98,8 +106,6 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
             setElement('serviceType', order.order_type);
          }
 
-         setElement('payMethod', 1);
-         setElement("deliveryType", order?.delivery_type ?? 2)
 
          if (serviceType == 2 && !selectedTable != order?.attributes?.restaurant_table_id) {
             setElement('selectedTable', order?.attributes?.restaurant_table_id);

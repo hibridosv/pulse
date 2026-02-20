@@ -5,7 +5,7 @@ import useTempStorage from '@/stores/useTempStorage';
 import { HiCheck, HiUser } from 'react-icons/hi2';
 
 export function RestaurantClients() {
-  const { getElement } = useTempStorage();
+  const { getElement, setElement } = useTempStorage();
   const serviceType: number = getElement('serviceType');
   const clientActive: number = getElement('clientActive');
   const selectedTable = getElement('selectedTable');
@@ -17,7 +17,7 @@ export function RestaurantClients() {
 const listItems = order?.attributes && JSON.parse(order?.attributes.clients)?.map((record: any, index: number) => {
     const isActive = clientActive == record;
     return (
-      <div key={record} className="group clickeable animate-scale-in flex flex-col items-center gap-1.5" onClick={() => console.log(record)} style={{ animationDelay: `${index * 50}ms` }} >
+      <div key={record} className="group clickeable animate-scale-in flex flex-col items-center gap-1.5" onClick={() => setElement('clientActive', record)} style={{ animationDelay: `${index * 50}ms` }} >
         <div className={`relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-105
           ${isActive ? 'bg-accent/15 ring-2 ring-accent shadow-sm' : 'bg-bg-subtle/70 group-hover:bg-primary/15' }`}>
           <HiUser className={`w-5 h-5 transition-colors duration-300 ${isActive ? 'text-accent' : 'text-text-muted group-hover:text-primary'}`} />
