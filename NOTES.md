@@ -10,6 +10,8 @@ verificar si se actualizan las cuentas bancarias despues de usarlas, en cuentas 
 
 Pasar a otro componente los productos sin existencia en las cotizaciones
 
+* Falta modal de cambio de lote en ventas
+
 // en orders o ventas
 * Cambiar en connect pay_method_types ( dejar solo los que se usaran y renombrar los que tiene nombre largo)
 decidir si se muestran las retenciones de sujeto excluido y renta aunque esten a cero o no src\components\orders\products\ShowTotal.tsx
