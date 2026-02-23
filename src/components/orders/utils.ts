@@ -176,3 +176,21 @@ export function countSendPrint(invoice: any) {
 
   return count;
 }
+
+
+
+// agrupa los productos de restaurante por numero de cliente
+export function filterInvoiceProductsByClientNumber(invoice: any, clientNumber: number) {
+  // Filtrar los productos cuyo cliente coincida con el número pasado como parámetro
+  if (!invoice?.invoiceproducts) return;
+  console.log("LLega a la funcion");
+  const filteredProducts = invoice.invoiceproducts.filter(
+      (product: any) => product.attributes.client === clientNumber
+  );
+
+  return {
+      ...invoice,
+      invoiceproducts: filteredProducts
+  };
+}
+

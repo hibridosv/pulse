@@ -1,15 +1,13 @@
 'use client';
 
-import ordersStore from '@/stores/orders/ordersStore';
 import useTempStorage from '@/stores/useTempStorage';
 import { HiCheck, HiUser } from 'react-icons/hi2';
 
-export function RestaurantClients() {
+export function RestaurantClients( { order }: any) {
   const { getElement, setElement } = useTempStorage();
   const serviceType: number = getElement('serviceType');
   const clientActive: number = getElement('clientActive');
   const selectedTable = getElement('selectedTable');
-  const { order } = ordersStore();
 
   if ((serviceType != 2 || !selectedTable)) return <></>;
 

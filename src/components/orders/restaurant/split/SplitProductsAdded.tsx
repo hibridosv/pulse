@@ -1,9 +1,8 @@
 'use client';
 
-import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 import { NothingHere } from "@/components/NothingHere";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
-import { getLastElement, numberToMoney } from "@/lib/utils";
+import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
@@ -11,16 +10,12 @@ import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useSession } from 'next-auth/react';
 import Image from "next/image";
-import { AiFillCloseCircle } from "react-icons/ai";
-import { CgSpinner } from "react-icons/cg";
-import { MdDelete } from "react-icons/md";
-import { groupInvoiceProductsByCodAll, isProductPendientToSend } from "../utils";
+import { groupInvoiceProductsByCodAll } from "../../utils";
 
 
-
-export function RestaurantProductsAdded({ order } : any) {
+export function SplitProductsAdded({ order}: any) {
   const { system } = useConfigStore();
-  const { sending, deleting } = ordersStore();
+  const { order: orderPrincipal, sending, deleting } = ordersStore();
   const { cancel, del } = useOrderRestaurantFnLogic();
   const { data: session } = useSession();
   const  remoteUrl  = session?.url;
@@ -74,11 +69,6 @@ export function RestaurantProductsAdded({ order } : any) {
             <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums`}>
             { numberToMoney(record.total, system) }
             </td>
-            <td className={`px-2 py-1 text-center whitespace-nowrap`}>
-              <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ del(order.id, record.cod)} } >
-                <AiFillCloseCircle size={20} className={`${isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? 'text-grey-800' : 'text-red-800'} clickeable`}  />
-              </CodeRequestGuard>
-            </td>
         </tr>
         )
         });
@@ -103,11 +93,6 @@ export function RestaurantProductsAdded({ order } : any) {
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Producto</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
-              <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">
-                <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ cancel(order.id)} } >
-                { deleting ? <CgSpinner size={22} className={`text-red-800 animate-spin`}  /> : <MdDelete size={22} className={`text-red-800 clickeable`}  /> }
-                </CodeRequestGuard>
-              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">

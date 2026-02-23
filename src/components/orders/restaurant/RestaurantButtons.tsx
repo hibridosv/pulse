@@ -13,10 +13,17 @@ import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import { Buttons } from "./Buttons";
 import { PayButton } from "./Buttons/PayButton";
+import { PrintOrderButton } from "./Buttons/PrintOrderButton";
 import { SaveButton } from "./Buttons/SaveButton";
 
-export function RestaurantButtons() {
-  const { collecting, order, sending } = ordersStore();
+interface Props {
+  order: any;
+  isSplit?: boolean;
+}
+
+
+export function RestaurantButtons({ order, isSplit = false}: Props) {
+  const { collecting, sending } = ordersStore();
   const { pay } = useOrderRestaurantFnLogic();
   const { modals, closeModal, openModal} = useModalStore();
   const { system, cashdrawer, activeConfig } =useConfigStore();
@@ -108,16 +115,17 @@ const handleKeyboardChange = (inputValue: string) => {
           <input type="number" step="any" min={0} readOnly={sending || collecting} className="input" placeholder='Ingrese una cantidad' {...register("cash")} />
           }
         </>}
-        <div className="grid grid-cols-[2fr_1fr_2fr]">
-          <Popper label={
+        <div className={`${ isSplit ? 'flex justify-end' : 'grid grid-cols-[2fr_1fr_2fr]'}`}>
+          { !isSplit &&
+            <Popper label={
             <div className="button-grey clickeable">
               <IoMdOptions className="mr-1.5" /> Opciones
             </div>
           }>
             <Buttons order={order} />
-          </Popper>
+          </Popper> }
 
-          <SaveButton />
+          { isSplit ? <PrintOrderButton /> : <SaveButton />}
           <PayButton />
         </div>
       </form>

@@ -1,6 +1,5 @@
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
-import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
 
 
@@ -12,8 +11,7 @@ export function deliveryTypeRestaurant(type: number) {
     }
 }
 
-export function DeliveryContactSearch() {
-  const { order } = ordersStore();
+export function DeliveryContactSearch( { order }: any ) {
   const { getElement, setElement, clearElement} = useTempStorage();
   const serviceType: number = getElement('serviceType');
 

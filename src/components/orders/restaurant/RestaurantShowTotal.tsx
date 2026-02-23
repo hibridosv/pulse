@@ -4,8 +4,8 @@ import ordersStore from "@/stores/orders/ordersStore";
 import { sumarDiscount, sumarSalesTotal, sumarSubtotal, sumarTotalesWithoutDiscount, sumarTotalRetentionRenta, sumarTotalRetentionSujetoExcluido } from "../utils";
 
 
-export function RestaurantShowTotal() {
-  const { order, sending} = ordersStore();
+export function RestaurantShowTotal({ order}: any) {
+  const { sending} = ordersStore();
   const { system } =useConfigStore();
 
 

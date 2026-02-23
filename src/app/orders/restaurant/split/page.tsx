@@ -1,5 +1,6 @@
 'use client';
 
+import { Button, Preset } from "@/components/button/button";
 import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { AddCommentModal } from "@/components/orders/common/AddCommentModal";
 import { DiscountsModal } from "@/components/orders/common/DiscountsModal";
@@ -11,9 +12,6 @@ import { SpecialSalesModal } from "@/components/orders/products/SpecialSalesModa
 import { AddNameModal } from "@/components/orders/restaurant/AddNameModal";
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
 import { ChangeQuantityRestaurantModal } from "@/components/orders/restaurant/ChangeQuantityRestaurantModal";
-import { DeliveryClient } from "@/components/orders/restaurant/DeliveryClient";
-import { DeliveryContactSearch } from "@/components/orders/restaurant/DeliveryContactSearch";
-import { DeliveryOrders } from "@/components/orders/restaurant/DeliveryOrders";
 import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeModal";
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
@@ -21,49 +19,50 @@ import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestau
 import { ProductOptionsModal } from "@/components/orders/restaurant/ProductOptionsModal";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
 import { RestaurantClients } from "@/components/orders/restaurant/RestaurantClients";
-import { RestaurantMenu } from "@/components/orders/restaurant/RestaurantMenu";
-import { RestaurantProductsAdded } from "@/components/orders/restaurant/RestaurantProductsAdded";
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
-import { RestaurantTables } from "@/components/orders/restaurant/RestaurantTables";
-import { ServiceTypeSelect } from "@/components/orders/restaurant/ServiceTypeSelect";
+import { SplitClient } from "@/components/orders/restaurant/split/SplitClient";
+import { SplitProductsAdded } from "@/components/orders/restaurant/split/SplitProductsAdded";
+import { filterInvoiceProductsByClientNumber } from "@/components/orders/utils";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
 import { useOrderRestaurantLogic } from "@/hooks/order/restaurant/useOrderRestaurantLogic";
-import { formatDateAsNumber } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
-import CryptoJS from 'crypto-js';
+import useTempStorage from "@/stores/useTempStorage";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   useMenuLogic();
   useOrderRestaurantLogic(true);
-  const { order, orders } = ordersStore();
+  const { order: orderPrincipal , orders } = ordersStore();
   const { modals, closeModal } = useModalStore();
+  const router = useRouter();
+  const { getElement} = useTempStorage();
+  const clientActive = getElement('clientActive') ?? 1;
 
-  const dateStr = formatDateAsNumber(new Date());
-  const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
-  // console.log(hash);
-  console.log(order);
+
+  // console.log("orderPrincipal", orderPrincipal);
+  const order = filterInvoiceProductsByClientNumber(orderPrincipal, clientActive);
+  // console.log("clientActive", clientActive);
+  console.log(order?.invoiceproducts?.length);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
           <div className="md:col-span-6 md:border-r md:border-primary">
             <div className="relative z-0">
-              <DeliveryClient />
               <RestaurantClients order={order} />
-              <RestaurantMenu />
-              <RestaurantTables />
-              <DeliveryOrders />
             </div>
           </div>
           <div className="md:col-span-4 flex justify-center ">
             <div className="w-full">
-              <ServiceTypeSelect order={order} />
-              <RestaurantProductsAdded order={order} />
+              <SplitClient />
+              <SplitProductsAdded order={order} />
               <RestaurantShowTotal order={order} />
-              <RestaurantButtons order={order} />
+              <RestaurantButtons order={order} isSplit={true} />
               <OptionsSelect order={order} />
-              <DeliveryContactSearch order={order} />
+                <div className="w-full p-4 flex justify-end">
+                  <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   
+                </div> 
           </div>
         </div>
           <AddNameModal isShow={modals.addName} onClose={()=>{ closeModal('addName')}} />

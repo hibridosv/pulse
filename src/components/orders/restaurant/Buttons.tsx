@@ -6,6 +6,7 @@ import { Order } from '@/interfaces/order';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
+import { useRouter } from 'next/navigation';
 
 export interface ButtonsI {
   order: Order;
@@ -14,7 +15,7 @@ export interface ButtonsI {
 export function Buttons(props: ButtonsI) {
   const { order } = props
   const { activeConfig, system } = useConfigStore();
-  const { addClient } = useOrderRestaurantFnLogic();
+  const { addClient, save } = useOrderRestaurantFnLogic();
   const { openModal} = useModalStore();
   const { setElement, getElement } = useTempStorage();
   const serviceType: number = getElement('serviceType'); // aqui, mesas, delivery
@@ -27,6 +28,7 @@ export function Buttons(props: ButtonsI) {
   const isSpecial = activeConfig && activeConfig.includes("sales-special");
   const isComment = activeConfig && activeConfig.includes("sales-comment");
   const { setIsOpen } = usePopper();
+  const router = useRouter();
 
 
   //const validateFields = ()=>{
@@ -59,13 +61,13 @@ export function Buttons(props: ButtonsI) {
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addComment') }}> Agregar comentario </div>}
             { isSpecial && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('specialSales'); }}> Venta Especial </div>}
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Imprimir pre cuenta</div>
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); save(order.id, true) }}> Imprimir pre cuenta</div>
             { serviceType == 2 &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); addClient(order.id) }}> Agregar cliente a la mesa</div>}
             { serviceType == 2 &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addName'); }}> Agregar nombre a la mesa</div>}
             { serviceType == 2 &&
-              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Dividir Cuenta</div>}
+              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); router.push(`/orders/restaurant/split`) }}> Dividir Cuenta</div>}
             { system?.country == 3 &&
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Buscar por NIT</div> }
           </div>

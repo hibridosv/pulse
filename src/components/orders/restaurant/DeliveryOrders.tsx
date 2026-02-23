@@ -7,7 +7,7 @@ import useStateStore from '@/stores/useTempStorage';
 import { DeliveryCard } from './DeliveryCard';
 
 export function DeliveryOrders() {
-  const { orders, loading, order } = ordersStore();
+  const { orders, loading } = ordersStore();
   const { getElement } = useStateStore();
   const serviceType: number = getElement('serviceType');
   const clientOrder = getElement('clientOrder');

@@ -23,7 +23,7 @@ export function PayButton() {
   if (!order) return <></>
 
     return (
-        <div>
+        <div className="w-full">
           { payMethod == 1 ?
             <button
               disabled={disabledButonPay}
