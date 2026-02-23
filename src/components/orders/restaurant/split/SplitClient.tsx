@@ -1,32 +1,33 @@
 'use client';
 
 import useTempStorage from '@/stores/useTempStorage';
-import { HiCheck, HiUser } from 'react-icons/hi';
+import { HiUser } from 'react-icons/hi2';
 
 export function SplitClient() {
   const { getElement } = useTempStorage();
   const serviceType: number = getElement('serviceType');
   const clientActive = getElement('clientActive');
 
-  if ((serviceType != 2 || !clientActive)) return <></>;
+  if (serviceType != 2 || !clientActive) return <></>;
 
   return (
-    <div className="w-full px-3 py-1.5 animate-fade-in mb-2">
-      <div className="flex items-center gap-2.5 bg-bg-content rounded-lg shadow-sm border border-bg-subtle px-3 py-1.5 w-full">
-        <div className={`relative w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-105
-          bg-accent/15 ring-2 ring-accent shadow-sm`}>
-          <HiUser className={`w-5 h-5 transition-colors duration-300 text-accent`} />
-            <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-success flex items-center justify-center shadow-md ring-2 ring-bg-content">
-              <HiCheck className="w-3 h-3 text-white" />
+    <div className="px-3 pt-2">
+      <div className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle overflow-hidden">
+        <div className="flex items-center px-4 py-2">
+          <div className="relative shrink-0 w-9 h-9 rounded-full flex items-center justify-center bg-primary text-text-inverted">
+            <HiUser className="w-5 h-5" />
+            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-accent flex items-center justify-center ring-2 ring-bg-content">
+              <span className="text-[10px] font-bold text-text-inverted tabular-nums">{clientActive}</span>
             </div>
-        </div>
+          </div>
 
+          <div className="h-5 w-px bg-bg-subtle mx-3" />
 
+          <span className="text-sm font-semibold text-text-base uppercase tracking-wide">
+            Cliente activo #{clientActive}
+          </span>
 
-        <div className="h-4 w-px bg-bg-subtle mx-1" />
-
-        <div className="flex items-center gap-1 text-text-muted shrink-0 text-lg font-medium uppercase">
-          <span>Cliente numero { clientActive } activo</span>
+          <div className="ml-auto w-2 h-2 rounded-full bg-success shrink-0" />
         </div>
       </div>
     </div>
