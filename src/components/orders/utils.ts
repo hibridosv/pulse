@@ -183,7 +183,6 @@ export function countSendPrint(invoice: any) {
 export function filterInvoiceProductsByClientNumber(invoice: any, clientNumber: number) {
   // Filtrar los productos cuyo cliente coincida con el número pasado como parámetro
   if (!invoice?.invoiceproducts) return;
-  console.log("LLega a la funcion");
   const filteredProducts = invoice.invoiceproducts.filter(
       (product: any) => product.attributes.client === clientNumber
   );

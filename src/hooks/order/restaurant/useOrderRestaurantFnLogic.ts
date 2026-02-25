@@ -9,15 +9,14 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 import useTempStorage from '@/stores/useTempStorage';
 
 export function useOrderRestaurantFnLogic() {
-  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs } = ordersRestaurantsStore();
-  const { order, error, lastResponse } = ordersStore();
-  const { activeConfig, system } = useConfigStore();
+  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit } = ordersRestaurantsStore();
+  const { order, error, lastResponse, collecting } = ordersStore();
+  const { activeConfig, system, user } = useConfigStore();
   const { getElement } = useTempStorage();
   const {modals} = useModalStore();
   const payMethod = getElement('payMethod') ?? 1;
   const typeOfPrice = getElement('typeOfPrice') ?? 1;
   const clientActive = getElement('clientActive') ?? 1;
-  const clientNumber = getElement('clientNumber') ?? null;
   const selectedTable = getElement('selectedTable') ?? null;
   const clientOrder = getElement('clientOrder');
   const specialSales = modals.specialSales ?? false;
@@ -25,8 +24,6 @@ export function useOrderRestaurantFnLogic() {
   const deliveryType: number = getElement('deliveryType'); // aqui, llevar, delivery
   const serviceType: number = getElement('serviceType'); // aqui, mesas, delivery
   const { setMessage} = useToastMessageStore();
-
-
 
 const addNew = async (producId: any, quantity = 1) => {
     if (!producId){
@@ -77,6 +74,12 @@ const addNew = async (producId: any, quantity = 1) => {
       await updateOrder(`orders/restaurant/${id}/add-client`, {});
   }
 
+  /** cambia el cliente al producto al dicidir orden */
+  const changeClient = async (id: string) => {
+      await updateOrder(`orders/product/${id}/client`, { client: clientActive });
+  }
+
+
   
     /** Agrega nombre a la orden */
   const addName = async (id: string, values: any) => {
@@ -112,12 +115,24 @@ const pay = async (data: any) => {
       payment_type: payMethod, // efectivo, tarjeta, transferencia, cheque, credito
       invoice_type_id: order?.invoice_type_id,
       client_active: clientActive, // Cliente activo para asignar producto
-      client_number: clientNumber
+      client_number: null
     };
     await payOrder(`orders/restaurant/${order.id}/pay`, values);
 }
 
 
-  return { addNew, save, saveAndOut, update, addClient, addName, cancel, del, option, select, pay }
+/// pagar orden separada
+const paySplit = async (data: any) => {
+    let values = {
+      cash: data.cash || 0,
+      payment_type: payMethod, // efectivo, tarjeta, transferencia, cheque, credito
+      invoice_type_id: order?.invoice_type_id,
+      client_active: clientActive, // Cliente activo para asignar producto
+      client_number: clientActive
+    };
+     await payOrderSplit(`orders/restaurant/${order.id}/pay`, values);
+  }
+
+  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, cancel, del, option, select, pay, paySplit }
 
 }

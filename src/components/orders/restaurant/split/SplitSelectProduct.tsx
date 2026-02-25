@@ -9,61 +9,58 @@ import ordersStore from "@/stores/orders/ordersStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useSession } from 'next-auth/react';
-import Image from "next/image";
-import { groupInvoiceProductsByCodAll } from "../../utils";
+import { AiFillCloseCircle } from "react-icons/ai";
+import { FaCheckSquare } from "react-icons/fa";
 
 
-export function SplitProductsAdded({ order}: any) {
+export function SplitSelectProduct({ order}: any) {
   const { system } = useConfigStore();
   const { order: orderPrincipal, sending, deleting } = ordersStore();
-  const { cancel, del } = useOrderRestaurantFnLogic();
+  const { changeClient } = useOrderRestaurantFnLogic();
   const { data: session } = useSession();
   const  remoteUrl  = session?.url;
   const { setElement, getElement } = useTempStorage();
   const { openModal} = useModalStore();
   const { setError } = useToastMessageStore();
   const serviceType: number = getElement('serviceType');
+  const clientActive = getElement('clientActive');
 
 
   if (serviceType == 3 && !order) return <></>;
 
-
-    const imageLoader = ({ src, width, quality }: any) => {
-        return `${remoteUrl}/images/logo/${src}?w=${width}&q=${quality || 75}`
-    }
             
     if (!order?.invoiceproducts) return (
         <div className="hidden w-full md:grid place-items-center">
-            { system && system?.logo ? 
-            <Image loader={imageLoader} src={system && system?.logo} alt="Hibrido" width={500} height={500} className="w-full max-w-[500px]"
-            sizes="(max-width: 768px) 100vw, 500px" /> :
-            <NothingHere width="500" text=" " />
-            }
+            <NothingHere width="500" text="" />
         </div>
     )
 
-    order?.invoiceproducts && groupInvoiceProductsByCodAll(order);
-        const listItems = order?.invoiceproductsGroup.map((record: any, index: number) => {
-           const hasOptions = record.options.length > 0;
+      const listItems = order.invoiceproducts && order?.invoiceproducts.map((record: any, index: number) => {
         return (
         <tr key={index}
             className={`${sending ? 'opacity-50 pointer-events-none' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
-            <td className={`px-2 py-1 whitespace-nowrap text-primary text-center font-normal`}
-             >
+            <td className={`px-2 py-1 whitespace-nowrap text-primary text-center font-normal`}>
               { record.quantity }
             </td>
             <td className="px-2 py-1 text-left whitespace-nowrap font-medium " >
             { record.product }
             </td>
-            <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums`}>
+            <td className={`px-2 py-1 text-center whitespace-nowrap tabular-nums`}>
               { numberToMoney(record.unit_price, system) }
             </td>
+            <td className={`px-2 py-1 text-center whitespace-nowrap tabular-nums`}>
+               { record?.attributes?.client ?? "Sin asignar"}
+            </td>
             <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums`}>
-            { numberToMoney(record.total, system) }
+              {record.attributes.client == clientActive ? 
+                <AiFillCloseCircle size={24} className="text-red-600" /> 
+                :
+                <FaCheckSquare size={24} className="text-green-600 clickeable" onClick={()=>changeClient(record.id)}/>
+                }
             </td>
         </tr>
         )
-        });
+      });
 
   return (
     <div className="m-2">
@@ -84,7 +81,8 @@ export function SplitProductsAdded({ order}: any) {
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cant</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Producto</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
-              <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
+              <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cliente</th>
+              <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">

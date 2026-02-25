@@ -36,7 +36,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
 
 
   
-  // para sistema de productos
+  // Inicializa los elementos para el tipo de servicio
   useEffect(() => {
         if (initialLoad && activeConfig) {
             if (!serviceType) {

@@ -27,8 +27,6 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
   const permissionHere = permissionExists(permission, "restaurant-sales-here");
   const serviceType: number = getElement('serviceType');
   const { saveAndOut } = useOrderRestaurantFnLogic();
-  const selectedTable = getElement('selectedTable');
-  const selectedTables = getElement('selectedTables');
 
 
   const countFeatures = () => {

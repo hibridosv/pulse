@@ -22,6 +22,7 @@ import { RestaurantClients } from "@/components/orders/restaurant/RestaurantClie
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
 import { SplitClient } from "@/components/orders/restaurant/split/SplitClient";
 import { SplitProductsAdded } from "@/components/orders/restaurant/split/SplitProductsAdded";
+import { SplitSelectProduct } from "@/components/orders/restaurant/split/SplitSelectProduct";
 import { filterInvoiceProductsByClientNumber } from "@/components/orders/utils";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
@@ -30,27 +31,40 @@ import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
   useMenuLogic();
   useOrderRestaurantLogic(true);
-  const { order: orderPrincipal , orders } = ordersStore();
+  const { order: orderPrincipal } = ordersStore();
   const { modals, closeModal } = useModalStore();
   const router = useRouter();
-  const { getElement} = useTempStorage();
+  const { getElement, setElement} = useTempStorage();
   const clientActive = getElement('clientActive') ?? 1;
 
+  useEffect(() => {
+    if (orderPrincipal && orderPrincipal.invoiceproducts && orderPrincipal.invoiceproducts.length > 0) {
+      let client = orderPrincipal.attributes && (JSON.parse(orderPrincipal?.attributes.clients));
+      if (client && client.length > 0) {
+        setElement('clientActive', client[0]);
+      } else {
+        setElement('clientActive', 1);
+        router.push("/orders/restaurant");
+      }
+    } else {
+      setElement('clientActive', 1);
+      router.push("/orders/restaurant");
+    }
+  }, [orderPrincipal]);
 
-  // console.log("orderPrincipal", orderPrincipal);
   const order = filterInvoiceProductsByClientNumber(orderPrincipal, clientActive);
-  // console.log("clientActive", clientActive);
-  console.log(order?.invoiceproducts?.length);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
           <div className="md:col-span-6 md:border-r md:border-primary">
             <div className="relative z-0">
               <RestaurantClients order={order} />
+              <SplitSelectProduct order={orderPrincipal} />
             </div>
           </div>
           <div className="md:col-span-4 flex justify-center ">

@@ -24,7 +24,7 @@ interface Props {
 
 export function RestaurantButtons({ order, isSplit = false}: Props) {
   const { collecting, sending } = ordersStore();
-  const { pay } = useOrderRestaurantFnLogic();
+  const { pay, paySplit } = useOrderRestaurantFnLogic();
   const { modals, closeModal, openModal} = useModalStore();
   const { system, cashdrawer, activeConfig } =useConfigStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
@@ -51,8 +51,14 @@ export function RestaurantButtons({ order, isSplit = false}: Props) {
   let fieldsRequired = validateFields();
   
   const handlePay = async (data: any) => {
-        await pay(data);
-        reset(); // Resetea el estado del formulario en react-hook-form
+    if(isSplit){
+      console.log("paySplit");
+      await paySplit(data);
+    } else {
+        console.log("pay");
+      await pay(data);
+    }
+    reset(); // Resetea el estado del formulario en react-hook-form
     if (activeConfig && activeConfig.includes("input-sales-keyboard")) {
         setInput(''); // Resetea el estado del input
         if (keyboard) {
@@ -126,7 +132,7 @@ const handleKeyboardChange = (inputValue: string) => {
           </Popper> }
 
           { isSplit ? <PrintOrderButton /> : <SaveButton />}
-          <PayButton />
+          <PayButton isSplit={isSplit} />
         </div>
       </form>
       </div>

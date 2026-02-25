@@ -27,6 +27,7 @@ export function Buttons(props: ButtonsI) {
   const isOtherSales = activeConfig && activeConfig.includes("sales-other-sales");
   const isSpecial = activeConfig && activeConfig.includes("sales-special");
   const isComment = activeConfig && activeConfig.includes("sales-comment");
+  const isSpliter =  JSON.parse(order.attributes.clients).length > 1;
   const { setIsOpen } = usePopper();
   const router = useRouter();
 
@@ -38,8 +39,7 @@ export function Buttons(props: ButtonsI) {
   // }
 
   if(!order) return null;
-// 
-
+  
   return (<div>
         <div className="w-8/10">
 
@@ -66,7 +66,7 @@ export function Buttons(props: ButtonsI) {
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); addClient(order.id) }}> Agregar cliente a la mesa</div>}
             { serviceType == 2 &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addName'); }}> Agregar nombre a la mesa</div>}
-            { serviceType == 2 &&
+            { serviceType == 2 && isSpliter &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); router.push(`/orders/restaurant/split`) }}> Dividir Cuenta</div>}
             { system?.country == 3 &&
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Buscar por NIT</div> }

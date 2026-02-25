@@ -6,9 +6,9 @@ import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { sumarTotales } from "../../utils";
 
 
-export function PayButton() {
+export function PayButton({ isSplit = false }: any) {
   const { order, sending, collecting } = ordersStore();
-  const { pay } = useOrderRestaurantFnLogic();
+  const { pay, paySplit } = useOrderRestaurantFnLogic();
   const { system, cashdrawer } =useConfigStore();
   const { getElement} = useTempStorage();
   const payMethod = getElement('payMethod') ?? 1;
@@ -36,7 +36,7 @@ export function PayButton() {
             <div
               className={`button-cyan w-full transition-opacity duration-200 ${disabledButonPay ? 'opacity-50 cursor-not-allowed' : 'clickeable'}`}
               title="Cobrar"
-              onClick={(disabledButonPay) ? ()=>{} : ()=>pay({ cash: 0 })}
+              onClick={(disabledButonPay) ? ()=>{} : isSplit ? ()=>paySplit({ cash: 0 }) : ()=>pay({ cash: 0 })}
             >
               <FaRegMoneyBillAlt className="mr-1.5" size={20} /> Cobrar
             </div>

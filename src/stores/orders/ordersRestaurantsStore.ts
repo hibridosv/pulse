@@ -12,6 +12,7 @@ interface ordersRestaurantsStoreI {
   loadOrders: (url: string, showToast?: boolean) => Promise<void>;
   loadOrder: (url: string, showToast?: boolean) => Promise<void>;
   payOrder: (url: string, data: any) => Promise<void>;
+  payOrderSplit: (url: string, data: any) => Promise<void>;
   saveOrder: (url: string, data: any) => Promise<void>;
   deleteOrder: (url: string) => Promise<void>;
   updateOrder: (url: string, data: any, showToast?: boolean) => Promise<void>;
@@ -83,12 +84,34 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
         useModalStore.getState().openModal('paymentSuccess');
         try {
             const response = await createService(url, data);
-            ordersStore.setState({ order: null, error: false, lastResponse: response.data.data });
-            useTempStorage.getState().setElement("paymentSuccess", response.data.data);
+            console.log("response", response.data.data);
+            ordersStore.setState({ order: null, error: false, lastResponse: response.data.data.order });
+            useTempStorage.getState().setElement("paymentSuccess", response.data.data.order);
             ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
             useTempStorage.getState().clearElement('selectedTable');
             useTempStorage.getState().clearElement('clientOrder');
             useTempStorage.getState().clearElement('clientSelectedByDelivery');
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            useModalStore.getState().closeModal('paymentSuccess');
+            ordersStore.setState({ error: true });
+        } finally {
+            ordersStore.setState({ collecting: false });
+        }
+    },
+
+      payOrderSplit: async (url, data) => {
+        ordersStore.setState({ collecting: true });
+        useModalStore.getState().openModal('paymentSuccess');
+        try {
+            const response = await createService(url, data);
+            console.log("response", response.data.data);
+            ordersStore.setState({ order: response.data.data.invoice, error: false, lastResponse: response.data.data.order });
+            useTempStorage.getState().setElement("paymentSuccess", response.data.data.order);
+            ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
+            // useTempStorage.getState().clearElement('selectedTable');
+            // useTempStorage.getState().clearElement('clientOrder');
+            // useTempStorage.getState().clearElement('clientSelectedByDelivery');
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             useModalStore.getState().closeModal('paymentSuccess');

@@ -37,6 +37,7 @@ export interface Order {
   active_print: number
   created_at: string
   updated_at: string
+  attributes: any
   products: Invoiceproduct[]
   invoiceproducts: Invoiceproduct[]
   delivery: Contact
