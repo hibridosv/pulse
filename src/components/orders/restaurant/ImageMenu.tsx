@@ -65,11 +65,11 @@ const dismiss = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                  {isSending && (
+                  {/* {isSending && (
                     <div className="absolute inset-0 flex items-center justify-center bg-primary/30">
                       <div className="h-7 w-7 rounded-full border-[3px] border-white/30 border-t-white animate-spin" />
                     </div>
-                  )}
+                  )} */}
                 </div>
 
                 <div className={`

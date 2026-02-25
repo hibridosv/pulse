@@ -123,7 +123,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
             }
 
       }
-  }, [initialLoad, order, openModal, serviceType, setElement, selectedTable, clientOrder])
+  }, [initialLoad, order, openModal, serviceType, setElement, selectedTable, clientOrder, getElement])
 
 
    useEffect(() => {
@@ -145,6 +145,6 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
          }
     }
 
-   }, [order, serviceType, selectedTable, loadOrders, loadTables]);
+   }, [order, serviceType, selectedTable, loadOrders, loadTables, setElement]);
 
 }

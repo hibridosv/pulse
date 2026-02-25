@@ -34,7 +34,7 @@ export function DeliveryCard({ record }: DeliveryCardProps) {
   };
 
   return (
-    <div className="group clickeable animate-scale-in" onClick={handleSelect}>
+    <div className="group clickeable" onClick={handleSelect}>
       <div className={`w-44 bg-bg-content rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${status.border}`}>
 
         <div className="flex flex-col items-center px-2.5 pt-3 pb-2 gap-1.5">
