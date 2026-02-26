@@ -1,80 +1,17 @@
 'use client';
 import { ViewTitle } from "@/components/ViewTitle";
+import { useSettingsPermissionLogic } from "@/hooks/settings/useSettingsPermissionLogic";
 import { permissionExists } from "@/lib/utils";
-import { createService, getServices } from "@/services/services";
 import useConfigStore from "@/stores/configStore";
-import useToastMessageStore from "@/stores/toastMessageStore";
-import { useEffect, useState } from "react";
 import { BiAnalyse } from "react-icons/bi";
+import { canViewRole } from "../utils";
 
-const canViewRole = (userRole: string, roleName: string): boolean => {
-  if (userRole === "Root") return true;
-  if (userRole === "Gerencia" && roleName !== "Root") return true;
-  if (userRole === "Administracion" && roleName !== "Root" && roleName !== "Gerencia") return true;
-  return false;
-};
+
 
 
 export default function Page() {
-  const { permission, role } = useConfigStore();
-  const [roles, setRoles] = useState<any[]>([]);
-  const [allPermissions, setAllPermissions] = useState<any[]>([]);
-  const [roleData, setRoleData] = useState<any>(null);
-  const [selectedRoleName, setSelectedRoleName] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadInitialData = async () => {
-      try {
-        const [permRes, rolesRes] = await Promise.all([
-          getServices('roles/permissions'),
-          getServices('roles/roles'),
-        ]);
-        setAllPermissions(permRes.data.data ?? []);
-        setRoles(rolesRes.data.data ?? []);
-      } catch (error) {
-        useToastMessageStore.getState().setError(error);
-      }
-    };
-    loadInitialData();
-  }, []);
-
-  useEffect(() => {
-    if (roles.length > 0 && !roleData) {
-      const firstVisible = roles.find((r: any) => role && canViewRole(role, r.name));
-      if (firstVisible) handleGetPermissions(firstVisible.name);
-    }
-    // eslint-disable-next-line
-  }, [roles]);
-
-
-
-  const handleGetPermissions = async (roleName: string) => {
-    setIsLoading(true);
-    setSelectedRoleName(roleName);
-    try {
-      const response = await getServices(`roles/find/${roleName}`);
-      setRoleData(response.data.data);
-    } catch (error) {
-      useToastMessageStore.getState().setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleChangePermission = async (isActive: boolean, iden: string) => {
-    setUpdatingId(iden);
-    console.log(`Changing permission ${roleData?.name}`);
-    try {
-      const response = await createService('roles/change', { is_active: isActive, iden, role: roleData?.name });
-      setRoleData(response.data.data);
-    } catch (error) {
-      useToastMessageStore.getState().setError(error);
-    } finally {
-      setUpdatingId(null);
-    }
-  };
+  const { role, permission } = useConfigStore();
+  const { handleChangePermission, handleGetPermissions, allPermissions, roles, roleData, selectedRoleName, isLoading, updatingId } = useSettingsPermissionLogic();
 
 
   if (!allPermissions.length) return null;
@@ -139,7 +76,7 @@ export default function Page() {
 
                   return (
                     <div key={item.uuid ?? index} className={`flex items-center justify-between px-4 py-3 hover:bg-bg-subtle/30 transition-all ${isUpdating ? 'opacity-60' : ''}`}>
-                      <span className="text-sm font-medium text-text-base pr-4">
+                      <span className="text-sm text-text-base pr-4">
                         <span className="text-text-muted mr-2">{index + 1}.</span>
                         {item.description}
                       </span>
