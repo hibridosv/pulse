@@ -1,6 +1,6 @@
 import { CashDrawer } from '@/interfaces/cashdrawers';
 import { User } from '@/interfaces/user';
-import { getServices } from '@/services/services';
+import { getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import useToastMessageStore from './toastMessageStore';
@@ -25,6 +25,7 @@ interface ConfigStoreState {
   _hasHydrated: boolean;
   setHasHydrated: (v: boolean) => void;
   loadConfig: () => Promise<void>;
+  updateConfiguration: (id: number, active: number) => Promise<void>;
   setActiveConfig: (activeConfig: any) => void;
   clearConfig: () => void;
 }
@@ -75,6 +76,16 @@ const useConfigStore = create(
           set({ error: true, isLoaded: false });
         } finally {
           set({ loading: false });
+        }
+      },
+
+      updateConfiguration: async (id: number, active: number) => {
+        try {
+          const response = await updateService(`config/${id}`, { active });
+          set({ configurations: response.data.data });
+          useToastMessageStore.getState().setMessage('Configuración actualizada');
+        } catch (error) {
+          useToastMessageStore.getState().setError(error);
         }
       },
 
