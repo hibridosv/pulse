@@ -130,7 +130,7 @@ export const menuItems: MenuItem[] = [
     permissions: ["config", "config-products", "config-user", "config-permissions", "config-transfers"],
     children: [
       { label: "Principal", href: "/settings/general", permission: "config" },
-      { label: "Productos", href: "/settings/products", permission: "config-products" },
+      { label: "Comercial", href: "/settings/products", permission: "config-products" },
       { label: "Usuarios", href: "/settings/users", permission: "config-user" },
       { label: "Permisos de Usuario", href: "/settings/permissions", permission: "config-permissions" },
       { label: "Sucursales", href: "/settings/branches", permission: "config-transfers" },
