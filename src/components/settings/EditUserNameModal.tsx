@@ -1,9 +1,9 @@
 'use client';
-import Modal from '@/components/modal/Modal';
 import { Button, Preset } from '@/components/button/button';
+import Modal from '@/components/modal/Modal';
 import useUserStore from '@/stores/UserStore';
-import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface EditUserNameModalProps {
   isShow: boolean;
@@ -31,7 +31,7 @@ export function EditUserNameModal({ isShow, onClose, user, onSubmit }: EditUserN
     <Modal show={isShow} onClose={onClose} size="md" headerTitle="Cambiar nombre de usuario">
       <Modal.Body>
         <form onSubmit={handleSubmit(handleFormSubmit)} className="w-full">
-          <div className="flex flex-wrap -mx-3 mb-4">
+          <div className="flex flex-wrap mb-4">
             <div className="w-full px-3 mb-2">
               <label htmlFor="edit-name" className="input-label">Nombre de usuario *</label>
               <input type="text" id="edit-name" {...register('name', { required: true })} className="input" />
