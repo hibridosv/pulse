@@ -4,9 +4,9 @@ import { ViewTitle } from '@/components/ViewTitle';
 import {
   FiDollarSign, FiShoppingCart, FiBox, FiTrendingUp,
   FiArrowUpRight, FiArrowDownRight, FiCreditCard, FiPercent,
-  FiActivity, FiCalendar, FiTarget,
+  FiActivity, FiCalendar, FiTarget, FiTag, FiDatabase,
 } from 'react-icons/fi';
-import { HiOutlineBanknotes, HiOutlineDocumentText } from 'react-icons/hi2';
+import { HiOutlineBanknotes, HiOutlineDocumentText, HiOutlineReceiptPercent, HiOutlineClipboardDocumentList } from 'react-icons/hi2';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -37,6 +37,17 @@ const secondaryCards = [
   { title: 'Cuentas por Cobrar', value: '$4,320.00', icon: HiOutlineBanknotes, color: 'text-warning', bg: 'bg-warning/10' },
   { title: 'Margen Promedio', value: '38.2%', icon: FiPercent, color: 'text-success', bg: 'bg-success/10' },
   { title: 'Facturas Emitidas', value: '156', icon: HiOutlineDocumentText, color: 'text-info', bg: 'bg-info/10' },
+];
+
+const detailCards = [
+  { label: 'Descuentos', value: '$0.00', icon: FiTag, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+  { label: 'Total de gastos', value: '$0.00', icon: HiOutlineReceiptPercent, color: 'text-red-500', bg: 'bg-red-500/10' },
+  { label: 'Total créditos', value: '$453.00', icon: FiCreditCard, color: 'text-violet-600', bg: 'bg-violet-500/10' },
+  { label: 'Abonos créditos hoy', value: '$873.63', icon: FiArrowDownRight, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
+  { label: 'Total por pagar', value: '$26.00', icon: HiOutlineClipboardDocumentList, color: 'text-amber-600', bg: 'bg-amber-500/10' },
+  { label: 'Abonos cuentas hoy', value: '$0.00', icon: FiArrowUpRight, color: 'text-sky-500', bg: 'bg-sky-500/10' },
+  { label: 'Productos vendidos', value: '208', icon: FiShoppingCart, color: 'text-blue-600', bg: 'bg-blue-500/10' },
+  { label: 'Valor de inventario', value: '$874,430.82', icon: FiDatabase, color: 'text-emerald-700', bg: 'bg-emerald-600/10' },
 ];
 
 const weeklyLabels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
@@ -192,9 +203,37 @@ const rankColors = [
   'bg-sky-400 text-white',
 ];
 
+// --- ANIMATION HELPER ---
+const staggeredFadeUp = (index: number, baseDelay = 0) => ({
+  opacity: 0,
+  animation: `dashFadeUp 0.5s ease-out forwards`,
+  animationDelay: `${baseDelay + index * 70}ms`,
+});
+
+const sectionFadeUp = (delayMs: number) => ({
+  opacity: 0,
+  animation: `dashFadeUp 0.6s ease-out forwards`,
+  animationDelay: `${delayMs}ms`,
+});
+
 export default function DashboardPage() {
   return (
     <div className="bg-bg-base min-h-screen pb-8">
+      <style>{`
+        @keyframes dashFadeUp {
+          from { opacity: 0; transform: translateY(18px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes dashScaleIn {
+          from { opacity: 0; transform: scale(0.92); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes dashSlideRight {
+          from { opacity: 0; transform: translateX(-16px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+      `}</style>
+
       <ViewTitle text="Dashboard" />
 
       <div className="px-3 sm:px-5 space-y-5">
@@ -205,7 +244,7 @@ export default function DashboardPage() {
             <div
               key={card.title}
               className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-3.5 sm:p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-              style={{ animationDelay: `${i * 80}ms` }}
+              style={staggeredFadeUp(i)}
             >
               <div className="flex items-center justify-between">
                 <div className={`p-2.5 rounded-xl ${card.bg} transition-transform duration-300 hover:scale-110`}>
@@ -232,7 +271,7 @@ export default function DashboardPage() {
             <div
               key={card.title}
               className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-4 flex items-center gap-3 hover:shadow-md transition-all duration-300"
-              style={{ animationDelay: `${i * 60}ms` }}
+              style={staggeredFadeUp(i, 250)}
             >
               <div className={`p-2 rounded-lg ${card.bg} shrink-0`}>
                 <card.icon className={`w-4 h-4 ${card.color}`} />
@@ -248,7 +287,10 @@ export default function DashboardPage() {
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Weekly Sales */}
-          <div className="lg:col-span-2 bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300">
+          <div
+            className="lg:col-span-2 bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300"
+            style={sectionFadeUp(550)}
+          >
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-base font-semibold text-text-base">Ventas de la Semana</h3>
@@ -265,7 +307,10 @@ export default function DashboardPage() {
           </div>
 
           {/* Payment Methods */}
-          <div className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300">
+          <div
+            className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300"
+            style={sectionFadeUp(650)}
+          >
             <h3 className="text-base font-semibold text-text-base mb-1">Métodos de Pago</h3>
             <p className="text-sm text-text-muted mb-4">Distribución del día</p>
             <div className="h-72 flex items-center justify-center">
@@ -275,7 +320,10 @@ export default function DashboardPage() {
         </div>
 
         {/* Hourly Sales */}
-        <div className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300">
+        <div
+          className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300"
+          style={sectionFadeUp(750)}
+        >
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-base font-semibold text-text-base">Movimientos del Día</h3>
@@ -291,11 +339,35 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Detail Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          {detailCards.map((card, i) => (
+            <div
+              key={card.label}
+              className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-3 text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+              style={{
+                opacity: 0,
+                animation: `dashScaleIn 0.4s ease-out forwards`,
+                animationDelay: `${850 + i * 60}ms`,
+              }}
+            >
+              <div className={`w-8 h-8 rounded-lg ${card.bg} flex items-center justify-center mx-auto mb-2`}>
+                <card.icon className={`w-4 h-4 ${card.color}`} />
+              </div>
+              <p className="text-sm font-bold text-text-base leading-tight">{card.value}</p>
+              <p className="text-[10px] text-text-muted mt-0.5 leading-tight truncate">{card.label}</p>
+            </div>
+          ))}
+        </div>
+
         {/* Bottom Row: Tables */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
           {/* Recent Orders */}
-          <div className="lg:col-span-2 bg-bg-content rounded-xl shadow-sm border border-bg-subtle hover:shadow-md transition-shadow duration-300">
+          <div
+            className="lg:col-span-2 bg-bg-content rounded-xl shadow-sm border border-bg-subtle hover:shadow-md transition-shadow duration-300"
+            style={sectionFadeUp(1350)}
+          >
             <div className="p-5 pb-3 flex items-center justify-between">
               <div>
                 <h3 className="text-base font-semibold text-text-base">Últimas Órdenes</h3>
@@ -318,8 +390,16 @@ export default function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-bg-subtle">
-                  {recentOrders.map((order) => (
-                    <tr key={order.id} className="hover:bg-bg-subtle/30 transition-colors duration-200">
+                  {recentOrders.map((order, i) => (
+                    <tr
+                      key={order.id}
+                      className="hover:bg-bg-subtle/30 transition-colors duration-200"
+                      style={{
+                        opacity: 0,
+                        animation: `dashSlideRight 0.4s ease-out forwards`,
+                        animationDelay: `${1450 + i * 80}ms`,
+                      }}
+                    >
                       <td className="py-3 px-5 font-semibold text-primary">{order.id}</td>
                       <td className="py-3 px-5 text-text-base">{order.client}</td>
                       <td className="py-3 px-5 font-semibold text-text-base">{order.total}</td>
@@ -345,14 +425,25 @@ export default function DashboardPage() {
           <div className="space-y-5">
 
             {/* Top Products */}
-            <div className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300">
+            <div
+              className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300"
+              style={sectionFadeUp(1400)}
+            >
               <h3 className="text-base font-semibold text-text-base mb-4">Productos Más Vendidos</h3>
               <div className="space-y-3">
                 {topProducts.map((product, index) => {
                   const maxSold = topProducts[0].sold;
                   const barWidth = Math.round((product.sold / maxSold) * 100);
                   return (
-                    <div key={product.name} className="group">
+                    <div
+                      key={product.name}
+                      className="group"
+                      style={{
+                        opacity: 0,
+                        animation: `dashSlideRight 0.4s ease-out forwards`,
+                        animationDelay: `${1500 + index * 100}ms`,
+                      }}
+                    >
                       <div className="flex items-center gap-3">
                         <span className={`w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center shrink-0 ${rankColors[index]}`}>
                           {index + 1}
@@ -380,7 +471,10 @@ export default function DashboardPage() {
             </div>
 
             {/* Cash Drawers */}
-            <div className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300">
+            <div
+              className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 hover:shadow-md transition-shadow duration-300"
+              style={sectionFadeUp(1600)}
+            >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-base font-semibold text-text-base">Cajas Abiertas</h3>
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full">
@@ -388,8 +482,16 @@ export default function DashboardPage() {
                 </span>
               </div>
               <div className="space-y-3">
-                {cashDrawers.map((drawer) => (
-                  <div key={drawer.name} className="rounded-lg border border-bg-subtle p-3 hover:bg-bg-subtle/20 transition-colors duration-200">
+                {cashDrawers.map((drawer, i) => (
+                  <div
+                    key={drawer.name}
+                    className="rounded-lg border border-bg-subtle p-3 hover:bg-bg-subtle/20 transition-colors duration-200"
+                    style={{
+                      opacity: 0,
+                      animation: `dashScaleIn 0.4s ease-out forwards`,
+                      animationDelay: `${1700 + i * 120}ms`,
+                    }}
+                  >
                     <div className="flex items-center justify-between mb-2.5">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
