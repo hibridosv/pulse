@@ -84,7 +84,6 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
         useModalStore.getState().openModal('paymentSuccess');
         try {
             const response = await createService(url, data);
-            console.log("response", response.data.data);
             ordersStore.setState({ order: null, error: false, lastResponse: response.data.data.order });
             useTempStorage.getState().setElement("paymentSuccess", response.data.data.order);
             ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
@@ -105,7 +104,6 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
         useModalStore.getState().openModal('paymentSuccess');
         try {
             const response = await createService(url, data);
-            console.log("response", response.data.data);
             ordersStore.setState({ order: response.data.data.invoice, error: false, lastResponse: response.data.data.order });
             useTempStorage.getState().setElement("paymentSuccess", response.data.data.order);
             ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);

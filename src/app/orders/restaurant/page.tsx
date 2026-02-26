@@ -7,7 +7,6 @@ import { InvoiceTypesModal } from "@/components/orders/common/InvoiceTypesModal"
 import { OtherSalesModal } from "@/components/orders/products/OtherSalesModal";
 import { SearchContactModal } from "@/components/orders/products/SearchContactModal";
 import { SelectUserModal } from "@/components/orders/products/SelectUserModal";
-import { SpecialSalesModal } from "@/components/orders/products/SpecialSalesModal";
 import { AddNameModal } from "@/components/orders/restaurant/AddNameModal";
 import { CategoryMenuModal } from "@/components/orders/restaurant/CategoryMenuModal";
 import { ChangeQuantityRestaurantModal } from "@/components/orders/restaurant/ChangeQuantityRestaurantModal";
@@ -26,6 +25,8 @@ import { RestaurantProductsAdded } from "@/components/orders/restaurant/Restaura
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
 import { RestaurantTables } from "@/components/orders/restaurant/RestaurantTables";
 import { ServiceTypeSelect } from "@/components/orders/restaurant/ServiceTypeSelect";
+import { SpecialSalesRestaurantModal } from "@/components/orders/restaurant/SpecialSalesRestaurantModal";
+import { TipsModal } from "@/components/orders/restaurant/TipsModal";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
 import { useOrderRestaurantLogic } from "@/hooks/order/restaurant/useOrderRestaurantLogic";
@@ -65,10 +66,11 @@ export default function Page() {
               <DeliveryContactSearch order={order} />
           </div>
         </div>
+          <TipsModal isShow={modals.tips} onClose={()=>{ closeModal('tips')}} />
           <AddNameModal isShow={modals.addName} onClose={()=>{ closeModal('addName')}} />
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
           <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
-          <SpecialSalesModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
+          <SpecialSalesRestaurantModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
           <OtherSalesModal isShow={modals.otherSales} onClose={()=>{ closeModal('otherSales')}} />
           <SelectUserModal isShow={modals.setUser} onClose={()=>{ closeModal('setUser')}} />
           <SearchContactModal isShow={modals.searchContact} onClose={()=>{ closeModal('searchContact')}} />

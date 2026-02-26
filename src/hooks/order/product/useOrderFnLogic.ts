@@ -100,7 +100,11 @@ const addNew = async (data: any) => {
       }
   }
 
+  const tips = async (id: string, values: any) => {
+      await updateOrder(`orders/restaurant/${id}/tips`, values);
+  }
 
-  return { addNew, save, select, pay, cancel, update, quote, remissionNote, del, updateProduct, updatePrice, discount }
+
+  return { addNew, save, select, pay, cancel, update, quote, remissionNote, del, updateProduct, updatePrice, discount, tips }
 
 }
