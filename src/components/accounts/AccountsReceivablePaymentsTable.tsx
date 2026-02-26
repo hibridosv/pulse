@@ -42,7 +42,7 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
       <td className="px-2 text-left whitespace-nowrap" >
        { record?.employee?.name }
       </td>
-      <td className={`px-2 text-center whitespace-nowrap ${record?.status == 0 && 'cursor-help' }`} title={`${record?.status == 0 && `Borrada por: ${record?.deleted_by?.name} el dia ${formatDateAsDMY(record?.deleted_at)}`}`}>
+      <td className={`px-2 text-center whitespace-nowrap ${record?.status == 0 && 'cursor-help' }`} title={`${record?.status == 0 ? `Borrada por: ${record?.deleted_by?.name} el dia ${formatDateAsDMY(record?.deleted_at)}` : ``}`}>
         { statusPayment(record?.status) }
       </td>
       <td className={`px-2 flex justify-start whitespace-nowrap`}>

@@ -61,7 +61,7 @@ export default function Page() {
               <ShowClientSearched />
             </div>
             <RadioButton options={optionsRadioButton} />
-        <ViewTitle text="Rango de fechas" />
+            <ViewTitle text="Rango de fechas" />
             <div className="mt-2 p-2">
               <DateRange onSubmit={handleFormSubmit} loading={loading} />
             </div>

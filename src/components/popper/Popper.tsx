@@ -15,46 +15,68 @@ const isTouchDevice = () =>
 
 export const Popper: FC<PopperProps> = ({ label, children, closeOnClick = false }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPositioned, setIsPositioned] = useState(false);
   const popperRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
+  const [position, setPosition] = useState({ top: 0, left: 0, width: 0, maxHeight: undefined as number | undefined });
   const leaveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const calculatePosition = useCallback(() => {
-    if (labelRef.current && popperRef.current) {
-      const rect = labelRef.current.getBoundingClientRect();
-      const popperHeight = popperRef.current.offsetHeight;
-      const popperWidth = popperRef.current.offsetWidth;
+    if (!labelRef.current || !popperRef.current) return;
 
-      let newTop = rect.bottom + window.scrollY;
-      if (newTop + popperHeight > window.innerHeight + window.scrollY) {
-        newTop = rect.top + window.scrollY - popperHeight;
-      }
+    const rect = labelRef.current.getBoundingClientRect();
+    const popperHeight = popperRef.current.scrollHeight;
+    const popperWidth = popperRef.current.offsetWidth;
+    const viewportWidth = window.innerWidth;
+    const margin = 8;
 
-      let newLeft = rect.right + window.scrollX - popperWidth;
-      if (newLeft < 0) {
-        newLeft = rect.left + window.scrollX;
-      }
+    const spaceAbove = rect.top - margin;
+    let newTop: number;
+    let maxHeight: number | undefined;
 
-      setPosition({
-        top: newTop,
-        left: newLeft,
-        width: rect.width,
-      });
+    if (spaceAbove >= popperHeight) {
+      newTop = rect.top - popperHeight;
+    } else {
+      newTop = margin;
+      maxHeight = spaceAbove;
     }
+
+    let newLeft = rect.left;
+    if (newLeft + popperWidth > viewportWidth - margin) {
+      newLeft = viewportWidth - popperWidth - margin;
+    }
+    if (newLeft < margin) {
+      newLeft = margin;
+    }
+
+    setPosition({
+      top: newTop,
+      left: newLeft,
+      width: rect.width,
+      maxHeight,
+    });
+    setIsPositioned(true);
   }, []);
 
   useLayoutEffect(() => {
     if (isOpen) {
-      calculatePosition();
+      setIsPositioned(false);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          calculatePosition();
+        });
+      });
       window.addEventListener('resize', calculatePosition);
+      window.addEventListener('scroll', calculatePosition, true);
       return () => {
         window.removeEventListener('resize', calculatePosition);
+        window.removeEventListener('scroll', calculatePosition, true);
       };
+    } else {
+      setIsPositioned(false);
     }
   }, [isOpen, calculatePosition]);
 
-  // Cerrar al tocar fuera en dispositivos táctiles
   useEffect(() => {
     if (!isOpen) return;
     const handleOutsideTouch = (e: TouchEvent | MouseEvent) => {
@@ -97,12 +119,14 @@ export const Popper: FC<PopperProps> = ({ label, children, closeOnClick = false 
       ref={popperRef}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className="rounded-md shadow-lg bg-bg-content ring-1 ring-black ring-opacity-5 z-50"
+      className="rounded-md shadow-lg bg-bg-content ring-1 ring-black ring-opacity-5 z-50 custom-scrollbar"
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: position.top,
         left: position.left,
         minWidth: position.width,
+        visibility: isPositioned ? 'visible' : 'hidden',
+        ...(position.maxHeight ? { maxHeight: position.maxHeight, overflowY: 'auto' as const } : {}),
       }}
     >
       <div className="py-1">
