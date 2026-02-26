@@ -1,5 +1,6 @@
 'use client';
 import { MenuItem, menuItems } from "@/lib/menuItems";
+import { permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { useThemeStore } from "@/stores/themeStore";
 import { signOut } from "next-auth/react";
@@ -10,9 +11,15 @@ import { FaChevronDown, FaSignOutAlt } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
 // --- SubMenu Component ---
-const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose }) => {
+const SubMenu: FC<{ item: MenuItem; onClose: () => void; permissions: any }> = ({ item, onClose, permissions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggle = () => setIsOpen(!isOpen);
+
+  const visibleChildren = item.children?.filter(
+    (child) => !child.permission || permissionExists(permissions, child.permission)
+  );
+
+  if (!visibleChildren || visibleChildren.length === 0) return null;
 
   return (
     <li className="mb-2">
@@ -28,10 +35,10 @@ const SubMenu: FC<{ item: MenuItem; onClose: () => void }> = ({ item, onClose })
       </button>
       {isOpen && (
         <ul className="pl-2 pt-2">
-          {item.children?.map((child: any, index) => (
+          {visibleChildren.map((child, index) => (
             <li key={index} className="mb-1">
               <Link
-                href={child.href}
+                href={child.href!}
                 onClick={onClose}
                 className="block p-2 rounded text-text-inverted/70 hover:bg-white/10 hover:text-text-inverted"
               >
@@ -53,9 +60,12 @@ interface DrawerProps {
 
 const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
   const { theme, setTheme } = useThemeStore();
-  const { tenant } = useConfigStore();
+  const { tenant, permission } = useConfigStore();
   if (!isOpen) return null;
 
+  const hasAnyPermission = (perms: string[]): boolean => {
+    return perms.some(p => permissionExists(permission, p));
+  };
 
   return (
     <div
@@ -74,8 +84,8 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         <div className="relative m-2 p-4 border-b border-white/10 flex-shrink-0 z-10">
           <div className="w-full h-8">
             <Image
-                  src={`/img/${[1, 2].includes(tenant?.system) 
-                    ? 'logo_hibrido_s' 
+                  src={`/img/${[1, 2].includes(tenant?.system)
+                    ? 'logo_hibrido_s'
                     : 'logo_latam_s'}.png`}
                   alt="Logo Hibrido SV"
                   fill
@@ -91,13 +101,18 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         {/* Menu List (Scrollable)*/}
         <div className="flex-grow overflow-y-auto z-10 custom-scrollbar relative">
           <ul className="p-4 relative z-10">
-            {menuItems.map((item: any, index: number) =>
-              item.children ? (
-                <SubMenu key={index} item={item} onClose={onClose} />
-              ) : (
+            {menuItems.map((item, index) => {
+              if (item.children) {
+                if (item.permissions && !hasAnyPermission(item.permissions)) return null;
+                return <SubMenu key={index} item={item} onClose={onClose} permissions={permission} />;
+              }
+
+              if (item.permission && !permissionExists(permission, item.permission)) return null;
+
+              return (
                 <li key={index} className="mb-2">
                   <Link
-                    href={item.href}
+                    href={item.href!}
                     onClick={onClose}
                     className="p-2 rounded text-text-inverted/90 hover:bg-white/10 hover:text-text-inverted flex"
                   >
@@ -105,8 +120,8 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
                     {item.label}
                   </Link>
                 </li>
-              )
-            )}
+              );
+            })}
           </ul>
         </div>
 
