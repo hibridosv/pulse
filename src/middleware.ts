@@ -37,8 +37,18 @@ export async function middleware(req: NextRequest) {
 
   // --- Redirect unauthenticated users from protected routes ---
   if (!token && isProtectedRoute) {
-    // If user is not logged in and tries to access a protected page, redirect to login
     return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // --- Verify tenant status for authenticated users on protected routes ---
+  if (token && isProtectedRoute) {
+    const tenantStatus = req.cookies.get("tenant-status")?.value;
+    if (tenantStatus === "Suspended") {
+      return NextResponse.redirect(new URL("/redirects/suspended", req.url));
+    }
+    if (tenantStatus === "Overdue") {
+      return NextResponse.redirect(new URL("/redirects/overdue", req.url));
+    }
   }
 
   // Allow other requests

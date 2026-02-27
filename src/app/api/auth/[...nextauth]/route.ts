@@ -37,6 +37,7 @@ const handler = NextAuth({
               refreshToken: user.refresh_token, 
               expiresAt: user.expires_at, 
               url: user.url,
+              status: user.status,
               redirect: user.redirect
             }
         }
@@ -52,6 +53,7 @@ const handler = NextAuth({
         token.refreshToken = user.refreshToken;
         token.expiresAt = user.expiresAt;
         token.url = user.url;
+        token.status = user.status;
         token.redirect = user.redirect;
       }
       return token
@@ -61,6 +63,7 @@ const handler = NextAuth({
       session.refreshToken = token.refreshToken;
       session.expiresAt = token.expiresAt;
       session.url = token.url;
+      session.status = token.status;
       session.redirect = token.redirect;
       return session
     },

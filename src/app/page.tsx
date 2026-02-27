@@ -55,6 +55,7 @@ export default function Home() {
         setRedirecting(true);
         setLoading(false);
         const session = await getSession();
+        document.cookie = `tenant-status=${session?.status ?? 0}; path=/; SameSite=Lax`;
         const redirectTo = session?.redirect || "/dashboard";
         setMessage(`Redirigiendo...`);
         router.push(redirectTo);
