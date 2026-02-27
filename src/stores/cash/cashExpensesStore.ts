@@ -13,8 +13,8 @@ interface cashExpensesStoreProps {
   deleting: boolean;
   loadExpenses: (url: string) => Promise<void>;
   loadExpensesCategories: (url: string) => Promise<void>;
-  createExpense: (data: any) => Promise<void>;
-  createExpenseCategory: (data: any) => Promise<void>;
+  createExpense: (data: any) => Promise<boolean>;
+  createExpenseCategory: (data: any) => Promise<boolean>;
   deleteExpense: (url: string) => Promise<void>;
 }
 
@@ -58,9 +58,11 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
             const response = await createService("cash/expenses", data);
             set({ expenses: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }
@@ -72,9 +74,11 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set) => ({
             const response = await createService("cash/categories", data);
             set({ expensesCategories: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ loading: false });
         }

@@ -1,8 +1,8 @@
-import { useForm } from "react-hook-form";
-import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
+import Modal from "@/components/modal/Modal";
 import cashAccountStore from "@/stores/cash/cashAccountStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import { useForm } from "react-hook-form";
 
 export interface AccountsTransfersModalProps {
   onClose: () => void;
@@ -27,8 +27,8 @@ export function AccountsTransfersModal({ onClose, isShow }: AccountsTransfersMod
             useToastMessageStore.getState().setError({ message: "La cantidad debe ser mayor a cero"});
             return 
         }
-        await transferAccount(data);
-        if (!error) {
+         const success = await transferAccount(data);
+        if (success) {
             reset();
         }
     }

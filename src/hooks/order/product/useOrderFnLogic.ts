@@ -62,7 +62,7 @@ const addNew = async (data: any) => {
 
   /** Actualizar un campo de la orden */
   const update = async (id: string, values: UpdateServiceInterface) => {
-      await updateOrder(`orders/${id}/update`, values);
+      return await updateOrder(`orders/${id}/update`, values);
   }
 
  /* Guardar como cotizacion */ 
@@ -72,7 +72,7 @@ const addNew = async (data: any) => {
 
  /* Guardar como nota de remision */ 
   const remissionNote = async (id: string, type: number) => {
-    await saveAs(`remissions/${id}/${type}`, {});
+    return await saveAs(`remissions/${id}/${type}`, {});
   }
 
 
@@ -84,24 +84,24 @@ const addNew = async (data: any) => {
 
     /** Actualizar un campo de un producto */
   const updateProduct = async (id: string, values: UpdateServiceInterface) => {
-      await updateOrder(`orders/product/${id}`, values);
+      return await updateOrder(`orders/product/${id}`, values);
   }
 
   const updatePrice = async (id: string, values: any) => {
-      await updateOrder(`orders/product/${id}/price`, values);
+      return await updateOrder(`orders/product/${id}/price`, values);
   }
 
 
   const discount = async (id: string, values: any, discountType: number) => {
       if (discountType == 1) {
-        await updateOrder(`orders/product/discount`, values);
+        return await updateOrder(`orders/product/discount`, values);
       } else {
-        await updateOrder(`orders/${id}/discount`, values);
+        return await updateOrder(`orders/${id}/discount`, values);
       }
   }
 
   const tips = async (id: string, values: any) => {
-      await updateOrder(`orders/restaurant/${id}/tips`, values);
+      return await updateOrder(`orders/restaurant/${id}/tips`, values);
   }
 
 

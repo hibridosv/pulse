@@ -26,11 +26,11 @@ export function SetRemissionNoteModal(props: SetRemissionNoteModalI) {
 
   if (!isShow || !order) return null;
 
-  const handleSelect = (type: any) => {
+  const handleSelect = async(type: any) => {
     if (!type || !order) return;
 
-    remissionNote(order.id, type);
-    if (!error) {
+    const success = await remissionNote(order.id, type);
+    if (success) {
       closeModal('setRemissionNote');
     }
   }

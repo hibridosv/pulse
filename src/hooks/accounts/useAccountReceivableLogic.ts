@@ -30,16 +30,16 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
       data.status = 1;
       data.account_type = 1;
       data.creditSelected = receivableRecord?.id;
-      await createPayment("accounts/payment", data); 
-      if (!error) {
+      const success = await createPayment("accounts/payment", data); 
+      if (success) {
             loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
     }
   }
 
 
     const handleCheckIn = async() => {
-      await checkIn("accounts/checkin", receivableRecord); 
-      if (!error) {
+      const success = await checkIn("accounts/checkin", receivableRecord); 
+      if (success) {
             loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
     }
   }

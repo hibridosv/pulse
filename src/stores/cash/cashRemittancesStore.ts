@@ -11,7 +11,7 @@ interface cashRemittancesStoreProps {
   sending: boolean;
   deleting: boolean;
   loadRemittances: (url: string) => Promise<void>;
-  createRemittance: (data: any) => Promise<void>;
+  createRemittance: (data: any) => Promise<boolean>;
   deleteRemittance: (url: string) => Promise<void>;
 }
 
@@ -40,9 +40,11 @@ const cashRemittancesStore = create<cashRemittancesStoreProps>((set) => ({
             const response = await createService("cash/remittances", data);
             set({ remittances: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }

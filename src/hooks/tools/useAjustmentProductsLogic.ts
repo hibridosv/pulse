@@ -33,8 +33,8 @@ export function useAjustmentProductsLogic(currentPage?: any, searchTerm?: any, i
         product.stablished = product.quantity
       }
       try {
-        await send('tools/adjust/update', product);
-          if (!error) {
+        const success = await send('tools/adjust/update', product);
+          if (success) {
             loadDetails(`tools/adjust/products?sort=-cod&filterWhere[status]==1&perPage=25${currentPage}${searchTerm}`)
             closeModal('setAdjustment');
           }

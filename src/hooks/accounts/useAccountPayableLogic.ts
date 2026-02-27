@@ -25,8 +25,8 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
       data.balance = data.quantity;
       data.invoice_number = data.invoice == 0 ? 0 : data.invoice_number;
 
-      await createAccount("accounts/payable", data);
-        if (!error) {
+      const success = await createAccount("accounts/payable", data);
+        if (success) {
             loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
         }
   }
@@ -36,8 +36,8 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
       data.status = 1;
       data.account_type = 2;
       data.creditSelected = payableRecord?.id;
-      await createPayment("accounts/payment", data); 
-      if (!error) {
+      const success = await createPayment("accounts/payment", data); 
+      if (success) {
             loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
     }
   }
@@ -49,8 +49,8 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
 
   const saveCreditNote = async (data: any) => {
       data.credits_payable_id = payableRecord?.id;
-      await createCreditNote("accounts/notes", data);
-      if (!error) {
+      const success = await createCreditNote("accounts/notes", data);
+      if (success) {
             loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
     }
   }

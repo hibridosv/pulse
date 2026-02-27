@@ -47,8 +47,8 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
         exempt: option.id,
         };
 
-      await updateOrder(`orders/${order.id}/others`, values);
-      if (!error) {
+      const success = await updateOrder(`orders/${order.id}/others`, values);
+      if (success) {
         clearElement('optionSelected');
         clearElement('optionSelectedType');
         onClose();

@@ -13,7 +13,7 @@ interface cashTransferStoreI {
   sending: boolean;
   deleting: boolean;
   loadTransfers: (url: string) => Promise<void>;
-  createTransfer: (data: any) => Promise<void>;
+  createTransfer: (data: any) => Promise<boolean>;
   deleteTransfer: (url: string) => Promise<void>;
   loadHistory: (url: string) => Promise<void>;
 }
@@ -45,9 +45,11 @@ const cashTransferStore = create<cashTransferStoreI>((set) => ({
             set({ transfers: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
             cashAccountStore.getState().loadAccount(`cash/accounts?sort=-created_at&filterWhere[status]==1`);
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true})
+            return false;
         } finally {
             set({ sending: false });
         }

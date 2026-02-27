@@ -43,7 +43,7 @@ const addNew = async (producId: any, quantity = 1) => {
       restaurant_table_id: selectedTable,
       special: specialSales,
     };
-    await addOrder(`orders/restaurant`, values);
+    return await addOrder(`orders/restaurant`, values);
           
 }
 
@@ -65,7 +65,7 @@ const addNew = async (producId: any, quantity = 1) => {
 
   /** Actualizar un campo de la orden */
   const update = async (id: string, values: UpdateServiceInterface) => {
-      await updateOrder(`orders/${id}/update`, values);
+      return await updateOrder(`orders/${id}/update`, values);
   }
 
 
@@ -83,7 +83,7 @@ const addNew = async (producId: any, quantity = 1) => {
   
     /** Agrega nombre a la orden */
   const addName = async (id: string, values: any) => {
-      await updateOrder(`orders/restaurant/${id}/name-table`, values);
+      return await updateOrder(`orders/restaurant/${id}/name-table`, values);
   }
 
   

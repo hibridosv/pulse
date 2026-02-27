@@ -57,8 +57,8 @@ export function ChangeQuantityModal(props: ChangeQuantityModalI) {
       addOrSubtract: addOrSubtract, // 1 sumar 2 restar
       quantity: quantity,
     };
-    await addOrder(`orders`, values);
-    if (!error) {
+    const success = await addOrder(`orders`, values);
+    if (success) {
         resetField('quantity');
         onClose();
     }

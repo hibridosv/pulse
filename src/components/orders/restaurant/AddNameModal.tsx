@@ -40,19 +40,19 @@ export function AddNameModal(props: AddNameModalI) {
      let values: any = {
        name_table: data.value
      }
-    addName(order.id, values);
-     if (!error) {
+    const success = await addName(order.id, values);
+     if (success) {
        onClose();
      }
  }
 
- const clean = ()=>{
+ const clean = async ()=>{
     if (!order) return;
      let values: any = {
        name_table: null
      }
-    addName(order.id, values);
-     if (!error) {
+    const success = await addName(order.id, values);
+     if (success) {
        onClose();
      }
  }

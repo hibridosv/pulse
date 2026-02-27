@@ -42,22 +42,22 @@ export function AddCommentModal(props: AddCommentModalI) {
        row: "comment",
        value: data.value
      }
-    update(order.id, values);
-     if (!error) {
+    const success = await update(order.id, values);
+     if (success) {
        clearElement('rowToUpdate');
        clearElement('productSelected');
        onClose();
      }
  }
 
- const clean = ()=>{
+ const clean = async ()=>{
     if (!order) return;
      let values: UpdateServiceInterface = {
        row: "comment",
        value: null
      }
-    update(order.id, values);
-     if (!error) {
+    const success = await update(order.id, values);
+     if (success) {
        clearElement('rowToUpdate');
        clearElement('productSelected');
        onClose();

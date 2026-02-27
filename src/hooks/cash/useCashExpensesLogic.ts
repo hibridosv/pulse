@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import cashExpensesStore from '@/stores/cash/cashExpensesStore';
-import cashAccountStore from '@/stores/cash/cashAccountStore';
 import { INewCategory } from '@/components/cash/NewCategoryModal';
+import cashAccountStore from '@/stores/cash/cashAccountStore';
+import cashExpensesStore from '@/stores/cash/cashExpensesStore';
+import { useEffect } from 'react';
 
 
 export function useCashExpensesLogic(reset: any, setValue: any) {
@@ -21,16 +21,16 @@ export function useCashExpensesLogic(reset: any, setValue: any) {
         data.cash_accounts_id = data.payment_type == 1 ? null : data.cash_accounts_id;
         data.invoice = data.type == 0 ? 0 : data.invoice;
         data.invoice_number = data.type == 0 ? null : data.invoice_number;
-        await createExpense(data);
-            if (!error) {
+        const success = await createExpense(data);
+            if (success) {
                 reset()
                 setValue("payment_type", 1)
             }
         }
 
     const createCategory = async (data: INewCategory)=>{
-        await createExpenseCategory(data);
-        if (!error) {
+        const success = await createExpenseCategory(data);
+        if (success) {
             reset();
         }
     }

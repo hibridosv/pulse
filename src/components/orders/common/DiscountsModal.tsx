@@ -55,8 +55,8 @@ export function DiscountsModal(props: DiscountsModalI) {
         product_cod: product ? product.cod : null,
         byCode
       };
-      discount(order.id, values, discountType);
-      if (!error) {
+      const success = await discount(order.id, values, discountType);
+      if (success) {
         clearElement('productSelected');
         clearElement('discountType');
         clearElement('typeOfDiscount');

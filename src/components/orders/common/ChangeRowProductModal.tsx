@@ -62,14 +62,14 @@ export function ChangeRowProductModal(props: ChangeRowProductModalI) {
      }
  }
 
- const clean = ()=>{
+ const clean = async ()=>{
          if (!rowToUpdate || !product) return;
      let values: UpdateServiceInterface = {
        row: rowToUpdate,
        value: null
      }
-    updateProduct(product.id, values);
-     if (!error) {
+    const success = await updateProduct(product.id, values);
+     if (success) {
        clearElement('rowToUpdate');
        clearElement('productSelected');
        onClose();

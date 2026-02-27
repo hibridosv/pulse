@@ -40,8 +40,8 @@ export function ChangePriceProductModal(props: ChangePriceProductModalI) {
       order_id: order.id,
       quantity: data.quantity,
     };
-    updatePrice(product.id, values);
-     if (!error) {
+    const success = await updatePrice(product.id, values);
+     if (success) {
        clearElement('productSelected');
        onClose();
      }

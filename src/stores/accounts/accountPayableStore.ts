@@ -14,11 +14,11 @@ interface AccountPayableStoreStateI {
   deleting: boolean;
   loadAccounts: (url: string) => Promise<void>;
   loadAccount: (url: string) => Promise<void>;
-  createAccount: (url: string, data: any) => Promise<void>;
+  createAccount: (url: string, data: any) => Promise<boolean>;
   deleteAccount: (url: string, id: string) => Promise<void>;
-  createPayment: (url: string, data: any) => Promise<void>;
+  createPayment: (url: string, data: any) => Promise<boolean>;
   deletePayment: (url: string) => Promise<void>;
-  createCreditNote: (url: string, data: any) => Promise<void>;
+  createCreditNote: (url: string, data: any) => Promise<boolean>;
   deleteCreditNote: (url: string) => Promise<void>;
 }
 
@@ -64,9 +64,11 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
             set({ error: false });
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }
@@ -104,9 +106,11 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
             useToastMessageStore.getState().setMessage(response);
             useTempStorage.getState().setElement("paymentPayableAdd", response.data.data);
             set({ error: false });
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }
@@ -136,9 +140,11 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
             useToastMessageStore.getState().setMessage(response);
             useTempStorage.getState().setElement("paymentPayableAdd", response.data.data);
             set({ error: false });
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }

@@ -38,14 +38,14 @@ export function SearchContactModal(props: SearchContactModalI) {
     }
   }
   
-  const updateContact = (item: any) => {
+  const updateContact = async(item: any) => {
     if (!item || !tempSelectedName || !order) return;
     let values: UpdateServiceInterface = {
       row: setRowToChange(tempSelectedName),
       value: item.id
     }
-    update(order.id, values);
-    if (!error) {
+    const success = await update(order.id, values);
+    if (success) {
       closeModal('searchContact');
     }
   }

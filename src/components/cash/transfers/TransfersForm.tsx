@@ -12,8 +12,8 @@ export function TransfersForm() {
 
 
     const onSubmit = async(data: any)=>{
-        await createTransfer(data);
-        if (!error) {
+        const success = await createTransfer(data);
+        if (success) {
             reset();
         }
     }

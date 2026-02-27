@@ -8,8 +8,8 @@ export function AccountForm() {
     const {  sending, createAccount, error } = cashAccountStore();
 
     const onSubmit = async(data: any)=>{
-        await createAccount(data);
-        if (!error) {
+        const success = await createAccount(data);
+        if (success) {
             reset();
         }
     }

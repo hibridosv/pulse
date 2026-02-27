@@ -11,7 +11,7 @@ interface quotesStoreI {
   deleting?: boolean;
   loadQuotes: (url: string) => Promise<void>;
   loadQuote: (url: string) => Promise<void>;
-  deleteQuote: (url: string) => Promise<void>;
+  deleteQuote: (url: string) => Promise<boolean>;
 }
 
 const quotesStore = create<quotesStoreI>((set) => ({
@@ -53,9 +53,11 @@ const quotesStore = create<quotesStoreI>((set) => ({
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
       set({ error: false });
+      return true;
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       set({ error: true });
+      return false;
     } finally {
       set({ deleting: false });
     }

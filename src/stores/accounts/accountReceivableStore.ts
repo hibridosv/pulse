@@ -13,9 +13,9 @@ interface accountReceivableStoreI {
   deleting: boolean;
   loadAccounts: (url: string) => Promise<void>;
   loadAccount: (url: string) => Promise<void>;
-  createPayment: (url: string, data: any) => Promise<void>;
+  createPayment: (url: string, data: any) => Promise<boolean>;
   deletePayment: (url: string) => Promise<void>;
-  checkIn: (url: string, data: any) => Promise<void>;
+  checkIn: (url: string, data: any) => Promise<boolean>;
 }
 
 const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
@@ -60,9 +60,11 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
             useToastMessageStore.getState().setMessage(response);
             useTempStorage.getState().setElement("paymentReceivableAdd", response.data.data);
             set({ error: false });
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }
@@ -91,9 +93,11 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
             useToastMessageStore.getState().setMessage(response);
             useTempStorage.getState().setElement("paymentReceivableAdd", response.data.data);
             set({ error: false });
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }

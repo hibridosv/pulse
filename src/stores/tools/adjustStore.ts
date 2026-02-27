@@ -17,7 +17,7 @@ interface adjustStoreI {
   loadAdjustment: (url: string) => Promise<void>;
   manageAdjustment: (url: string, data: any) => Promise<void>;
   loadDetails: (url: string) => Promise<void>;
-  sendAdjustment: (url: string, data: any) => Promise<void>;
+  sendAdjustment: (url: string, data: any) => Promise<boolean>;
 }
 
 const adjustStore = create<adjustStoreI>((set) => ({
@@ -91,9 +91,11 @@ const adjustStore = create<adjustStoreI>((set) => ({
             const response = await createService(url, data);
             useToastMessageStore.getState().setMessage(response);
             set({ error: false });
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }

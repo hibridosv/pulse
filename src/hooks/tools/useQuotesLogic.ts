@@ -29,8 +29,8 @@ export function useQuotesLogic(currentPage?: any, searchTerm?: any, initialLoad:
   }, [loadQuotes, currentPage, searchTerm, searchTermNew, initialLoad])
 
   const deleteRegister = async (url: string) => {
-    await deleteQuote(url);
-    if (!error) {
+    const success = await deleteQuote(url);
+    if (success) {
             loadQuotes(`tools/quotes?sort=-created_at&included=products,client&perPage=10&page=1`)
     }
   };

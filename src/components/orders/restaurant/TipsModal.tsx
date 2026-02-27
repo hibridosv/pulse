@@ -60,9 +60,9 @@ export function TipsModal(props: TipsModalI) {
           percentage: percentageValue,
       };
       console.log(values);
-      await tips(order.id, values);
+      const success = await tips(order.id, values);
 
-      if (!error) {
+      if (success) {
         clearElement('typeOfTips');
         onClose();
       }

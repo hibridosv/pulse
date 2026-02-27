@@ -16,8 +16,8 @@ export function RemittanceForm() {
     const { cashdrawer } = useConfigStore();
 
     const onSubmit = async(data: any)=>{
-        await createRemittance(data);
-        if (!error) {
+        const success = await createRemittance(data);
+        if (success) {
             reset();
         }
     }

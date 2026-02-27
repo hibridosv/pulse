@@ -53,14 +53,14 @@ export function SelectUserModal(props: SelectUserModalI) {
     }
   }
   
-  const updateUser = (item: any) => {
+  const updateUser = async (item: any) => {
     if (!item || !tempSelectedName || !order) return;
     let values: UpdateServiceInterface = {
       row: setRowToChange(tempSelectedName),
       value: item.id
     }
-    update(order.id, values);
-    if (!error) {
+    const success = await update(order.id, values);
+    if (success) {
       setElement(tempSelectedName, item);
       closeModal('setUser');
     }

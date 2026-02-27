@@ -27,8 +27,8 @@ export function DeliveryTypeModal(props: DeliveryTypeModalI) {
           row: "delivery_type",
           value: type
         }
-          await updateRestaurant(order.id, values);
-        if (!error) {
+        const success = await updateRestaurant(order.id, values);
+        if (success) {
           setElement('deliveryType', type);
           closeModal('deliveryType');
         }

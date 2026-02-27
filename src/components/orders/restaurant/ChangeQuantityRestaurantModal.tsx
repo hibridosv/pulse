@@ -35,8 +35,8 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
 
  const onSubmit = async(data: any) => {
     if (product.quantity == data.quantity || data.quantity == null) onClose();
-    await addNew(product.product_id, data.quantity);
-    if (!error) {
+    const success = await addNew(product.product_id, data.quantity);
+    if (success) {
         resetField('quantity');
         onClose();
     }

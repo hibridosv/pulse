@@ -31,17 +31,18 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
 
   if (!isShow || !order) return null;
 
-  const handleUpdate = (type: any) => {
+  const handleUpdate = async (type: any) => {
     let values: UpdateServiceInterface = {
       row: "invoice_type_id",
       value: type.id
     }
+    let success = false;
     if (isRestaurant(tenant.system)) {
-      updateRestaurant(order.id, values);
+      success = await updateRestaurant(order.id, values);
     } else {
-      updateProduct(order.id, values);
+      success = await updateProduct(order.id, values);
     }
-    if (!error) {
+    if (success) {
         setElement('invoiceTypeSelected', type);
         closeModal('invoiceType');
       }

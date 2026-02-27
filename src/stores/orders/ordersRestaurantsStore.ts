@@ -8,14 +8,14 @@ import useTempStorage from '../useTempStorage';
 import ordersStore from './ordersStore';
 
 interface ordersRestaurantsStoreI {
-  addOrder: (url: string, data: any) => Promise<void>;
+  addOrder: (url: string, data: any) => Promise<boolean>;
   loadOrders: (url: string, showToast?: boolean) => Promise<void>;
   loadOrder: (url: string, showToast?: boolean) => Promise<void>;
   payOrder: (url: string, data: any) => Promise<void>;
   payOrderSplit: (url: string, data: any) => Promise<void>;
   saveOrder: (url: string, data: any) => Promise<void>;
   deleteOrder: (url: string) => Promise<void>;
-  updateOrder: (url: string, data: any, showToast?: boolean) => Promise<void>;
+  updateOrder: (url: string, data: any, showToast?: boolean) => Promise<boolean>;
   saveAs: (url: string, data: any) => Promise<void>;
   deleteProduct: (url: string) => Promise<void>;
   setOrders: (orders: Order[]) => void;
@@ -35,10 +35,12 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
               ordersStore.setState({ order: null, error: false });
               ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
             }
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             ordersStore.setState({ error: true });
             errorSound();
+            return false;
         } finally {
             ordersStore.setState({ sending: false });
         }
@@ -159,9 +161,11 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
             if (showToast) {
               useToastMessageStore.getState().setMessage(response);
             }
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             ordersStore.setState({ error: true });
+            return false;
         } finally {
             ordersStore.setState({ sending: false });
         }

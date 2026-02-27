@@ -12,9 +12,9 @@ interface cashAccountStoreProps {
   deleting: boolean;
   transfering: boolean;
   loadAccount: (url: string) => Promise<void>;
-  createAccount: (data: any) => Promise<void>;
+  createAccount: (data: any) => Promise<boolean>;
   deleteAccount: (url: string) => Promise<void>;
-  transferAccount: (data: any) => Promise<void>;
+  transferAccount: (data: any) => Promise<boolean>;
 }
 
 const cashAccountStore = create<cashAccountStoreProps>((set) => ({
@@ -43,9 +43,11 @@ const cashAccountStore = create<cashAccountStoreProps>((set) => ({
             const response = await createService("cash/accounts", data);
             set({ accounts: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ sending: false });
         }
@@ -72,9 +74,11 @@ const cashAccountStore = create<cashAccountStoreProps>((set) => ({
             const response = await createService("cash/accounts/transfer", data);
             set({ accounts: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
+            return false;
         } finally {
             set({ transfering: false });
         }
