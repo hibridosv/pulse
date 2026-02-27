@@ -82,9 +82,14 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
     if (user && user.id == pusherData?.userId) return
     if (!pusherData) return;
     if (pusherData.data) {
-       setOrders(pusherData.data); 
+      if (serviceType == 2) {
+         loadTables(`tables?included=tables`, true);
+      }
+      if (serviceType == 3) {
+        loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2&filterWhere[order_type]==3`, false);
+      }
     }
-   }, [loadOrders, pusherData, user, setOrders]);
+   }, [loadOrders, pusherData, user, setOrders, loadTables]);
 
 
    // verificar si exite algun producto con venta especial sin terminar el preoceso

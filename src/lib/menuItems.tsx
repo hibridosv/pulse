@@ -17,6 +17,18 @@ export const menuItems: MenuItem[] = [
   { label: "Panel Principal", href: "/dashboard", icon: <BiFingerprint className="mt-1 mr-2" />, permission: "dashboard" },
   { label: "Control de cajas", href: "/cashdrawers", icon: <FaCashRegister className="mt-1 mr-2" />, permission: "cashdrawer" },
   {
+    label: "Restaurante", icon: <MdInventory className="mt-1 mr-2" />,
+    permissions: ["restaurant-add-product", "restaurant-producs", "restaurant-screen", "restaurant-counter", "restaurant-orders"],
+    children: [
+      { label: "Registrar Producto", href: "/restaurant/new", permission: "restaurant-add-product" },
+      { label: "Productos de Menu", href: "/restaurant/menu", permission: "restaurant-producs" },
+      { label: "Pantalla", href: "/restaurant/screen", permission: "restaurant-screen" },
+      { label: "Pantalla Despacho", href: "/restaurant/counter", permission: "restaurant-counter" },
+      { label: "Listado de Ordenes", href: "/restaurant/orders", permission: "restaurant-orders" },
+      { label: "Ordenes Eliminadas", href: "/restaurant/deleted", permission: "restaurant-orders" },
+    ],
+  },
+  {
     label: "Inventario", icon: <MdInventory className="mt-1 mr-2" />,
     permissions: ["inventory", "inventory-register", "inventory-edit", "inventory-add", "inventory-failure", "inventory-linked", "inventory-stock", "inventory-expiration", "inventory-karex"],
     children: [
