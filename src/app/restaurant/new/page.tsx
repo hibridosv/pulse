@@ -1,5 +1,7 @@
 'use client';
 import { Button, Preset } from "@/components/button/button";
+import { RestaurantCategoryAddModal } from "@/components/restaurant/RestaurantCategoryAddModal";
+import { RestaurantOptionsAddModal } from "@/components/restaurant/RestaurantOptionsAddModal";
 import { ShowImagesModal } from "@/components/restaurant/ShowImagesModal";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
@@ -15,7 +17,7 @@ import { useForm } from "react-hook-form";
 export default function Page() {
   useRestaurantAddProductLogic(true);
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
-  const { categories, options, workStations, sending, productAdded } = manageRestaurantStore();
+  const { categories, options, workStations, sending  } = manageRestaurantStore();
   const { modals, closeModal, openModal } = useModalStore();
   const { getElement } = useTempStorage();
   const selectedImage = getElement("productImage") || "default.png";
@@ -32,8 +34,6 @@ export default function Page() {
        reset();
      }
   }
-
-  console.log(productAdded);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
@@ -61,7 +61,7 @@ export default function Page() {
                 </div>
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="category_id" className="input-label clickeable" onClick={() => {}}>Categoria (Click para agregar)</label>
+                  <label htmlFor="category_id" className="input-label clickeable" onClick={() => { openModal("restaurantCategory") }}>Categoria (Click para agregar)</label>
                   {categories && categories.length > 0 ?
                   <select defaultValue={categories[0] ? categories[0].id : []} id="category_id" {...register("category_id")} className="input-select">
                     {categories?.map((value: any) => {
@@ -74,7 +74,7 @@ export default function Page() {
 
                 {options?.length > 0 ?
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="options" className="input-label clickeable" onClick={() => {}}>Modificadores (Click para agregar)</label>
+                  <label htmlFor="options" className="input-label clickeable" onClick={() => { openModal("restaurantOptionsAdd") }}>Modificadores (Click para agregar)</label>
                   {options?.map((value: any) => {
                     return (
                       <div key={value.id} className="flex items-center gap-2 uppercase mt-2">
@@ -128,6 +128,10 @@ export default function Page() {
         <div className="md:col-span-3">
 
         </div>
+        <RestaurantOptionsAddModal isShow={modals.restaurantOptionsAdd} onClose={() => closeModal("restaurantOptionsAdd")} />
+        <ShowImagesModal isShow={modals.showImagesOptionModal} onClose={() => closeModal("showImagesOptionModal")} nameImage="productImageOption" />
+        <RestaurantCategoryAddModal isShow={modals.restaurantCategory} onClose={() => closeModal("restaurantCategory")} />
+        <ShowImagesModal isShow={modals.showImagesCategoryModal} onClose={() => closeModal("showImagesCategoryModal")} nameImage="productImageCategory" />
         <ShowImagesModal isShow={modals.showImagesModal} onClose={() => closeModal("showImagesModal")} />
         <ToasterMessage />
     </div>

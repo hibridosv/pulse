@@ -7,8 +7,6 @@ import { useSession } from "next-auth/react";
 export default function Page() {
   const { data: session, status } = useSession();
 
-  console.log(status);
-
   if (status === "loading") {
     return <LoadingPage />;
   }

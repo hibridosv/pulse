@@ -1,26 +1,60 @@
 'use client';
-import { LoadingPage } from "@/components/LoadingPage";
+import { Pagination } from "@/components/Pagination";
+import { ManageCategories } from "@/components/restaurant/ManageCategories";
+import { ManageOptions } from "@/components/restaurant/ManageOptions";
+import { OptionsVariantsModal } from "@/components/restaurant/OptionsVariantsModal";
+import { RestaurantCategoryAddModal } from "@/components/restaurant/RestaurantCategoryAddModal";
+import { RestaurantMenuTable } from "@/components/restaurant/RestaurantMenuTable";
+import { RestaurantOptionsAddModal } from "@/components/restaurant/RestaurantOptionsAddModal";
+import { ShowImagesModal } from "@/components/restaurant/ShowImagesModal";
+import { SearchInput } from "@/components/Search";
+import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
-import { useSession } from "next-auth/react";
+import { useRestaurantAddProductLogic } from "@/hooks/restaurant/useRestaurantAddProductLogic";
+import { useRestaurantMenuLogic } from "@/hooks/restaurant/useRestaurantMenuLogic";
+import { usePagination } from "@/hooks/usePagination";
+import { useSearchTerm } from "@/hooks/useSearchTerm";
+import useModalStore from "@/stores/modalStorage";
+import manageRestaurantStore from "@/stores/restaurant/manageRestaurantStore";
+import { BiPlusCircle } from "react-icons/bi";
 
 
 export default function Page() {
-  const { data: session, status } = useSession();
-
-
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
+  const {currentPage, handlePageNumber} = usePagination("&page=1");
+  const { searchTerm, handleSearchTerm } = useSearchTerm(["description"], 500);
+  useRestaurantMenuLogic(currentPage, searchTerm);
+  useRestaurantAddProductLogic(true);
+  const { products } = manageRestaurantStore()
+  const { modals, closeModal, openModal } = useModalStore();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
     <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="Restaurant" />
-
+        <RestaurantMenuTable />
+        <Pagination records={products} handlePageNumber={handlePageNumber} />
     </div>
     <div className="md:col-span-3">
-
+      <div className="m-4">
+        <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar productos" />
+      </div>
+        <div  className="mx-4 flex items-center justify-between">
+          <ViewTitle text="Modificadores" />
+          <BiPlusCircle size={28} className="clickeable" onClick={() => { openModal("restaurantOptionsAdd") }} />
+        </div>
+        <ManageOptions />
+        <div  className="mx-4 flex items-center justify-between">
+          <ViewTitle text="Categorias" />
+          <BiPlusCircle size={28} className="clickeable" onClick={() => { openModal("restaurantCategory") }} />
+        </div>
+        <ManageCategories />
     </div> 
+    <OptionsVariantsModal isShow={modals.optionSelected} onClose={() => closeModal("optionSelected")} />
+    <RestaurantOptionsAddModal isShow={modals.restaurantOptionsAdd} onClose={() => closeModal("restaurantOptionsAdd")} />
+    <ShowImagesModal isShow={modals.showImagesOptionModal} onClose={() => closeModal("showImagesOptionModal")} nameImage="productImageOption" />
+    <RestaurantCategoryAddModal isShow={modals.restaurantCategory} onClose={() => closeModal("restaurantCategory")} />
+    <ShowImagesModal isShow={modals.showImagesCategoryModal} onClose={() => closeModal("showImagesCategoryModal")} nameImage="productImageCategory" />
+    <ToasterMessage />       
 </div>
   );
 }

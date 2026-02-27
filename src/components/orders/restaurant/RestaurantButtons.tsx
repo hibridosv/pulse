@@ -52,10 +52,8 @@ export function RestaurantButtons({ order, isSplit = false}: Props) {
   
   const handlePay = async (data: any) => {
     if(isSplit){
-      console.log("paySplit");
       await paySplit(data);
     } else {
-        console.log("pay");
       await pay(data);
     }
     reset(); // Resetea el estado del formulario en react-hook-form

@@ -59,7 +59,6 @@ export function TipsModal(props: TipsModalI) {
           tips: tipValue,
           percentage: percentageValue,
       };
-      console.log(values);
       const success = await tips(order.id, values);
 
       if (success) {

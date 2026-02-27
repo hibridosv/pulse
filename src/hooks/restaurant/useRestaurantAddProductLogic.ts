@@ -10,10 +10,10 @@ export function useRestaurantAddProductLogic(isShow: boolean) {
 
     useEffect(() => {
         if (!categories && isShow) {
-            loadCategories("categories?sort=-created_at&filterWhere[category_type]==2&filterWhere[is_restaurant]==1");
+            loadCategories("categories?sort=created_at&filterWhere[category_type]==2&filterWhere[is_restaurant]==1");
         }
         if (!options && isShow) {
-            loadOptions("restaurant/options");
+            loadOptions("restaurant/options?included=variants");
         }
         if (!workStations && isShow) {
             loadWorkStations("restaurant/workstations?filterWhere[status]==1");

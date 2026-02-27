@@ -15,18 +15,28 @@ import { SearchInput } from "../Search";
 export interface ShowImagesModalI {
   onClose: () => void;
   isShow: boolean;
+  nameImage?: string;
+  onSelect?: (item: any) => void; // funcion que se ejecuta al seleccionar imagen
 }
 
 
 
 
 export function ShowImagesModal(props: ShowImagesModalI) {
-  const { onClose, isShow } = props;
+  const { onClose, isShow, nameImage = "productImage", onSelect } = props;
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { searchTerm, handleSearchTerm } = useSearchTerm(["tags"], 500);
   useImagesSelectLogic(currentPage, searchTerm);
   const { loading, images } = imagesStore();
   const { setElement } = useTempStorage();
+
+
+  const handleSelectImage = (image: string) => {
+      setElement(nameImage, image);
+      handleSearchTerm('');
+      onSelect && onSelect(image);
+      onClose();
+  };
 
   const imageLoader = ({ src, width, quality }: any) => {
       return `${URL}/images/ico/${src}?w=${width}&q=${quality || 75}`
@@ -35,7 +45,7 @@ export function ShowImagesModal(props: ShowImagesModalI) {
     
     const listItems = images?.data && images.data.map((image: any, index: number) => (
         <div key={image?.id} className="clickeable opacity-0 animate-[slideUp_0.1s_ease_forwards]" style={{ animationDelay: `${index * 10}ms` }}>
-            <div onClick={()=> { setElement("productImage", image?.image); onClose(); }} className="group relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
+            <div onClick={()=> { handleSelectImage(image?.image) }} className="group relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
                 <Image loader={imageLoader} src={image?.image} alt="Icono de imagen" width={96} height={96} className="rounded-lg transition-transform duration-200 group-hover:scale-105" />
                 <div className="absolute inset-0 rounded-lg ring-2 ring-transparent group-hover:ring-primary/40 transition-all duration-200" />
             </div>
@@ -63,7 +73,7 @@ export function ShowImagesModal(props: ShowImagesModalI) {
         <div className="mx-1">
           <div className="flex flex-wrap justify-center gap-3">
             {loading ? listMocks() : listItems }
-            {((!images?.data || images.data.length === 0) && !loading) && <div className="clickeable" onClick={console.log}><NothingHere text="No se encontraron imágenes" /></div> }
+            {((!images?.data || images.data.length === 0) && !loading) && <div><NothingHere text="No se encontraron imágenes" /></div> }
           </div>
           <PaginationMin records={images} handlePageNumber={handlePageNumber } />
         </div>
