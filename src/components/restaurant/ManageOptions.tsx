@@ -2,7 +2,6 @@
 
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import manageRestaurantStore from "@/stores/restaurant/manageRestaurantStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -13,11 +12,9 @@ import { DeleteButton } from "../button/DeleteButton";
 
 export function ManageOptions() {
   const { options, loadingOptions, sending, deleting, deleteOption } = manageRestaurantStore()
-  const { getElement, setElement, clearElement } = useTempStorage();
-  const optionSelected = getElement("optionSelected");
+  const { setElement } = useTempStorage();
   const { openModal } = useModalStore();
 
-  const { system } = useConfigStore();
 
   if(loadingOptions) return <SkeletonTable rows={4} columns={2} />
 
@@ -25,7 +22,7 @@ export function ManageOptions() {
     return <NothingHere height="150" width="150" text="No hay modificadores disponibles" />;
   }
 
-
+console.log("options", options)
 
   const listItems = options.map((record: any) =>{
     return (

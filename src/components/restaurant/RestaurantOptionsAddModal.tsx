@@ -33,13 +33,9 @@ export function RestaurantOptionsAddModal(props: RestaurantOptionsAddModalI) {
     return `${URL}/images/ico/${src}?w=${width}&q=${quality || 75}`
   }
 
-  const handleClose = () => {
-    loadOptions("restaurant/options");
-    onClose();
-  };
 
   return (
-    <Modal show={isShow} onClose={handleClose} size="sm" headerTitle="Agregar modificadores" closeOnOverlayClick={true} >
+    <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Agregar modificadores" closeOnOverlayClick={true} >
       <Modal.Body>
         <div className="mx-1">
 
@@ -108,7 +104,7 @@ export function RestaurantOptionsAddModal(props: RestaurantOptionsAddModalI) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleClose} preset={Preset.close} disabled={sending} />
+        <Button onClick={onClose} preset={Preset.close} disabled={sending} />
       </Modal.Footer>
     </Modal>
   );
