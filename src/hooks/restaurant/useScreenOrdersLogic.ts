@@ -18,7 +18,7 @@ export function useScreenOrdersLogic() {
 
   useEffect(() => {
     loadOrders(
-      `orders?included=employee,client,table,invoiceproducts.attributes,invoiceproducts.options.option,products.attributes,products.options.option,attributes&filter[status]==3&filter[status]==1&filterWhere[active_station]==1`
+      `orders?included=employee,client,table,invoiceproducts.attributes,invoiceproducts.options.option,products.attributes,products.options.option,attributes&filterwherein[status]=1,3&filterWhere[active_station]==1`
     );
   }, [pusherEvent, loadOrders]);
 
