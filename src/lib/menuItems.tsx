@@ -86,6 +86,7 @@ export const menuItems: MenuItem[] = [
       { label: "Ventas por Usuario", href: "/history/by-user", permission: "histories-by-user" },
       { label: "Ventas por Cliente", href: "/history/by-customer", permission: "histories-by-client" },
       { label: "Ventas por Producto", href: "/history/by-product", permission: "histories-by-client" },
+      { label: "Ventas por Dia", href: "/history/by-day", permission: "histories-by-client" },
       { label: "Ordenes Eliminadas", href: "/history/deleted", permission: "histories-deleted" },
       { label: "Listado de costos", href: "/history/costs", permission: "histories-cost" },
       { label: "Notas de Envio", href: "/history/shipping-notes", permission: "histories-shipping-notes" },
