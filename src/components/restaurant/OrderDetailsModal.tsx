@@ -1,32 +1,33 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Modal from '@/components/modal/Modal';
 import { Button, Preset } from '@/components/button/button';
+import Modal from '@/components/modal/Modal';
 import { useRelativeTime } from '@/hooks/useRelativeTime';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { numberToMoney } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
+import React, { useEffect, useState } from 'react';
+import { BiFoodMenu, BiInfoCircle, BiTimeFive, BiUser } from 'react-icons/bi';
 import { TbPointFilled } from 'react-icons/tb';
 
 const orderTypeMap: Record<number, string> = {
-  1: 'Venta Rapida',
-  2: 'En mesa',
+  1: 'Venta Rápida',
+  2: 'En Mesa',
   3: 'Delivery',
 };
 
 const deliveryTypeMap: Record<number, string> = {
-  1: 'Comer Aqui',
+  1: 'Comer Aquí',
   2: 'Para Llevar',
   3: 'Delivery',
 };
 
 const orderStatusMap: Record<number, { label: string; className: string }> = {
-  1: { label: 'Activo', className: 'status-info' },
-  2: { label: 'Guardado', className: 'status-success' },
-  3: { label: 'Pagado', className: 'status-danger' },
-  4: { label: 'Anulado', className: 'status-warning' },
-  6: { label: 'Eliminada', className: 'status-warning' },
+  1: { label: 'Activo', className: 'bg-info/10 text-info' },
+  2: { label: 'Guardado', className: 'bg-success/10 text-success' },
+  3: { label: 'Pagado', className: 'bg-purple-500/10 text-purple-500' },
+  4: { label: 'Anulado', className: 'bg-danger/10 text-danger' },
+  6: { label: 'Eliminada', className: 'bg-warning/10 text-warning' },
 };
 
 interface OrderDetailsModalProps {
@@ -34,6 +35,13 @@ interface OrderDetailsModalProps {
   onClose: () => void;
   order: any;
 }
+
+const InfoPill = ({ label, value, className = '' }: { label: string; value: string; className?: string }) => (
+  <div className={`text-xs font-semibold px-3 py-1 rounded-full ${className}`}>
+    <span className="font-normal mr-1">{label}:</span>
+    {value}
+  </div>
+);
 
 export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalProps) {
   const { system } = useConfigStore();
@@ -53,26 +61,33 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
 
   if (!order) return null;
 
-  const status = orderStatusMap[order?.status] || { label: 'Activo', className: 'status-info' };
+  const status = orderStatusMap[order?.status] || { label: 'Desconocido', className: 'bg-gray-500/10 text-gray-500' };
+  const clientName = order?.order_type === 2 ? order?.table?.name : order?.client?.name;
 
   return (
-    <Modal show={isShow} onClose={onClose} size="xl2" headerTitle={`ORDEN NUMERO: ${order?.number}`}>
+    <Modal show={isShow} onClose={onClose} size="xl2" headerTitle={`Orden #${order?.number}`}>
       <Modal.Body>
-        <div className="mx-2">
-          <div className="flex justify-between text-text-base">
-            <div>
-              <span className="uppercase">Usuario:</span>
-              <span className="ml-2 font-semibold">{order?.employee?.name}</span>
-            </div>
-            <div>
-              <span className="uppercase">Clientes:</span>
-              <span className="ml-2 font-semibold">{order?.attributes?.clients_quantity}</span>
-            </div>
+        <div className="px-4">
+          {/* Time Info - Moved to Top */}
+          <div className="flex items-center justify-center text-xs text-text-muted mb-3">
+            <BiTimeFive className="mr-2" />
+            <span>Inicio: {formatDateAsDMY(order?.created_at)} {formatHourAsHM(order?.created_at)} (Hace {relativeTime})</span>
           </div>
 
-          <div className="flex justify-between font-semibold border border-bg-subtle py-2 rounded-full px-4 mt-4 shadow-sm bg-bg-content text-text-base">
-            <span>Inicio: {formatDateAsDMY(order?.created_at)} {formatHourAsHM(order?.created_at)}</span>
-            <span className="text-danger">Hace: {relativeTime}</span>
+          {/* Order Summary Header */}
+            <div className="flex justify-between items-centergap-2 text-text-base">
+              <div className="flex items-center">
+                <BiUser className="mr-2 text-text-muted" size={16} />
+                <span className="font-medium">Cliente:</span>
+                <span className="ml-2">{clientName || 'No especificado'}</span>
+              </div>
+              <div className="flex items-center">
+                <BiFoodMenu className="mr-2 text-text-muted" size={16} />
+                <span className="font-medium">Atendido por:</span>
+                <span className="ml-2">{order?.employee?.name}</span>
+              </div>
+            {/* Empty div to maintain grid structure */}
+            <div />
           </div>
 
           <div className="relative overflow-x-auto mt-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
@@ -121,20 +136,17 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
             </table>
           </div>
 
-          <div className="flex justify-between font-semibold mt-4">
-            <span className="w-full text-center border border-bg-subtle py-2 rounded-l-full shadow-sm bg-success/10 text-success">
-              {orderTypeMap[order?.order_type] ?? 'En mesa'}
-            </span>
-            <span className="w-full text-center border border-bg-subtle py-2 shadow-sm bg-bg-content">
-              <span className={status.className}>{status.label}</span>
-            </span>
-            <span className="w-full text-center border border-bg-subtle py-2 rounded-r-full shadow-sm bg-info/10 text-info">
-              {deliveryTypeMap[order?.delivery_type] ?? 'Para Llevar'}
-            </span>
+          {/* Type, Delivery, Status - Moved to Bottom */}
+          <div className="flex flex-wrap justify-center items-center gap-2 mt-4 pt-4 border-t border-bg-subtle">
+            <InfoPill label="Tipo" value={orderTypeMap[order?.order_type] ?? 'N/A'} className="bg-primary/10 text-primary" />
+            <InfoPill label="Entrega" value={deliveryTypeMap[order?.delivery_type] ?? 'N/A'} className="bg-cyan-500/10 text-cyan-500" />
+            <InfoPill label="Estado" value={status.label} className={status.className} />
           </div>
 
-          <div className="mt-4 text-sm text-danger">
-            * La propina no se encuentra incluida en el total
+          {/* Tip Info */}
+          <div className="text-center text-xs text-text-muted/80 mt-3">
+            <BiInfoCircle className="inline-block mr-1 text-orange-600" />
+            <span>La propina no se encuentra incluida en el total.</span>
           </div>
         </div>
       </Modal.Body>
@@ -144,3 +156,4 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
     </Modal>
   );
 }
+
