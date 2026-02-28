@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { signIn, getSession } from 'next-auth/react';
-import Modal from '@/components/modal/Modal';
 import { Button, Preset } from '@/components/button/button';
-import useConfigStore from '@/stores/configStore';
+import Modal from '@/components/modal/Modal';
 import { API_URL } from '@/constants';
+import useConfigStore from '@/stores/configStore';
+import { getSession, signIn } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { LuLoaderCircle } from 'react-icons/lu';
 
@@ -81,6 +81,7 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
       setShowPassword(false);
       getRemoteUrl();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isShow]);
 
   return (

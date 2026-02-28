@@ -68,13 +68,13 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
     <Modal show={isShow} onClose={onClose} size="xl2" headerTitle={`Orden #${order?.number}`}>
       <Modal.Body>
         <div className="px-4">
-          {/* Time Info - Moved to Top */}
-          <div className="flex items-center justify-center text-xs text-text-muted mb-3">
-            <BiTimeFive className="mr-2" />
-            <span>Inicio: {formatDateAsDMY(order?.created_at)} {formatHourAsHM(order?.created_at)} (Hace {relativeTime})</span>
+
+          <div className="flex items-center justify-center text-red-700 mb-3 font-medium">
+            <BiTimeFive className="mr-2 animate-spin" />
+            <span className='text-sm'>Inicio: {formatDateAsDMY(order?.created_at)} {formatHourAsHM(order?.created_at)} </span>
+            <span className='text-xs ml-3'> (Hace {relativeTime})</span>
           </div>
 
-          {/* Order Summary Header */}
             <div className="flex justify-between items-centergap-2 text-text-base">
               <div className="flex items-center">
                 <BiUser className="mr-2 text-text-muted" size={16} />
@@ -86,7 +86,7 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
                 <span className="font-medium">Atendido por:</span>
                 <span className="ml-2">{order?.employee?.name}</span>
               </div>
-            {/* Empty div to maintain grid structure */}
+
             <div />
           </div>
 
@@ -136,14 +136,13 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
             </table>
           </div>
 
-          {/* Type, Delivery, Status - Moved to Bottom */}
+
           <div className="flex flex-wrap justify-center items-center gap-2 mt-4 pt-4 border-t border-bg-subtle">
             <InfoPill label="Tipo" value={orderTypeMap[order?.order_type] ?? 'N/A'} className="bg-primary/10 text-primary" />
             <InfoPill label="Entrega" value={deliveryTypeMap[order?.delivery_type] ?? 'N/A'} className="bg-cyan-500/10 text-cyan-500" />
             <InfoPill label="Estado" value={status.label} className={status.className} />
           </div>
 
-          {/* Tip Info */}
           <div className="text-center text-xs text-text-muted/80 mt-3">
             <BiInfoCircle className="inline-block mr-1 text-orange-600" />
             <span>La propina no se encuentra incluida en el total.</span>
