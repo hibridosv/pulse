@@ -1,26 +1,23 @@
 'use client';
-import { LoadingPage } from "@/components/LoadingPage";
-import { ViewTitle } from "@/components/ViewTitle";
-import { useSession } from "next-auth/react";
 
+import { NothingHere } from '@/components/NothingHere';
+import { ScreenCard } from '@/components/restaurant/ScreenCard';
+import { useScreenOrdersLogic } from '@/hooks/restaurant/useScreenOrdersLogic';
+import SkeletonTable from '@/components/skeleton/skeleton-table';
 
 export default function Page() {
-  const { data: session, status } = useSession();
+  const { orders, loading, processData } = useScreenOrdersLogic();
 
-
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
+  if (loading) return <SkeletonTable rows={6} columns={4} />;
+  if (!orders || orders.length === 0) return <NothingHere text="No hay comandas pendientes" />;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
-    <div className="md:col-span-7 md:border-r md:border-primary">
-        <ViewTitle text="Restaurant" />
-
+    <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 m-4 pb-10">
+      {orders.map((order: any) => (
+        <div key={order.id} className="mb-4 break-inside-avoid-column">
+          <ScreenCard order={order} processData={processData} />
+        </div>
+      ))}
     </div>
-    <div className="md:col-span-3">
-
-    </div> 
-</div>
   );
 }
