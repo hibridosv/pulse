@@ -1,3 +1,18 @@
+export const transferSummaryItems = [
+  { label: 'Activos', status: 2 },
+  { label: 'Aceptados', status: 4 },
+  { label: 'Parciales', status: 3 },
+  { label: 'Rechazados', status: 5 },
+  { label: 'En Progreso', status: 1 },
+  { label: 'Solicitados', status: 7 },
+  { label: 'Eliminados', status: 0 },
+];
+
+export function countByStatus(data: any[], status: number): number {
+  if (!data) return 0;
+  return data.filter((item: any) => item?.status === status).length;
+}
+
 export const statusOfTransfer = (status: number)=>{
   switch (status) {
     case 1: return <span className="status-info uppercase">En Progreso</span>

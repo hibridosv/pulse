@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { numberToMoney } from '@/lib/utils';
 import { IoIosAlert, IoIosCloseCircle } from 'react-icons/io';
@@ -6,6 +7,7 @@ import { DeleteModal } from '@/components/DeleteModal';
 import { NothingHere } from '@/components/NothingHere';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
 import { ChangeQuantityModal } from './ChangeQuantityModal';
+import useConfigStore from '@/stores/configStore';
 
 interface TransferProductsTableProps {
   products: any[];
@@ -20,6 +22,7 @@ export function TransferProductsTable({ products, onDelete, onUpdateQuantity, se
   const [recordSelect, setRecordSelect] = useState<any>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showQuantityModal, setShowQuantityModal] = useState(false);
+  const { system } = useConfigStore();
 
   if (loading) return <SkeletonTable rows={8} columns={6} />;
 
@@ -52,62 +55,63 @@ export function TransferProductsTable({ products, onDelete, onUpdateQuantity, se
 
   let total = 0;
 
+  const listItems = products.map((record: any) => {
+    const unitCost = record?.product_json ? JSON.parse(record.product_json)?.unit_cost : 0;
+    const subtotal = unitCost * (record?.quantity || 0);
+    total += subtotal;
+
+    return (
+      <tr
+        key={record.id}
+        className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record.requested_exists === 0 ? 'bg-danger/10' : ''}`}
+        title={record.requested_exists === 0 ? 'El producto no existe en el inventario' : ''}
+      >
+        <td className="px-3 py-2 whitespace-nowrap font-medium text-primary">{record?.cod}</td>
+        <td className="px-3 py-2 whitespace-nowrap">{record?.description}</td>
+        <td className="px-3 py-2 whitespace-nowrap text-right">{numberToMoney(unitCost, system)}</td>
+        <td
+          className={`px-3 py-2 text-center ${record.requested_exists === 1 ? 'clickeable text-primary font-semibold' : ''}`}
+          onClick={() => handleQuantityClick(record)}
+        >
+          {record?.quantity}
+        </td>
+        <td className="px-3 py-2 whitespace-nowrap text-right font-bold">{numberToMoney(subtotal, system)}</td>
+        <td className="px-3 py-2 text-center">
+          {record.requested_exists === 1 || deleteActive ? (
+            <IoIosCloseCircle
+              size={22}
+              title="Eliminar Producto"
+              className="text-danger clickeable"
+              onClick={() => handleDeleteClick(record)}
+            />
+          ) : (
+            <IoIosAlert size={22} className="text-warning" />
+          )}
+        </td>
+      </tr>
+    );
+  });
+
   return (
-    <div>
-      <div className="w-full overflow-auto">
+    <div className="m-4">
+      <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
-          <thead className="text-xs uppercase bg-bg-subtle/60 text-text-base border-b-2 border-bg-subtle">
+          <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
             <tr>
-              <th className="py-3 px-4 border-r border-bg-subtle">Código</th>
-              <th className="py-3 px-4 border-r border-bg-subtle">Descripción</th>
-              <th className="py-3 px-4 border-r border-bg-subtle">Precio Costo</th>
-              <th className="py-3 px-4 border-r border-bg-subtle">Cantidad</th>
-              <th className="py-3 px-4 border-r border-bg-subtle">Total</th>
-              <th className="py-3 px-4">OP</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Código</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Descripción</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio Costo</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cantidad</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider whitespace-nowrap">OP</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-bg-subtle">
-            {products.map((record: any) => {
-              const unitCost = record?.product_json ? JSON.parse(record.product_json)?.unit_cost : 0;
-              const subtotal = unitCost * (record?.quantity || 0);
-              total += subtotal;
-
-              return (
-                <tr
-                  key={record.id}
-                  className={`hover:bg-bg-subtle ${record.requested_exists === 0 ? 'bg-danger/10' : ''}`}
-                  title={record.requested_exists === 0 ? 'El producto no existe en el inventario' : ''}
-                >
-                  <td className="py-3 px-4">{record?.cod}</td>
-                  <td className="py-3 px-4 whitespace-nowrap">{record?.description}</td>
-                  <td className="py-3 px-4 whitespace-nowrap">{numberToMoney(unitCost)}</td>
-                  <td
-                    className={`py-3 px-4 ${record.requested_exists === 1 ? 'clickeable text-primary font-semibold' : ''}`}
-                    onClick={() => handleQuantityClick(record)}
-                  >
-                    {record?.quantity}
-                  </td>
-                  <td className="py-3 px-4 whitespace-nowrap">{numberToMoney(subtotal)}</td>
-                  <td className="py-2 px-4">
-                    {record.requested_exists === 1 || deleteActive ? (
-                      <IoIosCloseCircle
-                        size={22}
-                        title="Eliminar Producto"
-                        className="text-danger clickeable"
-                        onClick={() => handleDeleteClick(record)}
-                      />
-                    ) : (
-                      <IoIosAlert size={22} className="text-warning" />
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
+          <tbody className="divide-y divide-bg-subtle/50">
+            {listItems}
           </tbody>
         </table>
-
-        <div className="font-medium uppercase text-lg text-primary text-right mt-3 px-4">
-          Total: {numberToMoney(total)}
+        <div className="w-full flex justify-end p-4">
+          <p className="text-lg font-semibold text-primary uppercase">Total: {numberToMoney(total, system)}</p>
         </div>
       </div>
 

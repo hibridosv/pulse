@@ -6,53 +6,11 @@ import { useRelativeTime } from '@/hooks/useRelativeTime';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
 import { BiInfoCircle } from 'react-icons/bi';
+import { orderTypeMap, deliveryTypeMap, orderStatusMap } from './utils';
 
-const orderTypeMap: Record<number, string> = {
-  1: 'Venta Rapida',
-  2: 'En mesa',
-  3: 'Delivery',
-};
-
-const deliveryTypeMap: Record<number, string> = {
-  1: 'Comer Aqui',
-  2: 'Para Llevar',
-  3: 'Delivery',
-};
-
-const orderStatusMap: Record<number, { label: string; className: string }> = {
-  1: { label: 'Activo', className: 'status-info' },
-  2: { label: 'Guardado', className: 'status-success' },
-  3: { label: 'Pagado', className: 'status-danger' },
-  4: { label: 'Anulado', className: 'status-warning' },
-  6: { label: 'Eliminada', className: 'status-warning' },
-};
-
-function OrderRow({ record }: { record: any }) {
-  const relativeTime = useRelativeTime(record?.created_at);
-  const { openModal } = useModalStore();
-  const { setElement } = useTempStorage();
-
-  const handleShowDetails = () => {
-    setElement('restaurantOrderDetail', record);
-    openModal('restaurantOrderDetail');
-  };
-
-  const status = orderStatusMap[record?.status] || { label: 'Activo', className: 'status-info' };
-
-  return (
-    <tr className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
-      <td className="px-4 py-2 font-bold text-primary text-center">{record?.number}</td>
-      <td className="px-4 py-2 text-center">{record?.attributes?.clients_quantity}</td>
-      <td className="px-4 py-2 whitespace-nowrap">{record?.employee?.name}</td>
-      <td className="px-4 py-2 whitespace-nowrap">{orderTypeMap[record?.order_type] ?? 'En mesa'}</td>
-      <td className="px-4 py-2 whitespace-nowrap">{deliveryTypeMap[record?.delivery_type] ?? 'Para Llevar'}</td>
-      <td className="px-4 py-2 whitespace-nowrap text-danger font-medium">{relativeTime}</td>
-      <td className="px-4 py-2 text-center"><span className={status.className}>{status.label}</span></td>
-      <td className="px-4 py-2 text-center">
-        <BiInfoCircle size={22} className="text-accent clickeable" onClick={handleShowDetails} />
-      </td>
-    </tr>
-  );
+function RelativeTimeCell({ timestamp }: { timestamp: string }) {
+  const relativeTime = useRelativeTime(timestamp);
+  return <td className="px-4 py-2 whitespace-nowrap text-danger font-medium">{relativeTime}</td>;
 }
 
 interface RestaurantOrdersTableProps {
@@ -61,8 +19,35 @@ interface RestaurantOrdersTableProps {
 }
 
 export function RestaurantOrdersTable({ records, isLoading }: RestaurantOrdersTableProps) {
+  const { openModal } = useModalStore();
+  const { setElement } = useTempStorage();
+
   if (isLoading) return <SkeletonTable rows={6} columns={8} />;
   if (!records?.data || records.data.length === 0) return <NothingHere text="No se encontraron ordenes" />;
+
+  const handleShowDetails = (record: any) => {
+    setElement('restaurantOrderDetail', record);
+    openModal('restaurantOrderDetail');
+  };
+
+  const listItems = records.data.map((record: any) => {
+    const status = orderStatusMap[record?.status] || { label: 'Activo', className: 'status-info' };
+
+    return (
+      <tr key={record.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
+        <td className="px-4 py-2 font-bold text-primary text-center">{record?.number}</td>
+        <td className="px-4 py-2 text-center">{record?.attributes?.clients_quantity}</td>
+        <td className="px-4 py-2 whitespace-nowrap">{record?.employee?.name}</td>
+        <td className="px-4 py-2 whitespace-nowrap">{orderTypeMap[record?.order_type] ?? 'En mesa'}</td>
+        <td className="px-4 py-2 whitespace-nowrap">{deliveryTypeMap[record?.delivery_type] ?? 'Para Llevar'}</td>
+        <RelativeTimeCell timestamp={record?.created_at} />
+        <td className="px-4 py-2 text-center"><span className={status.className}>{status.label}</span></td>
+        <td className="px-4 py-2 text-center">
+          <BiInfoCircle size={22} className="text-accent clickeable" onClick={() => handleShowDetails(record)} />
+        </td>
+      </tr>
+    );
+  });
 
   return (
     <div className="m-4">
@@ -81,9 +66,7 @@ export function RestaurantOrdersTable({ records, isLoading }: RestaurantOrdersTa
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">
-            {records.data.map((record: any) => (
-              <OrderRow key={record.id} record={record} />
-            ))}
+            {listItems}
           </tbody>
         </table>
       </div>

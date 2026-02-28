@@ -9,26 +9,7 @@ import useConfigStore from '@/stores/configStore';
 import React, { useEffect, useState } from 'react';
 import { BiFoodMenu, BiInfoCircle, BiTimeFive, BiUser } from 'react-icons/bi';
 import { TbPointFilled } from 'react-icons/tb';
-
-const orderTypeMap: Record<number, string> = {
-  1: 'Venta Rápida',
-  2: 'En Mesa',
-  3: 'Delivery',
-};
-
-const deliveryTypeMap: Record<number, string> = {
-  1: 'Comer Aquí',
-  2: 'Para Llevar',
-  3: 'Delivery',
-};
-
-const orderStatusMap: Record<number, { label: string; className: string }> = {
-  1: { label: 'Activo', className: 'bg-info/10 text-info' },
-  2: { label: 'Guardado', className: 'bg-success/10 text-success' },
-  3: { label: 'Pagado', className: 'bg-purple-500/10 text-purple-500' },
-  4: { label: 'Anulado', className: 'bg-danger/10 text-danger' },
-  6: { label: 'Eliminada', className: 'bg-warning/10 text-warning' },
-};
+import { orderTypeMap, deliveryTypeMap, orderStatusModalMap } from './utils';
 
 interface OrderDetailsModalProps {
   isShow: boolean;
@@ -61,7 +42,7 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
 
   if (!order) return null;
 
-  const status = orderStatusMap[order?.status] || { label: 'Desconocido', className: 'bg-gray-500/10 text-gray-500' };
+  const status = orderStatusModalMap[order?.status] || { label: 'Desconocido', className: 'bg-gray-500/10 text-gray-500' };
   const clientName = order?.order_type === 2 ? order?.table?.name : order?.client?.name;
 
   return (

@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { NothingHere } from '@/components/NothingHere';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
@@ -68,73 +69,75 @@ export function TransferDetailsTable({
     setShowRejectTransferModal(false);
   };
 
+  const listItems = transfer.products.map((record: any) => (
+    <tr
+      key={record.id}
+      className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record.requested_exists === 0 ? 'bg-danger/10' : ''}`}
+    >
+      <td className="px-3 py-2 whitespace-nowrap font-medium text-primary">{record?.cod}</td>
+      <td className="px-3 py-2 whitespace-nowrap">{record?.description}</td>
+      <td className="px-3 py-2 text-center">{record?.quantity}</td>
+      <td className="px-3 py-2">{statusOfProductTransfer(record?.status)}</td>
+      <td
+        className={`px-3 py-2 font-semibold ${
+          loadingDetail ? 'text-warning' : record?.cod_receive ? 'text-success' : 'text-danger'
+        }`}
+        title={record?.cod_receive ? 'Registro correcto' : 'Debe agregar un registro que coincida con el codigo del producto entrante'}
+      >
+        {loadingDetail ? 'ESPERE ...' : record?.cod_receive ? 'CON REGISTRO' : 'SIN REGISTRO'}
+      </td>
+
+      {transfer.status === 2 && (
+        <td className="px-3 py-2">
+          <span className="flex items-center gap-2" title={record.requested_exists === 0 ? 'El Producto no fue enviado por que no existe en el inventario de quien envia' : ''}>
+            {record?.cod_receive ? (
+              <MdCheck size={20} className="text-success" />
+            ) : sending ? (
+              <MdOutlineDownloading size={20} className="text-primary animate-spin" />
+            ) : (
+              <AiOutlineFundView
+                size={20}
+                title="Agregar registro nuevo de este producto"
+                className="text-danger clickeable"
+                onClick={record.status === 1 ? () => onCreateRegister(record.id) : undefined}
+              />
+            )}
+            <Button
+              preset={record.status !== 1 ? Preset.smallCloseDisable : Preset.smallClose}
+              disabled={record.status !== 1}
+              noText
+              onClick={
+                record.requested_exists === 0
+                  ? () => useToastMessageStore.getState().setError({ response: { data: { message: 'Este producto no existe en el inventario de quien envia' } } })
+                  : () => handleRejectClick(record)
+              }
+            />
+          </span>
+        </td>
+      )}
+    </tr>
+  ));
+
   return (
-    <div>
-      <div className="w-full overflow-auto">
+    <div className="m-4">
+      <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
-          <thead className="text-xs uppercase bg-bg-subtle/60 text-text-base border-b-2 border-bg-subtle">
+          <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
             <tr>
-              <th className="py-3 px-4 border-r border-bg-subtle">Código</th>
-              <th className="py-3 px-4 border-r border-bg-subtle">Descripción</th>
-              <th className="py-3 px-4 border-r border-bg-subtle">Cantidad</th>
-              <th className="py-3 px-4 border-r border-bg-subtle">Estado</th>
-              <th className="py-3 px-4 border-r border-bg-subtle">Registro</th>
-              {transfer.status === 2 && <th className="py-3 px-4">OP</th>}
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Código</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Descripción</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cantidad</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Estado</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Registro</th>
+              {transfer.status === 2 && <th scope="col" className="px-6 py-3 font-bold tracking-wider whitespace-nowrap">OP</th>}
             </tr>
           </thead>
-          <tbody className="divide-y divide-bg-subtle">
-            {transfer.products.map((record: any) => (
-              <tr
-                key={record.id}
-                className={`hover:bg-bg-subtle ${record.requested_exists === 0 ? 'bg-danger/10' : ''}`}
-              >
-                <td className="py-3 px-4 whitespace-nowrap">{record?.cod}</td>
-                <td className="py-3 px-4 whitespace-nowrap">{record?.description}</td>
-                <td className="py-3 px-4">{record?.quantity}</td>
-                <td className="py-3 px-4">{statusOfProductTransfer(record?.status)}</td>
-                <td
-                  className={`py-3 px-4 font-semibold ${
-                    loadingDetail ? 'text-warning' : record?.cod_receive ? 'text-success' : 'text-danger'
-                  }`}
-                  title={record?.cod_receive ? 'Registro correcto' : 'Debe agregar un registro que coincida con el codigo del producto entrante'}
-                >
-                  {loadingDetail ? 'ESPERE ...' : record?.cod_receive ? 'CON REGISTRO' : 'SIN REGISTRO'}
-                </td>
-
-                {transfer.status === 2 && (
-                  <td className="py-3 px-4">
-                    <span className="flex items-center gap-2" title={record.requested_exists === 0 ? 'El Producto no fue enviado por que no existe en el inventario de quien envia' : ''}>
-                      {record?.cod_receive ? (
-                        <MdCheck size={20} className="text-success" />
-                      ) : sending ? (
-                        <MdOutlineDownloading size={20} className="text-primary animate-spin" />
-                      ) : (
-                        <AiOutlineFundView
-                          size={20}
-                          title="Agregar registro nuevo de este producto"
-                          className="text-danger clickeable"
-                          onClick={record.status === 1 ? () => onCreateRegister(record.id) : undefined}
-                        />
-                      )}
-                      <Button
-                        preset={record.status !== 1 ? Preset.smallCloseDisable : Preset.smallClose}
-                        disabled={record.status !== 1}
-                        noText
-                        onClick={
-                          record.requested_exists === 0
-                            ? () => useToastMessageStore.getState().setError({ response: { data: { message: 'Este producto no existe en el inventario de quien envia' } } })
-                            : () => handleRejectClick(record)
-                        }
-                      />
-                    </span>
-                  </td>
-                )}
-              </tr>
-            ))}
+          <tbody className="divide-y divide-bg-subtle/50">
+            {listItems}
           </tbody>
         </table>
 
-        <div className="flex justify-end m-4 gap-3">
+        <div className="flex justify-end p-4 gap-3">
           <Button onClick={onBack} disabled={sending} text="Regresar" preset={Preset.add} />
           {transfer.status === 2 ? (
             <>

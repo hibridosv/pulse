@@ -70,52 +70,54 @@ export function CommissionsProductsTable({ referredId, onSelectedCountChange }: 
     setToggling(false);
   };
 
+  const listItems = localOrders.data.map((record: any) => {
+    const isCredit = record?.credit && record?.credit?.status === 1;
+    const unpaid = hasUnpaidProducts(record?.products);
+    const checked = !unpaid;
+
+    return (
+      <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${isCredit ? 'bg-danger/10' : ''}`}>
+        <td className="px-3 py-2 whitespace-nowrap truncate">{formatDate(record?.charged_at)} {formatHourAsHM(record?.charged_at)}</td>
+        <td className="px-3 py-2 font-medium whitespace-nowrap">{record?.invoice_assigned?.name}: {record?.invoice}</td>
+        <td className="px-3 py-2 whitespace-nowrap">{record?.referred?.name}</td>
+        <td className="px-3 py-2 text-center">{record?.products?.length}</td>
+        <td className="px-3 py-2 text-right">{numberToMoney(record?.discount ?? 0, system)}</td>
+        <td className="px-3 py-2 text-right">{numberToMoney(getOrderCommissionTotal(record?.products), system)}</td>
+        <td className="px-3 py-2 text-right font-medium">{numberToMoney(record?.total ?? 0, system)}</td>
+        <td className="px-3 py-2 text-center">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={checked}
+              disabled={isCredit || toggling}
+              onChange={() => handleToggle(record.id, unpaid)}
+            />
+            <div className="w-11 h-6 bg-bg-subtle rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success"></div>
+          </label>
+        </td>
+      </tr>
+    );
+  });
+
   return (
     <div className="m-4">
       <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
             <tr>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Fecha</th>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Factura</th>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Referido</th>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Productos</th>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Descuento</th>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Comision $</th>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
-              <th scope="col" className="px-4 py-3 font-bold tracking-wider whitespace-nowrap">Pagar</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Fecha</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Factura</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Referido</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Productos</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Descuento</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Comision $</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider whitespace-nowrap">Pagar</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">
-            {localOrders.data.map((record: any) => {
-              const isCredit = record?.credit && record?.credit?.status === 1;
-              const unpaid = hasUnpaidProducts(record?.products);
-              const checked = !unpaid;
-
-              return (
-                <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${isCredit ? 'bg-danger/10' : ''}`}>
-                  <td className="px-4 py-2 whitespace-nowrap truncate">{formatDate(record?.charged_at)} {formatHourAsHM(record?.charged_at)}</td>
-                  <td className="px-4 py-2 font-medium whitespace-nowrap">{record?.invoice_assigned?.name}: {record?.invoice}</td>
-                  <td className="px-4 py-2 whitespace-nowrap">{record?.referred?.name}</td>
-                  <td className="px-4 py-2 text-center">{record?.products?.length}</td>
-                  <td className="px-4 py-2 text-right">{numberToMoney(record?.discount ?? 0, system)}</td>
-                  <td className="px-4 py-2 text-right">{numberToMoney(getOrderCommissionTotal(record?.products), system)}</td>
-                  <td className="px-4 py-2 text-right font-medium">{numberToMoney(record?.total ?? 0, system)}</td>
-                  <td className="px-4 py-2 text-center">
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={checked}
-                        disabled={isCredit || toggling}
-                        onChange={() => handleToggle(record.id, unpaid)}
-                      />
-                      <div className="w-11 h-6 bg-bg-subtle rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success"></div>
-                    </label>
-                  </td>
-                </tr>
-              );
-            })}
+            {listItems}
           </tbody>
         </table>
       </div>

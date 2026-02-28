@@ -6,12 +6,7 @@ import { formatDate, formatHourAsHM } from '@/lib/date-formats';
 import { BiCar, BiRestaurant, BiUser } from 'react-icons/bi';
 import { FaClock } from 'react-icons/fa';
 import { TbPointFilled } from 'react-icons/tb';
-
-const deliveryTypeMap: Record<number, string> = {
-  1: 'Comer Aqui',
-  2: 'Para Llevar',
-  3: 'Delivery',
-};
+import { deliveryTypeMap } from './utils';
 
 interface ScreenCardProps {
   order: any;

@@ -1,4 +1,5 @@
 'use client';
+
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { statusOfTransfer } from '@/components/transfers/utils';
 import useConfigStore from '@/stores/configStore';
@@ -34,57 +35,61 @@ export function TransfersHistoryTable({ records, onRowClick, onGetProductsOnline
     return '';
   };
 
+  const listItems = records.data.map((record: any) => (
+    <tr
+      key={record.id}
+      className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${getRowClass(record)}`}
+      onClick={() => onRowClick(record, tenant)}
+    >
+      <td className="px-3 py-2 whitespace-nowrap">
+        {record?.received_at
+          ? `${formatDateAsDMY(record.received_at)} ${formatHourAsHM(record.received_at)}`
+          : 'N/A'}
+      </td>
+      <td className="px-3 py-2 whitespace-nowrap">{record?.from?.description}</td>
+      <td className="px-3 py-2 whitespace-nowrap">{record?.to?.description}</td>
+      <td className="px-3 py-2 whitespace-nowrap">{record?.send}</td>
+      <td className="px-3 py-2 whitespace-nowrap">{record?.receive || 'PENDIENTE'}</td>
+      <td className="px-3 py-2 whitespace-nowrap">{statusOfTransfer(record?.status)}</td>
+      <td className="px-3 py-2 text-center">
+        {sending ? (
+          <FaSpinner size={18} className="text-primary animate-spin" />
+        ) : (record?.status === 3 || record?.status === 5) && record?.is_online === 1 ? (
+          <IoMdAlert
+            size={22}
+            className="clickeable text-warning"
+            onClick={(e) => {
+              e.stopPropagation();
+              onGetProductsOnline(record);
+            }}
+          />
+        ) : (
+          <MdCheck size={18} className="text-success" />
+        )}
+      </td>
+    </tr>
+  ));
+
   return (
-    <div className="w-full overflow-auto">
-      <table className="w-full text-sm text-left">
-        <thead className="text-xs uppercase bg-bg-subtle/60 text-text-base border-b-2 border-bg-subtle">
-          <tr>
-            <th className="py-3 px-4 border-r border-bg-subtle">Recibido</th>
-            <th className="py-3 px-4 border-r border-bg-subtle">Origen</th>
-            <th className="py-3 px-4 border-r border-bg-subtle">Destino</th>
-            <th className="py-3 px-4 border-r border-bg-subtle">Envía</th>
-            <th className="py-3 px-4 border-r border-bg-subtle">Recibe</th>
-            <th className="py-3 px-4 border-r border-bg-subtle">Estado</th>
-            <th className="py-3 px-4"></th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-bg-subtle">
-          {records.data.map((record: any) => (
-            <tr
-              key={record.id}
-              className={`hover:bg-bg-subtle ${getRowClass(record)}`}
-              onClick={() => onRowClick(record, tenant)}
-            >
-              <td className="py-3 px-4 truncate">
-                {record?.received_at
-                  ? `${formatDateAsDMY(record.received_at)} ${formatHourAsHM(record.received_at)}`
-                  : 'N/A'}
-              </td>
-              <td className="py-3 px-4">{record?.from?.description}</td>
-              <td className="py-3 px-4">{record?.to?.description}</td>
-              <td className="py-3 px-4">{record?.send}</td>
-              <td className="py-3 px-4">{record?.receive || 'PENDIENTE'}</td>
-              <td className="py-3 px-4">{statusOfTransfer(record?.status)}</td>
-              <td className="py-3 px-4">
-                {sending ? (
-                  <FaSpinner size={18} className="text-primary animate-spin" />
-                ) : (record?.status === 3 || record?.status === 5) && record?.is_online === 1 ? (
-                  <IoMdAlert
-                    size={22}
-                    className="clickeable text-warning"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onGetProductsOnline(record);
-                    }}
-                  />
-                ) : (
-                  <MdCheck size={18} className="text-success" />
-                )}
-              </td>
+    <div className="m-4">
+      <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
+        <table className="w-full text-sm text-left">
+          <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
+            <tr>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Recibido</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Origen</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Destino</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Envía</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Recibe</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Estado</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider whitespace-nowrap"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-bg-subtle/50">
+            {listItems}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

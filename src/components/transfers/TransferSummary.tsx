@@ -1,25 +1,11 @@
 'use client';
 import { NothingHere } from '@/components/NothingHere';
+import { countByStatus, transferSummaryItems } from './utils';
 
 interface TransferSummaryProps {
   records: any;
   loading?: boolean;
 }
-
-function countByStatus(data: any[], status: number): number {
-  if (!data) return 0;
-  return data.filter((item: any) => item?.status === status).length;
-}
-
-const summaryItems = [
-  { label: 'Activos', status: 2 },
-  { label: 'Aceptados', status: 4 },
-  { label: 'Parciales', status: 3 },
-  { label: 'Rechazados', status: 5 },
-  { label: 'En Progreso', status: 1 },
-  { label: 'Solicitados', status: 7 },
-  { label: 'Eliminados', status: 0 },
-];
 
 function SummarySkeleton() {
   return (
@@ -29,7 +15,7 @@ function SummarySkeleton() {
         <div className="h-3 w-24 bg-bg-subtle rounded mx-auto" />
       </div>
       <div className="mx-4 bg-bg-content rounded-lg border border-bg-subtle divide-y divide-bg-subtle">
-        {summaryItems.map((item) => (
+        {transferSummaryItems && transferSummaryItems.map((item) => (
           <div key={item.status} className="flex justify-between px-4 py-2.5">
             <div className="h-4 w-20 bg-bg-subtle rounded" />
             <div className="h-4 w-6 bg-bg-subtle rounded" />
@@ -55,7 +41,7 @@ export function TransferSummary({ records, loading }: TransferSummaryProps) {
       </div>
 
       <div className="mx-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle divide-y divide-bg-subtle">
-        {summaryItems.map((item) => (
+        {transferSummaryItems.map((item) => (
           <div key={item.status} className="flex justify-between px-4 py-2.5">
             <span className="text-text-muted text-sm">{item.label}</span>
             <span className="text-text-base font-semibold text-sm">{countByStatus(data, item.status)}</span>
