@@ -1,27 +1,26 @@
 'use client'
-import { useEffect } from 'react';
+import { getCountryProperty, getDepartmentNameById, getMunicipioNameById, permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
-import branchesStore from '@/stores/settings/branchesStore';
 import useModalStore from '@/stores/modalStorage';
+import branchesStore from '@/stores/settings/branchesStore';
 import useTempStorage from '@/stores/useTempStorage';
-import { permissionExists } from '@/lib/utils';
-import { getCountryProperty, getDepartmentNameById, getMunicipioNameById } from '@/lib/utils';
+import { useEffect } from 'react';
+import { useDepartaments } from '../locations/useDepartaments';
 
 export function useBranchesLogic() {
-  const { remoteUrls, tenants, locations, loading, sending, loadRemoteUrls, loadTenants, loadLocations, linkTenant } = branchesStore();
+  const { remoteUrls, tenants, loading, sending, loadRemoteUrls, loadTenants, linkTenant } = branchesStore();
   const { system, user, permission } = useConfigStore();
   const { openModal } = useModalStore();
   const { setElement } = useTempStorage();
-
+  const { departaments } = useDepartaments();
   const canAddTransfer = permissionExists(permission, 'config-transfers-add-transfer');
 
   useEffect(() => {
     if (user?.email) {
       loadRemoteUrls(user.email);
       loadTenants();
-      loadLocations();
     }
-  }, [user, loadRemoteUrls, loadTenants, loadLocations]);
+  }, [user, loadRemoteUrls, loadTenants]);
 
   const handleSelectTenant = (tenant: any) => {
     setElement('changeTenant', tenant);
@@ -35,8 +34,8 @@ export function useBranchesLogic() {
   const getAddress = () => {
     const parts = [];
     if (system?.location) parts.push(system.location);
-    if (system?.departament && locations) parts.push(getDepartmentNameById(system.departament, locations));
-    if (system?.town && locations) parts.push(getMunicipioNameById(`${system.departament}${system.town}`, locations));
+    if (system?.departament && departaments) parts.push(getDepartmentNameById(system.departament, departaments));
+    if (system?.town && departaments) parts.push(getMunicipioNameById(`${system.departament}${system.town}`, departaments));
     return parts.filter(Boolean).join(', ');
   };
 

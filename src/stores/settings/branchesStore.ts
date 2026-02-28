@@ -1,25 +1,22 @@
-import { getServices, createService } from '@/services/services';
+import { createService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
 
 interface BranchesStoreI {
   remoteUrls: any;
   tenants: any;
-  locations: any;
   loading: boolean;
   sending: boolean;
   error: boolean;
 
   loadRemoteUrls: (email: string) => Promise<void>;
   loadTenants: () => Promise<void>;
-  loadLocations: () => Promise<void>;
   linkTenant: (tenantId: number) => Promise<boolean>;
 }
 
 const branchesStore = create<BranchesStoreI>((set) => ({
   remoteUrls: null,
   tenants: null,
-  locations: null,
   loading: false,
   sending: false,
   error: false,
@@ -44,17 +41,6 @@ const branchesStore = create<BranchesStoreI>((set) => ({
       const response = await getServices('tenants');
       if (response.data) {
         set({ tenants: response.data });
-      }
-    } catch (error) {
-      useToastMessageStore.getState().setError(error);
-    }
-  },
-
-  loadLocations: async () => {
-    try {
-      const response = await getServices('electronic/getlocations');
-      if (response.data) {
-        set({ locations: response.data });
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);

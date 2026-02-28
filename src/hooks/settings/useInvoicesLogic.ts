@@ -1,9 +1,9 @@
 'use client'
-import { useEffect, useMemo } from 'react';
-import useConfigStore from '@/stores/configStore';
-import invoicesStore from '@/stores/settings/invoicesStore';
 import useReverb from '@/hooks/useReverb';
 import { getLastElement, getTotalOfItemWithStatus } from '@/lib/utils';
+import useConfigStore from '@/stores/configStore';
+import invoicesStore from '@/stores/settings/invoicesStore';
+import { useEffect, useMemo } from 'react';
 
 export function useInvoicesLogic() {
   const { invoices, payLink, loading, sendingLink, loadInvoices, loadPayLink } = invoicesStore();
@@ -18,7 +18,7 @@ export function useInvoicesLogic() {
   useEffect(() => {
     if (tenant?.id) {
       loadInvoices(
-        `system/invoices?filterWhere[tenant_id]==${tenant.id}&included=items.payment,tenant&sort=-created_at&perPage=10`
+        `settings/invoices?filterWhere[tenant_id]==${tenant.id}&included=items.payment,tenant&sort=-created_at&perPage=10`
       );
     }
   }, [tenant, pusherEvent, loadInvoices]);

@@ -1,8 +1,8 @@
 'use client'
 import useReverb from '@/hooks/useReverb';
+import { screenSound } from '@/lib/config/config';
 import useConfigStore from '@/stores/configStore';
 import screenOrdersStore from '@/stores/restaurant/screenOrdersStore';
-import { screenSound } from '@/lib/config/config';
 import { useEffect } from 'react';
 
 export function useScreenOrdersLogic() {
@@ -23,7 +23,7 @@ export function useScreenOrdersLogic() {
   }, [pusherEvent, loadOrders]);
 
   useEffect(() => {
-    if (orders.length > 0) {
+    if (orders && orders.length > 0) {
       screenSound();
     }
   }, [orders]);

@@ -1,4 +1,4 @@
-import { getServices, createService } from '@/services/services';
+import { createService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
 
@@ -38,7 +38,7 @@ const invoicesStore = create<InvoicesStoreI>((set) => ({
   loadPayLink: async (invoiceId: string) => {
     set({ sendingLink: true });
     try {
-      const response = await createService(`system/invoices/payments/${invoiceId}`, {});
+      const response = await createService(`settings/invoices/payments/${invoiceId}`, {});
       if (response.data) {
         set({ payLink: response.data });
       }

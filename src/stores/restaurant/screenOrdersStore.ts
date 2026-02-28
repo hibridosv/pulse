@@ -20,9 +20,8 @@ const screenOrdersStore = create<ScreenOrdersStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      if (response.data.data?.data) {
-        set({ orders: response.data.data.data, error: false });
-      }
+      console.log(response);
+      set({ orders: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       set({ error: true });
@@ -34,9 +33,7 @@ const screenOrdersStore = create<ScreenOrdersStoreI>((set) => ({
   processOrder: async (url: string, data: any) => {
     try {
       const response = await updateService(url, data);
-      if (response.data.data?.data) {
-        set({ orders: response.data.data.data });
-      }
+      set({ orders: response.data.data.data });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     }
