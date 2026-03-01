@@ -16,9 +16,8 @@ export default function Page() {
   const [screen, setScreen] = useState(1);
 
   const changes = permissionExists(permission, 'config-changes');
-  const showBrands = true;
-  // const showBrands = activeConfig?.includes('product-brand');
-  const showLocations = activeConfig?.includes('product-locations');
+  const showBrands = activeConfig && activeConfig?.includes('product-brand');
+  const showLocations = activeConfig && activeConfig?.includes('product-locations');
 
   const visibilityMap: Record<number, boolean> = {
     1: true,

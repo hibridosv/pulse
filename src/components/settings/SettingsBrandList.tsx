@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import useBrandsStore from '@/stores/products/brandsStore';
 import { Button, Preset } from '@/components/button/button';
 import { DeleteModal } from '@/components/DeleteModal';
+import useBrandsStore from '@/stores/products/brandsStore';
+import { useEffect, useState } from 'react';
 import SettingsAddBrandModal from './SettingsAddBrandModal';
 
 export default function SettingsBrandList() {
@@ -19,7 +19,6 @@ export default function SettingsBrandList() {
     if (success) setDeleteTarget(null);
   };
 
-  if (loading) return <div className="p-8 text-center text-text-muted text-sm animate-pulse">Cargando marcas...</div>;
 
   if (!brands || brands.length === 0) return (
     <div className="p-4">
