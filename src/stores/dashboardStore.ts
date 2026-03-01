@@ -56,7 +56,6 @@ const useDashBoardStore = create<DashboardState>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices("dashboard/pay-method");
-      console.log(response.data.data);
       set({ payMethods: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);

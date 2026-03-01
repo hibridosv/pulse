@@ -1,6 +1,7 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 function useMouseParallax() {
@@ -93,25 +94,17 @@ function HourglassIcon({ mounted }: { mounted: boolean }) {
 
 export default function OverduePage() {
   const [mounted, setMounted] = useState(false);
-  const [typedText, setTypedText] = useState('');
-  const fullText = 'Tu cuenta tiene un pago pendiente. Regulariza tu situación para continuar.';
   const parallax = useMouseParallax();
 
   useEffect(() => { setMounted(true); }, []);
 
-  useEffect(() => {
-    if (!mounted) return;
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i <= fullText.length) { setTypedText(fullText.slice(0, i)); i++; }
-      else clearInterval(interval);
-    }, 30);
-    return () => clearInterval(interval);
-  }, [mounted]);
+  const router = useRouter();
 
-  const handleLogout = () => {
-    document.cookie = 'tenant-status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    signOut({ callbackUrl: '/' });
+  const handleContinue = async () => {
+    document.cookie = 'tenant-status=Active; path=/; SameSite=Lax';
+    const session = await getSession();
+    const redirectTo = session?.redirect || '/dashboard';
+    router.push(redirectTo);
   };
 
   return (
@@ -183,7 +176,7 @@ export default function OverduePage() {
           {/* Badge */}
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-warning/10 border border-warning/20 mb-8 transition-all duration-500 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
             <span className="w-1.5 h-1.5 rounded-full bg-warning" style={{ animation: 'countDown 1.5s ease-in-out infinite' }} />
-            <span className="text-xs font-medium text-warning tracking-wide uppercase">Pago Vencido</span>
+            <span className="text-xs font-medium text-warning tracking-wide uppercase">Pago Pendiente</span>
           </div>
 
           {/* Icono reloj */}
@@ -200,12 +193,12 @@ export default function OverduePage() {
 
           {/* Título */}
           <h1 className={`text-2xl md:text-3xl font-bold text-text-base mb-4 transition-all duration-600 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            Cuenta Vencida
+            Facturación Pendiente de Pago
           </h1>
 
           {/* Typewriter */}
-          <div className={`h-14 flex items-center justify-center transition-opacity duration-500 delay-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-            <p className="text-text-muted text-sm md:text-base max-w-sm leading-relaxed">
+          <div className={`min-h-[5rem] flex items-center justify-center transition-opacity duration-500 delay-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+            <p className="text-text-muted text-sm md:text-base max-w-md leading-relaxed">
               {typedText}
               <span
                 className="inline-block w-0.5 h-4 bg-warning ml-0.5 align-middle"
@@ -214,23 +207,33 @@ export default function OverduePage() {
             </p>
           </div>
 
-          {/* Botón */}
-          <div className={`mt-8 transition-all duration-600 delay-[900ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          {/* Botones */}
+          <div className={`mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 transition-all duration-600 delay-[900ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <button
-              onClick={handleLogout}
+              onClick={() => router.push('/settings/payments')}
+              className="group relative inline-flex items-center gap-2.5 rounded-xl bg-warning px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-warning/20 transition-all duration-300 hover:shadow-xl hover:shadow-warning/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <svg className="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+              </svg>
+              <span className="relative">Realizar Pago</span>
+            </button>
+            <button
+              onClick={handleContinue}
               className="group relative inline-flex items-center gap-2.5 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-warning/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-              <svg className="relative h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+              <svg className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
-              <span className="relative">Cerrar Sesión</span>
+              <span className="relative">Continuar</span>
             </button>
           </div>
         </div>
 
         <p className={`mt-8 text-[10px] font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-          Estado &middot; Overdue &middot; Pago pendiente
+          Estado &middot; Pendiente &middot; Facturación electrónica
         </p>
       </div>
     </div>

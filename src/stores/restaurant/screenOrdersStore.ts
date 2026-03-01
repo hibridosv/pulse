@@ -20,7 +20,6 @@ const screenOrdersStore = create<ScreenOrdersStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      console.log(response);
       set({ orders: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
