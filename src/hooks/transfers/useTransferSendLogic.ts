@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
 import transferSendStore from '@/stores/transfers/transferSendStore';
-import { getServices } from '@/services/services';
 import useTempStorage from '@/stores/useTempStorage';
-import useToastMessageStore from '@/stores/toastMessageStore';
+import { useEffect } from 'react';
 
 export const useTransferSendLogic = () => {
   const {
@@ -30,6 +28,7 @@ export const useTransferSendLogic = () => {
 
   useEffect(() => {
     loadTransfers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSelectBranch = async (record: any) => {

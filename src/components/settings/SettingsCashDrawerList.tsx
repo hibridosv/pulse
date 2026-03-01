@@ -27,6 +27,7 @@ export default function SettingsCashDrawerList({ changes }: SettingsCashDrawerLi
 
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleToggle = async (item: any) => {

@@ -26,6 +26,7 @@ export default function SettingsDocumentList({ changes }: SettingsDocumentListPr
 
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleToggle = async (item: any, field: string) => {

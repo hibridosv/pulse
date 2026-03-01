@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import useLocationStore from '@/stores/products/LocationsStore';
 import { Button, Preset } from '@/components/button/button';
 import { DeleteModal } from '@/components/DeleteModal';
+import useLocationStore from '@/stores/products/LocationsStore';
+import { useEffect, useState } from 'react';
 import SettingsAddLocationModal from './SettingsAddLocationModal';
 
 export default function SettingsLocationList() {
@@ -11,6 +11,7 @@ export default function SettingsLocationList() {
 
   useEffect(() => {
     loadLocations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDelete = async () => {

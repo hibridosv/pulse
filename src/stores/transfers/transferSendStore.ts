@@ -1,7 +1,7 @@
 import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
-import useToastMessageStore from '../toastMessageStore';
 import useConfigStore from '../configStore';
+import useToastMessageStore from '../toastMessageStore';
 
 interface TransferSendStoreI {
   transfers: any;
@@ -56,7 +56,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
 
   loadLinkedSystems: async () => {
     try {
-      const response = await getServices('linkedsystems');
+      const response = await getServices('tenants/linked');
       set({ linkedSystems: response.data.data });
     } catch (error) {
       useToastMessageStore.getState().setError(error);

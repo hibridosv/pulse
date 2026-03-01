@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
 import transferRequestStore from '@/stores/transfers/transferRequestStore';
 import useTempStorage from '@/stores/useTempStorage';
-import useConfigStore from '@/stores/configStore';
+import { useEffect } from 'react';
 
 export const useTransferRequestLogic = () => {
   const {
@@ -27,6 +26,7 @@ export const useTransferRequestLogic = () => {
 
   useEffect(() => {
     loadTransfers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSelectBranch = async (record: any) => {

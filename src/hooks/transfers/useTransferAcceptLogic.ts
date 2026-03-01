@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import transferAcceptStore from '@/stores/transfers/transferAcceptStore';
+import { useEffect } from 'react';
 
 const checkCodReceive = (products: any[]) => {
   if (!products) return false;
@@ -25,6 +25,7 @@ export const useTransferAcceptLogic = () => {
 
   useEffect(() => {
     loadTransfers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleShowTransfer = (transfer: any) => {

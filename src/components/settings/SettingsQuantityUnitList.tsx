@@ -8,6 +8,7 @@ export default function SettingsQuantityUnitList() {
 
   useEffect(() => {
     loadQuantityUnits();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleToggle = async (unit: any) => {
