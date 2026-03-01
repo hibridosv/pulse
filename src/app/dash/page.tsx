@@ -1,10 +1,10 @@
 'use client';
 
 import { ViewTitle } from "@/components/ViewTitle";
-import { CharBarDay } from "@/components/dashboard/CharBarDay";
-import { CharBarWeek } from "@/components/dashboard/CharBarWeek";
-import { PrincipalInfo } from "@/components/dashboard/PrincipalInfo";
-import { useDashBoardLogic } from "@/hooks/config/useDashBoardLogic";
+import { CharBarDay } from "@/components/dash/CharBarDay";
+import { CharBarWeek } from "@/components/dash/CharBarWeek";
+import { PrincipalInfo } from "@/components/dash/PrincipalInfo";
+import { useDashBoardLogic } from "@/hooks/config/useDashLogic";
 
 export default function DashboardPage() {
   useDashBoardLogic();
