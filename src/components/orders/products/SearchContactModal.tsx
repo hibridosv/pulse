@@ -26,14 +26,14 @@ export function SearchContactModal(props: SearchContactModalI) {
 
   if (!isShow || !order) return null;
   
-  const clearContact = (item: any) => {
+  const clearContact = async(item: any) => {
     if (!item || !tempSelectedName || !order) return;
     let values: UpdateServiceInterface = {
       row: setRowToChange(tempSelectedName),
       value: null
     }
-    update(order.id, values);
-    if (!error && !sending) {
+    const success = await update(order.id, values);
+    if (success) {
       closeModal('searchContact');
     }
   }

@@ -4,13 +4,26 @@ import { DashboardCharts } from '@/components/dashboard/DashboardCharts';
 import { DashboardDetailCards } from '@/components/dashboard/DashboardDetailCards';
 import { DashboardHourlySalesChart } from '@/components/dashboard/DashboardHourlySalesChart';
 import { DashboardKpiCards } from '@/components/dashboard/DashboardKpiCards';
+import { KeyModal } from '@/components/dashboard/KeyModal';
 import { ViewTitle } from '@/components/ViewTitle';
+import { permissionExists } from '@/lib/utils';
+import useConfigStore from '@/stores/configStore';
+import useModalStore from '@/stores/modalStorage';
+import { BiPlusCircle } from 'react-icons/bi';
 
 
 export default function DashboardPage() {
+    const { modals, openModal, closeModal} = useModalStore();
+    const { permission } = useConfigStore();
+
   return (
     <div className="bg-bg-base min-h-screen pb-8">
-      <ViewTitle text="Dashboard" />
+      <div className='flex justify-between'>
+        <ViewTitle text="Dashboard" />
+        { permission && permissionExists(permission, "code-view") &&
+          <BiPlusCircle size={24} className='mx-6 mt-2' onClick={()=> { openModal('showKeyPass')}} />
+        }
+      </div>
 
       <div className="px-3 sm:px-5 space-y-5">
         <DashboardKpiCards />
@@ -19,6 +32,7 @@ export default function DashboardPage() {
         <DashboardDetailCards />
         {/* <DashboardTables /> */}
       </div>
+      <KeyModal isShow={modals.showKeyPass} onClose={()=>{ closeModal('showKeyPass')}} />
     </div>
   );
 }
