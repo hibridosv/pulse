@@ -52,8 +52,8 @@ const useCategoriesStore = create<CategoryStoreState>((set, get) => ({
   deleteCategory: async (id: number) => {
     set({ deleting: true });
     try {
-      await deleteService(`categories/${id}`);
-      useToastMessageStore.getState().setMessage('Categoría eliminada');
+      const response = await deleteService(`categories/${id}`);
+      useToastMessageStore.getState().setMessage(response);
       await get().loadCategories();
       return true;
     } catch (error) {

@@ -1,4 +1,4 @@
-import { getServices, createService, deleteService } from '@/services/services';
+import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
 
@@ -37,8 +37,8 @@ const useBrandsStore = create<BrandStoreState>((set, get) => ({
   createBrand: async (data: any) => {
     set({ saving: true });
     try {
-      await createService('brands', data);
-      useToastMessageStore.getState().setMessage('Marca creada');
+      const response = await createService('brands', data);
+      useToastMessageStore.getState().setMessage(response);
       await get().loadBrands();
       return true;
     } catch (error) {
@@ -51,8 +51,8 @@ const useBrandsStore = create<BrandStoreState>((set, get) => ({
   deleteBrand: async (id: number) => {
     set({ deleting: true });
     try {
-      await deleteService(`brands/${id}`);
-      useToastMessageStore.getState().setMessage('Marca eliminada');
+      const response = await deleteService(`brands/${id}`);
+      useToastMessageStore.getState().setMessage(response);
       await get().loadBrands();
       return true;
     } catch (error) {

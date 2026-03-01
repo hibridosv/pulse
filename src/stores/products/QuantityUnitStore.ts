@@ -31,8 +31,8 @@ const useQuantityUnitStore = create<QuantityUnitStoreState>((set, get) => ({
   },
   updateQuantityUnit: async (id: number, data: any) => {
     try {
-      await updateService(`quantityunits/${id}`, data);
-      useToastMessageStore.getState().setMessage('Unidad actualizada');
+      const response = await updateService(`quantityunits/${id}`, data);
+      useToastMessageStore.getState().setMessage(response);
       await get().loadQuantityUnits();
       return true;
     } catch (error) {

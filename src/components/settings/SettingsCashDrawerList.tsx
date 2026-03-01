@@ -34,8 +34,8 @@ export default function SettingsCashDrawerList({ changes }: SettingsCashDrawerLi
     setUpdatingId(item.id);
     try {
       const newStatus = item.status === 1 ? 0 : 1;
-      await updateService(`cashdrawers/${item.id}`, { status: newStatus });
-      useToastMessageStore.getState().setMessage('Caja actualizada');
+      const response = await updateService(`cashdrawers/${item.id}`, { status: newStatus });
+      useToastMessageStore.getState().setMessage(response);
       await loadData();
     } catch (error) {
       useToastMessageStore.getState().setError(error);

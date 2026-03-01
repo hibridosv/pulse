@@ -3,6 +3,7 @@ import Modal from '@/components/modal/Modal';
 import { getServices } from '@/services/services';
 import useBrandsStore from '@/stores/products/brandsStore';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface SettingsAddBrandModalProps {
   show: boolean;
@@ -11,8 +12,7 @@ interface SettingsAddBrandModalProps {
 
 export default function SettingsAddBrandModal({ show, onClose }: SettingsAddBrandModalProps) {
   const { createBrand, saving } = useBrandsStore();
-  const [name, setName] = useState('');
-  const [providerId, setProviderId] = useState('');
+  const { register, handleSubmit, reset } = useForm();
   const [providers, setProviders] = useState<any[]>([]);
 
   useEffect(() => {
@@ -24,26 +24,24 @@ export default function SettingsAddBrandModal({ show, onClose }: SettingsAddBran
   }, [show]);
 
   const handleClose = () => {
-    setName('');
-    setProviderId('');
+    reset();
     onClose();
   };
 
-  const handleSubmit = async () => {
-    if (!name.trim()) return;
-    const data: any = { name: name.trim() };
-    if (providerId) data.provider_id = providerId;
-    const success = await createBrand(data);
+  const onSubmit = async (data: any) => {
+    const payload: any = { name: data.name.trim() };
+    if (data.provider_id) payload.provider_id = data.provider_id;
+    const success = await createBrand(payload);
     if (success) handleClose();
   };
 
   return (
     <Modal show={show} onClose={handleClose} headerTitle="Agregar Marca" size="sm">
       <Modal.Body>
-        <div className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="input-label">Proveedor (opcional)</label>
-            <select className="input-select" value={providerId} onChange={(e) => setProviderId(e.target.value)}>
+            <select className="input-select" {...register('provider_id')}>
               <option value="">Sin proveedor</option>
               {providers.map((p: any) => (
                 <option key={p.id} value={p.id}>{p.name}</option>
@@ -52,16 +50,16 @@ export default function SettingsAddBrandModal({ show, onClose }: SettingsAddBran
           </div>
           <div>
             <label className="input-label">Nombre</label>
-            <input className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nombre de la marca" />
+            <input className="input" {...register('name', { required: true })} placeholder="Nombre de la marca" />
           </div>
-        </div>
+
+          <div className="flex justify-center">
+            <Button type="submit" disabled={saving} preset={saving ? Preset.saving : Preset.save} />
+          </div>
+        </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button preset={Preset.cancel} onClick={handleClose} />
-        {saving
-          ? <Button preset={Preset.saving} />
-          : <Button preset={Preset.save} onClick={handleSubmit} />
-        }
+        <Button onClick={handleClose} preset={Preset.close} disabled={saving} />
       </Modal.Footer>
     </Modal>
   );

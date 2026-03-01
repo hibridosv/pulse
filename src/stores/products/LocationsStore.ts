@@ -1,4 +1,4 @@
-import { getServices, createService, deleteService } from '@/services/services';
+import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
 
@@ -37,8 +37,8 @@ const useLocationStore = create<LocationStoreState>((set, get) => ({
   createLocation: async (data: any) => {
     set({ saving: true });
     try {
-      await createService('locations', data);
-      useToastMessageStore.getState().setMessage('Ubicación creada');
+      const response = await createService('locations', data);
+      useToastMessageStore.getState().setMessage(response);
       await get().loadLocations();
       return true;
     } catch (error) {
@@ -51,8 +51,8 @@ const useLocationStore = create<LocationStoreState>((set, get) => ({
   deleteLocation: async (id: number) => {
     set({ deleting: true });
     try {
-      await deleteService(`locations/${id}`);
-      useToastMessageStore.getState().setMessage('Ubicación eliminada');
+      const response = await deleteService(`locations/${id}`);
+      useToastMessageStore.getState().setMessage(response);
       await get().loadLocations();
       return true;
     } catch (error) {

@@ -36,8 +36,8 @@ export default function SettingsDocumentList({ changes }: SettingsDocumentListPr
       if (field === 'is_electronic') data.is_electronic = item.is_electronic === 1 ? 0 : 1;
       if (field === 'is_printable') data.is_printable = item.is_printable === 1 ? 0 : 1;
       if (field === 'status') data.status = item.status === 0 ? 3 : 0;
-      await updateService(`invoice/type/${item.id}`, data);
-      useToastMessageStore.getState().setMessage('Documento actualizado');
+      const response = await updateService(`invoice/type/${item.id}`, data);
+      useToastMessageStore.getState().setMessage(response);
       await loadData();
     } catch (error) {
       useToastMessageStore.getState().setError(error);

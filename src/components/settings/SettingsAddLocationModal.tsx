@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import Modal from '@/components/modal/Modal';
 import { Button, Preset } from '@/components/button/button';
 import useLocationStore from '@/stores/products/LocationsStore';
+import { useForm } from 'react-hook-form';
 
 interface SettingsAddLocationModalProps {
   show: boolean;
@@ -10,42 +10,39 @@ interface SettingsAddLocationModalProps {
 
 export default function SettingsAddLocationModal({ show, onClose }: SettingsAddLocationModalProps) {
   const { createLocation, saving } = useLocationStore();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const { register, handleSubmit, reset } = useForm();
 
   const handleClose = () => {
-    setName('');
-    setDescription('');
+    reset();
     onClose();
   };
 
-  const handleSubmit = async () => {
-    if (!name.trim()) return;
-    const data = { name: name.trim(), description: description.trim() };
-    const success = await createLocation(data);
+  const onSubmit = async (data: any) => {
+    const payload = { name: data.name.trim(), description: data.description?.trim() || '' };
+    const success = await createLocation(payload);
     if (success) handleClose();
   };
 
   return (
     <Modal show={show} onClose={handleClose} headerTitle="Agregar Ubicación" size="sm">
       <Modal.Body>
-        <div className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="input-label">Nombre</label>
-            <input className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nombre de la ubicación" />
+            <input className="input" {...register('name', { required: true })} placeholder="Nombre de la ubicación" />
           </div>
           <div>
             <label className="input-label">Descripción</label>
-            <input className="input" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Descripción" />
+            <input className="input" {...register('description')} placeholder="Descripción" />
           </div>
-        </div>
+
+          <div className="flex justify-center">
+            <Button type="submit" disabled={saving} preset={saving ? Preset.saving : Preset.save} />
+          </div>
+        </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button preset={Preset.cancel} onClick={handleClose} />
-        {saving
-          ? <Button preset={Preset.saving} />
-          : <Button preset={Preset.save} onClick={handleSubmit} />
-        }
+        <Button onClick={handleClose} preset={Preset.close} disabled={saving} />
       </Modal.Footer>
     </Modal>
   );
