@@ -1,9 +1,8 @@
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
-import { formatDateAsNumber } from "@/lib/date-formats";
+import { formatDateFor10MinWindow } from "@/lib/date-formats";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import CryptoJS from 'crypto-js';
-import { DateTime } from "luxon";
 import { useState } from "react";
 import { FiCheck, FiClipboard } from 'react-icons/fi';
 
@@ -18,7 +17,7 @@ export function KeyModal({ onClose, isShow }: KeyModalI) {
 
     if (!isShow) return null;
     
-    const dateStr = formatDateAsNumber(new Date());
+    const dateStr = formatDateFor10MinWindow(new Date());
     const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
 
     const handleCopy = () => {
@@ -28,7 +27,10 @@ export function KeyModal({ onClose, isShow }: KeyModalI) {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const expirationTime = DateTime.now().plus({ hours: 1 }).startOf('hour').toFormat('HH:mm');
+    // const now = DateTime.now();
+    // const minutesIntoBlock = now.minute % 10;
+    // const minutesToAdd = 10 - minutesIntoBlock;
+    // const expirationTime = now.plus({ minutes: minutesToAdd }).startOf('minute').toFormat('HH:mm');
 
     return (
         <Modal 
@@ -43,7 +45,7 @@ export function KeyModal({ onClose, isShow }: KeyModalI) {
                         Usa esta clave para autorizar operaciones especiales.
                     </p>
                     <p className="mb-4 font-semibold text-warning">
-                        Válida hasta las {expirationTime}
+                        Esta clave expira en 10 minutos.
                     </p>
                     <div 
                         className="relative flex items-center justify-center w-full px-4 py-3 rounded-lg cursor-pointer bg-bg-subtle hover:bg-primary/10"

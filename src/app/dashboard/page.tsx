@@ -21,7 +21,7 @@ export default function DashboardPage() {
       <div className='flex justify-between'>
         <ViewTitle text="Dashboard" />
         { permission && permissionExists(permission, "code-view") &&
-          <BiPlusCircle size={24} className='mx-6 mt-2' onClick={()=> { openModal('showKeyPass')}} />
+          <BiPlusCircle size={24} className='mx-6 mt-2 clickeable' onClick={()=> { openModal('showKeyPass')}} />
         }
       </div>
 

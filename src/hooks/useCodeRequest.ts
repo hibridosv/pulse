@@ -1,4 +1,4 @@
-import { formatDateAsNumber } from '@/lib/date-formats';
+import { formatDateFor10MinWindow } from '@/lib/date-formats';
 import { permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import CryptoJS from 'crypto-js';
@@ -14,9 +14,21 @@ export function useCodeRequest(permission: string) {
   }, [permissionsActive, permission]);
 
   const verifyCode = (code: string): boolean => {
-    const dateStr = formatDateAsNumber(new Date());
-    const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
-    const isValid = code.toUpperCase() === hash;
+    const now = new Date();
+    // We get the time from 10 minutes ago to check the previous block
+    const tenMinutesAgo = new Date(now.getTime() - 10 * 60 * 1000);
+
+    const dateStrCurrent = formatDateFor10MinWindow(now);
+    const hashCurrent = CryptoJS.MD5(dateStrCurrent).toString().substring(0, 4).toUpperCase();
+
+    const dateStrPrevious = formatDateFor10MinWindow(tenMinutesAgo);
+    const hashPrevious = CryptoJS.MD5(dateStrPrevious).toString().substring(0, 4).toUpperCase();
+    
+    const upperCaseCode = code.toUpperCase();
+    
+    // The code is valid if it matches the current hash or the previous one.
+    const isValid = upperCaseCode === hashCurrent || upperCaseCode === hashPrevious;
+
     setError(!isValid);
     return isValid;
   };
