@@ -4,6 +4,7 @@ import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { AddCommentModal } from "@/components/orders/common/AddCommentModal";
 import { DiscountsModal } from "@/components/orders/common/DiscountsModal";
 import { InvoiceTypesModal } from "@/components/orders/common/InvoiceTypesModal";
+import { InitialButtons } from "@/components/orders/products/InitialButtons";
 import { OtherSalesModal } from "@/components/orders/products/OtherSalesModal";
 import { SearchContactModal } from "@/components/orders/products/SearchContactModal";
 import { SelectUserModal } from "@/components/orders/products/SelectUserModal";
@@ -64,6 +65,7 @@ export default function Page() {
               <RestaurantButtons order={order} />
               <OptionsSelect order={order} />
               <DeliveryContactSearch order={order} />
+              <InitialButtons />
           </div>
         </div>
           <TipsModal isShow={modals.tips} onClose={()=>{ closeModal('tips')}} />
