@@ -2,6 +2,7 @@
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
 import { HistoryTransfersTable } from "@/components/history/HistoryTransfersTable";
+import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
 
@@ -32,6 +33,7 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAS" />
           </div>
     </div> 
+    <ToasterMessage />
 </div>
   );
 }

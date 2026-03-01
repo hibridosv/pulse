@@ -5,6 +5,7 @@ import SettingsCategoryList from "@/components/settings/SettingsCategoryList";
 import SettingsDocumentList from "@/components/settings/SettingsDocumentList";
 import SettingsLocationList from "@/components/settings/SettingsLocationList";
 import SettingsQuantityUnitList from "@/components/settings/SettingsQuantityUnitList";
+import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
@@ -76,6 +77,7 @@ export default function Page() {
           </div>
         </div>
       </div>
+      <ToasterMessage />
     </div>
   );
 }

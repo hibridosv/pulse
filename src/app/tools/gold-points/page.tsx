@@ -1,9 +1,10 @@
 'use client';
 
 import { ViewTitle } from '@/components/ViewTitle';
+import { DateRange } from '@/components/button/DateRange';
+import { ToasterMessage } from '@/components/toaster-message';
 import { GoldPointsTable } from '@/components/tools/GoldPointsTable';
 import { GoldPointsViewModal } from '@/components/tools/GoldPointsViewModal';
-import { DateRange } from '@/components/button/DateRange';
 import { useGoldPointsLogic } from '@/hooks/tools/useGoldPointsLogic';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
@@ -35,6 +36,7 @@ export default function Page() {
         record={elements.goldPointDetail}
         onAction={refresh}
       />
+          <ToasterMessage />
     </div>
   );
 }

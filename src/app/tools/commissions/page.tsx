@@ -1,16 +1,17 @@
 'use client';
 
-import { ViewTitle } from '@/components/ViewTitle';
-import { Pagination } from '@/components/Pagination';
-import { SearchInput } from '@/components/Search';
 import { Button, Preset } from '@/components/button/button';
 import { ButtonDownload } from '@/components/button/button-download';
+import { Pagination } from '@/components/Pagination';
+import { SearchInput } from '@/components/Search';
+import { ToasterMessage } from '@/components/toaster-message';
 import { CommissionsListTable } from '@/components/tools/CommissionsListTable';
 import { CommissionsProductsTable } from '@/components/tools/CommissionsProductsTable';
 import { CommissionViewModal } from '@/components/tools/CommissionViewModal';
+import { ViewTitle } from '@/components/ViewTitle';
 import { useCommissionsLogic } from '@/hooks/tools/useCommissionsLogic';
-import { useSearchTerm } from '@/hooks/useSearchTerm';
 import { usePagination } from '@/hooks/usePagination';
+import { useSearchTerm } from '@/hooks/useSearchTerm';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
 import { FaDownload } from 'react-icons/fa';
@@ -151,6 +152,7 @@ export default function Page() {
         record={elements.commissionDetail}
         onAction={refresh}
       />
+          <ToasterMessage />
     </div>
   );
 }
