@@ -120,7 +120,7 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
 
           <div className="flex flex-wrap justify-center items-center gap-2 mt-4 pt-4 border-t border-bg-subtle">
             <InfoPill label="Tipo" value={orderTypeMap[order?.order_type] ?? 'N/A'} className="bg-primary/10 text-primary" />
-            <InfoPill label="Entrega" value={deliveryTypeMap[order?.delivery_type] ?? 'N/A'} className="bg-cyan-500/10 text-cyan-500" />
+            <InfoPill label="Entrega" value={deliveryTypeMap[order?.delivery_type]?.label ?? 'N/A'} className="bg-cyan-500/10 text-cyan-500" />
             <InfoPill label="Estado" value={status.label} className={status.className} />
           </div>
 

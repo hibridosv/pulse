@@ -2,7 +2,7 @@
 
 
 // --- Prop Types ---
-type IndicatorType = 'success' | 'info' | 'danger' | 'warning' | 'dark' | 'inactive';
+export type IndicatorType = 'success' | 'info' | 'danger' | 'warning' | 'dark' | 'inactive';
 
 export interface IndicatorProps {
   type?: IndicatorType;

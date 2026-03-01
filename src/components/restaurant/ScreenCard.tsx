@@ -100,7 +100,7 @@ export function ScreenCard({ order, processData }: ScreenCardProps) {
             ) : (
               <BiCar className="mr-2 flex-shrink-0" size={16} />
             )}
-            <span className="font-medium truncate">{deliveryTypeMap[order.delivery_type] ?? 'Para Llevar'}</span>
+            <span className="font-medium truncate">{deliveryTypeMap[order.delivery_type]?.label ?? 'Para Llevar'}</span>
           </li>
         </ul>
       </div>
