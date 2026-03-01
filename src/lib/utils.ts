@@ -215,3 +215,10 @@ export const isRestaurant = (tenant: number): boolean => {
 export const isProducts = (tenant: number): boolean => {
     return tenant === 1 || tenant === 3;
 }
+
+export const getCashDrawerStatusLabel = (status: number): { text: string; color: string } => {
+  if (status === 0) return { text: 'Inactiva', color: 'text-text-muted' };
+  if (status === 1) return { text: 'Activa', color: 'text-success' };
+  if (status === 2) return { text: 'Abierta', color: 'text-info' };
+  return { text: 'Desconocido', color: 'text-text-muted' };
+}

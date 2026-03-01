@@ -22,7 +22,6 @@ export function ManageOptions() {
     return <NothingHere height="150" width="150" text="No hay modificadores disponibles" />;
   }
 
-console.log("options", options)
 
   const listItems = options.map((record: any) =>{
     return (

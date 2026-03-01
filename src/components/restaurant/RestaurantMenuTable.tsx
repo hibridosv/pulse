@@ -25,7 +25,6 @@ export function RestaurantMenuTable() {
 
   let data = products?.per_page ? products.data : products;
 
-
   if(loadingProducts) return <SkeletonTable rows={8} columns={7} />
 
   if (!data || data.length === 0) {

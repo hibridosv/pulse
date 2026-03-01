@@ -33,7 +33,6 @@ export function RestaurantOptionsAddModal(props: RestaurantOptionsAddModalI) {
     return `${URL}/images/ico/${src}?w=${width}&q=${quality || 75}`
   }
 
-
   return (
     <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Agregar modificadores" closeOnOverlayClick={true} >
       <Modal.Body>

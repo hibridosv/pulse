@@ -15,8 +15,6 @@ export interface OptionsVariantsModalI {
 }
 
 
-
-
 export function OptionsVariantsModal(props: OptionsVariantsModalI) {
   const { onClose, isShow } = props;
   const { sending, deleting, deleteOption } = manageRestaurantStore()
