@@ -73,21 +73,9 @@ function ScanLine() {
 
 export default function SuspendedPage() {
   const [mounted, setMounted] = useState(false);
-  const [typedText, setTypedText] = useState('');
-  const fullText = 'Tu cuenta ha sido suspendida. Contacta al administrador para más información.';
   const parallax = useMouseParallax();
 
   useEffect(() => { setMounted(true); }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i <= fullText.length) { setTypedText(fullText.slice(0, i)); i++; }
-      else clearInterval(interval);
-    }, 30);
-    return () => clearInterval(interval);
-  }, [mounted]);
 
   const handleLogout = () => {
     document.cookie = 'tenant-status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
@@ -106,10 +94,6 @@ export default function SuspendedPage() {
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; transform: scale(1); }
           50% { opacity: 0.8; transform: scale(1.5); }
-        }
-        @keyframes cursorBlink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
         }
         @keyframes shieldPulse {
           0%, 100% { box-shadow: 0 0 0 0 rgb(var(--color-danger) / 0.2); }
@@ -130,23 +114,23 @@ export default function SuspendedPage() {
       <ConstellationDots />
 
       <div
-        className="absolute top-1/3 left-1/5 h-80 w-80 rounded-full bg-danger/[0.03] blur-3xl transition-transform duration-700 ease-out"
+        className="absolute top-1/3 left-1/5 h-80 w-80 rounded-full bg-danger/[0.03] blur-3xl transition-transform duration-700 ease-out pointer-events-none"
         style={{ transform: `translate(${parallax.x * -15}px, ${parallax.y * -15}px)` }}
       />
       <div
-        className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-primary/[0.03] blur-3xl transition-transform duration-700 ease-out"
+        className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-primary/[0.03] blur-3xl transition-transform duration-700 ease-out pointer-events-none"
         style={{ transform: `translate(${parallax.x * 20}px, ${parallax.y * 20}px)` }}
       />
 
       {/* Anillos */}
       <div
-        className={`absolute top-1/2 left-1/2 h-[340px] w-[340px] md:h-[440px] md:w-[440px] rounded-full border border-danger/[0.06] transition-all duration-1000 ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
+        className={`absolute top-1/2 left-1/2 h-[340px] w-[340px] md:h-[440px] md:w-[440px] rounded-full border border-danger/[0.06] transition-all duration-1000 pointer-events-none ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
         style={{ transform: `translate(calc(-50% + ${parallax.x * 8}px), calc(-50% + ${parallax.y * 8}px))` }}
       >
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-danger/50 animate-orbit" />
       </div>
       <div
-        className={`absolute top-1/2 left-1/2 h-[240px] w-[240px] md:h-[320px] md:w-[320px] rounded-full border border-dashed border-danger/[0.06] transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
+        className={`absolute top-1/2 left-1/2 h-[240px] w-[240px] md:h-[320px] md:w-[320px] rounded-full border border-dashed border-danger/[0.06] transition-all duration-1000 delay-200 pointer-events-none ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
         style={{ transform: `translate(calc(-50% + ${parallax.x * -5}px), calc(-50% + ${parallax.y * -5}px))` }}
       >
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 h-1 w-1 rounded-full bg-primary/40 animate-orbit-reverse" />
@@ -163,7 +147,7 @@ export default function SuspendedPage() {
           {/* Badge */}
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-danger/10 border border-danger/20 mb-8 transition-all duration-500 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
             <span className="w-1.5 h-1.5 rounded-full bg-danger animate-pulse" />
-            <span className="text-xs font-medium text-danger tracking-wide uppercase">Suspendida</span>
+            <span className="text-xs font-medium text-danger tracking-wide uppercase">Cuenta Suspendida</span>
           </div>
 
           {/* Icono de candado */}
@@ -194,22 +178,28 @@ export default function SuspendedPage() {
 
           {/* Título */}
           <h1 className={`text-2xl md:text-3xl font-bold text-text-base mb-4 transition-all duration-600 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            Cuenta Suspendida
+            Servicio Suspendido
           </h1>
 
-          {/* Typewriter */}
-          <div className={`h-14 flex items-center justify-center transition-opacity duration-500 delay-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-            <p className="text-text-muted text-sm md:text-base max-w-sm leading-relaxed">
-              {typedText}
-              <span
-                className="inline-block w-0.5 h-4 bg-danger ml-0.5 align-middle"
-                style={{ animation: 'cursorBlink 0.8s step-end infinite' }}
-              />
+          {/* Mensaje */}
+          <div className={`transition-all duration-700 delay-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <p className="text-text-muted text-sm md:text-base max-w-md leading-relaxed mx-auto">
+              Tu cuenta ha sido suspendida debido a pagos pendientes en el servicio. El acceso al sistema no estará disponible hasta que se regularice el saldo. Una vez realizado el pago, tu cuenta será restablecida de forma inmediata.
             </p>
           </div>
 
-          {/* Botón */}
-          <div className={`mt-8 transition-all duration-600 delay-[900ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          {/* Botones */}
+          <div className={`mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 transition-all duration-600 delay-[900ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <button
+              onClick={() => { window.location.href = '/payments'; }}
+              className="group relative inline-flex items-center gap-2.5 rounded-xl bg-danger px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-danger/20 transition-all duration-300 hover:shadow-xl hover:shadow-danger/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <svg className="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+              </svg>
+              <span className="relative">Realizar Pago</span>
+            </button>
             <button
               onClick={handleLogout}
               className="group relative inline-flex items-center gap-2.5 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
@@ -224,7 +214,7 @@ export default function SuspendedPage() {
         </div>
 
         <p className={`mt-8 text-[10px] font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-          Estado &middot; Suspended &middot; Acceso denegado
+          Estado &middot; Suspendido &middot; Pago requerido
         </p>
       </div>
     </div>

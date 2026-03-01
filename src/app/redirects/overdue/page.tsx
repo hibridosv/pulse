@@ -1,7 +1,6 @@
 'use client';
 
 import { getSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 function useMouseParallax() {
@@ -98,13 +97,11 @@ export default function OverduePage() {
 
   useEffect(() => { setMounted(true); }, []);
 
-  const router = useRouter();
-
   const handleContinue = async () => {
     document.cookie = 'tenant-status=Active; path=/; SameSite=Lax';
     const session = await getSession();
     const redirectTo = session?.redirect || '/dashboard';
-    router.push(redirectTo);
+    window.location.href = redirectTo;
   };
 
   return (
@@ -119,10 +116,6 @@ export default function OverduePage() {
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; transform: scale(1); }
           50% { opacity: 0.8; transform: scale(1.5); }
-        }
-        @keyframes cursorBlink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
         }
         @keyframes shieldPulse {
           0%, 100% { box-shadow: 0 0 0 0 rgb(var(--color-warning) / 0.2); }
@@ -143,23 +136,23 @@ export default function OverduePage() {
       <ConstellationDots />
 
       <div
-        className="absolute top-1/3 left-1/5 h-80 w-80 rounded-full bg-warning/[0.03] blur-3xl transition-transform duration-700 ease-out"
+        className="absolute top-1/3 left-1/5 h-80 w-80 rounded-full bg-warning/[0.03] blur-3xl transition-transform duration-700 ease-out pointer-events-none"
         style={{ transform: `translate(${parallax.x * -15}px, ${parallax.y * -15}px)` }}
       />
       <div
-        className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-primary/[0.03] blur-3xl transition-transform duration-700 ease-out"
+        className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-primary/[0.03] blur-3xl transition-transform duration-700 ease-out pointer-events-none"
         style={{ transform: `translate(${parallax.x * 20}px, ${parallax.y * 20}px)` }}
       />
 
       {/* Anillos */}
       <div
-        className={`absolute top-1/2 left-1/2 h-[340px] w-[340px] md:h-[440px] md:w-[440px] rounded-full border border-warning/[0.06] transition-all duration-1000 ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
+        className={`absolute top-1/2 left-1/2 h-[340px] w-[340px] md:h-[440px] md:w-[440px] rounded-full border border-warning/[0.06] transition-all duration-1000 pointer-events-none ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
         style={{ transform: `translate(calc(-50% + ${parallax.x * 8}px), calc(-50% + ${parallax.y * 8}px))` }}
       >
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-warning/50 animate-orbit" />
       </div>
       <div
-        className={`absolute top-1/2 left-1/2 h-[240px] w-[240px] md:h-[320px] md:w-[320px] rounded-full border border-dashed border-warning/[0.06] transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
+        className={`absolute top-1/2 left-1/2 h-[240px] w-[240px] md:h-[320px] md:w-[320px] rounded-full border border-dashed border-warning/[0.06] transition-all duration-1000 delay-200 pointer-events-none ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
         style={{ transform: `translate(calc(-50% + ${parallax.x * -5}px), calc(-50% + ${parallax.y * -5}px))` }}
       >
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 h-1 w-1 rounded-full bg-primary/40 animate-orbit-reverse" />
@@ -196,24 +189,19 @@ export default function OverduePage() {
             Facturación Pendiente de Pago
           </h1>
 
-          {/* Typewriter */}
-          <div className={`min-h-[5rem] flex items-center justify-center transition-opacity duration-500 delay-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-            <p className="text-text-muted text-sm md:text-base max-w-md leading-relaxed">
-              {typedText}
-              <span
-                className="inline-block w-0.5 h-4 bg-warning ml-0.5 align-middle"
-                style={{ animation: 'cursorBlink 0.8s step-end infinite' }}
-              />
+          {/* Mensaje */}
+          <div className={`transition-all duration-700 delay-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <p className="text-text-muted text-sm md:text-base max-w-md leading-relaxed mx-auto">
+              Tienes pagos pendientes en tu servicio de facturación electrónica. Tu sistema seguirá funcionando y todos los documentos se emitirán con normalidad, sin embargo algunas funciones como historiales y reportes estarán limitadas hasta regularizar tu cuenta.
             </p>
           </div>
 
           {/* Botones */}
-          <div className={`mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 transition-all duration-600 delay-[900ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
-              onClick={() => router.push('/settings/payments')}
-              className="group relative inline-flex items-center gap-2.5 rounded-xl bg-warning px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-warning/20 transition-all duration-300 hover:shadow-xl hover:shadow-warning/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
+              onClick={() => { document.cookie = 'tenant-status=Active; path=/; SameSite=Lax'; window.location.href = '/settings/payments'; }}
+              className="group relative z-20 inline-flex items-center gap-2.5 rounded-xl bg-warning px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-warning/20 transition-all duration-300 hover:shadow-xl hover:shadow-warning/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden cursor-pointer"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               <svg className="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
               </svg>
@@ -221,9 +209,8 @@ export default function OverduePage() {
             </button>
             <button
               onClick={handleContinue}
-              className="group relative inline-flex items-center gap-2.5 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
+              className="group relative z-20 inline-flex items-center gap-2.5 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden cursor-pointer"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-warning/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               <svg className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
