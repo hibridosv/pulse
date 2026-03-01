@@ -4,7 +4,6 @@ import { DashboardCharts } from '@/components/dashboard/DashboardCharts';
 import { DashboardDetailCards } from '@/components/dashboard/DashboardDetailCards';
 import { DashboardHourlySalesChart } from '@/components/dashboard/DashboardHourlySalesChart';
 import { DashboardKpiCards } from '@/components/dashboard/DashboardKpiCards';
-import { DashboardTables } from '@/components/dashboard/DashboardTables';
 import { ViewTitle } from '@/components/ViewTitle';
 
 
@@ -18,7 +17,7 @@ export default function DashboardPage() {
         <DashboardCharts />
         <DashboardHourlySalesChart />
         <DashboardDetailCards />
-        <DashboardTables />
+        {/* <DashboardTables /> */}
       </div>
     </div>
   );
