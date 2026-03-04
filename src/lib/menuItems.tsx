@@ -114,6 +114,7 @@ export const menuItems: MenuItem[] = [
       { label: "Productos por lote", href: "/reports/by-batch", permission: "reports-products" },
       { label: "Productos Averiados", href: "/reports/damaged", permission: "reports-products" },
       { label: "Anexos de IVA y descargas", href: "/reports/tax", permission: "reports-attaches" },
+      { label: "Libros de compras", href: "/reports/purchases", permission: "reports-attaches" },
     ],
   },
   {
