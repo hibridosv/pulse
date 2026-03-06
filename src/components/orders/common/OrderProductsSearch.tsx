@@ -4,6 +4,8 @@ import { useOrderProductsSearchLogic } from "@/hooks/order/common/useOrderProduc
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
+import { numberToMoney } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
 import useProductStore from "@/stores/products/productStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
@@ -18,6 +20,7 @@ export function OrderProductsSearch() {
     const { getElement, setElement } = useTempStorage();
     const typeOfSearch = getElement('typeOfSearch');
     const { addNew } = useOrderFnLogic();
+    const { system } = useConfigStore()
 
 
     const handleSelectProduct = (product: any) => {
@@ -41,7 +44,11 @@ export function OrderProductsSearch() {
                         return (
                            <li key={item.id} onClick={() => handleSelectProduct(item)}>
                             <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
-                              <span className="text-text-base">{item.cod} | {item.description}</span>
+                              <span className="text-text-base">
+                                {item.cod} | 
+                                {item.description} 
+                                {item?.prices && <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1">{ numberToMoney(item?.prices[0]?.price ?? 0, system) }</span>}
+                                </span>
                               <span className="flex items-center">
                                 <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1 justify-end max-h-5 h-5">{item?.quantity}</span>
                                 {iconSvg}

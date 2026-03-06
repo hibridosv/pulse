@@ -3,6 +3,8 @@ import Modal from "@/components/modal/Modal";
 import { usePagination } from "@/hooks/usePagination";
 import { useProductsSearchModalLogic } from "@/hooks/useProductsSearchModalLogic";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
+import { numberToMoney } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import productSearchModalStore from "@/stores/productSearchModalStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -15,6 +17,7 @@ export interface SearchProductModalI {
 }
 
 export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
+    const { system } = useConfigStore()
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const { products } = productSearchModalStore();
@@ -43,7 +46,11 @@ export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
                                 return (
                                     <li key={item.id} onClick={() => handleSelected(item)}>
                                         <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
-                                            <span className="text-text-base">{item.cod} | {item.description}</span>
+                                            <span className="text-text-base">
+                                                {item.cod} | 
+                                                {item.description} 
+                                                {item?.prices && <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1">{ numberToMoney(item?.prices[0]?.price ?? 0, system) }</span>}
+                                            </span>
                                             <span className="flex items-center">
                                             <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1 justify-end max-h-5 h-5">{item?.quantity}</span>
                                             {iconSvg}
