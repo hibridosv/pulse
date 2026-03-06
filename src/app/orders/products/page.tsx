@@ -7,6 +7,7 @@ import { ChangeRowProductModal } from "@/components/orders/common/ChangeRowProdu
 import { DiscountsModal } from "@/components/orders/common/DiscountsModal";
 import { InvoiceTypesModal } from "@/components/orders/common/InvoiceTypesModal";
 import { OrderProductsSearchPrincipal } from "@/components/orders/common/OrderProductsSearchPrincipal";
+import { ChangeLotModal } from "@/components/orders/products/changeLotModal";
 import { ChangeQuantityModal } from "@/components/orders/products/ChangeQuantityModal";
 import { InitialButtons } from "@/components/orders/products/InitialButtons";
 import { OrderButtons } from "@/components/orders/products/OrderButtons";
@@ -49,6 +50,7 @@ export default function Page() {
                 <OrderButtons order={order} />
             </div>
           </div>
+        <ChangeLotModal isShow={modals.changeLot} onClose={()=>{ closeModal('changeLot')}} />
         <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
         <SpecialSalesModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
         <OtherSalesModal isShow={modals.otherSales} onClose={()=>{ closeModal('otherSales')}} />

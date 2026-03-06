@@ -69,8 +69,8 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             onClick={()=> { setElement('rowToUpdate', 'product'); openModal('changeRow'); setElement('productSelected', record); }}><FaPen color="black" /></span> }
             { isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
             onClick={()=> { setElement('rowToUpdate', 'comment'); openModal('changeRow'); setElement('productSelected', record); }}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
-            { isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
-            onClick={()=> {}}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
+            { !isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
+            onClick={()=> { openModal('changeLot'); setElement('productSelected', record); }}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
             <span className="clickeable" onClick={()=>{ openModal('changePriceProduct'); setElement('productSelected', record); }}>
