@@ -5,6 +5,7 @@ import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
 import { Order } from '@/interfaces/order';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
+import useToastMessageStore from '@/stores/toastMessageStore';
 import useTempStorage from '@/stores/useTempStorage';
 
 export interface ButtonsI {
@@ -16,6 +17,7 @@ export function Buttons(props: ButtonsI) {
   const { activeConfig } = useConfigStore();
   const { openModal} = useModalStore();
   const { setElement } = useTempStorage();
+  const { setError} = useToastMessageStore();
   const isDiscount = activeConfig && activeConfig.includes("sales-discount");
   const isOtherSeller = activeConfig && activeConfig.includes("sales-other-seller");
   const isReferred = activeConfig && activeConfig.includes("sales-referred");
@@ -37,7 +39,6 @@ export function Buttons(props: ButtonsI) {
 
   if(!order) return null;
 
-
   return (<div>
         <div className="w-8/10">
             { isDiscount && 
@@ -57,7 +58,7 @@ export function Buttons(props: ButtonsI) {
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addComment') }}> Agregar comentario </div>}
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false);  openModal('invoiceType') }}> Tipo de Documento </div>
             { isQuote &&
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); quote(order.id); }}> Guardar como Cotización</div> }
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); order?.client_id ? quote(order.id) : setError({message: "Debe agregar un cliente primero"}); }}> Guardar como Cotización</div> }
             { isRemission && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setRemissionNote'); }}> Crear Nota de Remisión</div> }
             {/* <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Agregar Retención Renta</div> */}

@@ -32,7 +32,10 @@ const addNew = async (data: any) => {
       addOrSubtract: data.addOrSubtract ? data.addOrSubtract : 1, // 1 sumar 2 restar
       special: specialSales, // determina si es venta especial, debe activarse cuando se activa el modal
     };
-    await addOrder(`orders`, values);
+    const success = await addOrder(`orders`, values);
+    if (success) {
+
+    }
 }
 
 /** GUardar la orden en la que se trabaja */
