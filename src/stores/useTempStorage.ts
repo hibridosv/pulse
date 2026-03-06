@@ -7,7 +7,7 @@ interface TempSelectedElementState {
   getElement: (id: string) => any | undefined;
 }
 
-const useTempSelectedElementStore = create<TempSelectedElementState>((set, get) => ({
+const useTempStorage = create<TempSelectedElementState>((set, get) => ({
   elements: {},
   setElement: (id, element) =>
     set((state) => ({
@@ -29,4 +29,4 @@ const useTempSelectedElementStore = create<TempSelectedElementState>((set, get) 
   getElement: (id) => get().elements[id],
 }));
 
-export default useTempSelectedElementStore;
+export default useTempStorage;

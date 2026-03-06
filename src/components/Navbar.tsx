@@ -2,16 +2,23 @@
 
 import { useConfigLogic } from '@/hooks/config/useConfigLogic';
 import useConfigStore from '@/stores/configStore';
+import useModalStore from '@/stores/modalStorage';
+import useTempStorage from "@/stores/useTempStorage";
 import Link from 'next/link';
 import { useState } from 'react';
+import { BiSearch } from 'react-icons/bi';
 import { HiMenu } from 'react-icons/hi';
 import { IoHome } from 'react-icons/io5';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
+import { SearchProductModal } from './modal/SearchProductModal';
+import { ProductDetailsGetModal } from './products/ProductDetailsGetModal';
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
   const { user, client, permission } = useConfigStore();
  useConfigLogic(); // carga todas las configuraciones necesarias
+  const { modals, closeModal, openModal } = useModalStore();
+  const { setElement, getElement} = useTempStorage();
 
   return (
     <>
@@ -33,7 +40,8 @@ export const Navbar = () => {
             <div className="truncate max-w-[160px] sm:max-w-none">{ client?.nombre_comercial }</div>
           </div>
 
-          <div>
+          <div className='flex'>
+            <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={()=>{ openModal('searchProductOnBar')}}/>
             <Link href="/orders" className="text-text-inverted hover:text-secondary">
               <IoHome size={22} className="sm:w-7 sm:h-7" />
             </Link>
@@ -42,6 +50,8 @@ export const Navbar = () => {
         </div>
       </nav>
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      <SearchProductModal isShow={modals.searchProductOnBar} onClose={()=>{ closeModal('searchProductOnBar')}} />
+      <ProductDetailsGetModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} /> 
     </>
   );
 };
