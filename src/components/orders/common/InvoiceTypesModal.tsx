@@ -55,6 +55,7 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
             <ul className="divide-y divide-bg-subtle">
               {
                   invoiceTypes && invoiceTypes.length > 0 && invoiceTypes.map((type: any) => {
+                      if (type.type == 5) return null;
                       return (
                             <LiComponent
                               key={type.id}

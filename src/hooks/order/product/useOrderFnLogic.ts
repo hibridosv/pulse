@@ -57,6 +57,7 @@ const addNew = async (data: any) => {
           invoice_type_id: order?.invoice_type_id,
         };
       await payOrder(`orders/${order?.id}/pay`, values);
+      clearElement('invoiceTypeSelected');
   }
 
   /** Eliminar la orden */

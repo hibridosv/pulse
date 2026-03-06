@@ -10,9 +10,9 @@ import useTempStorage from '@/stores/useTempStorage';
 
 export function useOrderRestaurantFnLogic() {
   const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit } = ordersRestaurantsStore();
-  const { order, error, lastResponse, collecting } = ordersStore();
-  const { activeConfig, system, user } = useConfigStore();
-  const { getElement } = useTempStorage();
+  const { order, error, lastResponse } = ordersStore();
+  const { activeConfig, system } = useConfigStore();
+  const { getElement, clearElement } = useTempStorage();
   const {modals} = useModalStore();
   const payMethod = getElement('payMethod') ?? 1;
   const typeOfPrice = getElement('typeOfPrice') ?? 1;
@@ -118,6 +118,7 @@ const pay = async (data: any) => {
       client_number: null
     };
     await payOrder(`orders/restaurant/${order.id}/pay`, values);
+    clearElement('invoiceTypeSelected');
 }
 
 
