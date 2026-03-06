@@ -1,10 +1,9 @@
 "use client";
-import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import ordersStore from "@/stores/orders/ordersStore";
-import useTempStorage from "@/stores/useTempStorage";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { MdDeleteSweep } from "react-icons/md";
@@ -20,8 +19,7 @@ export function AddNameModal(props: AddNameModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { addName } = useOrderRestaurantFnLogic();
-  const { getElement, clearElement } = useTempStorage();
-
+  const { setError } = useToastMessageStore();
 
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
@@ -43,6 +41,8 @@ export function AddNameModal(props: AddNameModalI) {
     const success = await addName(order.id, values);
      if (success) {
        onClose();
+     } else {
+      setError({ message: `Existe un error, No se actualizo correctamente el registro. Vuelva a intentarlo.`})
      }
  }
 
@@ -71,9 +71,6 @@ export function AddNameModal(props: AddNameModalI) {
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>
           </div>
-          { error &&
-          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el registro. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
-          }
         </div>
       </Modal.Body>
       <Modal.Footer>

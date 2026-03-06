@@ -1,9 +1,9 @@
 "use client";
-import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import ordersStore from "@/stores/orders/ordersStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -22,6 +22,7 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
   const { addNew } = useOrderRestaurantFnLogic();
   const { getElement } = useTempStorage();
   const product = getElement('productSelected');
+  const { setError } = useToastMessageStore();
 
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
   useEffect(() => {
@@ -39,7 +40,9 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
     if (success) {
         resetField('quantity');
         onClose();
-    }
+    }else {
+      setError({ message: `Existe un error, No se actualizo correctamente la cantidad. Vuelva a intentarlo.`})
+     }
  }
 
   return (
@@ -55,9 +58,6 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>
           </div>
-          { error &&
-          <Alert type="danger" text={`Existe un error, No se actualizo correctamente la cantidad. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
-          }
         </div>
       </Modal.Body>
       <Modal.Footer>

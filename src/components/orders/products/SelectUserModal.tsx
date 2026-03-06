@@ -1,5 +1,4 @@
 "use client";
-import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import { LiComponent } from "@/components/button/LiComponent";
 import Modal from "@/components/modal/Modal";
@@ -10,9 +9,11 @@ import { UpdateServiceInterface } from "@/services/Interfaces";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import useUserStore from "@/stores/UserStore";
 import useTempStorage from "@/stores/useTempStorage";
-import { setNameUser, setRowToChange } from "../functions";
+import { useEffect } from "react";
+import { setNameUser, setRowToChange, setRowToGet } from "../functions";
 
 export interface SelectUserModalI {
   onClose: () => void;
@@ -32,24 +33,34 @@ export function SelectUserModal(props: SelectUserModalI) {
   useOrderLoadersLogic(isShow)
   const { users } = useUserStore();
   const { update } = useOrderFnLogic();
+  const { setError } = useToastMessageStore();
 
+  useEffect(() => {
+    if (isShow && order) {
+        if (order[setRowToGet(tempSelectedName)]) {
+          setElement(tempSelectedName, order[setRowToGet(tempSelectedName)]);
+        }
+      }
+  }, [isShow, order, setRowToGet]);
 
   if (!isShow || !order) return null;
 
-  const clearUser = (item: any) => {
+  const clearUser = async(item: any) => {
     if (!item || !tempSelectedName || !order) return;
     let values: UpdateServiceInterface = {
       row: setRowToChange(tempSelectedName),
       value: tempSelectedName =="setSeller" ? user?.id : null
     }
-    update(order.id, values);
-    if (!error && !sending) {
+    const success = await update(order.id, values);
+    if (success) {
       if (tempSelectedName =="setSeller") {
         setElement(tempSelectedName, user);
       } else {
         clearElement(tempSelectedName);
       }
       closeModal('setUser');
+    } else {
+      setError({ message: `Existe un error, No se actualizo correctamente el ${setNameUser(tempSelectedName)}. Vuelva a intentarlo.`})
     }
   }
   
@@ -63,6 +74,8 @@ export function SelectUserModal(props: SelectUserModalI) {
     if (success) {
       setElement(tempSelectedName, item);
       closeModal('setUser');
+    } else {
+      setError({ message: `Existe un error, No se actualizo correctamente el ${setNameUser(tempSelectedName)}. Vuelva a intentarlo.`})
     }
   }
 
@@ -87,9 +100,6 @@ export function SelectUserModal(props: SelectUserModalI) {
             </ul>
           </div>
           <ShowClientSearched onClose={clearUser} tempSelectedName={tempSelectedName} />
-          { error &&
-          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el ${setNameUser(tempSelectedName)}. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
-          }
         </div>
       </Modal.Body>
       <Modal.Footer>

@@ -9,7 +9,7 @@ import useTempStorage from '@/stores/useTempStorage';
 export function useOrderFnLogic() {
   const { saveOrder, loadOrder, payOrder, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
   const {  order } = ordersStore();
-  const { getElement } = useTempStorage();
+  const { getElement, clearElement } = useTempStorage();
   const {modals} = useModalStore();
   const paymentType = getElement('paymentType') ?? 1;
   const typeOfPrice = getElement('typeOfPrice') ?? 1;
@@ -34,7 +34,8 @@ const addNew = async (data: any) => {
     };
     const success = await addOrder(`orders`, values);
     if (success) {
-
+      clearElement('contactSearch');
+      clearElement('setUser');
     }
 }
 

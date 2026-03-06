@@ -15,7 +15,7 @@ export interface DeliveryTypeModalI {
 
 export function DeliveryTypeModal(props: DeliveryTypeModalI) {
   const { onClose, isShow } = props;
-  const { order, error } = ordersStore();
+  const { order } = ordersStore();
     const { update: updateRestaurant } = useOrderRestaurantFnLogic();
 
   const { closeModal} = useModalStore();

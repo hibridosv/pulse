@@ -1,10 +1,9 @@
 "use client";
-import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -20,13 +19,13 @@ export interface TipsModalI {
 
 export function TipsModal(props: TipsModalI) {
   const { onClose, isShow } = props;
-  const { system } = useConfigStore();
 
-  const { order, sending, error } = ordersStore();
+  const { order, sending } = ordersStore();
   const { tips } = useOrderFnLogic();
   const { getElement, clearElement, setElement } = useTempStorage();
   const typeOfTips = getElement('typeOfTips') ?? 1; // 1: cantidad o 2: porcentaje
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
+  const { setError } = useToastMessageStore();
 
   useEffect(() => {
     if (isShow) {
@@ -64,7 +63,9 @@ export function TipsModal(props: TipsModalI) {
       if (success) {
         clearElement('typeOfTips');
         onClose();
-      }
+      } else {
+        setError({ message: `Existe un error, No se efectuo correctamente la propina. Vuelva a intentarlo.`})
+     }
  }
 
  const handleClose = ()=>{
@@ -93,10 +94,6 @@ export function TipsModal(props: TipsModalI) {
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </div>
           </form>
-
-          { error &&
-          <Alert type="danger" text={`Existe un error, No se efectuo correctamente la propina. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
-          }
         </div>
       </Modal.Body>
       <Modal.Footer>

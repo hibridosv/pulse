@@ -1,11 +1,11 @@
 "use client";
-import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -23,8 +23,8 @@ export interface DiscountsModalI {
 export function DiscountsModal(props: DiscountsModalI) {
   const { onClose, isShow, byCode } = props;
   const { system } = useConfigStore();
-
-  const { order, sending, error } = ordersStore();
+  const { setError } = useToastMessageStore();
+  const { order, sending } = ordersStore();
   const { discount } = useOrderFnLogic();
   const { getElement, clearElement, setElement } = useTempStorage();
   const product = getElement('productSelected');
@@ -61,7 +61,9 @@ export function DiscountsModal(props: DiscountsModalI) {
         clearElement('discountType');
         clearElement('typeOfDiscount');
         onClose();
-      }
+      } else {
+        setError({ message: `Existe un error, No se efectuo correctamente el descuento. Vuelva a intentarlo.`})
+     }
  }
 
  const handleClose = ()=>{
@@ -123,9 +125,6 @@ export function DiscountsModal(props: DiscountsModalI) {
               <span className="text-sm font-bold text-primary">{discountType == 1 ? numberToMoney(product?.total)  : numberToMoney(sumarTotales(order?.invoiceproducts), system)}</span>
             </div>
           </div>
-          }
-          { error &&
-          <Alert type="danger" text={`Existe un error, No se efectuo correctamente el descuento. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
           }
         </div>
       </Modal.Body>

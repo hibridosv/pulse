@@ -3,7 +3,6 @@ import { Popper } from "@/components/popper/Popper";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functions";
 import useConfigStore from "@/stores/configStore";
-import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useEffect, useState } from "react";
@@ -25,8 +24,7 @@ interface Props {
 export function RestaurantButtons({ order, isSplit = false}: Props) {
   const { collecting, sending } = ordersStore();
   const { pay, paySplit } = useOrderRestaurantFnLogic();
-  const { modals, closeModal, openModal} = useModalStore();
-  const { system, cashdrawer, activeConfig } =useConfigStore();
+  const { cashdrawer, activeConfig } =useConfigStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
   const { getElement} = useTempStorage();
   const payMethod = getElement('payMethod') ?? 1;

@@ -18,7 +18,7 @@ export interface OtherSalesModalI {
 
 export function OtherSalesModal(props: OtherSalesModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersStore();
+  const { order, sending } = ordersStore();
   const { updateOrder } = ordersProductsStore();
   const { getElement, clearElement } = useTempStorage();
   const option = getElement('optionSelected');

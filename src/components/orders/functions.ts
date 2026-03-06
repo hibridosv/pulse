@@ -17,6 +17,15 @@ export const setRowToChange = (tempSelectedName: string) => {
   }
 }
 
+export const setRowToGet = (tempSelectedName: string) => {
+  switch (tempSelectedName) {
+    case "customerSearch": return "client";
+    case "setSeller": return "employee";
+    case "setDriver": return "delivery";
+    case "referralSearch": return "referred"
+    default: return "client";
+  }
+}
 
 export const setParam = (tempSelectedName: string) => {
   switch (tempSelectedName) {

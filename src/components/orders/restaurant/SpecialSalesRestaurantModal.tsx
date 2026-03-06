@@ -21,10 +21,10 @@ export interface SpecialSalesRestaurantModalI {
 
 export function SpecialSalesRestaurantModal(props: SpecialSalesRestaurantModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersStore();
+  const { order, sending } = ordersStore();
   const { updateOrder } = ordersProductsStore();
-  const { getElement, clearElement, setElement } = useTempStorage();
-  const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
+  const { getElement, clearElement, } = useTempStorage();
+  const { register, handleSubmit} = useForm();
   let special = order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order);
   let optionsRadioButton: Option[] = [
       { id: 1, name: "Gravado" },

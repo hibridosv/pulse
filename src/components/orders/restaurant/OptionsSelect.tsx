@@ -14,7 +14,7 @@ export function deliveryTypeRestaurant(type: number) {
 export function OptionsSelect( { order }: any) {
   const { getElement} = useTempStorage();
   const payMethod = getElement('payMethod') ?? 1;
-  const { modals, closeModal, openModal} = useModalStore();
+  const { openModal} = useModalStore();
   const invoiceTypeSelected = getElement('invoiceTypeSelected');
   const deliveryType = getElement('deliveryType');
 

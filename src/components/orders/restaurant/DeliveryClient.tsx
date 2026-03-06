@@ -1,6 +1,5 @@
 'use client';
 
-import ordersStore from '@/stores/orders/ordersStore';
 import useTempStorage from '@/stores/useTempStorage';
 import Image from 'next/image';
 import { GoEye } from 'react-icons/go';
@@ -10,7 +9,6 @@ export function DeliveryClient() {
   const { getElement } = useTempStorage();
   const serviceType: number = getElement('serviceType');
   const clientOrder = getElement('clientOrder');
-  const { order } = ordersStore();
 
   if ((serviceType != 3 || !clientOrder)) return <></>;
 

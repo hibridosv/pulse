@@ -1,5 +1,4 @@
 "use client";
-import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
@@ -8,8 +7,10 @@ import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
-import { setNameContact, setParam, setRowToChange } from "../functions";
+import { useEffect } from "react";
+import { setNameContact, setParam, setRowToChange, setRowToGet } from "../functions";
 
 export interface SearchContactModalI {
   onClose: () => void;
@@ -18,11 +19,21 @@ export interface SearchContactModalI {
 
 export function SearchContactModal(props: SearchContactModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersStore();
-  const { getElement } = useTempStorage();
+  const { order, sending } = ordersStore();
+  const { getElement, setElement, clearElement } = useTempStorage();
   const tempSelectedName = getElement('contactSearch');
   const { openModal, closeModal} = useModalStore();
   const { update } = useOrderFnLogic();
+  const { setError } = useToastMessageStore();
+
+  useEffect(() => {
+    if (isShow && order) {
+        if (order[setRowToGet(tempSelectedName)]) {
+          setElement(tempSelectedName, order[setRowToGet(tempSelectedName)]);
+        }
+      }
+  }, [isShow, order, setRowToGet]);
+
 
   if (!isShow || !order) return null;
   
@@ -34,7 +45,10 @@ export function SearchContactModal(props: SearchContactModalI) {
     }
     const success = await update(order.id, values);
     if (success) {
+      clearElement(tempSelectedName);
       closeModal('searchContact');
+    } else {
+      setError({ message: `Existe un error, No se actualizo correctamente el ${setNameContact(tempSelectedName)}. Vuelva a intentarlo.`})
     }
   }
   
@@ -46,24 +60,28 @@ export function SearchContactModal(props: SearchContactModalI) {
     }
     const success = await update(order.id, values);
     if (success) {
+      clearElement(tempSelectedName);
       closeModal('searchContact');
+    } else{
+      setError({ message: `Existe un error, No se actualizo correctamente el ${setNameContact(tempSelectedName)}. Vuelva a intentarlo.`})
     }
   }
   
+  const handleClose = async() => {
+    clearElement(tempSelectedName);
+    onClose && onClose();
+  }
   
 
   return (
-    <Modal show={isShow} onClose={onClose} size="md" headerTitle={`Asignar ${setNameContact(tempSelectedName)}`} >
+    <Modal show={isShow} onClose={handleClose} size="md" headerTitle={`Asignar ${setNameContact(tempSelectedName)}`} >
       <div className="p-2 space-y-3 overflow-visible">
         <ClientsSearch param={setParam(tempSelectedName)} placeholder={`Buscar ${setNameContact(tempSelectedName)}`} onSelect={updateContact} tempSelectedName={tempSelectedName} />
         <ShowClientSearched onClose={clearContact} tempSelectedName={tempSelectedName} />
-        { error &&
-        <Alert type="danger" text={`Existe un error, No se actualizo correctamente el ${setNameContact(tempSelectedName)}. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
-        }
       </div>
       <Modal.Footer>
         <Button onClick={() => { openModal('contactAdd') }} text={`Registrar ${setNameContact(tempSelectedName)}`} preset={Preset.add}/>
-        <Button onClick={onClose} preset={Preset.close} disabled={sending} /> 
+        <Button onClick={handleClose} preset={Preset.close} disabled={sending} /> 
       </Modal.Footer>
     </Modal>
   );

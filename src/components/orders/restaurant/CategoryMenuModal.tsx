@@ -19,8 +19,8 @@ export interface CategoryMenuModalI {
 
 export function CategoryMenuModal(props: CategoryMenuModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersStore();
-  const { loading, restaurantMenu: images } =  restauranMenuStore();
+  const { sending } = ordersStore();
+  const { restaurantMenu: images } =  restauranMenuStore();
   const { getElement } = useTempStorage();
   const category = getElement('categoryMenu');
   const filter = category ? category.category_id : null;

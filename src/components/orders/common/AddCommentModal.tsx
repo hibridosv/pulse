@@ -1,10 +1,10 @@
 "use client";
-import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { UpdateServiceInterface } from "@/services/Interfaces";
 import ordersStore from "@/stores/orders/ordersStore";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -19,9 +19,10 @@ export interface AddCommentModalI {
 
 export function AddCommentModal(props: AddCommentModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersStore();
+  const { order, sending } = ordersStore();
   const { update} = useOrderFnLogic();
   const { getElement, clearElement } = useTempStorage();
+  const { setError } = useToastMessageStore();
 
 
 
@@ -47,6 +48,8 @@ export function AddCommentModal(props: AddCommentModalI) {
        clearElement('rowToUpdate');
        clearElement('productSelected');
        onClose();
+     } else {
+      setError({ message: `Existe un error, No se actualizo correctamente el registro. Vuelva a intentarlo.`})
      }
  }
 
@@ -61,6 +64,8 @@ export function AddCommentModal(props: AddCommentModalI) {
        clearElement('rowToUpdate');
        clearElement('productSelected');
        onClose();
+     } else {
+      setError({ message: `Existe un error, No se actualizo correctamente el registro. Vuelva a intentarlo.`})
      }
  }
 
@@ -78,9 +83,6 @@ export function AddCommentModal(props: AddCommentModalI) {
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>
           </div>
-          { error &&
-          <Alert type="danger" text={`Existe un error, No se actualizo correctamente el registro. Vuelva a intentarlo.`} isDismissible={false} className="mt-3" />
-          }
         </div>
       </Modal.Body>
       <Modal.Footer>
