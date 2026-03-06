@@ -7,7 +7,7 @@ import useModalStore from "@/stores/modalStorage";
 import productSearchModalStore from "@/stores/productSearchModalStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { SearchInput } from "../Search";
-import { LiComponent } from "../button/LiComponent";
+import { iconSvg } from "../button/LiComponent";
 
 export interface SearchProductModalI {
   onClose: () => void;
@@ -31,22 +31,25 @@ export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
 
 
     return (
-        <Modal show={isShow}  onClose={onClose}  size="xl" headerTitle="Buscar Producto">
+        <Modal show={isShow}  onClose={onClose}  size="xl2" headerTitle="Buscar Producto">
             <Modal.Body>
             <div className="flex flex-col items-center justify-center p-4 text-center">
                 <div className="w-full">
                     <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." />
                     { searchTerm && products && products.data && products.data.length > 0 && (
                         <div className='top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
-                            <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">
+                            <ul className="divide-y divide-bg-subtle max-h-screen overflow-y-auto custom-scrollbar">
                             {products.data.map((item: any) => {
                                 return (
-                                    <LiComponent 
-                                    key={item.id} 
-                                    text={item.cod} 
-                                    content={`${item.cod} - ${item.description}`} 
-                                    onClick={() => handleSelected(item)}
-                                    />
+                                    <li key={item.id} onClick={() => handleSelected(item)}>
+                                        <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
+                                            <span className="text-text-base">{item.cod} | {item.description}</span>
+                                            <span className="flex items-center">
+                                            <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1 justify-end max-h-5 h-5">{item?.quantity}</span>
+                                            {iconSvg}
+                                            </span>
+                                        </div>
+                                    </li>
                                 );
                             })}
                             </ul>
