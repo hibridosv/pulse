@@ -1,5 +1,6 @@
 import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
+import restauranMenuStore from '../orders/restauranMenuStore';
 import useToastMessageStore from '../toastMessageStore';
 import useTempStorage from '../useTempStorage';
 
@@ -84,6 +85,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
     try {
       const response = await deleteService(url); 
       manageRestaurantStore.getState().loadCategories("categories?sort=created_at&filterWhere[category_type]==2&filterWhere[is_restaurant]==1");
+      restauranMenuStore.getState().clearConfig()
       useToastMessageStore.getState().setMessage(response);
       set({ error: false });
     } catch (error) {
@@ -110,6 +112,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
     try {
       const response = await deleteService(url); 
       manageRestaurantStore.getState().loadOptions("restaurant/options?included=variants");
+      restauranMenuStore.getState().clearConfig()
       useToastMessageStore.getState().setMessage(response);
       set({ error: false });
     } catch (error) {
@@ -137,6 +140,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
         try {
             const response = await createService(url, data);
             set({ productAdded: response.data.data, error: false });
+            restauranMenuStore.getState().clearConfig()
             useToastMessageStore.getState().setMessage(response);
             return true;
         } catch (error) {
@@ -185,6 +189,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
     try {
       const response = await updateService(`restaurant/products/${id}`, data);
       useToastMessageStore.getState().setMessage(response);
+      restauranMenuStore.getState().clearConfig()
       await manageRestaurantStore.getState().reloadProducts();
       return true;
     } catch (error) {
@@ -199,6 +204,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
     try {
       const response = await updateService(`restaurant/products/${id}/status`, { status });
       useToastMessageStore.getState().setMessage(response);
+      restauranMenuStore.getState().clearConfig()
       await manageRestaurantStore.getState().reloadProducts();
       return true;
     } catch (error) {
@@ -214,6 +220,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
       const response = await deleteService(`restaurant/products/${id}`);
       useToastMessageStore.getState().setMessage(response);
       await manageRestaurantStore.getState().reloadProducts();
+      restauranMenuStore.getState().clearConfig()
       return true;
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -230,6 +237,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
       const list = products?.data ?? products;
       const updatedProduct = list?.find((p: any) => p.id === productId);
       if (updatedProduct) useTempStorage.getState().setElement('menuProduct', updatedProduct);
+      restauranMenuStore.getState().clearConfig()
       return true;
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -245,6 +253,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
       const productId = useTempStorage.getState().getElement('menuProduct')?.id;
       const updatedProduct = list?.find((p: any) => p.id === productId);
       if (updatedProduct) useTempStorage.getState().setElement('menuProduct', updatedProduct);
+      restauranMenuStore.getState().clearConfig()
       return true;
     } catch (error) {
       useToastMessageStore.getState().setError(error);

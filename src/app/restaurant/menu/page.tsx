@@ -11,6 +11,7 @@ import { RestaurantProductDeleteModal } from "@/components/restaurant/Restaurant
 import { RestaurantProductFieldModal } from "@/components/restaurant/RestaurantProductFieldModal";
 import { RestaurantProductModifiersModal } from "@/components/restaurant/RestaurantProductModifiersModal";
 import { RestaurantProductPanelModal } from "@/components/restaurant/RestaurantProductPanelModal";
+import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
 import { ShowImagesModal } from "@/components/restaurant/ShowImagesModal";
 import { SearchInput } from "@/components/Search";
 import { ToasterMessage } from "@/components/toaster-message";
@@ -70,6 +71,7 @@ export default function Page() {
     <RestaurantProductCategoryModal isShow={modals.menuProductCategory} onClose={() => closeModal("menuProductCategory")} />
     <RestaurantProductPanelModal isShow={modals.menuProductPanel} onClose={() => closeModal("menuProductPanel")} />
     <RestaurantProductModifiersModal isShow={modals.menuProductModifiers} onClose={() => closeModal("menuProductModifiers")} />
+    <ProductsLinkedModal isShow={modals.menuProductLinked} onClose={() => closeModal("menuProductLinked")} product={getElement('menuProduct')} />
     <RestaurantProductDeleteModal isShow={modals.menuProductDelete} onClose={() => closeModal("menuProductDelete")} />
     <ShowImagesModal isShow={modals.menuProductImage} onClose={() => closeModal("menuProductImage")} nameImage="menuProductImage" onSelect={handleSelectProductImage} />
     <ToasterMessage />

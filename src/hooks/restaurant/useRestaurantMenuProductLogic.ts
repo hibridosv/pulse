@@ -34,6 +34,11 @@ export function useRestaurantMenuProductLogic() {
     openModal('menuProductImage');
   };
 
+  const handleOpenLinkedModal = (product: any) => {
+    setElement('menuProduct', product);
+    openModal('menuProductLinked');
+  };
+
   const handleOpenDeleteModal = (product: any) => {
     setElement('menuProduct', product);
     openModal('menuProductDelete');
@@ -56,6 +61,7 @@ export function useRestaurantMenuProductLogic() {
     handleOpenPanelModal,
     handleOpenModifiersModal,
     handleOpenImageModal,
+    handleOpenLinkedModal,
     handleOpenDeleteModal,
     handleToggleStatus,
     handleToggleSpecial,

@@ -27,6 +27,7 @@ export function RestaurantMenuTable() {
     handleOpenPanelModal,
     handleOpenModifiersModal,
     handleOpenImageModal,
+    handleOpenLinkedModal,
     handleOpenDeleteModal,
     handleToggleStatus,
   } = useRestaurantMenuProductLogic();
@@ -107,7 +108,7 @@ export function RestaurantMenuTable() {
               <span className="ml-2">Cambiar Imagen</span>
             </span>
           </DropdownItem>
-          <DropdownItem onClick={() => { }}>
+          <DropdownItem onClick={() => handleOpenLinkedModal(record)}>
             <span className="flex justify-items-start">
               <span className="mt-1"><MdOutlineProductionQuantityLimits /></span>
               <span className="ml-2">Productos a descontar</span>

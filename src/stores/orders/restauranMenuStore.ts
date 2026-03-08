@@ -11,6 +11,7 @@ interface restauranMenuI {
   _hasHydrated: boolean;
   setHasHydrated: (v: boolean) => void;
   getRestauranMenu: (url: string) => Promise<void>;
+  clearConfig: () => void;
 }
 
 const restauranMenuStore = create(
@@ -38,7 +39,7 @@ const restauranMenuStore = create(
       },
 
 
-      clearConfig: () => {
+    clearConfig: () => {
         set({ 
             restaurantMenu: null,
             isLoaded: false,
