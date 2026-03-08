@@ -7,7 +7,6 @@ import { useDownloadLink } from '../useDownloadLink';
 export function usePurchasesLogic() {
     const { loadPurchases, loading } = purchasesStore()
     const { client } = useConfigStore();
-    console.log(client)
     const { links, addLink} = useDownloadLink();
 
 

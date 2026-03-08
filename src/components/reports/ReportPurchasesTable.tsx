@@ -88,7 +88,7 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Fecha</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">NIT</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Proveedor</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">Subtotal</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">CF</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">Total</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider whitespace-nowrap text-right">Retenciones</th>
             </tr>

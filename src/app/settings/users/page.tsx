@@ -12,8 +12,7 @@ import { ToasterMessage } from '@/components/toaster-message';
 import { useUsersLogic } from '@/hooks/settings/useUsersLogic';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
-import { BiUserCircle } from 'react-icons/bi';
-import { RiRefreshFill } from 'react-icons/ri';
+import { FaUser, FaUsers } from 'react-icons/fa';
 
 export default function Page() {
   const { register, handleSubmit, reset } = useForm();
@@ -76,15 +75,21 @@ export default function Page() {
       <div className="md:col-span-6">
         <div className="flex justify-between items-center">
           <ViewTitle text="Listado de Usuarios" />
-          <div
-            title={showAll ? 'Ocultar usuarios eliminados' : 'Mostrar todos los usuarios'}
-            onClick={() => setShowAll(!showAll)}
-            className="mr-4"
-          >
-            {showAll
-              ? <RiRefreshFill size={28} className="text-primary clickeable" />
-              : <BiUserCircle size={28} className="text-danger clickeable" />
-            }
+          <div className="flex rounded-lg border border-bg-subtle overflow-hidden bg-bg-content shrink-0 mr-4">
+            <button
+              onClick={() => setShowAll(false)}
+              className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium transition-colors ${!showAll ? 'bg-primary text-text-inverted' : 'text-text-muted hover:bg-bg-subtle'}`}
+            >
+              <FaUser size={11} />
+              Activos
+            </button>
+            <button
+              onClick={() => setShowAll(true)}
+              className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium transition-colors ${showAll ? 'bg-primary text-text-inverted' : 'text-text-muted hover:bg-bg-subtle'}`}
+            >
+              <FaUsers size={11} />
+              Todos
+            </button>
           </div>
         </div>
         <div className="px-4">
