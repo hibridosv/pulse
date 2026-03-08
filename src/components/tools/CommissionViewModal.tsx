@@ -1,8 +1,9 @@
 'use client';
 
-import Modal from '@/components/modal/Modal';
 import { Button, Preset } from '@/components/button/button';
 import { ButtonDownload } from '@/components/button/button-download';
+import Modal from '@/components/modal/Modal';
+import { useCommissionsLogic } from '@/hooks/tools/useCommissionsLogic';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { formatDuiWithAll, getTotalPercentage, numberToMoney } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
@@ -14,12 +15,13 @@ interface CommissionViewModalProps {
   isShow: boolean;
   onClose: () => void;
   record: any;
-  onAction: () => void;
 }
 
-export function CommissionViewModal({ isShow, onClose, record, onAction }: CommissionViewModalProps) {
+export function CommissionViewModal({ isShow, onClose, record }: CommissionViewModalProps) {
   const { system } = useConfigStore();
-  const { payCommission, deleteCommission, saving } = commissionsStore();
+  const { payCommission, saving } = commissionsStore();
+  const { handelDeleteCommission } = useCommissionsLogic();
+
 
   if (!record) return null;
 
@@ -48,18 +50,11 @@ export function CommissionViewModal({ isShow, onClose, record, onAction }: Commi
   const handlePay = async () => {
     const success = await payCommission(record.id);
     if (success) {
-      onAction();
       onClose();
     }
   };
 
-  const handleDelete = async () => {
-    const success = await deleteCommission(record.id);
-    if (success) {
-      onAction();
-      onClose();
-    }
-  };
+
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl6" headerTitle="REPORTE DE COMISIONES">
@@ -133,7 +128,7 @@ export function CommissionViewModal({ isShow, onClose, record, onAction }: Commi
           </ButtonDownload>
         )}
         {record.status === 2 && (
-          <Button onClick={handleDelete} preset={Preset.cancel} disabled={saving} text="ELIMINAR REPORTE" />
+          <Button onClick={()=>handelDeleteCommission(record.id)} preset={Preset.cancel} disabled={saving} text="ELIMINAR REPORTE" />
         )}
         <Button onClick={onClose} preset={Preset.close} disabled={saving} />
         {record.status === 2 && (

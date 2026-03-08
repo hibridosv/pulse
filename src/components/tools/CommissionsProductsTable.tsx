@@ -10,15 +10,14 @@ import { useEffect, useState } from 'react';
 
 interface CommissionsProductsTableProps {
   referredId: string;
-  onSelectedCountChange: (count: number) => void;
 }
 
-export function CommissionsProductsTable({ referredId, onSelectedCountChange }: CommissionsProductsTableProps) {
+export function CommissionsProductsTable({ referredId }: CommissionsProductsTableProps) {
   const { system } = useConfigStore();
-  const { ordersCommission, loadOrdersCommission, toggleOrderPay } = commissionsStore();
+  const { ordersCommission, loadOrdersCommission, toggleOrderPay, loading } = commissionsStore();
   const [localOrders, setLocalOrders] = useState<any>(null);
   const [toggling, setToggling] = useState(false);
-
+  
   useEffect(() => {
     if (referredId) {
       loadOrdersCommission(referredId);
@@ -32,16 +31,16 @@ export function CommissionsProductsTable({ referredId, onSelectedCountChange }: 
   }, [ordersCommission]);
 
   useEffect(() => {
-    if (localOrders?.data) {
-      const count = localOrders.data.reduce((total: number, order: any) => {
+    if (localOrders) {
+      const count = localOrders.reduce((total: number, order: any) => {
         return !hasUnpaidProducts(order?.products) ? total + 1 : total;
       }, 0);
-      onSelectedCountChange(count);
     }
-  }, [localOrders, onSelectedCountChange]);
+  }, [localOrders]);
 
-  if (!localOrders) return <SkeletonTable rows={4} columns={8} />;
-  if (!localOrders.data || localOrders.data.length === 0) return <NothingHere text="No hay facturas pendientes de pago" />;
+  if (loading) return <SkeletonTable rows={4} columns={8} />;
+  if (!localOrders || localOrders.length === 0) return <NothingHere text="No hay facturas pendientes de pago" />;
+
 
   function hasUnpaidProducts(products: any[]): boolean {
     return products?.some((p: any) => p.is_commission_payed === 0) ?? false;
@@ -53,7 +52,7 @@ export function CommissionsProductsTable({ referredId, onSelectedCountChange }: 
 
   const handleToggle = async (orderId: string, currentlyUnpaid: boolean) => {
     const jsonCopy = JSON.parse(JSON.stringify(localOrders));
-    jsonCopy.data.forEach((order: any) => {
+    jsonCopy.forEach((order: any) => {
       if (order.id === orderId) {
         order.products.forEach((product: any) => {
           product.is_commission_payed = product.is_commission_payed === 0 ? 2 : 0;
@@ -70,7 +69,7 @@ export function CommissionsProductsTable({ referredId, onSelectedCountChange }: 
     setToggling(false);
   };
 
-  const listItems = localOrders.data.map((record: any) => {
+  const listItems = localOrders.map((record: any) => {
     const isCredit = record?.credit && record?.credit?.status === 1;
     const unpaid = hasUnpaidProducts(record?.products);
     const checked = !unpaid;

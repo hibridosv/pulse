@@ -41,7 +41,8 @@ export function SelectUserModal(props: SelectUserModalI) {
           setElement(tempSelectedName, order[setRowToGet(tempSelectedName)]);
         }
       }
-  }, [isShow, order, setRowToGet]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isShow, order, setRowToGet, setElement]);
 
   if (!isShow || !order) return null;
 

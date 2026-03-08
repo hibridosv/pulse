@@ -35,7 +35,7 @@ export function ChangeLotModal(props: changeLotModalI) {
         false
       );
     }
-  }, [isShow, product?.product_id]);
+  }, [isShow, product?.product_id, getRequest]);
 
   const onSubmit = async (lot_id: string | null) => {
     if (!product?.id) return;
