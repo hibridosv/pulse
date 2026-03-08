@@ -4,61 +4,36 @@ import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 
-
 export interface VentasProps {
-    request?: any;
+  request?: any;
 }
 
+const Row = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div className="grid grid-cols-3 items-baseline px-3 py-2">
+    <dt className="text-xs font-medium text-text-muted">{label}</dt>
+    <dd className="col-span-2 text-sm text-text-base">{children}</dd>
+  </div>
+);
+
 export function Ventas(props: VentasProps) {
-    const { request } = props;
-      const { system } = useConfigStore();
+  const { request } = props;
+  const { system } = useConfigStore();
 
-    if (!request) return <></>
+  if (!request) return <></>;
 
-    
-    return (<div className="w-full">
-
-                <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 text-text-base">
-                    <h4 className="text-lg font-bold mb-2">Detalles de la Venta</h4>
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Fecha</div>
-                        <div className="w-3/4 ml-4">{ formatDateAsDMY(request?.charged_at) } { formatHourAsHM(request?.charged_at) }</div>
-                    </div>
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Documento</div>
-                        <div className="w-3/4 ml-4">{ request?.invoice_assigned?.name } # { request?.invoice }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Orden Numero</div>
-                        <div className="w-3/4 ml-4">{ request?.number }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Cajero</div>
-                        <div className="w-3/4 ml-4">{ request?.casheir?.name }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Cliente</div>
-                        <div className="w-3/4 ml-4">{ request?.client?.name ? request?.client?.name : "N/A" }</div>
-                    </div>
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Tipo Pago</div>
-                        <div className="w-3/4 ml-4">{ getPaymentTypeName(request?.payment_type) }</div>
-                    </div>
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Total</div>
-                        <div className="w-3/4 ml-4">{ numberToMoney(request?.total, system) }</div>
-                    </div>
-
-                </div>
-
-    </div>);
+  return (
+    <div className="bg-bg-content rounded-lg border border-bg-subtle overflow-hidden">
+      <dl className="divide-y divide-bg-subtle">
+        <Row label="Fecha">{formatDateAsDMY(request?.charged_at)} {formatHourAsHM(request?.charged_at)}</Row>
+        <Row label="Documento">{request?.invoice_assigned?.name} # {request?.invoice}</Row>
+        <Row label="Orden N°">{request?.number}</Row>
+        <Row label="Cajero">{request?.casheir?.name}</Row>
+        <Row label="Cliente">{request?.client?.name ?? 'N/A'}</Row>
+        <Row label="Tipo de pago">{getPaymentTypeName(request?.payment_type)}</Row>
+        <Row label="Total">
+          <span className="font-semibold">{numberToMoney(request?.total, system)}</span>
+        </Row>
+      </dl>
+    </div>
+  );
 }

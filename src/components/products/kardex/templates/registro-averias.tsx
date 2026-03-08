@@ -4,50 +4,37 @@ import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { typeFailure } from "../../utils";
 
 export interface RegistroAveriasProps {
-    request?: any;
+  request?: any;
 }
 
+const Row = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div className="grid grid-cols-3 items-baseline px-3 py-2">
+    <dt className="text-xs font-medium text-text-muted">{label}</dt>
+    <dd className="col-span-2 text-sm text-text-base">{children}</dd>
+  </div>
+);
+
 export function RegistroAverias(props: RegistroAveriasProps) {
-    const { request } = props;
+  const { request } = props;
 
-    if (!request) return <></>
+  if (!request) return <></>;
 
-    
-    return (<div className="w-full">
-                <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 mb-4 text-text-base flex justify-between items-center">
-                    <h3 className="text-lg font-bold">Producto: <span className="font-semibold">{ request?.product?.cod }</span> | <span className="font-semibold">{ request?.product?.description }</span></h3>
-                </div>
-
-                <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 text-text-base">
-                    <h4 className="text-lg font-bold mb-2">Detalles del Registro de Averías</h4>
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Fecha</div>
-                        <div className="w-3/4 ml-4">{ formatDateAsDMY(request?.created_at) } { formatHourAsHM(request?.created_at) }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Usuario</div>
-                        <div className="w-3/4 ml-4">{ request?.employee?.name }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Cantidad</div>
-                        <div className="w-3/4 ml-4">{ request?.quantity }</div>
-                    </div>
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Razón</div>
-                        <div className="w-3/4 ml-4">{ request?.reason }</div>
-                    </div>
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Tipo</div>
-                        <div className="w-3/4 ml-4">{ typeFailure(request?.type) }</div>
-                    </div>
-
-                </div>
-
-    </div>);
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2 px-3 py-2 bg-bg-subtle/60 rounded-lg border border-bg-subtle">
+        <span className="font-mono text-xs text-text-muted shrink-0">{request?.product?.cod}</span>
+        <span className="text-text-muted text-xs">—</span>
+        <span className="text-sm font-semibold text-text-base truncate">{request?.product?.description}</span>
+      </div>
+      <div className="bg-bg-content rounded-lg border border-bg-subtle overflow-hidden">
+        <dl className="divide-y divide-bg-subtle">
+          <Row label="Fecha">{formatDateAsDMY(request?.created_at)} {formatHourAsHM(request?.created_at)}</Row>
+          <Row label="Usuario">{request?.employee?.name}</Row>
+          <Row label="Cantidad"><span className="font-semibold">{request?.quantity}</span></Row>
+          <Row label="Razón">{request?.reason}</Row>
+          <Row label="Tipo">{typeFailure(request?.type)}</Row>
+        </dl>
+      </div>
+    </div>
+  );
 }

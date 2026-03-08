@@ -17,7 +17,7 @@ import { Ventas } from "./templates/ventas";
 export interface KardexDetailsModalProps {
   onClose: () => void;
   isShow: boolean;
-  record: any; 
+  record: any;
 }
 
 export function KardexDetailsModal(props: KardexDetailsModalProps) {
@@ -26,43 +26,50 @@ export function KardexDetailsModal(props: KardexDetailsModalProps) {
   const { kardexDetails, loading } = useProductStore();
   useKardexDetailLogic(record?.id);
 
-      const getTemplate = (description: string) => {
-        if (!kardexDetails) return;
-        switch (description) {
-            case 'Ventas':                          return <Ventas request={kardexDetails} />;
-            case 'Ingreso de producto':             return <IngresoProducto request={kardexDetails} />;
-            case 'Ajuste de inventario':            return <AjusteInventario request={kardexDetails} />;
-            case 'Registro de averias':             return <RegistroAverias request={kardexDetails} />;
-            case 'Registro de translados':          return <RegistroAverias request={kardexDetails} />;
-            case 'Registro de devoluciones':        return <RegistroAverias request={kardexDetails} />;
-            case 'Registro de cambios':             return <RegistroAverias request={kardexDetails} />;
-            case 'Inventario Inicial':              return <InventarioInicial request={kardexDetails} />;
-            case 'Retorno de inventario':           return <RetornoInventario request={kardexDetails} />;
-            case 'Transferencia desde sucursal':    return <TransferenciaDesde request={kardexDetails} />;
-            case 'Transferencia a sucursal':        return <TransferenciaA request={kardexDetails} />;
-            default:                                return <></>;
-        }
+  const getTemplate = (description: string) => {
+    if (!kardexDetails) return;
+    switch (description) {
+      case 'Ventas':                        return <Ventas request={kardexDetails} />;
+      case 'Ingreso de producto':           return <IngresoProducto request={kardexDetails} />;
+      case 'Ajuste de inventario':          return <AjusteInventario request={kardexDetails} />;
+      case 'Registro de averias':           return <RegistroAverias request={kardexDetails} />;
+      case 'Registro de translados':        return <RegistroAverias request={kardexDetails} />;
+      case 'Registro de devoluciones':      return <RegistroAverias request={kardexDetails} />;
+      case 'Registro de cambios':           return <RegistroAverias request={kardexDetails} />;
+      case 'Inventario Inicial':            return <InventarioInicial request={kardexDetails} />;
+      case 'Retorno de inventario':         return <RetornoInventario request={kardexDetails} />;
+      case 'Transferencia desde sucursal':  return <TransferenciaDesde request={kardexDetails} />;
+      case 'Transferencia a sucursal':      return <TransferenciaA request={kardexDetails} />;
+      default:                              return <></>;
     }
-
+  };
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl" headerTitle="Detalles de la Transacción" closeOnOverlayClick={false} hideCloseButton={false}>
       <Modal.Body>
-        <div className="p-4 ">
-            { kardexDetails && kardexDetails?.type == "error" ? <NothingHere text="No se encuentran registros de esta transacción" /> :
-            <div>
-                {
-                loading ? "Cargando..." :
-                <div>
-                    <div className="text-center uppercase font-semibold">{record?.description}</div>
-                    <div>
-                        { getTemplate(record?.description) }
-                    </div>
-                </div>
-                }
+        {loading ? (
+          <div className="p-4 space-y-3 animate-pulse">
+            <div className="h-6 bg-bg-subtle rounded-lg w-1/3" />
+            <div className="h-4 bg-bg-subtle rounded w-full" />
+            <div className="h-4 bg-bg-subtle rounded w-5/6" />
+            <div className="h-4 bg-bg-subtle rounded w-4/6" />
+            <div className="h-4 bg-bg-subtle rounded w-full" />
+          </div>
+        ) : kardexDetails?.type === "error" ? (
+          <NothingHere text="No se encuentran registros de esta transacción" />
+        ) : (
+          <div>
+            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg-subtle/60 border-b border-bg-subtle">
+              <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Tipo de movimiento</span>
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
+                {record?.description}
+              </span>
             </div>
-            }
-        </div>
+            <div className="p-4">
+              {getTemplate(record?.description)}
+            </div>
+          </div>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} preset={Preset.close} disabled={false} />

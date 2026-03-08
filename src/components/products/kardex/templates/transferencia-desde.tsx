@@ -4,54 +4,38 @@ import { statusOfTransfer } from "@/components/transfers/utils";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 
 export interface TransferenciaDesdeProps {
-    request?: any;
+  request?: any;
 }
 
+const Row = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div className="grid grid-cols-3 items-baseline px-3 py-2">
+    <dt className="text-xs font-medium text-text-muted">{label}</dt>
+    <dd className="col-span-2 text-sm text-text-base">{children}</dd>
+  </div>
+);
+
 export function TransferenciaDesde(props: TransferenciaDesdeProps) {
-    const { request } = props;
+  const { request } = props;
 
-    if (!request) return <></>
+  if (!request) return <></>;
 
-    
-    return (<div className="w-full">
-
-                <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 text-text-base">
-                    <h4 className="text-lg font-bold mb-2">Detalles de la Transferencia</h4>
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Fecha</div>
-                        <div className="w-3/4 ml-4">{ formatDateAsDMY(request?.created_at) } { formatHourAsHM(request?.created_at) }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Enviado desde</div>
-                        <div className="w-3/4 ml-4">{ request?.from?.description }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Envia</div>
-                        <div className="w-3/4 ml-4">{ request?.send }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Recive</div>
-                        <div className="w-3/4 ml-4">{ request?.receive }</div>
-                    </div>
-
-
-                    <div className="flex justify-between items-center p-2 border-b border-bg-subtle last:border-b-0">
-                        <div className="w-1/4 font-semibold text-text-muted border-r border-bg-subtle pr-2">Estado</div>
-                        <div className="w-3/4 ml-4">
-                            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${request?.status == 1 ? 'bg-success/20 text-success' : request?.status == 2 ? 'bg-warning/20 text-warning' : 'bg-danger/20 text-danger'}`}>
-                                { statusOfTransfer(request?.status) }
-                            </span>
-                        </div>
-                    </div>
-
-
-                </div>
-
-    </div>);
+  return (
+    <div className="bg-bg-content rounded-lg border border-bg-subtle overflow-hidden">
+      <dl className="divide-y divide-bg-subtle">
+        <Row label="Fecha">{formatDateAsDMY(request?.created_at)} {formatHourAsHM(request?.created_at)}</Row>
+        <Row label="Enviado desde">{request?.from?.description}</Row>
+        <Row label="Envía"><span className="font-semibold">{request?.send}</span></Row>
+        <Row label="Recibe"><span className="font-semibold">{request?.receive}</span></Row>
+        <Row label="Estado">
+          <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+            request?.status == 1 ? 'bg-success/15 text-success'
+            : request?.status == 2 ? 'bg-warning/15 text-warning'
+            : 'bg-danger/15 text-danger'
+          }`}>
+            {statusOfTransfer(request?.status)}
+          </span>
+        </Row>
+      </dl>
+    </div>
+  );
 }
