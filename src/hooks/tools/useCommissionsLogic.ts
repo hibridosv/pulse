@@ -6,12 +6,8 @@ import { usePagination } from '../usePagination';
 
 export function useCommissionsLogic() {
   const {
-    commissions,
     activeCommission,
-    loading,
-    saving,
     loadCommissions,
-    loadOrdersCommission,
     loadActiveCommission,
     createCommission,
     cancelCommission,
@@ -19,24 +15,32 @@ export function useCommissionsLogic() {
     deleteCommission,
   } = commissionsStore();
   const { currentPage, handlePageNumber } = usePagination('&page=1');
-  const { getElement} = useTempStorage();
+  const { getElement, setElement} = useTempStorage();
 
   const contactSelected = getElement('searchReferred');
   const contactFilter = contactSelected ? `filterWhere[referred_id]==${contactSelected.id}&` : '';
-  const url = `tools/commissions?${contactFilter}filterWhere[type]==1&included=employee_deleted,referred,linked.product.order&sort=-created_at&perPage=3${currentPage}`;
+  const url = getElement('urlFiltered') ?? `tools/commissions?filterWhere[type]==1&included=employee_deleted,referred,linked.product.order&sort=-created_at&perPage=25&page=1`;
+
+  useEffect(() => {
+      setElement('urlFiltered', `tools/commissions?${contactFilter}filterWhere[type]==1&included=employee_deleted,referred,linked.product.order&sort=-created_at&perPage=25${currentPage}`)
+  }, [currentPage, contactSelected, setElement]);
 
 
   useEffect(() => {
     const fetchData = async () => {
-      const hasActive = await loadActiveCommission();
-      if (!hasActive) {
+      if (!activeCommission) {
+        const hasActive = await loadActiveCommission();
+        if (!hasActive) {
+          loadCommissions(url);
+        }
+      } else {
         loadCommissions(url);
       }
     };
     if (url) {
       fetchData();
     }
-  }, [contactSelected, currentPage, loadActiveCommission, loadCommissions, url]);
+  }, [loadActiveCommission, loadCommissions, url]);
 
 
   const handleCreateCommission = async () => {

@@ -29,7 +29,7 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
       <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text={activeCommission ? 'FACTURAS PENDIENTES DE PAGAR' : 'REPORTE DE COMISIONES POR CLIENTE'} />
-        <div className="p-2 md:p-4">
+        <div>
           {activeCommission ? (
             <CommissionsProductsTable referredId={activeCommission?.referred_id} />
           ) : (
