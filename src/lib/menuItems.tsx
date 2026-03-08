@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { BiFingerprint, BiHelpCircle, BiHistory, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
+import { BiDownload, BiFingerprint, BiHelpCircle, BiHistory, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
 import { FaCashRegister, FaFileInvoice, FaTools } from "react-icons/fa";
 import { GrConfigure } from "react-icons/gr";
 import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
@@ -106,15 +106,13 @@ export const menuItems: MenuItem[] = [
   },
   {
     label: "Reportes", icon: <MdReport className="mt-1 mr-2" />,
-    permissions: ["reports-sales", "reports-bills", "reports-products", "reports-attaches"],
+    permissions: ["reports-sales", "reports-bills", "reports-products"],
     children: [
       { label: "Detalle de Ventas", href: "/reports/sales", permission: "reports-sales" },
       { label: "Detalle de Gastos", href: "/reports/expenses", permission: "reports-bills" },
       { label: "Productos Ingresados", href: "/reports/entered", permission: "reports-products" },
       { label: "Productos por lote", href: "/reports/by-batch", permission: "reports-products" },
       { label: "Productos Averiados", href: "/reports/damaged", permission: "reports-products" },
-      { label: "Anexos de IVA y descargas", href: "/reports/tax", permission: "reports-attaches" },
-      { label: "Libros de compras", href: "/reports/purchases", permission: "reports-attaches" },
     ],
   },
   {
@@ -137,6 +135,15 @@ export const menuItems: MenuItem[] = [
       { label: "Aceptar Transferencia", href: "/transfers/accept", permission: "transfers-receive" },
       { label: "Solicitar Transferencia", href: "/transfers/request", permission: "transfers-request" },
       { label: "Listado de Transferencias", href: "/transfers/list", permission: "histories-transfers" },
+    ],
+  },
+  {
+    label: "Anexos y Descargas", icon: <BiDownload className="mt-1 mr-2" />,
+    permissions: ["reports-attaches"],
+    children: [
+      { label: "Anexos de IVA", href: "/annexes/annexes", permission: "reports-attaches" },
+      { label: "Libros de compras", href: "/annexes/purchases", permission: "reports-attaches" },
+      { label: "Descargas de Documentos", href: "/annexes/downloads", permission: "reports-attaches" },
     ],
   },
   {
