@@ -83,7 +83,7 @@ const handleClose = ()=>{
                                   <input type="number" step="any" {...register("total", { required: true })} className="input" />
                               </div>
                               <div className="w-full">
-                                <label className="block text-sm font-medium text-text-muted mb-1">Tipo de Gravación</label>
+                                <label className="block text-sm font-medium text-text-muted mb-1">Tipo de Operación</label>
                                 <RadioButton options={optionsRadioButton} />
                               </div>
                               <div className="flex justify-center pb-4">

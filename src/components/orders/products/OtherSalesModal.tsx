@@ -24,7 +24,7 @@ export function OtherSalesModal(props: OtherSalesModalI) {
   const option = getElement('optionSelected');
   const optionType = getElement('optionSelectedType');
 
-  const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
+  const { register, handleSubmit, reset, setFocus, setValue } = useForm();
   let optionsRadioButton: Option[] = [
       { id: 1, name: "Gravado" },
       { id: 2, name: "Exento" },
@@ -60,7 +60,7 @@ export function OtherSalesModal(props: OtherSalesModalI) {
       if (success) {
         clearElement('optionSelected');
         clearElement('optionSelectedType');
-        onClose();
+        reset();
       }
  }
 
@@ -81,11 +81,11 @@ export function OtherSalesModal(props: OtherSalesModalI) {
             <div className="flex gap-3">
               <div className="w-1/2">
                 <label htmlFor="quantity" className="block text-sm font-medium text-text-muted mb-1">Cantidad</label>
-                <input type="number" step="any" {...register("quantity", { required: true })} className="input" />
+                <input type="number" step="any" {...register("quantity", { required: true, min: 0.1})} className="input" />
               </div>
               <div className="w-1/2">
                 <label htmlFor="total" className="block text-sm font-medium text-text-muted mb-1">Precio</label>
-                <input type="number" step="any" {...register("total", { required: true })} className="input" />
+                <input type="number" step="any" {...register("total", { required: true, min: 0.1})} className="input" />
               </div>
             </div>
             <div className="w-full">
@@ -93,7 +93,7 @@ export function OtherSalesModal(props: OtherSalesModalI) {
               <input type="text" {...register("description", { required: true })} className="input" />
             </div>
             <div className="w-full">
-              <label className="block text-sm font-medium text-text-muted mb-1">Tipo de Gravación</label>
+              <label className="block text-sm font-medium text-text-muted mb-1">Tipo de Operación</label>
               <RadioButton options={optionsRadioButton} />
             </div>
             <div className="w-full border-t border-bg-subtle pt-2">
