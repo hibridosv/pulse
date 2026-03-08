@@ -1,5 +1,5 @@
 'use client'
-import { createService, getServices } from '@/services/services';
+import { createService, deleteService, getServices } from '@/services/services';
 import useProductLinkedStore from '@/stores/products/productLinkedStore';
 import useProductStore from '@/stores/products/productStore';
 import useStateStore from '@/stores/stateStorage';
@@ -16,6 +16,7 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
   const { loadProducts: fetchDataLinked, products: productsLinked, loading, productId} = useProductLinkedStore();
   const { clearElement, getElement} = useTempStorage();
   const elementSelected = getElement("product");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
         const fetchData = async (url: string) => {
@@ -39,7 +40,7 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
             fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&filterWhere[product_type]=!3&perPage=10&page=1${searchTerm}`)
         } else {
             fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&filterWhere[product_type]=!3&perPage=10${currentPage}${searchTerm}`)
-        } 
+        }
     }
   }, [loadProducts, currentPage, searchTerm, sortBy, searchTermNew, sortByNew, product, openLoading, closeLoading, isShow]);
 
@@ -61,12 +62,25 @@ const onSubmit = async (data: any) => {
       const response = await createService(`products/${newData.product_id}/linked`, newData);
       useToastMessageStore.getState().setMessage(response);
       await fetchDataLinked(newData.product_id);
-      clearElement();
+      clearElement("product");
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       console.error(error);
     }
 }
 
-    return { products, onSubmit, productsLinked, loading }; 
+const onDeleteLinked = async (linkedId: string) => {
+    setIsDeleting(true);
+    try {
+        const response = await deleteService(`products/${linkedId}/linked`);
+        useToastMessageStore.getState().setMessage(response);
+        await fetchDataLinked(product.id);
+    } catch (error) {
+        useToastMessageStore.getState().setError(error);
+    } finally {
+        setIsDeleting(false);
+    }
+}
+
+    return { products, onSubmit, onDeleteLinked, isDeleting, productsLinked, loading };
 }

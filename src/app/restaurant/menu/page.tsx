@@ -1,5 +1,6 @@
 'use client';
 import { Pagination } from "@/components/Pagination";
+import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
 import { ManageCategories } from "@/components/restaurant/ManageCategories";
 import { ManageOptions } from "@/components/restaurant/ManageOptions";
 import { OptionsVariantsModal } from "@/components/restaurant/OptionsVariantsModal";
@@ -11,7 +12,6 @@ import { RestaurantProductDeleteModal } from "@/components/restaurant/Restaurant
 import { RestaurantProductFieldModal } from "@/components/restaurant/RestaurantProductFieldModal";
 import { RestaurantProductModifiersModal } from "@/components/restaurant/RestaurantProductModifiersModal";
 import { RestaurantProductPanelModal } from "@/components/restaurant/RestaurantProductPanelModal";
-import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
 import { ShowImagesModal } from "@/components/restaurant/ShowImagesModal";
 import { SearchInput } from "@/components/Search";
 import { ToasterMessage } from "@/components/toaster-message";
@@ -43,7 +43,7 @@ export default function Page() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
     <div className="md:col-span-7 md:border-r md:border-primary">
-        <ViewTitle text="Restaurant" />
+        <ViewTitle text="Menu de restaurante" />
         <RestaurantMenuTable />
         <Pagination records={products} handlePageNumber={handlePageNumber} />
     </div>
@@ -71,7 +71,7 @@ export default function Page() {
     <RestaurantProductCategoryModal isShow={modals.menuProductCategory} onClose={() => closeModal("menuProductCategory")} />
     <RestaurantProductPanelModal isShow={modals.menuProductPanel} onClose={() => closeModal("menuProductPanel")} />
     <RestaurantProductModifiersModal isShow={modals.menuProductModifiers} onClose={() => closeModal("menuProductModifiers")} />
-    <ProductsLinkedModal isShow={modals.menuProductLinked} onClose={() => closeModal("menuProductLinked")} product={getElement('menuProduct')} />
+    <ProductsLinkedModal isShow={modals.menuProductLinked} onClose={() => closeModal("menuProductLinked")} product={getElement('menuProduct')} requiredLink={false} />
     <RestaurantProductDeleteModal isShow={modals.menuProductDelete} onClose={() => closeModal("menuProductDelete")} />
     <ShowImagesModal isShow={modals.menuProductImage} onClose={() => closeModal("menuProductImage")} nameImage="menuProductImage" onSelect={handleSelectProductImage} />
     <ToasterMessage />

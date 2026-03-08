@@ -1,4 +1,3 @@
-
 import { Button, Preset } from "@/components/button/button";
 import { LiComponent } from "@/components/button/LiComponent";
 import Modal from "@/components/modal/Modal";
@@ -11,154 +10,165 @@ import useStateStore from "@/stores/stateStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
+import { LuPackage, LuTrash2 } from "react-icons/lu";
 import { productTypeIcon } from "../utils";
 
 export interface ProductsLinkedModalProps {
   onClose: () => void;
   isShow: boolean;
   product: Product;
+  requiredLink?: boolean;
 }
 
 export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
-    const { onClose, isShow, product } = props;
-    const { register, handleSubmit, resetField } = useForm();
-    const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
-    const {currentPage, handlePageNumber} = usePagination("&page=1");
-    const sortBy = "-updated_at";
-    const { products, onSubmit, productsLinked, loading: isSending } = useProductLinkedLogic(currentPage, searchTerm, sortBy, product, isShow);
-    const { loading } = useStateStore();
-    const isLoading = loading["productSearch"] ? true : false;
-    const { setElement, getElement, clearElement } = useTempStorage();
-    const elementSelected = getElement("product");
+  const { onClose, isShow, product, requiredLink = true } = props;
+  const { register, handleSubmit, resetField } = useForm();
+  const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
+  const { currentPage, handlePageNumber } = usePagination("&page=1");
+  const sortBy = "-updated_at";
+  const { products, onSubmit, onDeleteLinked, isDeleting, productsLinked, loading: isSending } = useProductLinkedLogic(currentPage, searchTerm, sortBy, product, isShow);
+  const { loading } = useStateStore();
+  const isLoading = loading["productSearch"] ? true : false;
+  const { setElement, getElement, clearElement } = useTempStorage();
+  const elementSelected = getElement("product");
 
-    if (!isShow || !product) return null;
+  if (!isShow || !product) return null;
 
-    const handleClose = () => {
+  const handleClose = () => {
+    if (requiredLink) {
         if (productsLinked && productsLinked.length > 0) {
-            resetField("quantity");
-            onClose();
-            return;
-        }
-        useToastMessageStore.getState().setError({ message: "Para cerrar debe tener al menos un producto vinculado."});
-    };
+        resetField("quantity");
+        onClose();
+        return;
+     }
+        useToastMessageStore.getState().setError({ message: "Para cerrar debe tener al menos un producto vinculado." });
+    } else {
+      onClose();
+    }
 
+  };
 
+  const linkedRows = productsLinked && productsLinked.map((item: any) => (
+    <tr key={item.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
+      <td className="px-3 py-2 whitespace-nowrap">
+        <div className="flex items-center gap-1.5">
+          {productTypeIcon(item?.composed?.product_type)}
+          <span className="truncate max-w-[120px]">{item?.composed?.description}</span>
+        </div>
+      </td>
+      <td className="px-3 py-2 text-center whitespace-nowrap tabular-nums font-semibold">
+        {item.quantity}
+      </td>
+      <td className="px-3 py-2 text-center">
+        <button
+          onClick={() => onDeleteLinked(item.id)}
+          disabled={isDeleting}
+          className="text-text-muted hover:text-danger transition-colors clickeable disabled:opacity-40"
+        >
+          <LuTrash2 size={14} />
+        </button>
+      </td>
+    </tr>
+  ));
 
-  const listItems = productsLinked && productsLinked.map((product: any) => (
-        <tr key={product.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
-        <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
-            {product?.composed?.cod}
-        </td>
-        <td className="px-3 py-2 whitespace-nowrap">
-            <div className="flex items-center">
-            {productTypeIcon(product?.composed?.product_type)}
-            <span>{product?.composed?.description}</span>
-            </div>
-        </td>
-        <td className={`px-3 py-2 text-center whitespace-nowrap font-bold ${product.quantity <= product.minimum_stock ? 'text-danger' : ''}`}>
-            {product.quantity}
-        </td>
-        </tr>
-    ));
-
-    const ProductList = products.data && products.data.map((productMap: Product) => {
-        if (product.id === productMap.id) return;
-        return (
-            <LiComponent key={productMap.id} text={`${productMap.cod} - ${productMap.description}`}  onClick={() => setElement("product", productMap)} />
-        );
-    });
+  const searchResults = products.data && products.data.map((productMap: Product) => {
+    if (product.id === productMap.id) return null;
+    return (
+      <LiComponent key={productMap.id} text={`${productMap.cod} - ${productMap.description}`} onClick={() => setElement("product", productMap)} />
+    );
+  });
 
   return (
     <Modal show={isShow} onClose={handleClose} size="xl2" headerTitle="Administrar Productos Vinculados" closeOnOverlayClick={false} hideCloseButton={true}>
       <Modal.Body>
 
-        {/* Section 1: Main Product Details */}
-        <div className="p-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
-            <h3 className="text-lg font-semibold text-text-base mb-3 border-b border-bg-subtle pb-2">Producto Principal</h3>
-            <dl className="flex justify-between gap-x-6 gap-y-4 text-sm">
-                <div className="col-span-1 md:col-span-2">
-                    <dt className="font-medium text-text-muted">Descripción</dt>
-                    <dd className="text-text-base mt-1">{product?.description}</dd>
-                </div>
-                <div>
-                    <dt className="font-medium text-text-muted">Código</dt>
-                    <dd className="text-text-base mt-1">{product?.cod}</dd>
-                </div>
-                <div>
-                    <dt className="font-medium text-text-muted">Stock</dt>
-                    <dd className="text-text-base font-bold mt-1">{product?.quantity}</dd>
-                </div>
-            </dl>
+        {/* Producto principal */}
+        <div className="flex items-center justify-between px-3 py-2 bg-bg-subtle/60 rounded-lg border border-bg-subtle mb-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <LuPackage size={14} className="shrink-0 text-text-muted" />
+            <span className="text-xs font-mono text-text-muted shrink-0">{product?.cod}</span>
+            <span className="text-sm font-semibold text-text-base truncate">{product?.description}</span>
+          </div>
+          <span className="shrink-0 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold ml-3">
+            Stock: {product?.quantity}
+          </span>
         </div>
 
-        {/* Section 2: Assigned Products */}
-        <div className="p-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
-            <h3 className="text-lg font-semibold text-text-base mb-3">Productos Vinculados</h3>
-            {productsLinked && productsLinked.length > 0 ? (
-                <div className="relative overflow-x-auto border border-bg-subtle rounded-lg">
-                    <table className="w-full text-sm text-left">
-                        <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
-                            <tr>
-                                <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Cod</th>
-                                <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Producto</th>
-                                <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle last:border-r-0">Cant</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-bg-subtle/50">
-                            {listItems}
-                        </tbody>
-                    </table>
-                </div>
-            ) : (
-                <div className="p-3 text-center bg-blue-500/10 text-blue-500 rounded-lg">
-                    <p>No hay productos vinculados a este item.</p>
-                </div>
-            )}
+        {/* Tabla de vinculados */}
+        <div className="bg-bg-content rounded-lg border border-bg-subtle overflow-hidden mb-3">
+          <div className="px-3 py-2 bg-bg-subtle/60 border-b border-bg-subtle">
+            <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Productos vinculados</span>
+          </div>
+          {productsLinked && productsLinked.length > 0 ? (
+            <div className="overflow-y-auto max-h-40 custom-scrollbar">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b border-bg-subtle sticky top-0">
+                  <tr>
+                    <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle">Producto</th>
+                    <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle text-center w-16">Cant</th>
+                    <th className="px-3 py-2 font-bold tracking-wider text-center w-12"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-bg-subtle/50">
+                  {linkedRows}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-3 text-text-muted">
+              <LuPackage size={14} className="opacity-40 shrink-0" />
+              <p className="text-xs">Sin productos vinculados aún</p>
+            </div>
+          )}
         </div>
 
-        {/* Section 3: Link New Product */}
-        <div className="p-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
-            {elementSelected ? (
-                // Form View
-                <div>
-                    <div className="p-3 mb-4 bg-green-500/10 text-green-600 rounded-lg">
-                        <p className="font-bold">Producto seleccionado:</p>
-                        <p>{elementSelected.cod} - {elementSelected.description}</p>
-                    </div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium mb-2" htmlFor="quantity">Cantidad a vincular</label>
-                            <input
-                                type="number"
-                                id="quantity"
-                                {...register("quantity", { required: true, min: 1, max: product ? product.quantity : 1 })}
-                                className="w-full px-3 py-2 bg-bg-base border border-bg-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                                defaultValue={1}
-                            />
-                        </div>
-                        <div className="flex justify-end items-center gap-3 border-t border-bg-subtle pt-4 mt-4">
-                            <Button onClick={() => clearElement()} text="Cancelar" preset={Preset.cancel} />
-                            <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
-                        </div>
-                    </form>
+        {/* Buscar y vincular */}
+        <div className="bg-bg-content rounded-lg border border-bg-subtle overflow-hidden">
+          <div className="px-3 py-2 bg-bg-subtle/60 border-b border-bg-subtle">
+            <span className="text-xs font-bold uppercase tracking-wider text-text-muted">
+              {elementSelected ? 'Confirmar vínculo' : 'Agregar producto'}
+            </span>
+          </div>
+          {elementSelected ? (
+            <div className="p-3">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-success/8 border border-success/30 mb-3">
+                <span className="text-xs text-text-muted shrink-0">Seleccionado:</span>
+                <span className="text-sm font-semibold text-text-base truncate">{elementSelected.cod} — {elementSelected.description}</span>
+              </div>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-3">
+                  <label className="input-label" htmlFor="quantity">Cantidad a vincular</label>
+                  <input
+                    type="number"
+                    id="quantity"
+                    {...register("quantity", { required: true, min: 1, max: product ? product.quantity : 1 })}
+                    className="input"
+                    defaultValue={1}
+                  />
                 </div>
-            ) : (
-                // Search View
-                <div>
-                    <h3 className="text-lg font-semibold text-text-base mb-3">Buscar y Vincular Nuevo Producto</h3>
-                    <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar por código o descripción..." />
-                    <ul className="mt-2 max-h-48 overflow-y-auto space-y-1">
-                        {isLoading ? <p className="text-center text-text-muted p-4">Buscando...</p> : ProductList}
-                    </ul>
+                <div className="flex gap-2">
+                  <Button onClick={() => clearElement("product")} text="Cancelar" preset={Preset.cancel} />
+                  <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
                 </div>
-            )}
+              </form>
+            </div>
+          ) : (
+            <div className="p-3">
+              <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar por código o descripción..." />
+              <ul className="mt-2 max-h-36 overflow-y-auto custom-scrollbar">
+                {isLoading
+                  ? <p className="text-center text-text-muted text-xs py-3">Buscando...</p>
+                  : searchResults
+                }
+              </ul>
+            </div>
+          )}
         </div>
 
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleClose} preset={Preset.close} disabled={isSending} />
+        <Button onClick={handleClose} preset={Preset.close} disabled={isSending || isDeleting} />
       </Modal.Footer>
     </Modal>
   );
 }
-
