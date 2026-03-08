@@ -1,11 +1,12 @@
-import { createService, deleteService, getServices } from '@/services/services';
+import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
+import useTempStorage from '../useTempStorage';
 
 
 interface manageRestaurantStoreI {
   products: any;
-  categories: any; 
+  categories: any;
   category: any;
   options: any;
   workStations: any;
@@ -17,7 +18,9 @@ interface manageRestaurantStoreI {
   loadingProducts: boolean;
   sending: boolean;
   deleting: boolean;
+  lastProductUrl: string;
   loadProducts: (url: string) => Promise<void>;
+  reloadProducts: () => Promise<void>;
   loadCategories: (url: string) => Promise<void>;
   deleteCategory: (url: string) => Promise<void>;
   loadOptions: (url: string) => Promise<void>;
@@ -26,6 +29,11 @@ interface manageRestaurantStoreI {
   addProduct: (url: string, data: any) => Promise<boolean>;
   addCategory: (url: string, data: any) => Promise<boolean>;
   addOption: (url: string, data: any) => Promise<boolean>;
+  updateProduct: (id: string, data: any) => Promise<boolean>;
+  updateProductStatus: (id: string, status: number) => Promise<boolean>;
+  deleteRestaurantProduct: (id: string) => Promise<boolean>;
+  addModifier: (productOptionsId: string, productId: string) => Promise<any>;
+  removeModifier: (assigmentId: string) => Promise<boolean>;
 }
 
 const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
@@ -42,8 +50,9 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
   loadingProducts: false,
   sending: false,
   deleting: false,
+  lastProductUrl: '',
   loadProducts: async (url: string) => {
-    set({ loadingProducts: true });
+    set({ loadingProducts: true, lastProductUrl: url });
     try {
       const response = await getServices(url);
       set({ products: response.data.data, error: false });
@@ -53,6 +62,10 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
     } finally {
       set({ loadingProducts: false });
     }
+  },
+  reloadProducts: async () => {
+    const { lastProductUrl } = manageRestaurantStore.getState();
+    if (lastProductUrl) await manageRestaurantStore.getState().loadProducts(lastProductUrl);
   },
   loadCategories: async (url: string) => {
     set({ loadingCategories: true });
@@ -167,6 +180,77 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
         }
     },
 
+  updateProduct: async (id, data) => {
+    set({ sending: true });
+    try {
+      const response = await updateService(`restaurant/products/${id}`, data);
+      useToastMessageStore.getState().setMessage(response);
+      await manageRestaurantStore.getState().reloadProducts();
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ sending: false });
+    }
+  },
+  updateProductStatus: async (id, status) => {
+    set({ sending: true });
+    try {
+      const response = await updateService(`restaurant/products/${id}/status`, { status });
+      useToastMessageStore.getState().setMessage(response);
+      await manageRestaurantStore.getState().reloadProducts();
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ sending: false });
+    }
+  },
+  deleteRestaurantProduct: async (id) => {
+    set({ deleting: true });
+    try {
+      const response = await deleteService(`restaurant/products/${id}`);
+      useToastMessageStore.getState().setMessage(response);
+      await manageRestaurantStore.getState().reloadProducts();
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ deleting: false });
+    }
+  },
+  addModifier: async (productOptionsId, productId) => {
+    try {
+      await createService('restaurant/options', { product_options_id: productOptionsId, product_id: productId });
+      await manageRestaurantStore.getState().reloadProducts();
+      const { products } = manageRestaurantStore.getState();
+      const list = products?.data ?? products;
+      const updatedProduct = list?.find((p: any) => p.id === productId);
+      if (updatedProduct) useTempStorage.getState().setElement('menuProduct', updatedProduct);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return null;
+    }
+  },
+  removeModifier: async (assigmentId) => {
+    try {
+      await deleteService(`restaurant/options/${assigmentId}/product`);
+      await manageRestaurantStore.getState().reloadProducts();
+      const { products } = manageRestaurantStore.getState();
+      const list = products?.data ?? products;
+      const productId = useTempStorage.getState().getElement('menuProduct')?.id;
+      const updatedProduct = list?.find((p: any) => p.id === productId);
+      if (updatedProduct) useTempStorage.getState().setElement('menuProduct', updatedProduct);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    }
+  },
 }));
 
 export default manageRestaurantStore;

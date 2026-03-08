@@ -3,6 +3,7 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { URL } from '@/constants';
+import { useRestaurantMenuProductLogic } from "@/hooks/restaurant/useRestaurantMenuProductLogic";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import manageRestaurantStore from "@/stores/restaurant/manageRestaurantStore";
@@ -19,7 +20,16 @@ import { DropdownItem } from "../dropDown/DropdownItem";
 
 
 export function RestaurantMenuTable() {
-  const { products, loadingProducts } = manageRestaurantStore()
+  const { products, loadingProducts } = manageRestaurantStore();
+  const {
+    handleOpenFieldModal,
+    handleOpenCategoryModal,
+    handleOpenPanelModal,
+    handleOpenModifiersModal,
+    handleOpenImageModal,
+    handleOpenDeleteModal,
+    handleToggleStatus,
+  } = useRestaurantMenuProductLogic();
 
   const { system } = useConfigStore();
 
@@ -61,60 +71,60 @@ export function RestaurantMenuTable() {
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         <Dropdown label={<RiMenuSearchFill size={18} /> }>
-        <DropdownItem onClick={() => {  }}>
-            <span className="flex justify-items-start " >
-              <span className="mt-1"><MdOutlinePriceCheck /></span> 
-              <span className="ml-2">Cambiar Precio</span> 
+          <DropdownItem onClick={() => handleOpenFieldModal(record, 'price', 'number', 'Precio')}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><MdOutlinePriceCheck /></span>
+              <span className="ml-2">Cambiar Precio</span>
             </span>
           </DropdownItem>
-        <DropdownItem onClick={() => {  }}>
-            <span className="flex justify-items-start " >
-              <span className="mt-1"><BiRename /></span> 
-              <span className="ml-2">Cambiar Nombre</span> 
+          <DropdownItem onClick={() => handleOpenFieldModal(record, 'description', 'text', 'Nombre')}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><BiRename /></span>
+              <span className="ml-2">Cambiar Nombre</span>
             </span>
           </DropdownItem>
-        <DropdownItem onClick={() => {  }}>
-            <span className="flex justify-items-start " >
-              <span className="mt-1"><IoMdOptions /></span> 
-              <span className="ml-2">Cambiar Modificadores</span>  
+          <DropdownItem onClick={() => handleOpenModifiersModal(record)}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><IoMdOptions /></span>
+              <span className="ml-2">Cambiar Modificadores</span>
             </span>
           </DropdownItem>
-          <DropdownItem onClick={() => {  }}>
-            <span className="flex justify-items-start " >
-              <span className="mt-1"><BiCategory /></span> 
-              <span className="ml-2">Cambiar Categorias</span> 
+          <DropdownItem onClick={() => handleOpenCategoryModal(record)}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><BiCategory /></span>
+              <span className="ml-2">Cambiar Categorias</span>
             </span>
           </DropdownItem>
-          <DropdownItem onClick={() => {  }}>
-            <span className="flex justify-items-start " >
-              <span className="mt-1"><FaSolarPanel /></span> 
+          <DropdownItem onClick={() => handleOpenPanelModal(record)}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><FaSolarPanel /></span>
               <span className="ml-2">Cambiar Panel</span>
             </span>
           </DropdownItem>
-          <DropdownItem onClick={() => {  }}>
-            <span className="flex justify-items-start " >
-              <span className="mt-1"><FaImages /></span> 
+          <DropdownItem onClick={() => handleOpenImageModal(record)}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><FaImages /></span>
               <span className="ml-2">Cambiar Imagen</span>
             </span>
           </DropdownItem>
-          <DropdownItem onClick={() => {  }}>
-            <span className="flex justify-items-start " >
-              <span className="mt-1"><MdOutlineProductionQuantityLimits /></span> 
-              <span className="ml-2">Productos a descontar </span> 
-            </span> 
+          <DropdownItem onClick={() => { }}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><MdOutlineProductionQuantityLimits /></span>
+              <span className="ml-2">Productos a descontar</span>
+            </span>
           </DropdownItem>
           <DropdownDivider />
-          <DropdownItem onClick={() => {  }}> 
-            <span className="flex justify-items-start text-danger font-semibold" >
-              <span className="mt-1">{record.menu_order?.status === 0 ? <FaCheckCircle color="green" /> : <IoMdCloseCircleOutline /> }</span> 
+          <DropdownItem onClick={() => handleToggleStatus(record)}>
+            <span className="flex justify-items-start text-danger font-semibold">
+              <span className="mt-1">{record.menu_order?.status === 0 ? <FaCheckCircle color="green" /> : <IoMdCloseCircleOutline />}</span>
               <span className="ml-2">{record.menu_order?.status === 0 ? 'Habilitar Producto' : 'Inhabilitar Producto'}</span>
-            </span>  
-            </DropdownItem>
-          <DropdownItem onClick={() => {  }}> 
+            </span>
+          </DropdownItem>
+          <DropdownItem onClick={() => handleOpenDeleteModal(record)}>
             <span className="flex justify-items-start font-semibold text-red-700">
               <MdDelete className="mt-1" />
-              <span className="ml-2">Eliminar Producto</span> 
-            </span> 
+              <span className="ml-2">Eliminar Producto</span>
+            </span>
           </DropdownItem>
         </Dropdown>
       </td>
