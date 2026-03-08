@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function RestaurantProductModifiersModal({ isShow, onClose }: Props) {
-  const { options, loadingOptions, addModifier, removeModifier, reloadProducts } = manageRestaurantStore();
+  const { options, loadingOptions, addModifier, removeModifier } = manageRestaurantStore();
   const { getElement } = useTempStorage();
   const [assigned, setAssigned] = useState<any[]>([]);
   const [toggling, setToggling] = useState(false);

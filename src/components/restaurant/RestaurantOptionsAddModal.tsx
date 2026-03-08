@@ -4,7 +4,6 @@ import Modal from "@/components/modal/Modal";
 import { URL } from '@/constants';
 import { useRestaurantOptionsAddLogic } from "@/hooks/restaurant/useRestaurantOptionsAddLogic";
 import useModalStore from "@/stores/modalStorage";
-import manageRestaurantStore from "@/stores/restaurant/manageRestaurantStore";
 import Image from "next/image";
 
 export interface RestaurantOptionsAddModalI {
@@ -15,7 +14,6 @@ export interface RestaurantOptionsAddModalI {
 export function RestaurantOptionsAddModal(props: RestaurantOptionsAddModalI) {
   const { onClose, isShow } = props;
   const { openModal } = useModalStore();
-  const { loadOptions } = manageRestaurantStore();
   const {
     register,
     handleSubmit,

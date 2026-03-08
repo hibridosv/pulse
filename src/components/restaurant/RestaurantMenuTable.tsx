@@ -115,7 +115,7 @@ export function RestaurantMenuTable() {
           </DropdownItem>
           <DropdownDivider />
           <DropdownItem onClick={() => handleToggleStatus(record)}>
-            <span className="flex justify-items-start text-danger font-semibold">
+            <span className={`flex justify-items-start font-semibold ${record.menu_order?.status === 0 ? 'text-green-700' : 'text-red-700'}`}>
               <span className="mt-1">{record.menu_order?.status === 0 ? <FaCheckCircle color="green" /> : <IoMdCloseCircleOutline />}</span>
               <span className="ml-2">{record.menu_order?.status === 0 ? 'Habilitar Producto' : 'Inhabilitar Producto'}</span>
             </span>
