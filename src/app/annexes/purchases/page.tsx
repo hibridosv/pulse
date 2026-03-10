@@ -3,36 +3,61 @@ import { PurchasesBooksList } from "@/components/reports/PurchasesBooksList";
 import { PurchasesDetailsModal } from "@/components/reports/PurchasesDetailsModal";
 import { PurchasesImportSection } from "@/components/reports/PurchasesImportSection";
 import { ReportPurchasesTable } from "@/components/reports/ReportPurchasesTable";
+import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { usePurchasesLogic } from "@/hooks/reports/usePurchasesLogic";
 import useModalStore from "@/stores/modalStorage";
 import purchasesStore from "@/stores/reports/purchasesStore";
+import useTempStorage from "@/stores/useTempStorage";
+import { useState } from "react";
 
 export default function Page() {
-  usePurchasesLogic();
-  const { purchases, loading, invoices } = purchasesStore();
+  const { setElement, elements } = useTempStorage();
+  const selectedBookId: string | null = elements['selectedPurchaseBook'] ?? null;
+  const [isUploading, setIsUploading] = useState(false);
+  usePurchasesLogic(selectedBookId);
+  const { purchases, loading, loadingInvoices, loadInvoices, deleteInvoice, invoices } = purchasesStore();
   const { modals, closeModal } = useModalStore();
 
-  const activeBook = purchases?.find((p: { status: number }) => p.status === 1);
+  const selectedBook = purchases?.find((p: { id: string }) => p.id === selectedBookId) ?? purchases?.[0];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
 
       <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="Libro de compras" />
-        <ReportPurchasesTable records={invoices} isLoading={loading} />
+        <ReportPurchasesTable
+          records={invoices}
+          isLoading={loading || loadingInvoices}
+          onDelete={async (id) => {
+            const ok = await deleteInvoice(id);
+            if (ok) loadInvoices(`purchases/${selectedBook?.id}/invoices`);
+          }}
+        />
       </div>
 
       <div className="md:col-span-3 p-4 space-y-5">
 
         <div>
           <p className="text-xs font-bold uppercase tracking-wider text-text-muted mb-3">Libros disponibles</p>
-          <PurchasesBooksList purchases={purchases} invoicesCount={invoices?.length ?? 0} />
+          <PurchasesBooksList
+            purchases={purchases}
+            invoicesCount={invoices?.length ?? 0}
+            selectedId={selectedBookId}
+            onSelect={(id) => setElement('selectedPurchaseBook', id)}
+            disabled={isUploading}
+          />
         </div>
-        <PurchasesImportSection bookName={activeBook?.name} />
+        <PurchasesImportSection
+          bookName={selectedBook?.name}
+          bookId={selectedBook?.id}
+          onUploadingChange={setIsUploading}
+          onImported={() => loadInvoices(`purchases/${selectedBook?.id}/invoices`)}
+        />
       </div>
 
       <PurchasesDetailsModal isShow={modals.purchasesDetailsModal} onClose={() => closeModal('purchasesDetailsModal')} />
+      <ToasterMessage />
     </div>
   );
 }

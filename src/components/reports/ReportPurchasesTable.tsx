@@ -7,22 +7,26 @@ import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useTempStorage from "@/stores/useTempStorage";
+import { useState } from "react";
+import { LuTrash2 } from "react-icons/lu";
 
 export interface ReportPurchasesTableI {
   records: any;
   isLoading?: boolean;
+  onDelete?: (id: string) => Promise<void>;
 }
 
 export function ReportPurchasesTable(props: ReportPurchasesTableI) {
-  const { records, isLoading } = props;
+  const { records, isLoading, onDelete } = props;
   const { system } = useConfigStore();
   const { setElement } = useTempStorage();
   const { openModal } = useModalStore();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  if (isLoading) return <SkeletonTable rows={5} columns={6} />;
+  if (isLoading) return <SkeletonTable rows={5} columns={7} />;
 
   if (!records || records.length === 0) {
-    return <NothingHere />;
+    return <NothingHere text="No hay documentos en este mes" width="180" height="180" />;
   }
 
   const parsed = records.map((record: any) => ({
@@ -34,22 +38,30 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
   const totalOperacion = parsed.reduce((acc: number, { json }: any) => acc + (json?.resumen?.montoTotalOperacion ?? 0), 0);
   const totalRetenciones = parsed.reduce((acc: number, { json }: any) => acc + (json?.resumen?.reteRenta ?? 0), 0);
 
+  const handleDelete = async (id: string) => {
+    setDeletingId(id);
+    await onDelete?.(id);
+    setDeletingId(null);
+  };
+
   const listItems = parsed.map(({ record, json }: any, index: number) => {
-    const anulado = record?.status == 0;
     const needReview = record?.duplicate_of_id;
+    const isDeleting = deletingId === record.id;
     return (
       <tr
         key={index}
-        className={`transition-colors duration-150 divide-x divide-bg-subtle text-text-base ${
-          anulado || needReview
-            ? 'bg-danger/5 hover:bg-danger/10'
+        className={`group transition-colors duration-150 divide-x divide-bg-subtle text-text-base ${
+          isDeleting
+            ? 'opacity-50'
+            : needReview
+            ? 'bg-red-200 hover:bg-red-400'
             : 'odd:bg-bg-subtle/40 hover:bg-bg-subtle'
         }`}
       >
-        <td className="px-3 py-2 whitespace-nowrap text-text-muted text-xs">
+        <td className="px-3 py-2 whitespace-nowrap text-xs">
           {formatDateAsDMY(json?.identificacion?.fecEmi)}
         </td>
-        <td className="px-3 py-2 whitespace-nowrap text-xs font-mono text-text-muted">
+        <td className="px-3 py-2 whitespace-nowrap text-xs font-mono">
           {json?.emisor?.nit ?? 'N/A'}
         </td>
         <td
@@ -57,12 +69,12 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
           onClick={() => { setElement('purchaseSelected', json); openModal('purchasesDetailsModal'); }}
         >
           <div className="flex items-center gap-2">
-            <span className="text-primary hover:underline font-medium uppercase">
+            <span className="hover:underline font-medium uppercase">
               {json?.emisor?.nombreComercial ?? 'N/A'}
             </span>
-            {anulado && (
-              <span className="text-xs px-1.5 py-0.5 rounded bg-danger/10 text-danger font-semibold leading-none">
-                Anulado
+            {needReview && (
+              <span className="text-xs px-1.5 py-0.5 rounded bg-red-600 text-white font-semibold leading-none">
+                Revisar
               </span>
             )}
           </div>
@@ -75,6 +87,15 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
         </td>
         <td className={`px-3 py-2 text-right whitespace-nowrap tabular-nums ${(json?.resumen?.reteRenta ?? 0) > 0 ? 'text-warning font-medium' : 'text-text-muted'}`}>
           {numberToMoney(json?.resumen?.reteRenta ?? 0, system)}
+        </td>
+        <td className="px-2 py-2 text-center">
+          <button
+            onClick={() => handleDelete(record.id)}
+            disabled={!!deletingId}
+            className="opacity-0 group-hover:opacity-100 transition-opacity text-text-muted hover:text-danger disabled:cursor-not-allowed clickeable"
+          >
+            <LuTrash2 size={14} />
+          </button>
         </td>
       </tr>
     );
@@ -91,7 +112,8 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Proveedor</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">CF</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">Total</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider whitespace-nowrap text-right">Retenciones</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">Retenciones</th>
+              <th scope="col" className="px-3 py-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">
@@ -107,6 +129,7 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
               <td className={`px-3 py-2 text-right tabular-nums ${totalRetenciones > 0 ? 'text-warning' : ''}`}>
                 {numberToMoney(totalRetenciones, system)}
               </td>
+              <td></td>
             </tr>
           </tfoot>
         </table>

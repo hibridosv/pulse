@@ -1,28 +1,33 @@
 import { getFirstElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import purchasesStore from '@/stores/reports/purchasesStore';
-import useTempStorage from '@/stores/useTempStorage';
 import { useEffect } from 'react';
 
 
-export function usePurchasesLogic() {
-    const { loadPurchases, loadInvoices, purchases } = purchasesStore()
+export function usePurchasesLogic(selectedBookId: string | null) {
+    const { loadPurchases, loadInvoices, purchases, deleteInvoice } = purchasesStore()
     const { client } = useConfigStore();
-    const { setElement } = useTempStorage();
-    
-    useEffect(() => {          
+
+    useEffect(() => {
         if (client) {
             loadPurchases(`purchases?filterWhere[nit]==${client?.nit}&sort=-created_at`);
-        }  
+        }
     }, [loadPurchases, client]);
-    
-    useEffect(() => {          
+
+    useEffect(() => {
         if (purchases) {
-        const id = getFirstElement(purchases).id;
-        loadInvoices(`purchases/${id}/invoices`);
-    }  
-    }, [loadInvoices, purchases]);
+            const id = selectedBookId ?? getFirstElement(purchases).id;
+            loadInvoices(`purchases/${id}/invoices`);
+        }
+    }, [loadInvoices, purchases, selectedBookId]);
 
 
-
+    const handleDelete = async () => {
+        const success = await deleteInvoice(`purchases/${selectedBookId}/invoices`);
+        if (success) {
+            loadInvoices(`purchases/${selectedBookId}/invoices`);
+        }
+    }
+    
+    return { handleDelete }
 }

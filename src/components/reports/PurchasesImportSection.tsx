@@ -1,17 +1,27 @@
 'use client';
+import { PurchasesImportResultModal } from "@/components/reports/PurchasesImportResultModal";
+import { postFormData } from "@/services/OtherServices";
+import useToastMessageStore from "@/stores/toastMessageStore";
 import { useRef, useState } from "react";
 import { LuFileJson, LuUpload, LuX } from "react-icons/lu";
 
 interface Props {
   bookName?: string;
+  bookId?: string;
+  onUploadingChange: (v: boolean) => void;
+  onImported?: () => void;
 }
 
-export function PurchasesImportSection({ bookName }: Props) {
+export function PurchasesImportSection({ bookName, bookId, onUploadingChange, onImported }: Props) {
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [result, setResult] = useState<{ processed: number; errors: { file: string; message: string }[] } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { setError } = useToastMessageStore();
 
   const handleDrop = (e: React.DragEvent) => {
+    if (isUploading) return;
     e.preventDefault();
     setIsDragging(false);
     const dropped = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.json'));
@@ -26,21 +36,52 @@ export function PurchasesImportSection({ bookName }: Props) {
 
   const removeFile = (index: number) => setFiles(prev => prev.filter((_, i) => i !== index));
 
+  const handleUpload = async () => {
+    if (!bookId || files.length === 0 || isUploading) return;
+
+    setIsUploading(true);
+    onUploadingChange(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('purchase_id', bookId);
+      files.forEach(file => formData.append('files[]', file));
+
+      const response = await postFormData(`purchases/${bookId}/invoices`, formData);
+
+      if (response?.data) {
+        setResult(response.data);
+        setFiles([]);
+        onImported?.();
+      } else {
+        setError({ message: response?.message ?? 'Error al importar los archivos' });
+      }
+    } catch (error) {
+      setError({ message: 'Error al importar los archivos' });
+    } finally {
+      setIsUploading(false);
+      onUploadingChange(false);
+    }
+  };
+
   return (
     <div>
+      <PurchasesImportResultModal show={!!result} onClose={() => setResult(null)} result={result} />
       <p className="text-xs font-bold uppercase tracking-wider text-text-muted mb-3">
         Importar facturas — {bookName ?? '—'}
       </p>
 
       <div
-        onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+        onDragOver={(e) => { if (!isUploading) { e.preventDefault(); setIsDragging(true); } }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
-        className={`rounded-lg border-2 border-dashed cursor-pointer transition-all p-6 flex flex-col items-center gap-2 text-center ${
-          isDragging
-            ? 'border-primary bg-primary/8 scale-[1.01]'
-            : 'border-bg-subtle hover:border-primary/40 hover:bg-primary/5'
+        onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
+        className={`rounded-lg border-2 border-dashed transition-all p-6 flex flex-col items-center gap-2 text-center ${
+          isUploading
+            ? 'border-bg-subtle opacity-50 cursor-not-allowed'
+            : isDragging
+              ? 'border-primary bg-primary/8 scale-[1.01] cursor-pointer'
+              : 'border-bg-subtle hover:border-primary/40 hover:bg-primary/5 cursor-pointer'
         }`}
       >
         <div className={`w-11 h-11 rounded-full flex items-center justify-center transition-colors ${
@@ -64,6 +105,7 @@ export function PurchasesImportSection({ bookName }: Props) {
           accept=".json"
           className="hidden"
           onChange={handleFileInput}
+          disabled={isUploading}
         />
       </div>
 
@@ -79,18 +121,36 @@ export function PurchasesImportSection({ bookName }: Props) {
                   <LuFileJson size={14} className="shrink-0 text-primary/60" />
                   <span className="truncate text-text-base">{file.name}</span>
                 </div>
-                <button
-                  onClick={(e) => { e.stopPropagation(); removeFile(i); }}
-                  className="shrink-0 ml-2 text-text-muted hover:text-danger transition-colors clickeable opacity-0 group-hover:opacity-100"
-                >
-                  <LuX size={13} />
-                </button>
+                {!isUploading && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); removeFile(i); }}
+                    className="shrink-0 ml-2 text-text-muted hover:text-danger transition-colors clickeable opacity-0 group-hover:opacity-100"
+                  >
+                    <LuX size={13} />
+                  </button>
+                )}
               </li>
             ))}
           </ul>
-          <button className="w-full mt-1 px-4 py-2 rounded-lg bg-primary text-text-inverted text-xs font-semibold hover:bg-primary/90 active:scale-[0.98] transition-all clickeable">
-            Importar {files.length} archivo{files.length !== 1 ? 's' : ''}
-          </button>
+
+          {isUploading ? (
+            <div className="space-y-1.5">
+              <p className="text-xs text-text-muted">
+                Subiendo {files.length} archivo{files.length !== 1 ? 's' : ''}...
+              </p>
+              <div className="w-full h-2 bg-bg-subtle rounded-full overflow-hidden">
+                <div className="h-full bg-primary rounded-full animate-[shimmer_1.5s_infinite]" style={{ width: '40%' }} />
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={handleUpload}
+              disabled={!bookId}
+              className="w-full mt-1 px-4 py-2 rounded-lg bg-primary text-text-inverted text-xs font-semibold hover:bg-primary/90 active:scale-[0.98] transition-all clickeable disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Importar {files.length} archivo{files.length !== 1 ? 's' : ''}
+            </button>
+          )}
         </div>
       )}
     </div>

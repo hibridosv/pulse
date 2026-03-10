@@ -1,4 +1,5 @@
 'use client'
+import { postForPrint } from '@/services/OtherServices';
 import accountReceivableStore from '@/stores/accounts/accountReceivableStore';
 import useConfigStore from '@/stores/configStore';
 import useTempStorage from '@/stores/useTempStorage';
@@ -49,7 +50,7 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
       putRequest(`accounts/payment/${receivableRecord?.id}/print`, {});
       if (putData && putData?.type == "successful") {
           if (activeConfig && activeConfig.includes("print-local")) {
-            await postRequest(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', putData.data, false);
+            await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', putData.data, false);
           }
       }
     } catch (error) {
