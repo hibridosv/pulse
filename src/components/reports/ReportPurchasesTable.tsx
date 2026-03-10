@@ -34,13 +34,14 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
   const totalOperacion = parsed.reduce((acc: number, { json }: any) => acc + (json?.resumen?.montoTotalOperacion ?? 0), 0);
   const totalRetenciones = parsed.reduce((acc: number, { json }: any) => acc + (json?.resumen?.reteRenta ?? 0), 0);
 
-  const listItems = parsed.map(({ record, json }: any) => {
+  const listItems = parsed.map(({ record, json }: any, index: number) => {
     const anulado = record?.status == 0;
+    const needReview = record?.duplicate_of_id;
     return (
       <tr
-        key={json.id}
+        key={index}
         className={`transition-colors duration-150 divide-x divide-bg-subtle text-text-base ${
-          anulado
+          anulado || needReview
             ? 'bg-danger/5 hover:bg-danger/10'
             : 'odd:bg-bg-subtle/40 hover:bg-bg-subtle'
         }`}
@@ -56,7 +57,7 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
           onClick={() => { setElement('purchaseSelected', json); openModal('purchasesDetailsModal'); }}
         >
           <div className="flex items-center gap-2">
-            <span className="text-primary hover:underline font-medium">
+            <span className="text-primary hover:underline font-medium uppercase">
               {json?.emisor?.nombreComercial ?? 'N/A'}
             </span>
             {anulado && (
