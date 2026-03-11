@@ -25,8 +25,29 @@ function flattenDiff(current: any, original: any, path = ''): DiffEntry[] {
     const originalValue = original?.[key];
     const currentIsObject = typeof currentValue === 'object' && currentValue !== null && !Array.isArray(currentValue);
     const originalIsObject = typeof originalValue === 'object' && originalValue !== null && !Array.isArray(originalValue);
+    const bothAreArrays = Array.isArray(currentValue) && Array.isArray(originalValue);
+
     if (currentIsObject && originalIsObject) {
       entries.push(...flattenDiff(currentValue, originalValue, fieldPath));
+    } else if (bothAreArrays) {
+      const maxLength = Math.max(currentValue.length, originalValue.length);
+      for (let index = 0; index < maxLength; index++) {
+        const currentItem = currentValue[index];
+        const originalItem = originalValue[index];
+        const itemPath = `${fieldPath}[${index}]`;
+        const currentItemIsObject = typeof currentItem === 'object' && currentItem !== null && !Array.isArray(currentItem);
+        const originalItemIsObject = typeof originalItem === 'object' && originalItem !== null && !Array.isArray(originalItem);
+        if (currentItemIsObject && originalItemIsObject) {
+          entries.push(...flattenDiff(currentItem, originalItem, itemPath));
+        } else {
+          entries.push({
+            path: itemPath,
+            current: currentItem,
+            original: originalItem,
+            isDiff: JSON.stringify(currentItem) !== JSON.stringify(originalItem),
+          });
+        }
+      }
     } else {
       entries.push({
         path: fieldPath,
@@ -41,7 +62,7 @@ function flattenDiff(current: any, original: any, path = ''): DiffEntry[] {
 
 function displayValue(val: any): string {
   if (val === null || val === undefined) return '—';
-  if (Array.isArray(val)) return `[${val.length} elemento${val.length !== 1 ? 's' : ''}]`;
+  if (typeof val === 'object') return JSON.stringify(val);
   return String(val);
 }
 
