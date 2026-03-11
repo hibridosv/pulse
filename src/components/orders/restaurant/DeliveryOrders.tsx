@@ -20,7 +20,7 @@ export function DeliveryOrders() {
   return (
     <div className="w-full px-3 py-2 animate-fade-in">
       <div className="flex flex-wrap justify-center gap-3">
-        {orders && orders.map((record: any) => (
+        {Array.isArray(orders) && orders.map((record: any) => (
           <DeliveryCard key={record?.id} record={record} />
         ))}
       </div>

@@ -69,8 +69,8 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   useEffect(() => {
     if (user && user.id == pusherData?.userId) return
     if (!pusherData) return;
-    if (pusherData.data) {
-       setOrders(pusherData.data); 
+    if (Array.isArray(pusherData.data)) {
+       setOrders(pusherData.data);
     }
    }, [loadOrders, pusherData, user, setOrders]);
 

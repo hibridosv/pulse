@@ -64,7 +64,7 @@ export function ShowOrders() {
           <div className="w-full rounded-lg shadow-sm border border-bg-subtle bg-bg-content">
           <div className="text-center uppercase rounded-t-lg py-2 bg-primary text-text-inverted font-semibold">ORDENES PENDIENTES</div>
 
-          { orders && orders.map((order: any, index: any) => (
+          { Array.isArray(orders) && orders.map((order: any, index: any) => (
             <div key={index} className="flex justify-between items-center p-3 border-b border-bg-subtle last:border-b-0 bg-bg-content hover:bg-bg-subtle/50">
                 <Popper label={<span onClick={() => select(order.id)} className="ml-1 clickeable text-text-base font-medium uppercase">{order?.client?.name ? `Cliente: ${order?.client?.name}` : `Usuario: ${order.employee.name}`}</span>}>
                     {showProducts(order.invoiceproducts)}

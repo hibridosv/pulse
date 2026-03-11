@@ -182,7 +182,7 @@ const ordersProductsStore = create<ordersProductsStoreI>(() => ({
 
 
   setOrders: (orders: any) => {
-    ordersStore.setState({ orders });
+    ordersStore.setState({ orders: Array.isArray(orders) ? orders : [] });
   },
 
 }));

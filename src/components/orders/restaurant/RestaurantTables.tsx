@@ -35,7 +35,7 @@ export function RestaurantTables() {
 
   return (
     <div className="w-full px-3 py-1 animate-fade-in">
-      {tables && tables.length > 1 && (
+      {Array.isArray(tables) && tables.length > 1 && (
         <div className="flex gap-1 mb-5 bg-bg-subtle/50 p-1 rounded-lg">
           {tables.map((record: any) => {
             const isActive = record.id == activeZoneId;
@@ -52,7 +52,7 @@ export function RestaurantTables() {
       )}
 
       <div className="flex flex-wrap justify-center gap-4">
-        {selectedTables.map((record: any) => (
+        {Array.isArray(selectedTables) && selectedTables.map((record: any) => (
           <TableCard
             key={record?.id}
             record={record}

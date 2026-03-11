@@ -212,7 +212,7 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
 
 
   setOrders: (orders: any) => {
-    ordersStore.setState({ orders });
+    ordersStore.setState({ orders: Array.isArray(orders) ? orders : [] });
   },
 
   loadTables: async (url: string, showToast: boolean = true) => {
