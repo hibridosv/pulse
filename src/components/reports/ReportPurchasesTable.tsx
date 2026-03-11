@@ -68,7 +68,15 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
         </td>
         <td
           className="px-3 py-2 text-left whitespace-nowrap clickeable"
-          onClick={() => { setElement('purchaseSelected', json); openModal('purchasesDetailsModal'); }}
+          onClick={() => {
+            if (needReview) {
+              setElement('purchaseReviewRecord', record);
+              openModal('purchasesDuplicateReviewModal');
+            } else {
+              setElement('purchaseSelected', json);
+              openModal('purchasesDetailsModal');
+            }
+          }}
         >
           <div className="flex items-center gap-2">
             <span className="hover:underline font-medium uppercase">

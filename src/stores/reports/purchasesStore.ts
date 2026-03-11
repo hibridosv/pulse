@@ -6,21 +6,26 @@ import useToastMessageStore from '../toastMessageStore';
 interface purchasesStoreI {
   purchases: any;
   invoices: any;
+  duplicateInvoice: any;
   error: boolean;
   loading: boolean;
   loadingInvoices: boolean;
+  loadingDuplicate: boolean;
   deleting: boolean;
   loadPurchases: (url: string) => Promise<boolean>;
   loadInvoices: (url: string) => Promise<boolean>;
+  loadDuplicateInvoice: (id: string) => Promise<void>;
   deleteInvoice: (url: string) => Promise<boolean>;
 }
 
 const purchasesStore = create<purchasesStoreI>((set) => ({
   purchases: null,
   invoices: null,
+  duplicateInvoice: null,
   error: false,
   loading: false,
   loadingInvoices: false,
+  loadingDuplicate: false,
   deleting: false,
   loadPurchases: async (url: string) => {
     set({ loading: true });
@@ -48,6 +53,18 @@ const purchasesStore = create<purchasesStoreI>((set) => ({
       return false;
     } finally {
       set({ loadingInvoices: false });
+    }
+  },
+
+  loadDuplicateInvoice: async (id: string) => {
+    set({ loadingDuplicate: true, duplicateInvoice: null });
+    try {
+      const response = await getServices(`purchases/${id}`);
+      set({ duplicateInvoice: response.data.data });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ loadingDuplicate: false });
     }
   },
 

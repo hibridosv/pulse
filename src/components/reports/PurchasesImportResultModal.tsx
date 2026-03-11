@@ -1,6 +1,7 @@
 'use client';
 import Modal from "@/components/modal/Modal";
-import { LuCircleCheck, LuFileJson, LuCircleX } from "react-icons/lu";
+import { LuCircleCheck, LuCircleX, LuFileJson } from "react-icons/lu";
+import { Button, Preset } from "../button/button";
 
 interface ImportError {
   file: string;
@@ -68,12 +69,7 @@ export function PurchasesImportResultModal({ show, onClose, result }: Props) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <button
-          onClick={onClose}
-          className="px-4 py-2 rounded-lg bg-bg-subtle text-text-base text-sm font-medium hover:bg-bg-subtle/80 transition-colors clickeable"
-        >
-          Cerrar
-        </button>
+        <Button onClick={onClose} preset={Preset.close} disabled={false} />
       </Modal.Footer>
     </Modal>
   );

@@ -1,6 +1,7 @@
 'use client';
 import { PurchasesBooksList } from "@/components/reports/PurchasesBooksList";
 import { PurchasesDetailsModal } from "@/components/reports/PurchasesDetailsModal";
+import { PurchasesDuplicateReviewModal } from "@/components/reports/PurchasesDuplicateReviewModal";
 import { PurchasesImportSection } from "@/components/reports/PurchasesImportSection";
 import { ReportPurchasesTable } from "@/components/reports/ReportPurchasesTable";
 import { ToasterMessage } from "@/components/toaster-message";
@@ -52,6 +53,7 @@ export default function Page() {
       </div>
 
       <PurchasesDetailsModal isShow={modals.purchasesDetailsModal} onClose={() => closeModal('purchasesDetailsModal')} />
+      <PurchasesDuplicateReviewModal isShow={modals.purchasesDuplicateReviewModal} onClose={() => closeModal('purchasesDuplicateReviewModal')} />
       <ToasterMessage />
     </div>
   );
