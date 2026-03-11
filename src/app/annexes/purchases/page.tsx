@@ -16,7 +16,7 @@ export default function Page() {
   const selectedBookId: string | null = elements['selectedPurchaseBook'] ?? null;
   const [isUploading, setIsUploading] = useState(false);
   usePurchasesLogic(selectedBookId);
-  const { purchases, loading, loadingInvoices, loadInvoices, deleteInvoice, invoices } = purchasesStore();
+  const { purchases, loading, loadingInvoices, invoices } = purchasesStore();
   const { modals, closeModal } = useModalStore();
 
   const selectedBook = purchases?.find((p: { id: string }) => p.id === selectedBookId) ?? purchases?.[0];
@@ -29,10 +29,6 @@ export default function Page() {
         <ReportPurchasesTable
           records={invoices}
           isLoading={loading || loadingInvoices}
-          onDelete={async (id) => {
-            const ok = await deleteInvoice(id);
-            if (ok) loadInvoices(`purchases/${selectedBook?.id}/invoices`);
-          }}
         />
       </div>
 
@@ -52,7 +48,6 @@ export default function Page() {
           bookName={selectedBook?.name}
           bookId={selectedBook?.id}
           onUploadingChange={setIsUploading}
-          onImported={() => loadInvoices(`purchases/${selectedBook?.id}/invoices`)}
         />
       </div>
 

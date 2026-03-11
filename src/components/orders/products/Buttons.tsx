@@ -46,7 +46,7 @@ export function Buttons(props: ButtonsI) {
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('searchContact'); setElement('contactSearch', "customerSearch");}}> Asignar Cliente</div>
             { isOtherSeller && 
             <div className='button-options-sales'  onClick={()=>{ setIsOpen(false); openModal('setUser'); setElement('setUser', "setSeller");}}>Asignar Vendedor</div>}
-            { !isReferred && 
+            { isReferred && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('searchContact'); setElement('contactSearch', "referralSearch");}}> Asignar Referido</div>}
             { isDelivery && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setUser'); setElement('setUser', "setDriver");}}> Asignar Repartidor </div>}

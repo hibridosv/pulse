@@ -1,6 +1,7 @@
 'use client';
 import { PurchasesImportResultModal } from "@/components/reports/PurchasesImportResultModal";
 import { postFormData } from "@/services/OtherServices";
+import purchasesStore from "@/stores/reports/purchasesStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { useRef, useState } from "react";
 import { LuFileJson, LuUpload, LuX } from "react-icons/lu";
@@ -9,16 +10,16 @@ interface Props {
   bookName?: string;
   bookId?: string;
   onUploadingChange: (v: boolean) => void;
-  onImported?: () => void;
 }
 
-export function PurchasesImportSection({ bookName, bookId, onUploadingChange, onImported }: Props) {
+export function PurchasesImportSection({ bookName, bookId, onUploadingChange }: Props) {
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [result, setResult] = useState<{ processed: number; errors: { file: string; message: string }[] } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { setError } = useToastMessageStore();
+  const { loadInvoices } = purchasesStore();
 
   const handleDrop = (e: React.DragEvent) => {
     if (isUploading) return;
@@ -52,7 +53,7 @@ export function PurchasesImportSection({ bookName, bookId, onUploadingChange, on
       if (response?.data) {
         setResult(response.data);
         setFiles([]);
-        onImported?.();
+        loadInvoices(`purchases/${bookId}/invoices`);
       } else {
         setError({ message: response?.message ?? 'Error al importar los archivos' });
       }

@@ -6,21 +6,22 @@ import { formatDateAsDMY } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
+import purchasesStore from "@/stores/reports/purchasesStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
-import { LuTrash2 } from "react-icons/lu";
+import { Button, Preset } from "../button/button";
 
 export interface ReportPurchasesTableI {
   records: any;
   isLoading?: boolean;
-  onDelete?: (id: string) => Promise<void>;
 }
 
 export function ReportPurchasesTable(props: ReportPurchasesTableI) {
-  const { records, isLoading, onDelete } = props;
+  const { records, isLoading } = props;
   const { system } = useConfigStore();
   const { setElement } = useTempStorage();
   const { openModal } = useModalStore();
+  const { deleteInvoice, loadInvoices } = purchasesStore();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   if (isLoading) return <SkeletonTable rows={5} columns={7} />;
@@ -38,9 +39,10 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
   const totalOperacion = parsed.reduce((acc: number, { json }: any) => acc + (json?.resumen?.montoTotalOperacion ?? 0), 0);
   const totalRetenciones = parsed.reduce((acc: number, { json }: any) => acc + (json?.resumen?.reteRenta ?? 0), 0);
 
-  const handleDelete = async (id: string) => {
-    setDeletingId(id);
-    await onDelete?.(id);
+  const handleDelete = async (record: any) => {
+    setDeletingId(record.id);
+    const ok = await deleteInvoice(`purchases/${record.id}/invoices`);
+    if (ok) loadInvoices(`purchases/${record.purchase_id}/invoices`);
     setDeletingId(null);
   };
 
@@ -89,13 +91,7 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
           {numberToMoney(json?.resumen?.reteRenta ?? 0, system)}
         </td>
         <td className="px-2 py-2 text-center">
-          <button
-            onClick={() => handleDelete(record.id)}
-            disabled={!!deletingId}
-            className="opacity-0 group-hover:opacity-100 transition-opacity text-text-muted hover:text-danger disabled:cursor-not-allowed clickeable"
-          >
-            <LuTrash2 size={14} />
-          </button>
+          <Button preset={Preset.smallClose}  onClick={() => handleDelete(record)} disabled={!!deletingId} />
         </td>
       </tr>
     );
