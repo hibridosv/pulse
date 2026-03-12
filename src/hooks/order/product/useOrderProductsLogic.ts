@@ -69,7 +69,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   useEffect(() => {
     if (!pusherEventData) return;
     if (user && user.id == pusherEventData?.userId) return;
-    console.log(pusherEventData)
+    console.log(pusherRandom)
     loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
    }, [loadOrders, pusherEventData, pusherRandom, user]);
 
