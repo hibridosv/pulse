@@ -90,7 +90,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
         loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2&filterWhere[order_type]==3`, false);
       }
     }
-   }, [loadOrders, pusherData, user, setOrders, loadTables, serviceType]);
+   }, [loadOrders, pusherData, user, loadTables, serviceType]);
 
 
    // verificar si exite algun producto con venta especial sin terminar el preoceso
