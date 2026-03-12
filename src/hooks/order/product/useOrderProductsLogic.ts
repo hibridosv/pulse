@@ -27,7 +27,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
   const orderLoaded = useRef(false);
   
-  const { data: pusherData} = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
+  const { data: pusherEventData, random: pusherRandom } = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
 
   // para sistema de productos
   useEffect(() => {
@@ -67,14 +67,11 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
 
 /** Cargar Ordenes al realizar un evento de Pusher solo para los usuarios que no envia en evento */
   useEffect(() => {
-    console.log(pusherData)
-    if (user && user.id == pusherData?.userId) return
-    if (!pusherData) return;
-    if (pusherData.data) {
-      loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
-    }
-
-   }, [loadOrders, pusherData, user, setOrders]);
+    if (!pusherEventData) return;
+    if (user && user.id == pusherEventData?.userId) return;
+    console.log(pusherEventData)
+    loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2`, false);
+   }, [loadOrders, pusherEventData, pusherRandom, user]);
 
 
    // verificar si exite algun producto con venta especial sin terminar el preoceso

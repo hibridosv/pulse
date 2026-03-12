@@ -32,7 +32,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
   const orderLoaded = useRef(false);
   
-  const pusherData = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
+  const { data: pusherEventData, random: pusherRandom } = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
 
 
   
@@ -79,18 +79,16 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
 
 /** Cargar Ordenes al realizar un evento de Pusher solo para los usuarios que no envia en evento */
   useEffect(() => {
-    console.log(pusherData)
-    if (user && user.id == pusherData?.data?.userId) return
-    if (!pusherData) return;
-    if (pusherData.data) {
-      if (serviceType == 2) {
-         loadTables(`tables?included=tables`, true);
-      }
-      if (serviceType == 3) {
-        loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2&filterWhere[order_type]==3`, false);
-      }
+    if (!pusherEventData) return;
+    if (user && user.id == pusherEventData?.userId) return;
+    console.log(pusherEventData)
+    if (serviceType == 2) {
+       loadTables(`tables?included=tables`, true);
     }
-   }, [loadOrders, pusherData, user, loadTables, serviceType]);
+    if (serviceType == 3) {
+      loadOrders(`orders?included=employee,client,invoiceproducts&filterWhere[status]==2&filterWhere[order_type]==3`, false);
+    }
+   }, [loadOrders, pusherEventData, pusherRandom, user, loadTables, serviceType]);
 
 
    // verificar si exite algun producto con venta especial sin terminar el preoceso
