@@ -125,7 +125,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
           </ul>
         </div>
 
-        <div className="flex justify-center items-center p-2 gap-3 z-10 bg-primary/95">
+        {/* <div className="flex justify-center items-center p-2 gap-3 z-10 bg-primary/95">
             <button
               title="MDB"
               onClick={() => setTheme('mdb')}
@@ -150,7 +150,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
               className={`w-6 h-6 rounded-full transition-all ${theme === 'navy' ? 'ring-2 ring-offset-2 ring-offset-primary ring-white' : ''}`}
               style={{ backgroundColor: '#223E5A' }}
             />
-        </div>
+        </div> */}
 
         {/* Footer (Logout) */}
         <div className="p-2 border-t border-white/10 flex-shrink-0 font-semibold z-10 bg-primary/95">
