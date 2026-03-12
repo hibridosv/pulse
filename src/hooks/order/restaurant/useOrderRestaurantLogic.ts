@@ -79,6 +79,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
 
 /** Cargar Ordenes al realizar un evento de Pusher solo para los usuarios que no envia en evento */
   useEffect(() => {
+    console.log(pusherData)
     if (user && user.id == pusherData?.userId) return
     if (!pusherData) return;
     if (pusherData.data) {
