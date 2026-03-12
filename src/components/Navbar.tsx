@@ -4,7 +4,6 @@ import { useConfigLogic } from '@/hooks/config/useConfigLogic';
 import { isProducts } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import useTempStorage from "@/stores/useTempStorage";
 import Link from 'next/link';
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
@@ -19,7 +18,7 @@ export const Navbar = () => {
   const { user, client, tenant } = useConfigStore();
  useConfigLogic(); // carga todas las configuraciones necesarias
   const { modals, closeModal, openModal } = useModalStore();
-  const { setElement, getElement} = useTempStorage();
+
 
   return (
     <>
@@ -42,7 +41,7 @@ export const Navbar = () => {
           </div>
 
           <div className='flex'>
-            { isProducts(tenant.system) &&
+            { isProducts(tenant?.system) &&
               <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={()=>{ openModal('searchProductOnBar')}}/>
             }
             <Link href="/orders" className="text-text-inverted hover:text-secondary">
