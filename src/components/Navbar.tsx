@@ -1,6 +1,7 @@
 'use client';
 
 import { useConfigLogic } from '@/hooks/config/useConfigLogic';
+import { isProducts } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from "@/stores/useTempStorage";
@@ -15,7 +16,7 @@ import { ProductDetailsGetModal } from './products/ProductDetailsGetModal';
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
-  const { user, client, permission } = useConfigStore();
+  const { user, client, tenant } = useConfigStore();
  useConfigLogic(); // carga todas las configuraciones necesarias
   const { modals, closeModal, openModal } = useModalStore();
   const { setElement, getElement} = useTempStorage();
@@ -41,7 +42,9 @@ export const Navbar = () => {
           </div>
 
           <div className='flex'>
-            <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={()=>{ openModal('searchProductOnBar')}}/>
+            { isProducts(tenant.system) &&
+              <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={()=>{ openModal('searchProductOnBar')}}/>
+            }
             <Link href="/orders" className="text-text-inverted hover:text-secondary">
               <IoHome size={22} className="sm:w-7 sm:h-7" />
             </Link>
