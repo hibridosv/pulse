@@ -32,7 +32,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
   const orderLoaded = useRef(false);
   
-  const { data: pusherData} = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
+  const pusherData = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
 
 
   
@@ -80,7 +80,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
 /** Cargar Ordenes al realizar un evento de Pusher solo para los usuarios que no envia en evento */
   useEffect(() => {
     console.log(pusherData)
-    if (user && user.id == pusherData?.userId) return
+    if (user && user.id == pusherData?.data?.userId) return
     if (!pusherData) return;
     if (pusherData.data) {
       if (serviceType == 2) {
