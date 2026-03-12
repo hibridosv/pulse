@@ -1,9 +1,9 @@
 'use client';
 
-import { LoadingPage } from "@/components/LoadingPage";
 import { getBrand, isCustomBrand } from "@/lib/brand";
 import useConfigStore from "@/stores/configStore";
-import { getSession, signIn, useSession } from "next-auth/react";
+import restauranMenuStore from "@/stores/orders/restauranMenuStore";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { BiSave } from "react-icons/bi";
@@ -12,7 +12,6 @@ import { FaCheck } from "react-icons/fa6";
 import { LuLoader } from "react-icons/lu";
 
 export default function Home() {
-  const { status } = useSession();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,17 +21,16 @@ export default function Home() {
   const [redirecting, setRedirecting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { clearConfig, isLoaded } = useConfigStore();
+  const { isLoaded: isLoadedMenu, clearConfig: clearConfigMenu  } = restauranMenuStore()
   const brand = useMemo(() => getBrand(), []);
   const custom = isCustomBrand(brand);
   const c = brand.colors;
 
   useEffect(() => {
     if (isLoaded) { clearConfig(); }
+    if (isLoadedMenu) { clearConfigMenu(); }
   }, [isLoaded, clearConfig]);
 
-  if (status === "loading") {
-    return <LoadingPage />;
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

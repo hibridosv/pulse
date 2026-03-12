@@ -27,8 +27,8 @@ export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
 
 
     const handleSelected = (product: any) => {
-        openModal('productDetails');
-        setElement('productDetails', product.cod);
+        openModal('productDetailsOnNavbar');
+        setElement('productDetailsOnNavbar', product.cod);
         handleSearchTerm('');
     }   
 

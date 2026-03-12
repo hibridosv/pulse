@@ -27,7 +27,7 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   const { onClose, isShow, row = "id" } = props;
   const { system } = useConfigStore();
   const { getElement, clearElement } = useTempStorage();
-  const productId = getElement('productDetails');
+  const productId = getElement('productDetailsOnNavbar');
   
   const {responseData: data, loading: loadingRecord } = useGetProductLogic(productId, isShow, row);
   const record = data?.data;
@@ -38,7 +38,7 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   if (!isShow) { return null; }
 
   const handleClose = () => {
-    clearElement('productDetails');
+    clearElement('productDetailsOnNavbar');
     onClose();
   };
 

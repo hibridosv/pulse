@@ -53,7 +53,7 @@ export const Navbar = () => {
       </nav>
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
       <SearchProductModal isShow={modals.searchProductOnBar} onClose={()=>{ closeModal('searchProductOnBar')}} />
-      <ProductDetailsGetModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} /> 
+      <ProductDetailsGetModal isShow={modals.productDetailsOnNavbar} onClose={() => closeModal('productDetailsOnNavbar')} /> 
     </>
   );
 };
