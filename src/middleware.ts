@@ -7,23 +7,24 @@ export async function middleware(req: NextRequest) {
 
   // Define protected and public-only routes
   const protectedRoutes = [
-                          "/dashboard", 
-                          "/protected", 
-                          "/protected-ssr",
-                          "/accounts", 
-                          "/cash", 
-                          "/cashdrawers", 
-                          "/contacts", 
-                          "/dashboard", 
-                          "/history", 
-                          "/invoicing", 
-                          "/orders", 
-                          "/products", 
-                          "/reports", 
-                          "/settings", 
-                          "/tools", 
-                          "/transfers", 
-                        ];
+    "/accounts", 
+    "/annexes", 
+    "/cash", 
+    "/cashdrawers", 
+    "/contacts", 
+    "/dashboard", 
+    "/history", 
+    "/invoicing", 
+    "/orders", 
+    "/products", 
+    "/reports", 
+    "/restaurant", 
+    "/settings", 
+    "/tools", 
+    "/transfers", 
+    "/protected", 
+    "/protected-ssr",
+  ];
 
   const publicOnlyRoutes = ["/"]; // The login page
 
