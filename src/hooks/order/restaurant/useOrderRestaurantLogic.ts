@@ -113,7 +113,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
          }
 
 
-         if (serviceType == 2 && !selectedTable != order?.attributes?.restaurant_table_id) {
+         if (serviceType == 2 && selectedTable != order?.attributes?.restaurant_table_id) {
             setElement('selectedTable', order?.attributes?.restaurant_table_id);
          }
 
