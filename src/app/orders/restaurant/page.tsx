@@ -31,20 +31,14 @@ import { TipsModal } from "@/components/orders/restaurant/TipsModal";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
 import { useOrderRestaurantLogic } from "@/hooks/order/restaurant/useOrderRestaurantLogic";
-import { formatDateAsNumber } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
-import CryptoJS from 'crypto-js';
 
 export default function Page() {
   useMenuLogic();
   useOrderRestaurantLogic(true);
-  const { order, orders } = ordersStore();
+  const { order } = ordersStore();
   const { modals, closeModal } = useModalStore();
-
-  const dateStr = formatDateAsNumber(new Date());
-  const hash = CryptoJS.MD5(dateStr).toString().substring(0, 4).toUpperCase();
-  // console.log(hash);
 
 
   return (

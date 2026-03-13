@@ -43,7 +43,7 @@ const dismiss = () => {
 }
 
     return (
-        <div key={record?.id} className="animate-scale-in" style={{ animationDelay: `${index * 15}ms` }} title={label} >
+        <div key={record?.id} className="animate-scale-in" title={label} >
             <div onClick={isProduct ?
                 (sending ? ()=>{} : () => sendProduct(record.product_id)) :
                 ()=>{ openModal('categoryMenu'); setElement("categoryMenu", record) }
@@ -86,7 +86,7 @@ const dismiss = () => {
                       <span className="inline-block h-1 w-1 rounded-full bg-primary animate-bounce" style={{ animationDuration: '0.4s', animationDelay: '0.2s' }} />
                     </div>
                   ) : (
-                    <p className={`w-full text-center text-[11px] font-semibold uppercase leading-tight line-clamp-2 ${isProduct ? 'text-text-base' : 'text-black'} `}>
+                    <p className={`w-full text-center text-[12px] font-semibold uppercase leading-tight line-clamp-2 ${isProduct ? 'text-text-base' : 'text-black'} `}>
                       {label}
                     </p>
                   )}
