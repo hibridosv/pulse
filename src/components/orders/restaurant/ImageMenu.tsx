@@ -44,8 +44,7 @@ const dismiss = () => {
 
     return (
         <div key={record?.id} className="animate-scale-in" style={{ animationDelay: `${index * 15}ms` }} title={label} >
-            <div
-              onClick={isProduct ?
+            <div onClick={isProduct ?
                 (sending ? ()=>{} : () => sendProduct(record.product_id)) :
                 ()=>{ openModal('categoryMenu'); setElement("categoryMenu", record) }
               }
@@ -77,7 +76,7 @@ const dismiss = () => {
                   transition-all duration-100
                   ${isSending ? 'bg-primary/10' : isProduct
                       ? 'bg-bg-subtle/80 group-hover:bg-bg-subtle'
-                      : 'bg-accent/15 group-hover:bg-accent/25'
+                      : 'bg-slate-300 group-hover:bg-accent/25'
                   }
                 `}>
                   {isSending ? (
@@ -87,7 +86,7 @@ const dismiss = () => {
                       <span className="inline-block h-1 w-1 rounded-full bg-primary animate-bounce" style={{ animationDuration: '0.4s', animationDelay: '0.2s' }} />
                     </div>
                   ) : (
-                    <p className={`w-full text-center text-[11px] font-semibold uppercase leading-tight line-clamp-2 ${isProduct ? 'text-text-base' : 'text-accent'} `}>
+                    <p className={`w-full text-center text-[11px] font-semibold uppercase leading-tight line-clamp-2 ${isProduct ? 'text-text-base' : 'text-black'} `}>
                       {label}
                     </p>
                   )}
