@@ -1,7 +1,7 @@
 'use client';
+import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { Button, Preset } from "@/components/button/button";
 import purchasesStore from "@/stores/reports/purchasesStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useEffect, useState } from "react";
@@ -81,7 +81,7 @@ export function PurchasesDuplicateReviewModal({ isShow, onClose }: Props) {
     if (!isShow || !record?.duplicate_of_id) return;
     setOnlyDiffs(true);
     loadDuplicateInvoice(record.duplicate_of_id);
-  }, [isShow, record?.duplicate_of_id]);
+  }, [isShow, record?.duplicate_of_id, loadDuplicateInvoice]);
 
   const currentJson = record?.documento_json ? JSON.parse(record.documento_json) : null;
   const originalJson = duplicateInvoice?.documento_json ? JSON.parse(duplicateInvoice.documento_json) : null;

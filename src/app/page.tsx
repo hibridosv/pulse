@@ -29,7 +29,7 @@ export default function Home() {
   useEffect(() => {
     if (isLoaded) { clearConfig(); }
     if (isLoadedMenu) { clearConfigMenu(); }
-  }, [isLoaded, clearConfig]);
+  }, [isLoaded, isLoadedMenu, clearConfig, clearConfigMenu]);
 
 
   const handleSubmit = async (e: React.FormEvent) => {

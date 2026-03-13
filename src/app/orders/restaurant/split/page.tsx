@@ -57,7 +57,7 @@ export default function Page() {
       setElement('clientActive', 1);
       router.push("/orders/restaurant");
     }
-  }, [orderPrincipal, setElement, router]);
+  }, [orderPrincipal, setElement, router, clientActive]);
 
   const order = filterInvoiceProductsByClientNumber(orderPrincipal, clientActive);
 
