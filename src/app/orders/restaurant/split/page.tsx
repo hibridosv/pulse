@@ -46,7 +46,9 @@ export default function Page() {
     if (orderPrincipal && orderPrincipal.invoiceproducts && orderPrincipal.invoiceproducts.length > 0) {
       let client = orderPrincipal.attributes && (JSON.parse(orderPrincipal?.attributes.clients));
       if (client && client.length > 0) {
-        setElement('clientActive', client[0]);
+        if (!client.includes(clientActive)) {
+          setElement('clientActive', client[0]);
+        }
       } else {
         setElement('clientActive', 1);
         router.push("/orders/restaurant");
